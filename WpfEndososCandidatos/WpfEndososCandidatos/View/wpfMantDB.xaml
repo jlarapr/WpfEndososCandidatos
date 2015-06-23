@@ -1,0 +1,18 @@
+﻿<Window x:Class="WpfEndososCandidatos.View.wpfMantDB"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
+        Title="Mantenimiento - Base de Datos" Height="316.842" Width="405.263">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitWindow}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Label Content="Path para la imágenes" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="134"/>
+        <TextBox x:Name="dfPathtoPictures" HorizontalAlignment="Left" Height="23" Margin="10,60,0,0" TextWrapping="Wrap" Text="{Binding dfPathtoPictures_txt}" VerticalAlignment="Top" Width="281"/>
+
+    </Grid>
+</Window>
