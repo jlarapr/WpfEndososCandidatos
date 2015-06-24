@@ -14,11 +14,11 @@ namespace WpfEndososCandidatos.ViewModel
     using WpfEndososCandidatos.View;
 
     
-    class MainVM : ViewModelBase<IMainView>
+    partial class  MainVM : ViewModelBase<IMainView>
     {
         private RelayCommand _InitWindow;
         private string _Title;
-        private const string _REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos"; // Software\\CEE\\WEBCEE\\Enlaces
+        private const string _REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos"; 
         
         private string _SqlServer=string.Empty;
         private string _Username =string.Empty;
@@ -41,10 +41,8 @@ namespace WpfEndososCandidatos.ViewModel
         private string _ValiDB = string.Empty;
 
         private string _ImgPath = string.Empty;
+        private RelayCommand _Close;
         
-
-
-
         public MainVM()
             : base(new MainWindow())
         {
@@ -63,6 +61,23 @@ namespace WpfEndososCandidatos.ViewModel
             }
         }
 
+        public RelayCommand close
+        {
+            get
+            {
+                if (_Close == null)
+                {
+                    _Close = new RelayCommand(param => Close());
+                }
+                return _Close;
+            }
+        }
+
+        private void Close()
+        {
+            
+            this.View.Close();
+        }
 
         public string Title
         {
@@ -124,21 +139,79 @@ namespace WpfEndososCandidatos.ViewModel
                     _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
                 }
 
-                if ((_SqlServer == "") || (_Username == "") || (_Database == "") || (_Password == "") || (_MastSvr == "") || (_MastUsr == "") || (_MastDB == "") || (_MastPass == "") ||
-                    (_ImageSvr == "") || (_ImageUsr == "") || (_ImageDB == "") || (_ImagePass == "") ||  (_ImgPath == "") || (_ValiSvr == "") || (_ValiUsr == "") || (_ValiDB == "") ||
-                    (_ValiPass == ""))
-                {
-                                        
+                //if ((_SqlServer == "") || (_Username == "") || (_Database == "") || (_Password == "") || (_MastSvr == "") || (_MastUsr == "") || (_MastDB == "") || (_MastPass == "") ||
+                //    (_ImageSvr == "") || (_ImageUsr == "") || (_ImageDB == "") || (_ImagePass == "") ||  (_ImgPath == "") || (_ValiSvr == "") || (_ValiUsr == "") || (_ValiDB == "") ||
+                //    (_ValiPass == ""))
 
-                    vmMantDB frmMantDB = new vmMantDB();
+                if ((_SqlServer.Trim().Length == 0)     ||
+                        (_Username.Trim().Length == 0)  ||
+                        (_Database.Trim().Length == 0)  ||
+                       (_Password.Trim().Length == 0)   ||
+                       (_MastSvr.Trim().Length == 0)    ||
+                       (_MastUsr.Trim().Length == 0)    ||
+                       (_MastDB.Trim().Length == 0)     ||
+                       (_MastPass.Trim().Length == 0)   ||
+                       (_ImageSvr.Trim().Length == 0)   ||
+                       (_ImageUsr.Trim().Length == 0)   ||
+                       (_ImageDB.Trim().Length == 0)    ||
+                       (_ImagePass.Trim().Length == 0)  ||
+                       (_ImgPath.Trim().Length == 0)    ||
+                       (_ValiSvr.Trim().Length == 0)    ||
+                       (_ValiUsr.Trim().Length == 0)    ||
+                       (_ValiDB.Trim().Length == 0)     ||
+                       (_ValiPass.Trim().Length == 0))
+                {
+                    vmMantDB frmMantDB = new vmMantDB(_REGPATH);
+
+                    frmMantDB.sqlServer = _SqlServer;
+                    frmMantDB.userName = _Username;
+                    frmMantDB.password = _Password;
+                    frmMantDB.database = _Database;
+
+                    frmMantDB.mastSvr = _MastSvr;
+                    frmMantDB.mastUsr = _MastUsr;
+                    frmMantDB.mastPass = _MastPass;
+                    frmMantDB.mastDB = _MastDB;
+
+                    frmMantDB.imageSvr = _ImageSvr;
+                    frmMantDB.imageUsr = _ImageUsr;
+                    frmMantDB.imagePass = _ImagePass;
+                    frmMantDB.imageDB = _ImageDB;
+
+                    frmMantDB.valiSvr = _ValiSvr;
+                    frmMantDB.valiUsr = _ValiUsr;
+                    frmMantDB.valiPass = _ValiPass;
+                    frmMantDB.valiDB = _ValiDB;
+
+                    frmMantDB.imgPath = _ImgPath;
+
+                    frmMantDB.View.Owner = this.View as Window;
 
                     frmMantDB.OnShow();
 
+                    _SqlServer=frmMantDB.sqlServer;
+                    _Username=frmMantDB.userName;
+                    _Password=frmMantDB.password;
+                    _Database=frmMantDB.database;
+
+                    _MastSvr=frmMantDB.mastSvr;
+                    _MastUsr=frmMantDB.mastUsr;
+                    _MastPass=frmMantDB.mastPass;
+                    _MastDB=frmMantDB.mastDB;
+
+                    _ImageSvr=frmMantDB.imageSvr;
+                    _ImageUsr=frmMantDB.imageUsr;
+                    _ImagePass=frmMantDB.imagePass;
+                    _ImageDB=frmMantDB.imageDB;
+
+                    _ValiSvr=frmMantDB.valiSvr;
+                    _ValiUsr=frmMantDB.valiUsr;
+                    _ValiPass=frmMantDB.valiPass;
+                    _ValiDB=frmMantDB.valiDB;
+
+                    _ImgPath = frmMantDB.imgPath;
+
                 }//End IF
-        
-    
-
-
 
             }
             catch(Exception ex)
@@ -151,5 +224,16 @@ namespace WpfEndososCandidatos.ViewModel
         }
 
 
+        
+
+
+
+
+
     }
+
+     
+
 }
+
+

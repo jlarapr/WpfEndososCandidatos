@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
-        Title="{Binding Title}" Height="350" Width="525">
+        Title="{Binding Title}" Height="350" Width="525" WindowState="Maximized" Background="DarkGray"  >
     
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -11,7 +11,43 @@
     </i:Interaction.Triggers>
 
 
-    <Grid>
+    <!--<Grid>-->
+        <DockPanel>
         
-    </Grid>
+            <Menu x:Name="MainMenu" VerticalAlignment="Top" DockPanel.Dock="Top" Height="31">
+                <MenuItem Name="mnuMainFile" Header="_Archivo"  >
+                    <MenuItem Name="mnuLogin" Header="_Login"  />
+                    <MenuItem Name="mnuLogout" Header="_Logout"  />
+                    <MenuItem Name="mnuChangePassword" Header="_Cambiar Password"  />
+                    <Separator></Separator>
+                    <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close}" />
+                </MenuItem>
+                <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
+                    <MenuItem Name="mnuRecibirLotes" Header="_Recibir Lotes"/>
+                    <MenuItem Name="mnuAutoRizarLotes" Header="_Autorizar Lotes"/>
+                    <MenuItem Name="mnuProcesarLotes" Header="_Procesar Lotes"/>
+                    <Separator></Separator>
+                    <MenuItem Name="mnuCorregirEndosos" Header="_Corregir Endosos"/>
+                    <MenuItem Name="mnuRevLote" Header="_Reversar Lote"/>
+                </MenuItem>
+                <MenuItem Name="mnuMainVer" Header="_Ver"  >
+                    <MenuItem Name="mnuVerElector" Header="_Ver Elector"/>
+                </MenuItem>
+                <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
+                <MenuItem Name="mnuConf1" Header="_Areas" Command="{Binding areas_Click}" />
+                <MenuItem Name="mnuConf2" Header="_Partidos" Command="{Binding partidos_Click}" />
+                <MenuItem Name="mnuConf3" Header="_Notarios" Command="{Binding notarios_Click}" />
+                <MenuItem Name="mnuConf4" Header="_Validaciones" Command="{Binding validaciones_Click}" />
+                <MenuItem Name="mnuConf5" Header="_Usuarios" Command="{Binding usuarios_Click}" />
+                <MenuItem Name="mnuConf6" Header="_Base de Datos" Command="{Binding baseDeDatos_Click}" />
+                <MenuItem Name="mnuConf7" Header="_Inicializar Lotes" Command="{Binding inicializarLotes_Click}" />
+                    <Separator></Separator>
+                <MenuItem Name="mnuConf8" Header="_About" Command="{Binding about_Click}"/>
+                </MenuItem>
+
+
+            </Menu>
+        </DockPanel>
+        
+    <!--</Grid>-->
 </Window>
