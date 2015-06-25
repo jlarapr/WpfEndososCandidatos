@@ -16,22 +16,22 @@
         
             <Menu x:Name="MainMenu" VerticalAlignment="Top" DockPanel.Dock="Top" Height="31">
                 <MenuItem Name="mnuMainFile" Header="_Archivo"  >
-                    <MenuItem Name="mnuLogin" Header="_Login"  />
-                    <MenuItem Name="mnuLogout" Header="_Logout"  />
-                    <MenuItem Name="mnuChangePassword" Header="_Cambiar Password"  />
+                <MenuItem Name="mnuLogin" Header="_Login" Command="{Binding login_Click}" />
+                <MenuItem Name="mnuLogout" Header="_Logout" Command="{Binding logout_Click}"  />
+                <MenuItem Name="mnuChangePassword" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
                     <Separator></Separator>
-                    <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close}" />
+                <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
-                    <MenuItem Name="mnuRecibirLotes" Header="_Recibir Lotes"/>
-                    <MenuItem Name="mnuAutoRizarLotes" Header="_Autorizar Lotes"/>
-                    <MenuItem Name="mnuProcesarLotes" Header="_Procesar Lotes"/>
+                <MenuItem Name="mnuRecibirLotes" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
+                <MenuItem Name="mnuAutoRizarLotes" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
+                <MenuItem Name="mnuProcesarLotes" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
                     <Separator></Separator>
-                    <MenuItem Name="mnuCorregirEndosos" Header="_Corregir Endosos"/>
-                    <MenuItem Name="mnuRevLote" Header="_Reversar Lote"/>
+                <MenuItem Name="mnuCorregirEndosos" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
+                <MenuItem Name="mnuRevLote" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainVer" Header="_Ver"  >
-                    <MenuItem Name="mnuVerElector" Header="_Ver Elector"/>
+                <MenuItem Name="mnuVerElector" Header="_Ver Elector" Command="{Binding verElector_click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
                 <MenuItem Name="mnuConf1" Header="_Areas" Command="{Binding areas_Click}" />

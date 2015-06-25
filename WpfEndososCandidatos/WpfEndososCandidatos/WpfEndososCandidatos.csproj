@@ -39,11 +39,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="jolcode">
       <HintPath>C:\Users\jlara\Documents\Visual Studio 2013\Projects\miPruebaWpf_MEF\jolcode\bin\Release\jolcode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -63,56 +72,78 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\MainVM.cs" />
-    <Compile Include="ViewModel\Menu\MainVM_Menu_Config.cs" />
-    <Compile Include="ViewModel\vmAbout.cs" />
-    <Compile Include="ViewModel\vmMantDB.cs" />
-    <Compile Include="View\wpfAbout.xaml.cs">
+    <Compile Include="Models\EndososPartidos.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EndososPartidos.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EndososPartidos.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblUser.cs">
+      <DependentUpon>EndososPartidos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\Archivo\vmfLogin.cs" />
+    <Compile Include="ViewModel\Main\MainVM.cs" />
+    <Compile Include="ViewModel\Menu\Archivos.cs" />
+    <Compile Include="ViewModel\Menu\Configuraciones.cs" />
+    <Compile Include="ViewModel\Menu\Procesos.cs" />
+    <Compile Include="ViewModel\Menu\Ver.cs" />
+    <Compile Include="ViewModel\Configuraciones\vmAbout.cs" />
+    <Compile Include="ViewModel\Configuraciones\vmMantDB.cs" />
+    <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfElector.xaml.cs">
+    <Compile Include="View\Ver\wpfElector.xaml.cs">
       <DependentUpon>wpfElector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfFixVoid.xaml.cs">
+    <Compile Include="View\Procesos\wpfFixVoid.xaml.cs">
       <DependentUpon>wpfFixVoid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLogin.xaml.cs">
+    <Compile Include="View\Archivo\wpfLogin.xaml.cs">
       <DependentUpon>wpfLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLotAuth.xaml.cs">
+    <Compile Include="View\Procesos\wpfLotAuth.xaml.cs">
       <DependentUpon>wpfLotAuth.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLotFix.xaml.cs">
+    <Compile Include="View\Procesos\wpfLotFix.xaml.cs">
       <DependentUpon>wpfLotFix.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLotInit.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfLotInit.xaml.cs">
       <DependentUpon>wpfLotInit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLotRechazadas.xaml.cs">
+    <Compile Include="View\Procesos\wpfLotRechazadas.xaml.cs">
       <DependentUpon>wpfLotRechazadas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfLotReverse.xaml.cs">
+    <Compile Include="View\Procesos\wpfLotReverse.xaml.cs">
       <DependentUpon>wpfLotReverse.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantAreas.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfMantAreas.xaml.cs">
       <DependentUpon>wpfMantAreas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantCriterios.xaml.cs">
+    <Compile Include="View\Procesos\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantDB.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfMantDB.xaml.cs">
       <DependentUpon>wpfMantDB.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantNotarios.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfMantNotarios.xaml.cs">
       <DependentUpon>wpfMantNotarios.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantPartidos.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfMantPartidos.xaml.cs">
       <DependentUpon>wpfMantPartidos.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantPass.xaml.cs">
+    <Compile Include="View\Archivo\wpfMantPass.xaml.cs">
       <DependentUpon>wpfMantPass.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\wpfMantUsers.xaml.cs">
+    <Compile Include="View\Configuraciones\wpfMantUsers.xaml.cs">
       <DependentUpon>wpfMantUsers.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -127,67 +158,67 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\wpfAbout.xaml">
+    <Page Include="View\Configuraciones\wpfAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfElector.xaml">
+    <Page Include="View\Ver\wpfElector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfFixVoid.xaml">
+    <Page Include="View\Procesos\wpfFixVoid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLogin.xaml">
+    <Page Include="View\Archivo\wpfLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLotAuth.xaml">
+    <Page Include="View\Procesos\wpfLotAuth.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLotFix.xaml">
+    <Page Include="View\Procesos\wpfLotFix.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLotInit.xaml">
+    <Page Include="View\Configuraciones\wpfLotInit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLotRechazadas.xaml">
+    <Page Include="View\Procesos\wpfLotRechazadas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfLotReverse.xaml">
+    <Page Include="View\Procesos\wpfLotReverse.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantAreas.xaml">
+    <Page Include="View\Configuraciones\wpfMantAreas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantCriterios.xaml">
+    <Page Include="View\Procesos\wpfMantCriterios.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantDB.xaml">
+    <Page Include="View\Configuraciones\wpfMantDB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantNotarios.xaml">
+    <Page Include="View\Configuraciones\wpfMantNotarios.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantPartidos.xaml">
+    <Page Include="View\Configuraciones\wpfMantPartidos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantPass.xaml">
+    <Page Include="View\Archivo\wpfMantPass.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\wpfMantUsers.xaml">
+    <Page Include="View\Configuraciones\wpfMantUsers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -210,6 +241,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="Models\EndososPartidos.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\EndososPartidos.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+      <LastGenOutput>EndososPartidos.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Models\EndososPartidos.edmx.diagram">
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+    </None>
+    <None Include="Models\EndososPartidos.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+      <LastGenOutput>EndososPartidos.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -221,7 +270,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helper\" />
-    <Folder Include="Model\" />
+    <Folder Include="ViewModel\Procesos\" />
+    <Folder Include="ViewModel\Ver\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
