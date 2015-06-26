@@ -5,12 +5,20 @@ namespace WpfEndososCandidatos.ViewModel
     using jolcode.MyInterface;
     using jolcode;
     using WpfEndososCandidatos.View;
+    using WpfEndososCandidatos.Models;
+    using WpfEndososCandidatos.Helper;
+
     using System.Reflection;
     using System.Windows;
     using System;
     using System.Windows.Controls;
-    using WpfEndososCandidatos.Models;
     
+    using System.Collections.Generic;        
+    using System.Linq;
+    using System.Data;
+    using System.Data.Entity;
+    using System.Security.Claims;
+
     class vmfLogin : ViewModelBase<IDialogView>
     {
         private RelayCommand _InitWindow;
@@ -18,11 +26,14 @@ namespace WpfEndososCandidatos.ViewModel
         private string _txtUserName_txt;
         private string _txtPassword_txt;
         private RelayCommand _oK_Click;
+        
         public vmfLogin() :
             base(new wpfLogin())
         {
-
+            
         }
+
+        public string WhatIsUserName { get; set; }
         public bool? OnShow()
         {
             return this.View.ShowDialog();
@@ -127,22 +138,34 @@ namespace WpfEndososCandidatos.ViewModel
             }
         }
 
-        private void OK_Click(object param)
+        private  void OK_Click(object param)
         {
             try
             {
                 PasswordBox passwordBox = param as PasswordBox;
-
-
-                txtPassword_txt = passwordBox.Password;
-                txtUserName_txt = txtPassword_txt;
-
-                dbEndososPartidosEntities ctx = new dbEndososPartidosEntities();
-
                 
+                txtPassword_txt = passwordBox.Password;
 
+                dbEndososPartidosEntities db = new dbEndososPartidosEntities();
+
+                var user = from u in db.tblUsers
+                           where u.UserName == txtUserName_txt
+                           select u.PasswordHash  ;
+
+                if (user.Count() == 0)
+                    throw new Exception("Error con el usuario o el password.");
+
+                string hashedPassword = user.First();
+                
+                if (!PasswordHash.VerifyHashedPassword(hashedPassword, txtPassword_txt))
+                {
+                    throw new Exception("Error con el usuario o el password.");
+                }
+
+                WhatIsUserName = txtUserName_txt;
                
-               
+                
+                this.View.Close();
                 
             }
             catch (Exception ex)

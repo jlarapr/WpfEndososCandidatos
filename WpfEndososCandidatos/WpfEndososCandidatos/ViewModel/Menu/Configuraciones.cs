@@ -239,8 +239,12 @@ namespace WpfEndososCandidatos.ViewModel
         {
             try
             {
+                vmMatUsers frmMatUsers = new vmMatUsers();
+                frmMatUsers.View.Owner = this.View as Window;
+                frmMatUsers.OnShow();
+                     
 
-                throw new NotImplementedException();
+                
             }
             catch (Exception ex)
             {

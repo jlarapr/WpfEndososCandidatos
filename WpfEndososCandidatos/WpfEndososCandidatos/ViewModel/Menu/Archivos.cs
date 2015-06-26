@@ -30,6 +30,7 @@
                 vmfLogin frmfLogin = new vmfLogin();
                 frmfLogin.View.Owner = this.View as Window;
                 frmfLogin.OnShow();
+                Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName);
 
                 
             }

@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\PasswordHash.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,6 +92,7 @@
       <DependentUpon>EndososPartidos.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Archivo\vmfLogin.cs" />
+    <Compile Include="ViewModel\Configuraciones\vmMatUsers.cs" />
     <Compile Include="ViewModel\Main\MainVM.cs" />
     <Compile Include="ViewModel\Menu\Archivos.cs" />
     <Compile Include="ViewModel\Menu\Configuraciones.cs" />
@@ -269,7 +271,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helper\" />
     <Folder Include="ViewModel\Procesos\" />
     <Folder Include="ViewModel\Ver\" />
   </ItemGroup>
