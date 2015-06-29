@@ -20,7 +20,7 @@
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Helper\PasswordHash.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
@@ -91,15 +92,15 @@
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>EndososPartidos.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Archivo\vmfLogin.cs" />
-    <Compile Include="ViewModel\Configuraciones\vmMatUsers.cs" />
-    <Compile Include="ViewModel\Main\MainVM.cs" />
-    <Compile Include="ViewModel\Menu\Archivos.cs" />
-    <Compile Include="ViewModel\Menu\Configuraciones.cs" />
-    <Compile Include="ViewModel\Menu\Procesos.cs" />
-    <Compile Include="ViewModel\Menu\Ver.cs" />
-    <Compile Include="ViewModel\Configuraciones\vmAbout.cs" />
-    <Compile Include="ViewModel\Configuraciones\vmMantDB.cs" />
+    <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
+    <Compile Include="ViewModels\Main\MainVM.cs" />
+    <Compile Include="ViewModels\Menu\Archivos.cs" />
+    <Compile Include="ViewModels\Menu\Configuraciones.cs" />
+    <Compile Include="ViewModels\Menu\Procesos.cs" />
+    <Compile Include="ViewModels\Menu\Ver.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantDB.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
     </Compile>
@@ -271,8 +272,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModel\Procesos\" />
-    <Folder Include="ViewModel\Ver\" />
+    <Folder Include="ViewModels\Procesos\" />
+    <Folder Include="ViewModels\Ver\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

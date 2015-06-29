@@ -1,4 +1,6 @@
 ﻿using jolcode.MyInterface;
+using WpfEndososCandidatos.ViewModels;
+using WpfEndososCandidatos.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,8 @@ namespace WpfEndososCandidatos.View
         public wpfMantUsers()
         {
             InitializeComponent();
+            
+           
         }
     }
 }

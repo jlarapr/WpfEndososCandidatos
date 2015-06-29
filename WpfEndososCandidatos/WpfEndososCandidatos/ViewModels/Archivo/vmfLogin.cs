@@ -1,5 +1,5 @@
 ﻿
-namespace WpfEndososCandidatos.ViewModel
+namespace WpfEndososCandidatos.ViewModels
 {
     using jolcode.Base;
     using jolcode.MyInterface;
@@ -18,8 +18,9 @@ namespace WpfEndososCandidatos.ViewModel
     using System.Data;
     using System.Data.Entity;
     using System.Security.Claims;
+    using System.ComponentModel;
 
-    class vmfLogin : ViewModelBase<IDialogView>
+    class vmfLogin : ViewModelBase<IDialogView>, INotifyPropertyChanged
     {
         private RelayCommand _InitWindow;
         private RelayCommand _cancel_Click;

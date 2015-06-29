@@ -6,6 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfEndososCandidatos.ViewModels;
+using WpfEndososCandidatos.View;
+using WpfEndososCandidatos.Helper;
+using WpfEndososCandidatos.Models;
+
 
 namespace WpfEndososCandidatos
 {
@@ -36,7 +41,7 @@ namespace WpfEndososCandidatos
                 //w.Closing += OnClosing;                        
                 //w.Show();
 
-                ViewModel.MainVM w = new ViewModel.MainVM();
+                ViewModels.MainVM w = new ViewModels.MainVM();
                 w.View.Closing += OnClosing;
                 w.OnShow();
             }

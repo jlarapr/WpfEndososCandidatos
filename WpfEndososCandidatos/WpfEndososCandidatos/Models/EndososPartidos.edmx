@@ -21,6 +21,7 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="AreasDeAcceso" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="dbEndososPartidosModelStoreContainer">
           <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
@@ -46,6 +47,8 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AreasDeAcceso" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          
         </EntityType>
         <EntityContainer Name="dbEndososPartidosEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
@@ -71,6 +74,7 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AreasDeAcceso" ColumnName="AreasDeAcceso" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

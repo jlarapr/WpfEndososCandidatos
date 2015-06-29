@@ -1,5 +1,5 @@
 ﻿
-namespace WpfEndososCandidatos.ViewModel
+namespace WpfEndososCandidatos.ViewModels
 {
     using jolcode;
     using jolcode.Base;

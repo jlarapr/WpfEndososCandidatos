@@ -31,5 +31,6 @@ namespace WpfEndososCandidatos.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
+        public string AreasDeAcceso { get; set; }
     }
 }
