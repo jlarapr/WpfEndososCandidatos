@@ -18,6 +18,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Windows.Interactivity;
     using System.Security;
     using System.Windows.Data;
+    using System.Runtime.InteropServices;
 
     public  class vmMatUsers : ViewModelBase<IDialogView>
     {
@@ -32,6 +33,7 @@ namespace WpfEndososCandidatos.ViewModels
         private bool _configuraciones_IsChecked;
         private bool _corregirEndosos_IsChecked;
         private SecureString _password;
+        private SecureString _passwordVerification;
        
                
 
@@ -43,7 +45,7 @@ namespace WpfEndososCandidatos.ViewModels
             close_Click = new RelayCommand(param => Close_Click());
             borrar_Click = new RelayCommand(param => Borrar_Click());
             editar_Click = new RelayCommand(param => Editar_Click());
-            anadir_Click = new RelayCommand(param => Anadir_Click(param));
+            anadir_Click = new RelayCommand(param => Anadir_Click());
             cancelar_Click = new RelayCommand(param => Cancelar_Click());
             cambiarPassword_Click = new RelayCommand(param => CambiarPassword_Click());
             autorizarLotes_Click = new RelayCommand(param => AutorizarLotes_Click());
@@ -75,7 +77,14 @@ namespace WpfEndososCandidatos.ViewModels
                     case 1:
                         {//Anadir
                             dbEndososPartidosEntities db = new dbEndososPartidosEntities();
-                            var hashedPassword = PasswordHash.HashPassword("");
+
+                            IntPtr passwordBSTR = default(IntPtr);
+                            string insecurePassword = "";
+                            passwordBSTR = Marshal.SecureStringToBSTR(Password);
+                            insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+
+                            var hashedPassword = PasswordHash.HashPassword(insecurePassword);
                             List<tblUser> u = new List<tblUser>
                             {
                                 new tblUser {  UserId=System.Guid.NewGuid(), 
@@ -136,11 +145,27 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
         public RelayCommand anadir_Click {get;private set;}
-        private void Anadir_Click(object password)
+        private void Anadir_Click()
         {
             try
             {
-                PasswordBox pass = password as PasswordBox;
+                IntPtr passwordBSTR = default(IntPtr);
+                string insecurePassword = "";
+                passwordBSTR = Marshal.SecureStringToBSTR(Password);
+                insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                IntPtr passwordVerificationBSTR = default(IntPtr);
+                string insecurePasswordVerification = string.Empty;
+
+                passwordVerificationBSTR = Marshal.SecureStringToBSTR(PasswordVerification);
+                insecurePasswordVerification = Marshal.PtrToStringBSTR(passwordVerificationBSTR);
+
+
+
+                if (!insecurePassword.Equals(insecurePasswordVerification))
+                {
+                    throw new Exception("Error con el Password");
+                }
 
                 _Operation = 1;
                 throw new NotImplementedException();
@@ -587,6 +612,21 @@ namespace WpfEndososCandidatos.ViewModels
             }
 
         }
+        public SecureString PasswordVerification
+          {
+              get
+              {
+                  return _passwordVerification;
+              }
+              set
+              {
+                  if (_passwordVerification != value)
+                  {
+                      _passwordVerification = value;
+                      this.RaisePropertychanged("PasswordVerification");
+                  }
+              }
+          }
       
         #endregion
       

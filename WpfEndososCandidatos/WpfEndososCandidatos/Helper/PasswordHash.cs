@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -50,16 +51,34 @@ namespace WpfEndososCandidatos.Helper
             }
             return storedSubkey.SequenceEqual(generatedSubkey);
         }
-       public static string CreateSalt(int size)
-       {
-           //Generate a cryptographic random number.
-           RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-           byte[] buff = new byte[size];
-           rng.GetBytes(buff);
 
-           // Return a Base64 string representation of the random number.
-           return Convert.ToBase64String(buff);
-       }
+        
+        private static byte[] mysalt = Encoding.ASCII.GetBytes("asdfghjklpoiuytrewq1234567890-=+-*");  
+  
+        public static string Encrypt(string plainText)
+        {
+            string keyString = "CEE Applica ImageData"; 
+
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(keyString, mysalt);
+
+            MemoryStream ms = new MemoryStream();
+            StreamWriter sw = new StreamWriter(new CryptoStream(ms, new RijndaelManaged().CreateEncryptor(key.GetBytes(32), key.GetBytes(16)), CryptoStreamMode.Write));
+            sw.Write(plainText);
+            sw.Close();
+            ms.Close();
+            return Convert.ToBase64String(ms.ToArray());
+        }
+
+        public static string Decrypt(string base64Text)
+        {
+            string keyString = "CEE Applica ImageData"; 
+
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(keyString, mysalt);
+
+            ICryptoTransform d = new RijndaelManaged().CreateDecryptor(key.GetBytes(32), key.GetBytes(16));
+            byte[] bytes = Convert.FromBase64String(base64Text);
+            return new StreamReader(new CryptoStream(new MemoryStream(bytes), d, CryptoStreamMode.Read)).ReadToEnd();
+        }  
 
 
     }

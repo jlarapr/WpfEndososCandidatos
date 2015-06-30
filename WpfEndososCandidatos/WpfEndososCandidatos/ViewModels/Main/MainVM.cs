@@ -100,27 +100,125 @@ namespace WpfEndososCandidatos.ViewModels
             try
             {
                 {//Get values from register
-                    _SqlServer = jolcode.Registry.read(_REGPATH, "DBServer");
-                    _Username = jolcode.Registry.read(_REGPATH, "DBUser");
-                    _Password = jolcode.Registry.read(_REGPATH, "DBPass");
-                    _Database = jolcode.Registry.read(_REGPATH, "DBName");
+                    try { _SqlServer = jolcode.Registry.read(_REGPATH, "DBServer"); }
+                    catch
+                    {
+                        _SqlServer = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "DBServer",string.Empty);
 
-                    _MastSvr = jolcode.Registry.read(_REGPATH, "MastSvr");
-                    _MastUsr = jolcode.Registry.read(_REGPATH, "MastUsr");
-                    _MastPass = jolcode.Registry.read(_REGPATH, "MastPass");
-                    _MastDB = jolcode.Registry.read(_REGPATH, "MastDB");
+                    }
 
-                    _ImageSvr = jolcode.Registry.read(_REGPATH, "ImageSvr");
-                    _ImageUsr = jolcode.Registry.read(_REGPATH, "ImageUsr");
-                    _ImagePass = jolcode.Registry.read(_REGPATH, "ImagePass");
-                    _ImageDB = jolcode.Registry.read(_REGPATH, "ImageDB");
+                    try { _Username = jolcode.Registry.read(_REGPATH, "DBUser"); }
+                    catch
+                    {
+                        _Username = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "DBUser",string.Empty); 
+                    }
 
-                    _ValiSvr = jolcode.Registry.read(_REGPATH, "ValiSvr");
-                    _ValiUsr = jolcode.Registry.read(_REGPATH, "ValiUsr");
-                    _ValiPass = jolcode.Registry.read(_REGPATH, "ValiPass");
-                    _ValiDB = jolcode.Registry.read(_REGPATH, "ValiDB");
+                    try { _Password = jolcode.Registry.read(_REGPATH, "DBPass"); }
+                    catch
+                    {
+                        _Password = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "DBPass",string.Empty);
+                    }
 
-                    _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
+                    try { _Database = jolcode.Registry.read(_REGPATH, "DBName"); }
+                    catch
+                    {
+                        _Database = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "DBName",string.Empty); 
+                    }
+
+                    try { _MastSvr = jolcode.Registry.read(_REGPATH, "MastSvr"); }
+                    catch
+                    {
+                        _MastSvr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "MastSvr",string.Empty);
+                    }
+
+                    try { _MastUsr = jolcode.Registry.read(_REGPATH, "MastUsr"); }
+                    catch
+                    {
+                        _MastUsr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "MastUsr",string.Empty);
+                    }
+
+                    try { _MastPass = jolcode.Registry.read(_REGPATH, "MastPass"); }
+                    catch
+                    {
+                        _MastPass = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "MastPass",string.Empty);
+                    }
+
+                    try { _MastDB = jolcode.Registry.read(_REGPATH, "MastDB"); }
+                    catch
+                    {
+                        _MastDB = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "MastDB",string.Empty);
+                    }
+
+                    try { _ImageSvr = jolcode.Registry.read(_REGPATH, "ImageSvr"); }
+                    catch
+                    {
+                        _ImageSvr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ImageSvr",string.Empty);
+                    }
+
+                    try { _ImageUsr = jolcode.Registry.read(_REGPATH, "ImageUsr"); }
+                    catch
+                    {
+                        _ImageUsr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ImageUsr",string.Empty);
+                    }
+
+                    try { _ImagePass = jolcode.Registry.read(_REGPATH, "ImagePass"); }
+                    catch
+                    {
+                        _ImagePass = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ImagePass",string.Empty);
+                    }
+
+                    try { _ImageDB = jolcode.Registry.read(_REGPATH, "ImageDB"); }
+                    catch
+                    {
+                        _ImageDB = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ImageDB",string.Empty);
+                    }
+
+                    try { _ValiSvr = jolcode.Registry.read(_REGPATH, "ValiSvr"); }
+                    catch
+                    {
+                        _ValiSvr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ValiSvr",string.Empty);
+                    }
+
+                    try { _ValiUsr = jolcode.Registry.read(_REGPATH, "ValiUsr"); }
+                    catch
+                    {
+                        _ValiUsr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ValiUsr",string.Empty);
+                    }
+
+                    try { _ValiPass = jolcode.Registry.read(_REGPATH, "ValiPass"); }
+                    catch
+                    {
+                        _ValiPass = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ValiPass",string.Empty);
+                    }
+
+                    try { _ValiDB = jolcode.Registry.read(_REGPATH, "ValiDB"); }
+                    catch
+                    {
+                        _ValiDB = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ValiDB",string.Empty);
+                    }
+
+                    try { _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew"); }
+                    catch
+                    {
+                        _ImgPath = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "ImagePathNew",string.Empty);
+                    }
                 }
 
                 //if ((_SqlServer == "") || (_Username == "") || (_Database == "") || (_Password == "") || (_MastSvr == "") || (_MastUsr == "") || (_MastDB == "") || (_MastPass == "") ||

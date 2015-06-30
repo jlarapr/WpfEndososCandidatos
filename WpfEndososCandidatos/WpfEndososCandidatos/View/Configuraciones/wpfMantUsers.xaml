@@ -31,18 +31,22 @@
             <Button x:Name="cmdSave"  Content="Guardar" Command="{Binding guardar_Click}" HorizontalAlignment="Left" Margin="216,269,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="22"/>
             <Button x:Name="cmdDelete" Content="Borrar" Command="{Binding borrar_Click}" HorizontalAlignment="Left" Margin="216,242,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="22"/>
             <Button x:Name="cmdEdit" Content="Editar" Command="{Binding editar_Click}" HorizontalAlignment="Left" Margin="216,215,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="22"/>
-            <Button x:Name="cmdAdd" Content="Añadir" Command="{Binding anadir_Click}"  HorizontalAlignment="Left" Margin="216,188,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="22" CommandParameter="{Binding Password, ElementName=dfPassword}"/>
+            <Button x:Name="cmdAdd" Content="Añadir" Command="{Binding anadir_Click}"  HorizontalAlignment="Left" Margin="216,188,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="22" />
             <Label Content="Usuario" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="135" Grid.Column="1" Height="26"/>
             <ComboBox x:Name="cbUser" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="22"/>
             <Label Content="Password" HorizontalAlignment="Left" Margin="0,57,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="26"/>
             <PasswordBox x:Name="dfPassword"  Grid.Column="1" HorizontalAlignment="Left" Margin="0,83,0,0" VerticalAlignment="Top" Width="211">
                 <i:Interaction.Behaviors>
                     <PassHelper:PasswordBoxBindingBehavior Password="{Binding Password}" />
-            </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>
             </PasswordBox>
 
             <Label Content="Verificación de Password" HorizontalAlignment="Left" Margin="0,107,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="26"/>
-            <PasswordBox x:Name="dfPasswordVerification" HorizontalAlignment="Left" Margin="0,133,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="20" Password=""/>
+            <PasswordBox x:Name="dfPasswordVerification" HorizontalAlignment="Left" Margin="0,133,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="20">
+                <i:Interaction.Behaviors>
+                    <PassHelper:PasswordBoxBindingBehavior Password="{Binding PasswordVerification}"/>
+                </i:Interaction.Behaviors>
+            </PasswordBox>
             <GroupBox  Grid.Column="1" Header="Áreas de acceso" HorizontalAlignment="Left" Height="207" Margin="0,163,0,0" VerticalAlignment="Top" Width="211">
                 <Grid Background="DarkGreen"  Margin="0">
                     <CheckBox Command="{Binding cambiarPassword_Click}" IsChecked="{Binding cambiarPassword_IsChecked}" Content="Cambiar Password"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>

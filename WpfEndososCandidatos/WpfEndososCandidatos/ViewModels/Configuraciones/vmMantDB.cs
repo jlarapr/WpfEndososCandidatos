@@ -5,10 +5,16 @@
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Linq;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Security;
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Controls;
+    using WpfEndososCandidatos.Helper;
     using WpfEndososCandidatos.View;
     class vmMantDB : ViewModelBase<IDialogView>
     {
@@ -18,17 +24,21 @@
         private RelayCommand _cmdCancel_Click;
         private string _dfServer_txt;
         private string _dfUsername_txt;
-        private string _dfPassword_txt;
+
+        private SecureString _dfPassword_txt;
+
         private List<string> _cbDatabase;
         private RelayCommand _cmdReloadDBs_Click;
         private string _dfMastSvr_txt;
         private string _dfMastUsr_txt;
-        private string _dfMastPass_txt;
+
+        private SecureString _dfMastPass_txt;
+
         private List<string> _cbMastDB;
         private RelayCommand _cmdReloadMastDBs_Click;
         private string _dfImageSvr_txt;
         private string _dfImageUsr_txt;
-        private string _dfImagePass_txt;
+        private SecureString _dfImagePass_txt;
         private List<string> _cbImageDB;
         private RelayCommand _cmdReloadImageDBs_Click;
         private string _cbImageDB_Item;
@@ -118,7 +128,7 @@
                 }
             }
         }
-        public string dfPassword_txt
+        public SecureString dfPassword_txt
         {
             get
             {
@@ -205,7 +215,7 @@
                 }
             }
         }
-        public string dfMastPass_txt
+        public SecureString dfMastPass_txt
         {
             get
             {
@@ -292,7 +302,7 @@
                 }
             }
         }
-        public string dfImagePass_txt
+        public SecureString dfImagePass_txt
         {
             get
             {
@@ -430,17 +440,33 @@
                 
                  sqlServer = dfServer_txt.Trim();
                  userName = dfUsername_txt.Trim();
-                 password = dfPassword_txt.Trim();
+
+                 IntPtr passwordBSTR = default(IntPtr);
+                 string insecurePassword = "";
+                 passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
+                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                 password = insecurePassword;
                  database = cbDatabase_Item.Trim();
 
                  mastSvr = dfMastSvr_txt.Trim();
                  mastUsr = dfMastUsr_txt.Trim();
-                 mastPass = dfMastPass_txt.Trim();
+
+                 insecurePassword = "";
+                 passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
+                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                 mastPass = insecurePassword;
                  mastDB = cbMastDB_Item.Trim();
 
                  imageSvr = dfImageSvr_txt.Trim();
                  imageUsr = dfImageUsr_txt.Trim();
-                 imagePass = dfImagePass_txt.Trim();
+
+                 insecurePassword = "";
+                 passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
+                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                 imagePass = insecurePassword;
                  imageDB = cbImageDB_Item.Trim();
 
                  valiSvr = "No hay datos";
@@ -449,7 +475,6 @@
                  valiDB = "No hay datos";
 
                  string ImagePathNew = dfPathtoPictures_txt.Trim();
-
 
                 if (ImagePathNew.Trim().Length == 0)
                     throw new Exception("Error con los Path");
@@ -481,20 +506,20 @@
 
                     //jolcode.Registry.write(_REGPATH,)
 
-
+                    
                     jolcode.Registry.write(_REGPATH, "DBServer",sqlServer);
                     jolcode.Registry.write(_REGPATH, "DBUser",userName);
-                    jolcode.Registry.write(_REGPATH, "DBPass",password);
+                    jolcode.Registry.write(_REGPATH, "DBPass", PasswordHash.Encrypt(password)  );
                     jolcode.Registry.write(_REGPATH, "DBName",database);
 
                     jolcode.Registry.write(_REGPATH, "MastSvr", mastSvr);
                     jolcode.Registry.write(_REGPATH, "MastUsr", mastUsr);
-                    jolcode.Registry.write(_REGPATH, "MastPass", mastPass);
+                    jolcode.Registry.write(_REGPATH, "MastPass", PasswordHash.Encrypt(mastPass));
                     jolcode.Registry.write(_REGPATH, "MastDB", mastDB);
 
                     jolcode.Registry.write(_REGPATH, "ImageSvr", imageSvr);
                     jolcode.Registry.write(_REGPATH, "ImageUsr", imageUsr);
-                    jolcode.Registry.write(_REGPATH, "ImagePass", imagePass);
+                    jolcode.Registry.write(_REGPATH, "ImagePass", PasswordHash.Encrypt(imagePass));
                     jolcode.Registry.write(_REGPATH, "ImageDB", imageDB);
 
                     jolcode.Registry.write(_REGPATH, "ValiSvr", valiSvr);
@@ -507,21 +532,32 @@
                     MessageBox.Show("Done...", "CmdOk_Click", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.View.Close();
                 }
-
-
-
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "CmdOk_Click", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "CmdOk_Click", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void CmdReloadImageDBs_Click()
         {
             try
             {
-                throw new NotImplementedException();
+                if (dfImageSvr_txt.Trim().Length > 0)
+                {
+                    IntPtr passwordBSTR = default(IntPtr);
+                    string insecurePassword = "";
+                    passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
+                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                    cbImageDB.Clear();
+
+                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, insecurePassword, cbImageDB);
+
+                    if (cbImageDB.Count > 0)
+                    {
+                        cbImageDB_Item_Id = 0;
+                    }
+                }
             }
             catch(Exception ex) 
             {
@@ -532,7 +568,22 @@
         {
             try
             {
-                throw new NotImplementedException();
+                if (dfMastSvr_txt.Trim().Length > 0)
+                {
+                    IntPtr passwordBSTR = default(IntPtr);
+                    string insecurePassword = "";
+                    passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
+                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                    cbMastDB.Clear();
+
+                    GetDataBaseName(dfMastSvr_txt, dfMastUsr_txt,insecurePassword, cbMastDB);
+
+                    if (cbMastDB.Count > 0)
+                    {
+                        cbMastDB_Item_Id  = 0;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -543,10 +594,22 @@
         {
             try
             {
+
                 if (dfServer_txt.Trim().Length > 0)
                 {
-                    
+                    IntPtr passwordBSTR = default(IntPtr);
+                    string insecurePassword = "";
+                    passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
+                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
+                    cbDatabase.Clear();
+
+                    GetDataBaseName(dfServer_txt, dfUsername_txt, insecurePassword, cbDatabase);
+
+                    if (cbDatabase.Count > 0)
+                    {
+                        cbDatabase_Item_Id = 0;
+                    }
                     
                 }
                 else
@@ -555,7 +618,6 @@
                     cbDatabase = new List<string>();
 
                 }
-                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -623,47 +685,54 @@
             {
                 dfServer_txt = string.Empty;
                 dfUsername_txt = string.Empty;
-                dfPassword_txt = string.Empty;
+                dfPassword_txt = new SecureString();
 
                 dfMastSvr_txt = string.Empty;
                 dfMastUsr_txt = string.Empty;
-                dfMastPass_txt = string.Empty;
+                dfMastPass_txt = new SecureString();
 
                 dfImageSvr_txt = string.Empty;
                 dfImageUsr_txt = string.Empty;
-                dfImagePass_txt = string.Empty;
+                dfImagePass_txt = new SecureString();
 
                 dfPathtoPictures_txt = string.Empty;
                 cbDatabase = new List<string>();
                 cbImageDB = new List<string>();
                 cbMastDB = new List<string>();
 
-
                 dfServer_txt = sqlServer;
                 dfUsername_txt = userName;
-                dfPassword_txt = password;
-                cbDatabase.Add(database);
+                string decryptPassword = PasswordHash.Decrypt(password);
+                GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabase);
                 cbDatabase_Item = database;
 
-                dfMastSvr_txt = mastSvr;
-                dfMastUsr_txt = mastUsr;
-                dfMastPass_txt = mastPass;
-                cbMastDB.Add(mastDB);
-                cbMastDB_Item = mastDB;
+            
 
-                dfImageSvr_txt = imageSvr;
-                dfImageUsr_txt = imageUsr;
-                dfImagePass_txt = imagePass;
-                cbImageDB.Add(imageDB);
-                cbImageDB_Item = imageDB;
-
-                dfPathtoPictures_txt = imgPath;
-
+                foreach (char c in decryptPassword.ToCharArray())
+                {
+                    dfPassword_txt.AppendChar(c);
+                }
 
                 
 
+                decryptPassword = PasswordHash.Decrypt(mastPass);
+                GetDataBaseName(mastSvr, mastUsr, decryptPassword, cbMastDB);
+                cbMastDB_Item = mastDB;
+                dfMastSvr_txt = mastSvr;
+                dfMastUsr_txt = mastUsr;
 
+                //dfMastPass_txt = mastPass;
 
+                decryptPassword = PasswordHash.Decrypt(imagePass);
+                GetDataBaseName(imageSvr, imageUsr, decryptPassword, cbImageDB);
+                cbImageDB_Item = imageDB;
+                dfImageSvr_txt = imageSvr;
+                dfImageUsr_txt = imageUsr;
+
+                //dfImagePass_txt = imagePass;
+                
+                dfPathtoPictures_txt = imgPath;
+                            
             }
             catch (Exception ex)
             {
@@ -706,5 +775,58 @@
             }
         }
         #endregion
+
+
+        private void GetDataBaseName(string server, string user, string insecurePassword, List<string> ListDatabase)
+        {
+            try
+            {
+
+                string query = "select name from sys.databases order by name";
+                string cnnString;
+                //Persist Security Info=False;Data Source=[server name];Initial Catalog=[DataBase Name];User ID=myUsername;Password=myPassword
+                cnnString = string.Concat("Persist Security Info=False;",
+                                          "Data Source=", server,
+                                          ";Initial Catalog=master;",
+                                          "User ID=", user,
+                                          ";Password=", insecurePassword);
+
+                ListDatabase.Clear();
+
+                using (SqlConnection cnn = new SqlConnection(cnnString))
+                {
+                    cnn.Open();
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = System.Data.CommandType.Text,
+                        CommandText = query
+                    })
+                    {
+                        SqlDataReader dr;
+
+                        dr = cmd.ExecuteReader();
+
+                        while (dr.Read())
+                        {
+                            ListDatabase.Add(dr["name"].ToString());
+                        }
+
+                    }
+                }                              
+                    
+            }
+            catch (Exception ex)
+            {
+                
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+        }
+        
+
+
     }//end
 }//end

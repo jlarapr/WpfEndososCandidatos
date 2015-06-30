@@ -39,6 +39,9 @@ namespace WpfEndososCandidatos.Helper
                     property.SetValue(binding.DataItem, AssociatedObject.SecurePassword, null);
             }
         }
+       
+
+
 
     }
 }
