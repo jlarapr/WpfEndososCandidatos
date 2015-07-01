@@ -80,7 +80,7 @@
             _REGPATH = regpath;
         }
 
-
+        
 
         #region Property
         public string dfPathtoPictures_txt
@@ -685,7 +685,6 @@
             {
                 dfServer_txt = string.Empty;
                 dfUsername_txt = string.Empty;
-                dfPassword_txt = new SecureString();
 
                 dfMastSvr_txt = string.Empty;
                 dfMastUsr_txt = string.Empty;
@@ -706,13 +705,7 @@
                 GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabase);
                 cbDatabase_Item = database;
 
-            
-
-                foreach (char c in decryptPassword.ToCharArray())
-                {
-                    dfPassword_txt.AppendChar(c);
-                }
-
+                dfPassword_txt= ToSecureString(decryptPassword);
                 
 
                 decryptPassword = PasswordHash.Decrypt(mastPass);
@@ -721,7 +714,7 @@
                 dfMastSvr_txt = mastSvr;
                 dfMastUsr_txt = mastUsr;
 
-                //dfMastPass_txt = mastPass;
+                dfMastPass_txt = ToSecureString(decryptPassword);
 
                 decryptPassword = PasswordHash.Decrypt(imagePass);
                 GetDataBaseName(imageSvr, imageUsr, decryptPassword, cbImageDB);
@@ -729,7 +722,7 @@
                 dfImageSvr_txt = imageSvr;
                 dfImageUsr_txt = imageUsr;
 
-                //dfImagePass_txt = imagePass;
+                dfImagePass_txt = ToSecureString(decryptPassword);
                 
                 dfPathtoPictures_txt = imgPath;
                             
@@ -822,11 +815,21 @@
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
         }
-        
 
+        private SecureString ToSecureString(string normalString)
+        {
+            var ss = new SecureString();
+            if (!string.IsNullOrEmpty(normalString))
+            {
+                foreach (char cr in normalString)
+                {
+                    ss.AppendChar(cr);
+                }
+            }
+            ss.MakeReadOnly();
+            return ss;
+        }
 
     }//end
 }//end

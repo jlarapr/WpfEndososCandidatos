@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\FunctionalFun.cs" />
     <Compile Include="Helper\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Helper\PasswordHash.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">

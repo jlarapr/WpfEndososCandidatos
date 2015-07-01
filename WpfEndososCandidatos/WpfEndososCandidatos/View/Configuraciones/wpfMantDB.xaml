@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
         xmlns:PassHelper="clr-namespace:WpfEndososCandidatos.Helper"
+        xmlns:local="clr-namespace:WpfEndososCandidatos.ViewModels"
+        xmlns:ff="clr-namespace:FunctionalFun.UI"
         Background="Beige"
         Title="Mantenimiento - Base de Datos" Height="654.765" Width="440.031" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
-
+            
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding InitWindow}" />
@@ -30,10 +32,13 @@
                         <Label Content="Usuario (Base deDatos)" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
                         <TextBox x:Name="dfUsername" HorizontalAlignment="Left" Height="23" Margin="152,44,0,0" TextWrapping="Wrap" Text="{Binding dfUsername_txt}" VerticalAlignment="Top" Width="205"/>
                         <Label Content="Password" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top"/>
-                        <PasswordBox x:Name="dfPassword" HorizontalAlignment="Left" Height="23" Margin="152,75,0,0"  VerticalAlignment="Top" Width="205">
-                            <i:Interaction.Behaviors>
-                                <PassHelper:PasswordBoxBindingBehavior Password="{Binding dfPassword_txt,Mode=TwoWay}" />
-                            </i:Interaction.Behaviors>
+                        <PasswordBox x:Name="dfPassword" 
+                                     ff:PasswordBoxAssistant.BindPassword="true"
+                                     ff:PasswordBoxAssistant.BoundPassword="{Binding Path=dfPassword_txt,Mode=TwoWay}"                                                                          
+                                     HorizontalAlignment="Left" Height="23" Margin="152,75,0,0"  VerticalAlignment="Top" Width="205" >
+                            <!--<i:Interaction.Behaviors>
+                                <PassHelper:PasswordBoxBindingBehavior Password="{Binding XPath=dfPassword_txt}" />
+                            </i:Interaction.Behaviors>-->
                         </PasswordBox>
                         <Label Content="Base de Datos" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
                         <ComboBox x:Name="cbDatabase" ItemsSource="{Binding cbDatabase}" 

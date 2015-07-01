@@ -42,6 +42,7 @@ namespace WpfEndososCandidatos
                 //w.Show();
 
                 ViewModels.MainVM w = new ViewModels.MainVM();
+                
                 w.View.Closing += OnClosing;
                 w.OnShow();
             }
