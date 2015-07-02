@@ -271,25 +271,25 @@ namespace WpfEndososCandidatos.ViewModels
 
                     frmMantDB.OnShow();
 
-                    _SqlServer=frmMantDB.sqlServer;
-                    _Username=frmMantDB.userName;
-                    _Password=frmMantDB.password;
-                    _Database=frmMantDB.database;
+                    _SqlServer = frmMantDB.sqlServer;
+                    _Username = frmMantDB.userName;
+                    _Password = frmMantDB.password;
+                    _Database = frmMantDB.database;
 
-                    _MastSvr=frmMantDB.mastSvr;
-                    _MastUsr=frmMantDB.mastUsr;
-                    _MastPass=frmMantDB.mastPass;
-                    _MastDB=frmMantDB.mastDB;
+                    _MastSvr = frmMantDB.mastSvr;
+                    _MastUsr = frmMantDB.mastUsr;
+                    _MastPass = frmMantDB.mastPass;
+                    _MastDB = frmMantDB.mastDB;
 
-                    _ImageSvr=frmMantDB.imageSvr;
-                    _ImageUsr=frmMantDB.imageUsr;
-                    _ImagePass=frmMantDB.imagePass;
-                    _ImageDB=frmMantDB.imageDB;
+                    _ImageSvr = frmMantDB.imageSvr;
+                    _ImageUsr = frmMantDB.imageUsr;
+                    _ImagePass = frmMantDB.imagePass;
+                    _ImageDB = frmMantDB.imageDB;
 
-                    _ValiSvr=frmMantDB.valiSvr;
-                    _ValiUsr=frmMantDB.valiUsr;
-                    _ValiPass=frmMantDB.valiPass;
-                    _ValiDB=frmMantDB.valiDB;
+                    _ValiSvr = frmMantDB.valiSvr;
+                    _ValiUsr = frmMantDB.valiUsr;
+                    _ValiPass = frmMantDB.valiPass;
+                    _ValiDB = frmMantDB.valiDB;
 
                     _ImgPath = frmMantDB.imgPath;
 

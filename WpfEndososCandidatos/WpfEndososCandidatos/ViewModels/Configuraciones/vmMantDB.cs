@@ -19,39 +19,41 @@
     class vmMantDB : ViewModelBase<IDialogView>
     {
         private string _dfPathtoPictures_txt;
+        
         private RelayCommand _InitWindow;
         private RelayCommand _cmdBrowseImagesPath_Click;
         private RelayCommand _cmdCancel_Click;
+        private RelayCommand _cmdOk_Click;
+        private RelayCommand _cmdReloadDBs_Click;
+        private RelayCommand _cmdReloadMastDBs_Click;
+        private RelayCommand _cmdReloadImageDBs_Click;
+
         private string _dfServer_txt;
         private string _dfUsername_txt;
-
-        private SecureString _dfPassword_txt;
-
+        private string _dfPassword_txt;
         private List<string> _cbDatabase;
-        private RelayCommand _cmdReloadDBs_Click;
+
         private string _dfMastSvr_txt;
         private string _dfMastUsr_txt;
-
-        private SecureString _dfMastPass_txt;
-
+        private string _dfMastPass_txt;
         private List<string> _cbMastDB;
-        private RelayCommand _cmdReloadMastDBs_Click;
+        
         private string _dfImageSvr_txt;
         private string _dfImageUsr_txt;
-        private SecureString _dfImagePass_txt;
+        private string _dfImagePass_txt;        
         private List<string> _cbImageDB;
-        private RelayCommand _cmdReloadImageDBs_Click;
+        
         private string _cbImageDB_Item;
         private string _cbMastDB_Item;
         private string _cbDatabase_Item;
+
         private int _cbDatabase_Item_Id;
-        private int _cbMastDB_Item_Id;
+        private int _cbMastDB_Item_Id;        
         private int _cbImageDB_Item_Id;
-        private RelayCommand _cmdOk_Click;
+        
         private string _REGPATH;
         private bool _SaveReg;
-
-
+        
         public string sqlServer { get; set; }
         public string userName { get; set; }
         public string password { get; set; }
@@ -66,21 +68,19 @@
         public string imageUsr { get; set; }
         public string imagePass { get; set; }
         public string imageDB { get; set; }
-
         public string valiSvr { get; set; }
         public string valiUsr { get; set; }
         public string valiPass { get; set; }
         public string valiDB { get; set; }
-
         public string imgPath { get; set; }
 
         public vmMantDB(string regpath)
             : base(new wpfMantDB())
         {
             _REGPATH = regpath;
-        }
 
-        
+        }
+           
 
         #region Property
         public string dfPathtoPictures_txt
@@ -128,7 +128,7 @@
                 }
             }
         }
-        public SecureString dfPassword_txt
+        public string dfPassword_txt
         {
             get
             {
@@ -139,11 +139,13 @@
                 if (dfPassword_txt != value)
                 {
                     _dfPassword_txt = value;
+                    
                     this.RaisePropertychanged("dfPassword_txt");
                 }
             }
         }
-        public List<string> cbDatabase
+
+        public  List<string> cbDatabaseEndoso
         {
             get
             {
@@ -151,8 +153,11 @@
             }
             set
             {
-                _cbDatabase = value;
-                this.RaisePropertychanged("cbDatabase");
+              //  if (_cbDatabase != value)
+                {
+                    _cbDatabase = value;
+                    this.RaisePropertychanged("cbDatabaseEndoso");
+                }
             }
         }
         public string cbDatabase_Item
@@ -163,7 +168,7 @@
             }
             set
             {
-                if (_cbDatabase_Item != value)
+                //if (_cbDatabase_Item != value)
                 {
                     _cbDatabase_Item = value;
                     this.RaisePropertychanged("cbDatabase_Item");
@@ -215,7 +220,7 @@
                 }
             }
         }
-        public SecureString dfMastPass_txt
+        public string dfMastPass_txt
         {
             get
             {
@@ -239,6 +244,7 @@
             }
             set
             {
+               
                 _cbMastDB = value;
                 this.RaisePropertychanged("cbMastDB");
             }
@@ -255,8 +261,6 @@
                 {
                     _cbMastDB_Item = value;
                     this.RaisePropertychanged("cbMastDB_Item");
-                    //cbMastDB = null;
-                    //cbMastDB = new List<string>();
                 }
             }
         }
@@ -302,7 +306,7 @@
                 }
             }
         }
-        public SecureString dfImagePass_txt
+        public string dfImagePass_txt
         {
             get
             {
@@ -361,7 +365,6 @@
         }
 
         #endregion
-
 
         #region Button
         public RelayCommand cmdBrowseImagesPath_Click
@@ -441,32 +444,32 @@
                  sqlServer = dfServer_txt.Trim();
                  userName = dfUsername_txt.Trim();
 
-                 IntPtr passwordBSTR = default(IntPtr);
-                 string insecurePassword = "";
-                 passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
-                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                // IntPtr passwordBSTR = default(IntPtr);
+              //   string insecurePassword = "";
+                // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
+              //   insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 password = insecurePassword;
+                 password = dfPassword_txt;// insecurePassword;
                  database = cbDatabase_Item.Trim();
 
                  mastSvr = dfMastSvr_txt.Trim();
                  mastUsr = dfMastUsr_txt.Trim();
 
-                 insecurePassword = "";
-                 passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
-                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+            //     insecurePassword = "";
+                 //passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
+                // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 mastPass = insecurePassword;
+                 mastPass = dfMastPass_txt;//insecurePassword;
                  mastDB = cbMastDB_Item.Trim();
 
                  imageSvr = dfImageSvr_txt.Trim();
                  imageUsr = dfImageUsr_txt.Trim();
 
-                 insecurePassword = "";
-                 passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
-                 insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+              //   insecurePassword = "";
+                // passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
+                // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 imagePass = insecurePassword;
+                 imagePass = dfImagePass_txt;//insecurePassword;
                  imageDB = cbImageDB_Item.Trim();
 
                  valiSvr = "No hay datos";
@@ -544,18 +547,23 @@
             {
                 if (dfImageSvr_txt.Trim().Length > 0)
                 {
-                    IntPtr passwordBSTR = default(IntPtr);
-                    string insecurePassword = "";
-                    passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
-                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
-
+                    //IntPtr passwordBSTR = default(IntPtr);
+                    //string insecurePassword = "";
+                    //passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
+                    //insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                    cbImageDB = null;
+                    cbImageDB = new List<string>();
                     cbImageDB.Clear();
 
-                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, insecurePassword, cbImageDB);
+                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, dfImagePass_txt, cbImageDB);
 
                     if (cbImageDB.Count > 0)
                     {
                         cbImageDB_Item_Id = 0;
+                    }
+                    else
+                    {
+                        cbImageDB_Item_Id = -1;
                     }
                 }
             }
@@ -570,18 +578,23 @@
             {
                 if (dfMastSvr_txt.Trim().Length > 0)
                 {
-                    IntPtr passwordBSTR = default(IntPtr);
-                    string insecurePassword = "";
-                    passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
-                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
-
+                    //IntPtr passwordBSTR = default(IntPtr);
+                    //string insecurePassword = "";
+                    //passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
+                    //insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                    cbMastDB = null;
+                    cbMastDB = new List<string>();
                     cbMastDB.Clear();
 
-                    GetDataBaseName(dfMastSvr_txt, dfMastUsr_txt,insecurePassword, cbMastDB);
+                    GetDataBaseName(dfMastSvr_txt, dfMastUsr_txt, dfMastPass_txt, cbMastDB);
 
                     if (cbMastDB.Count > 0)
                     {
                         cbMastDB_Item_Id  = 0;
+                    }
+                    else
+                    {
+                        cbMastDB_Item_Id = -1;
                     }
                 }
             }
@@ -597,25 +610,33 @@
 
                 if (dfServer_txt.Trim().Length > 0)
                 {
-                    IntPtr passwordBSTR = default(IntPtr);
-                    string insecurePassword = "";
-                    passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
-                    insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                   // IntPtr passwordBSTR = default(IntPtr);
+                    //string insecurePassword = "";
+                   // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
+                   // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                    cbDatabase.Clear();
+                    cbDatabaseEndoso = null;
+                    cbDatabaseEndoso = new List<string>();
+                    cbDatabaseEndoso.Clear();
+                    
 
-                    GetDataBaseName(dfServer_txt, dfUsername_txt, insecurePassword, cbDatabase);
+                    GetDataBaseName(dfServer_txt, dfUsername_txt, dfPassword_txt, cbDatabaseEndoso);
 
-                    if (cbDatabase.Count > 0)
+                    if (cbDatabaseEndoso.Count > 0)
                     {
                         cbDatabase_Item_Id = 0;
                     }
+                    else
+                    {
+                        cbDatabase_Item_Id = -1;
+                    }
+                    
                     
                 }
                 else
                 {
-                    cbDatabase = null;
-                    cbDatabase = new List<string>();
+                    cbDatabaseEndoso = null;
+                    cbDatabaseEndoso = new List<string>();
 
                 }
             }
@@ -688,44 +709,56 @@
 
                 dfMastSvr_txt = string.Empty;
                 dfMastUsr_txt = string.Empty;
-                dfMastPass_txt = new SecureString();
+                // dfMastPass_txt = string.Empty;
 
                 dfImageSvr_txt = string.Empty;
                 dfImageUsr_txt = string.Empty;
-                dfImagePass_txt = new SecureString();
+                //  dfImagePass_txt = new SecureString();
 
                 dfPathtoPictures_txt = string.Empty;
-                cbDatabase = new List<string>();
+
+                cbDatabaseEndoso = new List<string>();
                 cbImageDB = new List<string>();
                 cbMastDB = new List<string>();
 
                 dfServer_txt = sqlServer;
                 dfUsername_txt = userName;
-                string decryptPassword = PasswordHash.Decrypt(password);
-                GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabase);
-                cbDatabase_Item = database;
+                string decryptPassword;
 
-                dfPassword_txt= ToSecureString(decryptPassword);
-                
+                if (password.Trim().Length > 0)
+                {
+                    decryptPassword = PasswordHash.Decrypt(password);
+                    GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabaseEndoso);
+                    cbDatabase_Item = database;
+                    //dfPassword_txt = ToSecureString(decryptPassword);
+                    dfPassword_txt = decryptPassword;
+                }
 
-                decryptPassword = PasswordHash.Decrypt(mastPass);
-                GetDataBaseName(mastSvr, mastUsr, decryptPassword, cbMastDB);
-                cbMastDB_Item = mastDB;
-                dfMastSvr_txt = mastSvr;
-                dfMastUsr_txt = mastUsr;
+                if (mastPass.Trim().Length > 0)
+                {
+                    decryptPassword = PasswordHash.Decrypt(mastPass);
+                    GetDataBaseName(mastSvr, mastUsr, decryptPassword, cbMastDB);
+                    cbMastDB_Item = mastDB;
+                    dfMastSvr_txt = mastSvr;
+                    dfMastUsr_txt = mastUsr;
 
-                dfMastPass_txt = ToSecureString(decryptPassword);
+                    //dfMastPass_txt = ToSecureString(decryptPassword);
+                    dfMastPass_txt = decryptPassword;
+                }
 
-                decryptPassword = PasswordHash.Decrypt(imagePass);
-                GetDataBaseName(imageSvr, imageUsr, decryptPassword, cbImageDB);
-                cbImageDB_Item = imageDB;
-                dfImageSvr_txt = imageSvr;
-                dfImageUsr_txt = imageUsr;
+                if (imagePass.Trim().Length >0)
+                {
+                    decryptPassword = PasswordHash.Decrypt(imagePass);
+                    GetDataBaseName(imageSvr, imageUsr, decryptPassword, cbImageDB);
+                    cbImageDB_Item = imageDB;
+                    dfImageSvr_txt = imageSvr;
+                    dfImageUsr_txt = imageUsr;
 
-                dfImagePass_txt = ToSecureString(decryptPassword);
-                
+                    //dfImagePass_txt = ToSecureString(decryptPassword);
+                    dfImagePass_txt = decryptPassword;
+                }
                 dfPathtoPictures_txt = imgPath;
-                            
+
             }
             catch (Exception ex)
             {
@@ -769,7 +802,8 @@
         }
         #endregion
 
-
+        #region Helper
+     
         private void GetDataBaseName(string server, string user, string insecurePassword, List<string> ListDatabase)
         {
             try
@@ -784,8 +818,8 @@
                                           "User ID=", user,
                                           ";Password=", insecurePassword);
 
-                ListDatabase.Clear();
-
+                //ListDatabase.Clear();
+                
                 using (SqlConnection cnn = new SqlConnection(cnnString))
                 {
                     cnn.Open();
@@ -811,7 +845,9 @@
             }
             catch (Exception ex)
             {
-                
+                ListDatabase.Clear();
+                ListDatabase = null;
+                ListDatabase = new List<string>();
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -830,6 +866,7 @@
             ss.MakeReadOnly();
             return ss;
         }
-
+        
+        #endregion
     }//end
 }//end

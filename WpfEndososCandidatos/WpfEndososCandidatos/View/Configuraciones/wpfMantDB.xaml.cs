@@ -24,5 +24,9 @@ namespace WpfEndososCandidatos.View
         {
             InitializeComponent();
         }
+
+        
+
+       
     }
 }

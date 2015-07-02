@@ -72,9 +72,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\BindablePasswordBox.xaml.cs">
+      <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper\FunctionalFun.cs" />
     <Compile Include="Helper\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Helper\PasswordHash.cs" />
+    <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -150,6 +154,10 @@
     <Compile Include="View\Configuraciones\wpfMantUsers.xaml.cs">
       <DependentUpon>wpfMantUsers.xaml</DependentUpon>
     </Compile>
+    <Page Include="Helper\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
