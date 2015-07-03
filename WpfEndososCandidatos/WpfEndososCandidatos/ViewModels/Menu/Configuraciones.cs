@@ -241,6 +241,12 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 vmMatUsers frmMatUsers = new vmMatUsers();
                 frmMatUsers.View.Owner = this.View as Window;
+
+                frmMatUsers._sqlServer = _SqlServer;
+                frmMatUsers._userName = _Username;
+                frmMatUsers._userPassword = _Password;
+                frmMatUsers._database = _Database;
+
                 frmMatUsers.OnShow();
                      
 

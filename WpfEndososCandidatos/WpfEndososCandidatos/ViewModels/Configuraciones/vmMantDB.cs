@@ -5,6 +5,8 @@
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Reflection;
@@ -31,17 +33,17 @@
         private string _dfServer_txt;
         private string _dfUsername_txt;
         private string _dfPassword_txt;
-        private List<string> _cbDatabase;
+        private ObservableCollection<string> _cbDatabase;
 
         private string _dfMastSvr_txt;
         private string _dfMastUsr_txt;
         private string _dfMastPass_txt;
-        private List<string> _cbMastDB;
+        private ObservableCollection<string> _cbMastDB;
         
         private string _dfImageSvr_txt;
         private string _dfImageUsr_txt;
-        private string _dfImagePass_txt;        
-        private List<string> _cbImageDB;
+        private string _dfImagePass_txt;
+        private ObservableCollection<string> _cbImageDB;
         
         private string _cbImageDB_Item;
         private string _cbMastDB_Item;
@@ -77,8 +79,7 @@
         public vmMantDB(string regpath)
             : base(new wpfMantDB())
         {
-            _REGPATH = regpath;
-
+            _REGPATH = regpath;         
         }
            
 
@@ -145,7 +146,7 @@
             }
         }
 
-        public  List<string> cbDatabaseEndoso
+        public ObservableCollection<string> cbDatabaseEndoso
         {
             get
             {
@@ -236,7 +237,7 @@
             }
         }
 
-        public List<string> cbMastDB
+        public ObservableCollection<string> cbMastDB
         {
             get
             {
@@ -322,7 +323,7 @@
             }
         }
 
-        public List<string> cbImageDB
+        public ObservableCollection<string> cbImageDB
         {
             get
             {
@@ -552,10 +553,14 @@
                     //passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
                     //insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
                     cbImageDB = null;
-                    cbImageDB = new List<string>();
+                    cbImageDB = new ObservableCollection<string>();
                     cbImageDB.Clear();
 
-                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, dfImagePass_txt, cbImageDB);
+                   
+
+                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, dfImagePass_txt,cbImageDB);
+
+                    
 
                     if (cbImageDB.Count > 0)
                     {
@@ -583,10 +588,11 @@
                     //passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
                     //insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
                     cbMastDB = null;
-                    cbMastDB = new List<string>();
+                    cbMastDB = new ObservableCollection<string>();
                     cbMastDB.Clear();
-
+                    
                     GetDataBaseName(dfMastSvr_txt, dfMastUsr_txt, dfMastPass_txt, cbMastDB);
+                                    
 
                     if (cbMastDB.Count > 0)
                     {
@@ -615,12 +621,12 @@
                    // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
                    // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                    cbDatabaseEndoso = null;
-                    cbDatabaseEndoso = new List<string>();
                     cbDatabaseEndoso.Clear();
-                    
+                    cbDatabaseEndoso = null;
+                    cbDatabaseEndoso = new ObservableCollection<string>();
 
                     GetDataBaseName(dfServer_txt, dfUsername_txt, dfPassword_txt, cbDatabaseEndoso);
+                                       
 
                     if (cbDatabaseEndoso.Count > 0)
                     {
@@ -636,7 +642,7 @@
                 else
                 {
                     cbDatabaseEndoso = null;
-                    cbDatabaseEndoso = new List<string>();
+                    cbDatabaseEndoso = new ObservableCollection<string>();
 
                 }
             }
@@ -717,10 +723,10 @@
 
                 dfPathtoPictures_txt = string.Empty;
 
-                cbDatabaseEndoso = new List<string>();
-                cbImageDB = new List<string>();
-                cbMastDB = new List<string>();
-
+                cbDatabaseEndoso = new ObservableCollection<string>();
+                cbImageDB = new ObservableCollection<string>();
+                cbMastDB = new ObservableCollection<string>();
+                
                 dfServer_txt = sqlServer;
                 dfUsername_txt = userName;
                 string decryptPassword;
@@ -728,7 +734,9 @@
                 if (password.Trim().Length > 0)
                 {
                     decryptPassword = PasswordHash.Decrypt(password);
+
                     GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabaseEndoso);
+                    
                     cbDatabase_Item = database;
                     //dfPassword_txt = ToSecureString(decryptPassword);
                     dfPassword_txt = decryptPassword;
@@ -737,7 +745,9 @@
                 if (mastPass.Trim().Length > 0)
                 {
                     decryptPassword = PasswordHash.Decrypt(mastPass);
+
                     GetDataBaseName(mastSvr, mastUsr, decryptPassword, cbMastDB);
+
                     cbMastDB_Item = mastDB;
                     dfMastSvr_txt = mastSvr;
                     dfMastUsr_txt = mastUsr;
@@ -749,7 +759,9 @@
                 if (imagePass.Trim().Length >0)
                 {
                     decryptPassword = PasswordHash.Decrypt(imagePass);
-                    GetDataBaseName(imageSvr, imageUsr, decryptPassword, cbImageDB);
+                    
+                    GetDataBaseName(imageSvr, imageUsr, decryptPassword,cbImageDB);
+                    
                     cbImageDB_Item = imageDB;
                     dfImageSvr_txt = imageSvr;
                     dfImageUsr_txt = imageUsr;
@@ -803,8 +815,60 @@
         #endregion
 
         #region Helper
-     
-        private void GetDataBaseName(string server, string user, string insecurePassword, List<string> ListDatabase)
+
+
+        private void GetDataBaseName(string server, string user, string insecurePassword, BindingList<string> ListDatabase)
+        {
+            try
+            {
+
+                string query = "select name from sys.databases order by name";
+                string cnnString;
+                //Persist Security Info=False;Data Source=[server name];Initial Catalog=[DataBase Name];User ID=myUsername;Password=myPassword
+                cnnString = string.Concat("Persist Security Info=False;",
+                                          "Data Source=", server,
+                                          ";Initial Catalog=master;",
+                                          "User ID=", user,
+                                          ";Password=", insecurePassword);
+
+                //ListDatabase.Clear();
+
+                using (SqlConnection cnn = new SqlConnection(cnnString))
+                {
+                    cnn.Open();
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = System.Data.CommandType.Text,
+                        CommandText = query
+                    })
+                    {
+                        SqlDataReader dr;
+
+                        dr = cmd.ExecuteReader();
+
+                        while (dr.Read())
+                        {
+                            ListDatabase.Add(dr["name"].ToString());
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ListDatabase.Clear();
+                ListDatabase = null;
+                ListDatabase = new BindingList<string>();
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+        private void GetDataBaseName(string server, string user, string insecurePassword, ObservableCollection<string> ListDatabase)
         {
             try
             {
@@ -847,7 +911,7 @@
             {
                 ListDatabase.Clear();
                 ListDatabase = null;
-                ListDatabase = new List<string>();
+                ListDatabase = new ObservableCollection<string>();
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
