@@ -13,6 +13,7 @@ namespace WpfEndososCandidatos.ViewModels
     using jolcode;
     using System.Reflection;
     using WpfEndososCandidatos.Helper;
+    using WpfEndososCandidatos.Helper.PWDTK;
     using WpfEndososCandidatos.Models;
     using System.Windows.Controls;
     using System.Windows.Interactivity;
@@ -24,6 +25,20 @@ namespace WpfEndososCandidatos.ViewModels
 
     public  class vmMatUsers : ViewModelBase<IDialogView>
     {
+        //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
+        private const int numberUpper = 1;
+        private const int numberNonAlphaNumeric = 1;
+        private const int numberNumeric = 2;
+        private const int minPwdLength = 6;
+        private const int maxPwdLength = Int32.MaxValue;
+        private Byte[] _salt;
+        private Byte[] _hash;
+        //Salt length
+        private const int saltSize = PWDTK.CDefaultSaltLength + 2;
+        private const int iterations = 10002;
+        PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
+
+
         dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
         private int _Operation;
         private string[] _AreasDeAcceso = new string[9]; 
@@ -54,6 +69,16 @@ namespace WpfEndososCandidatos.ViewModels
         private bool _Password_IsEnabled;
         private bool _AreasdeAcceso_IsEnabled;
         private string _CbUser_Text;
+        private bool _cmdAdd_IsEnabled;
+        private bool _cmdEdit_IsEnabled;
+        private bool _cmdDelete_IsEnabled;
+        private bool _cmdSave_IsEnabled;
+        private bool _cmdCancel_IsEnabled;
+        private bool _cbUser_IsEnabled;
+        private Guid _Id;
+        private bool _cmdEditPass_IsEnabled;
+        private Visibility _Password_Cls_Visibility;
+       
 
         public vmMatUsers()
             : base(new wpfMantUsers())
@@ -63,6 +88,7 @@ namespace WpfEndososCandidatos.ViewModels
             close_Click = new RelayCommand(param => Close_Click());
             borrar_Click = new RelayCommand(param => Borrar_Click());
             editar_Click = new RelayCommand(param => Editar_Click());
+            editPass_Click = new RelayCommand(param => EditPass_Click());
             anadir_Click = new RelayCommand(param => Anadir_Click());
             cancelar_Click = new RelayCommand(param => Cancelar_Click());
             cambiarPassword_Click = new RelayCommand(param => CambiarPassword_Click());
@@ -74,8 +100,7 @@ namespace WpfEndososCandidatos.ViewModels
             configuraciones_Click = new RelayCommand(param => Configuraciones_Click());
             corregirEndosos_Click = new RelayCommand(param => CorregirEndosos_Click());
             cbUser_ChangeItem = new RelayCommand(param => CbUser_ChangeItem());
-
-          
+            cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click());
         }
 
         public bool AreasdeAcceso_IsEnabled
@@ -94,7 +119,99 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+        public bool cmdAdd_IsEnabled
+        {
+            get
+            {
+                return _cmdAdd_IsEnabled;
+            }
+            set
+            {
+                if (_cmdAdd_IsEnabled != value)
+                {
+                    _cmdAdd_IsEnabled = value;
+                    this.RaisePropertychanged("cmdAdd_IsEnabled");
+                }
+            }
+        }
 
+        public bool cmdEdit_IsEnabled
+        {
+            get
+            {
+                return _cmdEdit_IsEnabled;
+            }
+            set
+            {
+                if (_cmdEdit_IsEnabled != value)
+                {
+                    _cmdEdit_IsEnabled = value;
+                    this.RaisePropertychanged("cmdEdit_IsEnabled");
+                }
+            }
+        }
+
+        public bool cmdDelete_IsEnabled
+        {
+            get
+            {
+                return _cmdDelete_IsEnabled;
+            }
+            set
+            {
+                if (_cmdDelete_IsEnabled != value)
+                {
+                    _cmdDelete_IsEnabled = value;
+                    this.RaisePropertychanged("cmdDelete_IsEnabled");
+                }
+            }
+        }
+        public bool cmdSave_IsEnabled
+        {
+            get
+            {
+                return _cmdSave_IsEnabled;
+            }
+            set
+            {
+                if (_cmdSave_IsEnabled != value)
+                {
+                    _cmdSave_IsEnabled = value;
+                    this.RaisePropertychanged("cmdSave_IsEnabled");
+                }
+            }
+        }
+        public bool cmdEditPass_IsEnabled
+        {
+            get
+            {
+                return _cmdEditPass_IsEnabled;
+            }
+            set
+            {
+                if (_cmdEditPass_IsEnabled != value)
+                {
+                    _cmdEditPass_IsEnabled = value;
+                    this.RaisePropertychanged("cmdEditPass_IsEnabled");
+                }
+            }
+
+        }
+        public bool cmdCancel_IsEnabled
+        {
+            get
+            {
+                return _cmdCancel_IsEnabled;
+            }
+            set
+            {
+                if (_cmdCancel_IsEnabled != value)
+                {
+                    _cmdCancel_IsEnabled = value;
+                    this.RaisePropertychanged("cmdCancel_IsEnabled");
+                }
+            }
+        }
         #region SaveBorrarEdiatarAnadir
 
         public RelayCommand guardar_Click { get; private set; }
@@ -109,11 +226,82 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     areasDeAcceso += s;
                 }
-
                 switch(_Operation)
                 {
                     case 1:
                         {//Anadir
+                            IntPtr passwordBSTR = default(IntPtr);
+                            string insecurePassword = "";
+                            passwordBSTR = Marshal.SecureStringToBSTR(Password);
+                            insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+
+                            IntPtr passwordVerificationBSTR = default(IntPtr);
+                            string insecurePasswordVerification = string.Empty;
+
+                            passwordVerificationBSTR = Marshal.SecureStringToBSTR(PasswordVerification);
+                            insecurePasswordVerification = Marshal.PtrToStringBSTR(passwordVerificationBSTR);
+
+                            if (!insecurePassword.Equals(insecurePasswordVerification))
+                            {
+                                throw new Exception("Error con el Password");
+                            }
+
+                            //Hash password
+                            if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
+                            _salt = PWDTK.GetRandomSalt(saltSize);
+
+                            string salt = PWDTK.GetSaltHexString(_salt);
+
+                            _hash = PWDTK.PasswordToHash(_salt, insecurePassword, iterations);
+                            
+                            var hashedPassword = PWDTK.HashBytesToHexString(_hash);
+
+                            List<tblUser> u = new List<tblUser>
+                            {
+                                new tblUser 
+                                {  
+                                    UserId=System.Guid.NewGuid(), 
+                                    UserName = CbUser_Text ,
+                                    PasswordHash=hashedPassword, 
+                                    SecurityStamp = salt,
+                                    Email= CbUser_Text +  "@jolpr.com", 
+                                    AreasDeAcceso=areasDeAcceso 
+                                }
+                            };
+                            u.ForEach(m => _db.tblUsers.Add(m));
+                            _db.SaveChanges();
+                        }
+                        break;
+                    case 2://Editar Areas De Acceso
+                        {
+                            tblUser tbluser = _db.tblUsers.Find(_Id);
+                            _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
+                                                       
+                            tbluser.AreasDeAcceso = areasDeAcceso;
+
+                            _db.SaveChanges();
+                        }
+                        break;
+                    case 3://Delete
+                        {
+                            string msg = "You are about to delete 1 user\r";
+                            msg += "Click yes to permanently delete this user( " + CbUser_Text + " ).\r";
+                            msg += "You won't be able to undo those changes.";
+
+                            var response = MessageBox.Show("!!!" + msg, "Delete...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+
+                            if (response == MessageBoxResult.Yes)
+                            {
+                                tblUser tbluser = _db.tblUsers.Find(_Id);
+                                _db.tblUsers.Remove(tbluser);
+                                _db.SaveChanges();
+                            }
+                        }
+                        break;
+                    case 4: //Edit Pass
+                        {
+                            tblUser tbluser = _db.tblUsers.Find(_Id);
+                            _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
 
                             IntPtr passwordBSTR = default(IntPtr);
                             string insecurePassword = "";
@@ -126,38 +314,30 @@ namespace WpfEndososCandidatos.ViewModels
                             passwordVerificationBSTR = Marshal.SecureStringToBSTR(PasswordVerification);
                             insecurePasswordVerification = Marshal.PtrToStringBSTR(passwordVerificationBSTR);
 
-
-
                             if (!insecurePassword.Equals(insecurePasswordVerification))
                             {
                                 throw new Exception("Error con el Password");
                             }
 
-                            var hashedPassword = Helper.PasswordHash.Encrypt(insecurePassword);  //PasswordHash.HashPassword(insecurePassword);
+                            //Hash password
+                            if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
+                            
+                            _salt = PWDTK.GetRandomSalt(saltSize);
 
-                            List<tblUser> u = new List<tblUser>
-                            {
-                                new tblUser 
-                                {  
-                                    UserId=System.Guid.NewGuid(), 
-                                    UserName = CbUser_Text ,
-                                    PasswordHash=hashedPassword, 
-                                    Email= CbUser_SelectedItem +  "@jolpr.com", 
-                                    AreasDeAcceso=areasDeAcceso 
-                                }
-                            };
-                            u.ForEach(m => _db.tblUsers.Add(m));
+                            string salt = PWDTK.GetSaltHexString(_salt);
+
+                            _hash = PWDTK.PasswordToHash(_salt, insecurePassword, iterations);
+
+                            var hashedPassword = PWDTK.HashBytesToHexString(_hash);
+
+                            tbluser.SecurityStamp = salt;
+                            tbluser.PasswordHash = hashedPassword;
+
                             _db.SaveChanges();
                         }
                         break;
-                    //case 2://Editar
-                    //    break;
-                    //case 3://Delete
-                    //    break;
-                    //case 5: // Cancelar
-                     //   break;
-
                 }
+                Cancelar_Click();
             }
             catch (Exception ex)
             {
@@ -172,8 +352,10 @@ namespace WpfEndososCandidatos.ViewModels
             try
             {
                 _Operation = 3;
-
-                throw new NotImplementedException();
+                cmdSave_IsEnabled = true;
+                cmdEdit_IsEnabled = false;                
+                cbUser_IsEnabled = false;
+                cmdDelete_IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -188,10 +370,16 @@ namespace WpfEndososCandidatos.ViewModels
             try
             {
                 _Operation = 2;
-                CbUser_IsEditable = true;
-                Password_IsEnabled = true;
-                AreasdeAcceso_IsEnabled = true;
 
+                cbUser_IsEnabled = false;
+                cmdAdd_IsEnabled = false;
+                cmdDelete_IsEnabled = false;
+                cmdEdit_IsEnabled = false;
+                cmdEditPass_IsEnabled = false;
+
+                cmdSave_IsEnabled = true;
+                Password_IsEnabled = false;
+                AreasdeAcceso_IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -203,21 +391,55 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        public RelayCommand editPass_Click { get; private set; }
+
+        private void EditPass_Click()
+        {
+            try
+            {
+                _Operation = 4;
+                cbUser_IsEnabled = false;
+                cmdAdd_IsEnabled = false;
+                cmdDelete_IsEnabled = false;
+                cmdEdit_IsEnabled = false;
+                cmdEditPass_IsEnabled = false;
+
+                password_Cls = string.Empty;
+                verificacionPassword_Cls = string.Empty;
+
+                cmdSave_IsEnabled = true;
+                Password_IsEnabled = true;
+                AreasdeAcceso_IsEnabled = false;
+
+
+            }
+            catch (Exception ex)
+            {
+                
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
         public RelayCommand anadir_Click {get;private set;}
         private void Anadir_Click()
         {
             try
             {
+                _Operation = 1;
+
                 Password_IsEnabled = true;
                 CbUser_IsEditable = true;
                 AreasdeAcceso_IsEnabled = true;
                 CbUser.Clear();
                 CbUser = null;
                 CbUser = new ObservableCollection<string>();
-               
 
-                _Operation = 1;
-                
+                cmdCancel_IsEnabled = true;
+                cmdSave_IsEnabled = true;
+                cmdAdd_IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -245,11 +467,17 @@ namespace WpfEndososCandidatos.ViewModels
                 reversarLote_IsChecked = false;
                 configuraciones_IsChecked = false;
                 corregirEndosos_IsChecked = false;
+                Password_Cls_Visibility = Visibility.Hidden;
 
 
                 CbUser_IsEditable = false;
                 Password_IsEnabled = false;
                 AreasdeAcceso_IsEnabled = false;
+
+                password_Cls = string.Empty;
+                verificacionPassword_Cls = string.Empty;
+                CbUser_Text = string.Empty;
+
 
                 CbUser = new ObservableCollection<string>();
 
@@ -262,6 +490,18 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     CbUser.Add(s.UserName);
                 }
+
+                cbUser_IsEnabled = true;
+                cmdAdd_IsEnabled = true;
+
+                cmdCancel_IsEnabled = false;
+                cmdEdit_IsEnabled = false;
+                cmdDelete_IsEnabled = false;
+                cmdSave_IsEnabled = false;
+                cmdEditPass_IsEnabled = false;
+                
+                Id = Guid.Empty.ToString();
+
             }
             catch (Exception ex)
             {
@@ -269,6 +509,50 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public RelayCommand cmdVerPass_Click
+        {
+            get;
+            private set;
+
+        }
+
+        private void CmdVerPass_Click() 
+        {
+            try
+            {
+
+                if (Password_Cls_Visibility == Visibility.Visible)
+                {
+                    Password_Cls_Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    Password_Cls_Visibility = Visibility.Visible;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        } 
+        public Visibility Password_Cls_Visibility
+        {
+            get
+            {
+                return _Password_Cls_Visibility;
+            }set
+            {
+                if (_Password_Cls_Visibility != value)
+                {
+                    _Password_Cls_Visibility = value;
+                    this.RaisePropertychanged("Password_Cls_Visibility");
+                }
+            }
+        }
+
 
         #endregion
         
@@ -663,9 +947,6 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
-
-
-
         #endregion
 
         #region cbUser
@@ -686,6 +967,22 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+        public bool cbUser_IsEnabled
+        {
+            get
+            {
+                return _cbUser_IsEnabled;
+            }
+            set
+            {
+                if (_cbUser_IsEnabled != value)
+                {
+                    _cbUser_IsEnabled = value;
+                    this.RaisePropertychanged("cbUser_IsEnabled");
+                }
+            }
+        }
+
         public ObservableCollection<string> CbUser
         {
             get
@@ -696,6 +993,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 _CbUser = value;
                 this.RaisePropertychanged("CbUser");
+           
             }
         }
 
@@ -724,6 +1022,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 _CbUser_SelectedItem = value;
                 this.RaisePropertychanged("CbUser_SelectedItem");
+                
             }
         }
 
@@ -744,6 +1043,22 @@ namespace WpfEndososCandidatos.ViewModels
             get;
             private set;
         }
+        public string Id
+        {
+            get
+            {
+                return _Id.ToString();
+            }       
+            set
+            {
+                if (_Id.ToString() != value)
+                {
+                    _Id = Guid.Parse(value);
+                    this.RaisePropertychanged("Id");
+                }
+            }
+        }
+
         private void CbUser_ChangeItem()
         {
             try
@@ -751,14 +1066,29 @@ namespace WpfEndososCandidatos.ViewModels
                 var pass = from p in _db.tblUsers
                            where p.UserName == CbUser_SelectedItem
                            select p;
-        
+
+                cmdEdit_IsEnabled = true;
+                cmdEditPass_IsEnabled = true;
+                cmdCancel_IsEnabled = true;
+
+                cmdAdd_IsEnabled = false;
+                cmdDelete_IsEnabled = true;
+                Password_IsEnabled = false;
+                Password_Cls_Visibility = Visibility.Hidden;
+
+
                 _AreasDeAcceso = new string[9]; 
 
                 foreach(var pss in pass)
                 {
-                    password_Cls = Helper.PasswordHash.Decrypt(pss.PasswordHash);
+                     
+                    Byte[] hash = PWDTK.HashHexStringToBytes (pss.PasswordHash);
+
+                    password_Cls = PWDTK.HashBytesToHexString(hash);  // Helper.PasswordHash.HashPasswordDecrypt(pss.PasswordHash);  // Helper.PasswordHash.Decrypt(pss.PasswordHash);
+
                     verificacionPassword_Cls = password_Cls;
-                    
+                    //_Id = pss.UserId;
+                    Id = pss.UserId.ToString();
                     foreach (char c in pss.AreasDeAcceso.ToCharArray())
                     {
                         switch (c)
@@ -800,16 +1130,9 @@ namespace WpfEndososCandidatos.ViewModels
                     }
 
                 }
-
-
-
-
-
-                                
             }
             catch (Exception ex)
             {
-                
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -848,10 +1171,7 @@ namespace WpfEndososCandidatos.ViewModels
                     _password = value;
                     this.RaisePropertychanged("Password");
                 }
-
-
             }
-
         }
 
         public string password_Cls
@@ -922,6 +1242,18 @@ namespace WpfEndososCandidatos.ViewModels
                 CbUser_IsEditable = false;
                 Password_IsEnabled = false;
                 AreasdeAcceso_IsEnabled = false;
+                
+                cmdAdd_IsEnabled = true;
+                cbUser_IsEnabled = true;
+
+                cmdEdit_IsEnabled = false;
+                cmdDelete_IsEnabled = false;
+                cmdSave_IsEnabled = false;
+                cmdCancel_IsEnabled = false;
+                cmdEditPass_IsEnabled = false;
+
+                Password_Cls_Visibility =  Visibility.Hidden;
+
                 var usernames = from u in _db.tblUsers
                              orderby u.UserName
                              select u;
@@ -1013,7 +1345,26 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }            
         }
-        
+
+
+        private bool PasswordMeetsPolicy(String Password, PWDTK.PasswordPolicy PassPolicy)
+        {
+            PasswordPolicyException pwdEx = new PasswordPolicyException("");
+
+            if (PWDTK.TryPasswordPolicyCompliance(Password, PassPolicy, ref pwdEx))
+            {
+                return true;
+            }
+            else
+            {
+                //Password does not comply with PasswordPolicy so we get the error message from the PasswordPolicyException to display to the user
+                //errorPasswd.SetError(txtPassword, pwdEx.Message);
+                throw new Exception(pwdEx.Message);
+
+                //return false;
+            }
+        }
+
         #endregion
 
     }//end

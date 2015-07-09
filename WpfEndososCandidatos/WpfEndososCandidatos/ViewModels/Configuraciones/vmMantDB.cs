@@ -513,17 +513,17 @@
                     
                     jolcode.Registry.write(_REGPATH, "DBServer",sqlServer);
                     jolcode.Registry.write(_REGPATH, "DBUser",userName);
-                    jolcode.Registry.write(_REGPATH, "DBPass", PasswordHash.Encrypt(password)  );
+                    jolcode.Registry.write(_REGPATH, "DBPass", PasswordHash.Encrypt1(password)  );
                     jolcode.Registry.write(_REGPATH, "DBName",database);
 
                     jolcode.Registry.write(_REGPATH, "MastSvr", mastSvr);
                     jolcode.Registry.write(_REGPATH, "MastUsr", mastUsr);
-                    jolcode.Registry.write(_REGPATH, "MastPass", PasswordHash.Encrypt(mastPass));
+                    jolcode.Registry.write(_REGPATH, "MastPass", PasswordHash.Encrypt1(mastPass));
                     jolcode.Registry.write(_REGPATH, "MastDB", mastDB);
 
                     jolcode.Registry.write(_REGPATH, "ImageSvr", imageSvr);
                     jolcode.Registry.write(_REGPATH, "ImageUsr", imageUsr);
-                    jolcode.Registry.write(_REGPATH, "ImagePass", PasswordHash.Encrypt(imagePass));
+                    jolcode.Registry.write(_REGPATH, "ImagePass", PasswordHash.Encrypt1(imagePass));
                     jolcode.Registry.write(_REGPATH, "ImageDB", imageDB);
 
                     jolcode.Registry.write(_REGPATH, "ValiSvr", valiSvr);
@@ -733,7 +733,7 @@
 
                 if (password.Trim().Length > 0)
                 {
-                    decryptPassword = PasswordHash.Decrypt(password);
+                    decryptPassword = PasswordHash.Decrypt1(password);
 
                     GetDataBaseName(sqlServer, userName, decryptPassword, cbDatabaseEndoso);
                     
@@ -744,7 +744,7 @@
 
                 if (mastPass.Trim().Length > 0)
                 {
-                    decryptPassword = PasswordHash.Decrypt(mastPass);
+                    decryptPassword = PasswordHash.Decrypt1(mastPass);
 
                     GetDataBaseName(mastSvr, mastUsr, decryptPassword, cbMastDB);
 
@@ -758,7 +758,7 @@
 
                 if (imagePass.Trim().Length >0)
                 {
-                    decryptPassword = PasswordHash.Decrypt(imagePass);
+                    decryptPassword = PasswordHash.Decrypt1(imagePass);
                     
                     GetDataBaseName(imageSvr, imageUsr, decryptPassword,cbImageDB);
                     

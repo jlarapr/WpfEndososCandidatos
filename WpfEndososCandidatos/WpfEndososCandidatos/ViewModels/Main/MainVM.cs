@@ -294,28 +294,13 @@ namespace WpfEndososCandidatos.ViewModels
                     _ImgPath = frmMantDB.imgPath;
 
                 }//End IF
-
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "OnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-
-
-        }
-
-
-        
-
-
-
-
-
-    }
-
-     
-
+            }            
+        }        
+    }         
 }
 
 

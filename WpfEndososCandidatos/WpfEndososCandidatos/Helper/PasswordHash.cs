@@ -45,6 +45,7 @@ namespace WpfEndososCandidatos.Helper
             Buffer.BlockCopy(hashedPasswordBytes, 1 + SaltSize, storedSubkey, 0, PBKDF2SubkeyLength);
 
             byte[] generatedSubkey;
+
             using (var deriveBytes = new Rfc2898DeriveBytes(password, salt, PBKDF2IterCount))
             {
                 generatedSubkey = deriveBytes.GetBytes(PBKDF2SubkeyLength);
@@ -52,10 +53,26 @@ namespace WpfEndososCandidatos.Helper
             return storedSubkey.SequenceEqual(generatedSubkey);
         }
 
+        public static string HashPasswordDecrypt(string hashedPassword)
+        {
+            byte[] hashedPasswordBytes = Convert.FromBase64String(hashedPassword);
+
+            byte[] salt = new byte[SaltSize];
+            
+            Buffer.BlockCopy(hashedPasswordBytes, 1, salt, 0, SaltSize);
+            
+            byte[] storedSubkey = new byte[PBKDF2SubkeyLength];
+            
+            Buffer.BlockCopy(hashedPasswordBytes, 1 + SaltSize, storedSubkey, 0, PBKDF2SubkeyLength);
+
+           
+
+            return "";
+        }
         
         private static byte[] mysalt = Encoding.ASCII.GetBytes("asdfghjklpoiuytrewq1234567890-=+-*");  
   
-        public static string Encrypt(string plainText)
+        public static string Encrypt1(string plainText)
         {
             string keyString = "CEE Applica ImageData"; 
 
@@ -69,7 +86,7 @@ namespace WpfEndososCandidatos.Helper
             return Convert.ToBase64String(ms.ToArray());
         }
 
-        public static string Decrypt(string base64Text)
+        public static string Decrypt1(string base64Text)
         {
             string keyString = "CEE Applica ImageData"; 
 

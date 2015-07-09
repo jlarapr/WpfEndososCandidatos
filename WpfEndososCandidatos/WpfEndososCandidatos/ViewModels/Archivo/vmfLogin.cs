@@ -19,9 +19,23 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Data.Entity;
     using System.Security.Claims;
     using System.ComponentModel;
+    using WpfEndososCandidatos.Helper.PWDTK;
 
     class vmfLogin : ViewModelBase<IDialogView>, INotifyPropertyChanged
     {
+        //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
+        private const int numberUpper = 1;
+        private const int numberNonAlphaNumeric = 1;
+        private const int numberNumeric = 2;
+        private const int minPwdLength = 6;
+        private const int maxPwdLength = Int32.MaxValue;
+        private Byte[] _salt;
+        private Byte[] _hash;
+        private const int iterations = 10002;
+        private const int saltSize = PWDTK.CDefaultSaltLength + 2;
+
+        PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
+
         private RelayCommand _InitWindow;
         private RelayCommand _cancel_Click;
         private string _txtUserName_txt;
@@ -151,23 +165,34 @@ namespace WpfEndososCandidatos.ViewModels
 
                 var user = from u in db.tblUsers
                            where u.UserName == txtUserName_txt
-                           select u.PasswordHash  ;
+                           select new
+                           {
+                               passwordHash = u.PasswordHash,
+                               salt = u.SecurityStamp
+                           };
+                           
 
                 if (user.Count() == 0)
                     throw new Exception("Error con el usuario o el password.");
 
-                string hashedPassword = user.First();
+
+                if (!PasswordMeetsPolicy(txtPassword_txt, PwdPolicy)) return;
+
+                string hashedPassword = user.First().passwordHash;
+
+                _salt = PWDTK.HashHexStringToBytes(user.First().salt);
+
                 
-                if (!PasswordHash.VerifyHashedPassword(hashedPassword, txtPassword_txt))
+                _hash = PWDTK.HashHexStringToBytes(hashedPassword);           
+
+                if (!PWDTK.ComparePasswordToHash(_salt, txtPassword_txt, _hash, iterations))
                 {
                     throw new Exception("Error con el usuario o el password.");
                 }
 
-                WhatIsUserName = txtUserName_txt;
+                WhatIsUserName = " " + txtUserName_txt;
                
-                
                 this.View.Close();
-                
             }
             catch (Exception ex)
             {
@@ -176,7 +201,23 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private bool PasswordMeetsPolicy(String Password, PWDTK.PasswordPolicy PassPolicy)
+        {
+            PasswordPolicyException pwdEx = new PasswordPolicyException("");
 
+            if (PWDTK.TryPasswordPolicyCompliance(Password, PassPolicy, ref pwdEx))
+            {
+                return true;
+            }
+            else
+            {
+                //Password does not comply with PasswordPolicy so we get the error message from the PasswordPolicyException to display to the user
+                //errorPasswd.SetError(txtPassword, pwdEx.Message);
+
+                throw new Exception(pwdEx.Message);
+                
+            }
+        }
 
        
     }//end

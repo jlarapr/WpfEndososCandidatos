@@ -19,9 +19,7 @@ namespace WpfEndososCandidatos.Models
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+      
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
         public string PhoneNumber { get; set; }
@@ -30,6 +28,10 @@ namespace WpfEndososCandidatos.Models
         public Nullable<System.DateTime> LockoutEndDateUtc { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
+        
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
+        [DataType(DataType.Text)]
         public string UserName { get; set; }
         public string AreasDeAcceso { get; set; }
     }

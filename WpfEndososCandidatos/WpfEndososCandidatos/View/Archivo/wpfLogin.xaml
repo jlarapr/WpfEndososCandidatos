@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
         Background="Beige"
-        Title="Login" Height="160" Width="251" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="Login" Height="224" Width="367" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -15,20 +15,21 @@
         <Border BorderBrush="Red"  BorderThickness="5" Margin="0" CornerRadius="5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="178*"/>
-                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="347*"/>
+                    <ColumnDefinition Width="19*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="14*"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="211*"/>
+                    <RowDefinition Height="22*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="cmdCancel" Command="{Binding cancel_Click}" Content="Cancel" Margin="134,0,0,0" Height="24" VerticalAlignment="Bottom"/>
-                <Button x:Name="cmdOK" Command="{Binding oK_Click}"  Content="Ok" HorizontalAlignment="Left" Margin="54,0,0,0" Width="75" Height="24" VerticalAlignment="Bottom" CommandParameter="{Binding ElementName=txtPassword}"/>
-                <Label Content="User Name:" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Height="26" Width="71"/>
-                <Label Content="Password:" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Height="26" Width="63"/>
-                <TextBox x:Name="txtUserName" HorizontalAlignment="Left" Height="23" Margin="86,52,0,0" TextWrapping="Wrap" Text="{Binding txtUserName_txt}" VerticalAlignment="Top" Width="120"/>
-                <Label Content="Login" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="206" FontWeight="Bold" FontSize="16"/>
-                <PasswordBox x:Name="txtPassword"  HorizontalAlignment="Left" Margin="86,81,0,0" VerticalAlignment="Top" Width="120"/>
+                <Button x:Name="cmdCancel" Command="{Binding cancel_Click}" Content="Cancel" Margin="0,0,10,8" Height="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="80"/>
+                <Button x:Name="cmdOK" Command="{Binding oK_Click}"  Content="Ok" HorizontalAlignment="Right" Margin="0,0,95,8" Width="75" Height="24" VerticalAlignment="Bottom" CommandParameter="{Binding ElementName=txtPassword}"/>
+                <Label Content="User Name:" HorizontalAlignment="Left" Margin="7,0,0,63" Width="71" Height="26" VerticalAlignment="Bottom"/>
+                <Label Content="Password:" HorizontalAlignment="Left" Margin="7,0,0,32" Width="63" Height="26" VerticalAlignment="Bottom"/>
+                <TextBox x:Name="txtUserName" Margin="83,0,10,63" TextWrapping="Wrap" Text="{Binding txtUserName_txt}" Height="24" VerticalAlignment="Bottom"/>
+                <Label Content="Login" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="55" Width="211" FontWeight="Bold" FontSize="36"/>
+                <PasswordBox x:Name="txtPassword" Margin="83,0,10,37" Height="21" VerticalAlignment="Bottom"/>
+                <Image Margin="0,0,10,92" Source="/WpfEndososCandidatos;component/Images/Security.png" Height="92" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="99"/>
             </Grid>
         </Border>
 

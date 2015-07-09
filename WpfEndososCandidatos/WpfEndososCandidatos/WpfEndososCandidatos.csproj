@@ -79,6 +79,8 @@
     <Compile Include="Helper\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Helper\PasswordHash.cs" />
     <Compile Include="Helper\PasswordHelper.cs" />
+    <Compile Include="Helper\PWDTK\PWDTK.cs" />
+    <Compile Include="Helper\PWDTK\Rfc2898.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -286,6 +288,21 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bersirc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Security.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
