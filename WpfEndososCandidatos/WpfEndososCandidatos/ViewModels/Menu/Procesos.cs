@@ -11,7 +11,30 @@
         private RelayCommand _procesarLotes_Click;
         private RelayCommand _corregirEndosos_Click;
         private RelayCommand _reversarLote_Click;
+        private bool _mnuRecibirLotes_IsEnabled;
+        private bool _mnuAutoRizarLotes_IsEnabled;
+        private bool _mnuProcesarLotes_IsEnabled;
+        private bool _mnuCorregirEndosos_IsEnabled;
+        private bool _mnuRevLote_IsEnabled;
 
+
+
+        public bool mnuRecibirLotes_IsEnabled
+        {
+            get
+            {
+                return _mnuRecibirLotes_IsEnabled;
+            }
+            set
+            {
+                if (_mnuRecibirLotes_IsEnabled != value)
+                {
+                    _mnuRecibirLotes_IsEnabled = value;
+                    this.RaisePropertychanged("mnuRecibirLotes_IsEnabled");
+                }
+            }
+        }
+        
         public RelayCommand recibirLotes_Click
         {
             get
@@ -40,6 +63,21 @@
         }
 
 
+        public bool mnuAutoRizarLotes_IsEnabled
+        {
+            get
+            {
+                return _mnuAutoRizarLotes_IsEnabled;
+            }
+            set
+            {
+                if (_mnuAutoRizarLotes_IsEnabled !=value)
+                {
+                    _mnuAutoRizarLotes_IsEnabled = value;
+                    this.RaisePropertychanged("mnuAutoRizarLotes_IsEnabled");
+                }
+            }
+        }
         public RelayCommand autorizarLotes_Click
         {
             get
@@ -68,6 +106,22 @@
             }
         }
 
+        public bool mnuProcesarLotes_IsEnabled
+        {
+            get
+            {
+                return _mnuProcesarLotes_IsEnabled;
+            }
+            set
+            {
+                if (_mnuProcesarLotes_IsEnabled !=value)
+                {
+                    _mnuProcesarLotes_IsEnabled = value;
+                    this.RaisePropertychanged("mnuProcesarLotes_IsEnabled");
+                }
+            }
+        }
+        
         public RelayCommand procesarLotes_Click
         {
             get
@@ -92,7 +146,23 @@
                 MessageBox.Show(ex.Message,site.Name , MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-                                   
+
+
+        public bool mnuCorregirEndosos_IsEnabled
+        {
+            get
+            {
+                return _mnuCorregirEndosos_IsEnabled;
+            }
+            set
+            {
+                if (_mnuCorregirEndosos_IsEnabled != value)
+                {
+                    _mnuCorregirEndosos_IsEnabled = value;
+                    this.RaisePropertychanged("mnuCorregirEndosos_IsEnabled");
+                }
+            }
+        }               
         public RelayCommand  corregirEndosos_Click
         {
             get
@@ -120,6 +190,22 @@
             }
         }
 
+
+        public bool mnuRevLote_IsEnabled
+        {
+            get
+            {
+                return _mnuRevLote_IsEnabled;
+            }
+            set
+            {
+                if (_mnuRevLote_IsEnabled != value)
+                {
+                    _mnuRevLote_IsEnabled = value;
+                    this.RaisePropertychanged("mnuRevLote_IsEnabled");
+                }
+            }
+        }
         public RelayCommand reversarLote_Click
         {
             get

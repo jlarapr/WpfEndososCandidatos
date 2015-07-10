@@ -42,6 +42,7 @@ namespace WpfEndososCandidatos.ViewModels
         private string _txtPassword_txt;
         private RelayCommand _oK_Click;
         
+        
         public vmfLogin() :
             base(new wpfLogin())
         {
@@ -49,6 +50,10 @@ namespace WpfEndososCandidatos.ViewModels
         }
 
         public string WhatIsUserName { get; set; }
+
+        public string _AreasDeAcceso { get; private set; }
+        public Guid _Id  {get;private set;}
+
         public bool? OnShow()
         {
             return this.View.ShowDialog();
@@ -98,6 +103,8 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
+                
+                this.View.DialogResult = false;
                 this.View.Close();                
             }
             catch (Exception ex)
@@ -168,7 +175,9 @@ namespace WpfEndososCandidatos.ViewModels
                            select new
                            {
                                passwordHash = u.PasswordHash,
-                               salt = u.SecurityStamp
+                               salt = u.SecurityStamp,
+                               acceso = u.AreasDeAcceso,
+                               id = u.UserId
                            };
                            
 
@@ -191,7 +200,12 @@ namespace WpfEndososCandidatos.ViewModels
                 }
 
                 WhatIsUserName = " " + txtUserName_txt;
-               
+
+                _AreasDeAcceso = user.First().acceso;
+                _Id = user.First().id;
+
+                this.View.DialogResult = true;
+                               
                 this.View.Close();
             }
             catch (Exception ex)

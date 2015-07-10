@@ -18,31 +18,31 @@
         
             <Menu x:Name="MainMenu" VerticalAlignment="Top" DockPanel.Dock="Top" Height="31">
                 <MenuItem Name="mnuMainFile" Header="_Archivo"  >
-                <MenuItem Name="mnuLogin" Header="_Login" Command="{Binding login_Click}" />
-                <MenuItem Name="mnuLogout" Header="_Logout" Command="{Binding logout_Click}"  />
-                <MenuItem Name="mnuChangePassword" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
+                <MenuItem Name="mnuLogin" IsEnabled="{Binding mnuLogin_IsEnabled}" Header="_Login" Command="{Binding login_Click}" />
+                <MenuItem Name="mnuLogout" IsEnabled="{Binding mnuLogout_IsEnabled}" Header="_Logout" Command="{Binding logout_Click}"  />
+                <MenuItem Name="mnuChangePassword" IsEnabled="{Binding mnuChangePassword_IsEnabled}" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
                     <Separator></Separator>
                 <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
-                <MenuItem Name="mnuRecibirLotes" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
-                <MenuItem Name="mnuAutoRizarLotes" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
-                <MenuItem Name="mnuProcesarLotes" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
+                <MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
+                <MenuItem Name="mnuAutoRizarLotes" IsEnabled="{Binding mnuAutoRizarLotes_IsEnabled}" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
+                <MenuItem Name="mnuProcesarLotes" IsEnabled="{Binding mnuProcesarLotes_IsEnabled,Mode=TwoWay}" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
                     <Separator></Separator>
-                <MenuItem Name="mnuCorregirEndosos" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
-                <MenuItem Name="mnuRevLote" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
+                <MenuItem Name="mnuCorregirEndosos" IsEnabled="{Binding mnuCorregirEndosos_IsEnabled}" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
+                <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainVer" Header="_Ver"  >
-                <MenuItem Name="mnuVerElector" Header="_Ver Elector" Command="{Binding verElector_click}" />
+                <MenuItem Name="mnuVerElector" IsEnabled="{Binding mnuVerElector_IsEnabled}" Header="_Ver Elector" Command="{Binding verElector_click}" />
                 </MenuItem>
                 <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
-                <MenuItem Name="mnuConf1" Header="_Areas" Command="{Binding areas_Click}" />
-                <MenuItem Name="mnuConf2" Header="_Partidos" Command="{Binding partidos_Click}" />
-                <MenuItem Name="mnuConf3" Header="_Notarios" Command="{Binding notarios_Click}" />
-                <MenuItem Name="mnuConf4" Header="_Validaciones" Command="{Binding validaciones_Click}" />
-                <MenuItem Name="mnuConf5" Header="_Usuarios" Command="{Binding usuarios_Click}" />
-                <MenuItem Name="mnuConf6" Header="_Base de Datos" Command="{Binding baseDeDatos_Click}" />
-                <MenuItem Name="mnuConf7" Header="_Inicializar Lotes" Command="{Binding inicializarLotes_Click}" />
+                <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
+                <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
+                <MenuItem Name="mnuNotarios" IsEnabled="{Binding mnuNotarios_IsEnabled}" Header="_Notarios" Command="{Binding notarios_Click}" />
+                <MenuItem Name="mnuValidaciones" IsEnabled="{Binding mnuValidaciones_IsEnabled}"  Header="_Validaciones" Command="{Binding validaciones_Click}" />
+                <MenuItem Name="mnuUsuarios" IsEnabled="{Binding mnuUsuarios_IsEnabled}" Header="_Usuarios" Command="{Binding usuarios_Click}" />
+                <MenuItem Name="mnuBaseDeDatos" IsEnabled="{Binding mnuBaseDeDatos_IsEnabled}" Header="_Base de Datos" Command="{Binding baseDeDatos_Click}" />
+                <MenuItem Name="mnuInicializarLotes" IsEnabled="{Binding mnuInicializarLotes_IsEnabled}" Header="_Inicializar Lotes" Command="{Binding inicializarLotes_Click}" />
                     <Separator></Separator>
                 <MenuItem Name="mnuConf8" Header="_About" Command="{Binding about_Click}"/>
                 </MenuItem>

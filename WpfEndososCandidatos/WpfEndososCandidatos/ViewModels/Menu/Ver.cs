@@ -7,7 +7,25 @@
      partial class MainVM
      {
          private RelayCommand _verElector_click;
+         private bool _mnuVerElector_IsEnabled;
 
+
+
+         public bool mnuVerElector_IsEnabled
+         {
+             get
+             {
+                 return _mnuVerElector_IsEnabled;
+             }
+             set
+             {
+                 if (_mnuVerElector_IsEnabled != value)
+                 {
+                     _mnuVerElector_IsEnabled = value;
+                     this.RaisePropertychanged("mnuVerElector_IsEnabled");
+                 }
+             }
+         }
          public RelayCommand verElector_click
          {
              get

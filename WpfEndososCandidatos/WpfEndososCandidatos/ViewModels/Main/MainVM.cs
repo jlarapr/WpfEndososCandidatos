@@ -292,8 +292,24 @@ namespace WpfEndososCandidatos.ViewModels
                     _ValiDB = frmMantDB.valiDB;
 
                     _ImgPath = frmMantDB.imgPath;
-
                 }//End IF
+                mnuChangePassword_IsEnabled = false;
+                mnuLogout_IsEnabled = false;
+                mnuLogin_IsEnabled = true;
+                mnuVerElector_IsEnabled = false;
+                mnuRecibirLotes_IsEnabled = false;
+                mnuAutoRizarLotes_IsEnabled = false;
+                mnuProcesarLotes_IsEnabled = false;
+                mnuCorregirEndosos_IsEnabled = false;
+                mnuRevLote_IsEnabled = false;
+                mnuAreas_IsEnabled = false;
+                mnuPartidos_IsEnabled = false;
+                mnuNotarios_IsEnabled = false;
+                mnuValidaciones_IsEnabled = false;
+                mnuUsuarios_IsEnabled = false;
+                mnuBaseDeDatos_IsEnabled = false;             
+                mnuInicializarLotes_IsEnabled = false;
+                Login_Click();
             }
             catch(Exception ex)
             {

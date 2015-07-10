@@ -4,6 +4,8 @@
     using System;
     using System.Reflection;
     using System.Windows;
+    using WpfEndososCandidatos.Models;
+    using System.Linq;
     
     partial class MainVM
     {
@@ -11,6 +13,27 @@
         private RelayCommand _logout_Click;
         private RelayCommand _cambiarPassword_Click;
         private RelayCommand _close_Click;
+        private bool _mnuChangePassword_IsEnabled;
+        private bool _mnuLogout_IsEnabled;
+        private bool _mnuLogin_IsEnabled;
+        dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
+        private Guid _Id;
+        
+        public bool mnuLogin_IsEnabled
+        {
+            get
+            {
+                return _mnuLogin_IsEnabled;
+            }
+            set
+            {
+                if (_mnuLogin_IsEnabled != value)
+                {
+                    _mnuLogin_IsEnabled = value;
+                    this.RaisePropertychanged("mnuLogin_IsEnabled");
+                }
+            }
+        }
         public RelayCommand login_Click
         {
             get
@@ -30,9 +53,58 @@
                 vmfLogin frmfLogin = new vmfLogin();
                 frmfLogin.View.Owner = this.View as Window;
                 frmfLogin.OnShow();
-                Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName);
 
+                Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
+                if (frmfLogin.View.DialogResult == false)
+                    return;
                 
+                Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName," ",frmfLogin._Id.ToString());
+                _Id = frmfLogin._Id;
+                mnuLogin_IsEnabled = false;
+                mnuLogout_IsEnabled = true;
+
+                foreach(char c in frmfLogin._AreasDeAcceso.ToCharArray())
+                {
+                    switch (c)
+                    {
+                        case 'A'://CambiarPassword
+                            mnuChangePassword_IsEnabled = true;
+                            break;
+                        case 'B':// AutorizarLotes
+                            mnuAutoRizarLotes_IsEnabled = true;
+                            break;
+                        case 'C':// ProcesarLotes
+                            mnuRecibirLotes_IsEnabled = true;                            
+                            mnuProcesarLotes_IsEnabled = true;
+                            
+                            break;
+                        case 'D':// VerElector
+                            mnuVerElector_IsEnabled = true;
+                            break;
+                        case 'E'://Reportes
+                           
+                            break;
+                        case 'F'://ReversarLote
+                            mnuRevLote_IsEnabled = true; 
+                            break;
+                        case 'G'://Configuracione
+                            mnuAreas_IsEnabled = true;
+                            mnuPartidos_IsEnabled = true;
+                            mnuNotarios_IsEnabled = true;
+                            mnuValidaciones_IsEnabled = true;
+                            mnuUsuarios_IsEnabled = true;
+                            mnuBaseDeDatos_IsEnabled = true;
+                            mnuInicializarLotes_IsEnabled = true;
+                            break;
+                        case 'H'://corregirEndosos
+                            mnuCorregirEndosos_IsEnabled = true;
+                            break;
+                    }
+                }
+
+
+                       
+
             }
             catch (Exception ex)
             {
@@ -40,6 +112,23 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        public bool mnuLogout_IsEnabled
+        {
+            get
+            {
+                return _mnuLogout_IsEnabled;
+            }
+            set
+            {
+                if (_mnuLogout_IsEnabled != value)
+                {
+                    _mnuLogout_IsEnabled = value;
+                    this.RaisePropertychanged("mnuLogout_IsEnabled");
+                }
+            }
+        }
+
         public RelayCommand logout_Click
         {
             get
@@ -55,8 +144,23 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                mnuChangePassword_IsEnabled = false;
+                mnuLogout_IsEnabled = false;
+                mnuLogin_IsEnabled = true;
+                mnuVerElector_IsEnabled = false;
+                mnuRecibirLotes_IsEnabled = false;
+                mnuAutoRizarLotes_IsEnabled = false;
+                mnuProcesarLotes_IsEnabled = false;
+                mnuCorregirEndosos_IsEnabled = false;
+                mnuRevLote_IsEnabled = false;
+                mnuAreas_IsEnabled = false;
+                mnuPartidos_IsEnabled = false;
+                mnuNotarios_IsEnabled = false;
+                mnuValidaciones_IsEnabled = false;
+                mnuUsuarios_IsEnabled = false;
+                mnuBaseDeDatos_IsEnabled = false;
+                mnuInicializarLotes_IsEnabled = false;
+                Login_Click();
             }
             catch (Exception ex)
             {
@@ -65,6 +169,23 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        public bool mnuChangePassword_IsEnabled
+        {
+            get
+            {
+                return _mnuChangePassword_IsEnabled;
+            }
+            set
+            {
+                if (_mnuChangePassword_IsEnabled != value)
+                {
+                    _mnuChangePassword_IsEnabled = value;
+                    this.RaisePropertychanged("mnuChangePassword_IsEnabled");
+                }
+            }
+        }
+
         public RelayCommand cambiarPassword_Click
         {
             get
@@ -81,8 +202,11 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                vmMantPass frmMantPass = new vmMantPass();
+                frmMantPass.View.Owner = this.View as Window;
+                frmMantPass._Id = _Id;
+                frmMantPass.OnShow();
+              
             }
             catch (Exception ex)
             {

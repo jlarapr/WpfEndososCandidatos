@@ -16,7 +16,31 @@ namespace WpfEndososCandidatos.ViewModels
         private RelayCommand _usuarios_Click;
         private RelayCommand _inicializarLotes_Click;
         private RelayCommand _about_Click;
+        private bool _mnuAreas_IsEnabled;
+        private bool _mnuPartidos_IsEnabled;
+        private bool _mnuNotarios_IsEnabled;
+        private bool _mnuValidaciones_IsEnabled;
+        private bool _mnuUsuarios_IsEnabled;
+        private bool _mnuBaseDeDatos_IsEnabled;
+        private bool _mnuInicializarLotes_IsEnabled;
 
+
+
+        public bool mnuBaseDeDatos_IsEnabled
+        {
+            get
+            {
+                return _mnuBaseDeDatos_IsEnabled;
+            }
+            set
+            {
+                if (_mnuBaseDeDatos_IsEnabled != value)
+                {
+                    _mnuBaseDeDatos_IsEnabled = value;
+                    this.RaisePropertychanged("mnuBaseDeDatos_IsEnabled");
+                }
+            }
+        }
         public RelayCommand baseDeDatos_Click
         {
             get
@@ -117,6 +141,22 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+
+        public bool mnuAreas_IsEnabled
+        {
+            get
+            {
+                return _mnuAreas_IsEnabled;
+            }
+            set
+            {
+                if (_mnuAreas_IsEnabled != value)
+                {
+                    _mnuAreas_IsEnabled = value;
+                    this.RaisePropertychanged("mnuAreas_IsEnabled");
+                }
+            }
+        }
         public RelayCommand areas_Click
         {
             get
@@ -140,6 +180,23 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public bool mnuPartidos_IsEnabled
+        {
+            get
+            {
+                return _mnuPartidos_IsEnabled;
+            }
+            set
+            {
+                if (_mnuPartidos_IsEnabled != value)
+                {
+                    _mnuPartidos_IsEnabled = value;
+                    this.RaisePropertychanged("mnuPartidos_IsEnabled");
+                }
             }
         }
 
@@ -170,6 +227,21 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+        public bool mnuNotarios_IsEnabled
+        {
+            get
+            {
+                return _mnuNotarios_IsEnabled;
+            }
+            set
+            {
+                if (_mnuNotarios_IsEnabled != value)
+                {
+                    _mnuNotarios_IsEnabled = value;
+                    this.RaisePropertychanged("mnuNotarios_IsEnabled");
+                }
+            }
+        }
         public RelayCommand notarios_Click
         {
             get
@@ -198,6 +270,22 @@ namespace WpfEndososCandidatos.ViewModels
         
         }
 
+        public bool mnuValidaciones_IsEnabled
+        {
+            get
+            {
+                return _mnuValidaciones_IsEnabled;
+            }
+            set
+            {
+                if (_mnuValidaciones_IsEnabled != value)
+                {
+                    _mnuValidaciones_IsEnabled = value;
+                    this.RaisePropertychanged("mnuValidaciones_IsEnabled");
+                }
+            }
+        }
+
         public RelayCommand validaciones_Click
         {
             get
@@ -224,6 +312,21 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+        public bool mnuUsuarios_IsEnabled
+        {
+            get
+            {
+                return _mnuUsuarios_IsEnabled;
+            }
+            set
+            {
+                if (_mnuUsuarios_IsEnabled != value)
+                {
+                    _mnuUsuarios_IsEnabled = value;
+                    this.RaisePropertychanged("mnuUsuarios_IsEnabled");
+                }
+            }
+        }
         public RelayCommand usuarios_Click
         {
             get
@@ -260,6 +363,21 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+        public bool mnuInicializarLotes_IsEnabled
+        {
+            get
+            {
+                return _mnuInicializarLotes_IsEnabled;
+            }
+            set
+            {
+                if (_mnuInicializarLotes_IsEnabled != value)
+                {
+                    _mnuInicializarLotes_IsEnabled = value;
+                    this.RaisePropertychanged("mnuInicializarLotes_IsEnabled");
+                }
+            }
+        }
         public RelayCommand inicializarLotes_Click
         {
             get

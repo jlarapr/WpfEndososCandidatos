@@ -11,7 +11,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="0,0,4,0">
+    <Grid Margin="0,0,0,0">
         <Border BorderBrush="Red"  BorderThickness="5" Margin="0" CornerRadius="5">
             <Grid>
                 <Grid.ColumnDefinitions>

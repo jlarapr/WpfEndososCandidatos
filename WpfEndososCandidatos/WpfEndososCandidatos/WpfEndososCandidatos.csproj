@@ -100,6 +100,7 @@
       <DependentUpon>EndososPartidos.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
+    <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
