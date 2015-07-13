@@ -4,6 +4,7 @@
     using System;
     using System.Reflection;
     using System.Windows;
+    using WpfEndososCandidatos.ViewModels.Procesos;
     partial class MainVM
     {
         private RelayCommand _recibirLotes_Click;
@@ -51,8 +52,10 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                vmLotReceive frmLotReceive = new vmLotReceive();
+                frmLotReceive.View.Owner = this.View as Window;
+                frmLotReceive.OnShow();
+               
             }
             catch (Exception ex)
             {
@@ -95,8 +98,10 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                vmLotAuth frmLotAuth= new vmLotAuth();
+                frmLotAuth.View.Owner = this.View as Window;
+                frmLotAuth.OnShow();
+               
             }
             catch (Exception ex)
             {
@@ -138,7 +143,9 @@
         {
             try
             {
-                throw new NotImplementedException();
+                vmLotProcess frmLotProcess = new vmLotProcess();
+                frmLotProcess.View.Owner = this.View as Window;
+                frmLotProcess.OnShow();
             }
             catch (Exception ex)
             {
@@ -179,8 +186,9 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                vmLotFix frmLotFix = new vmLotFix();
+                frmLotFix.View.Owner = this.View as Window;
+                frmLotFix.OnShow();
             }
             catch (Exception ex)
             {
@@ -222,8 +230,10 @@
         {
             try
             {
-
-                throw new NotImplementedException();
+                vmLotReverse frmLotReverse = new vmLotReverse();
+                frmLotReverse.View.Owner = this.View as Window;
+                frmLotReverse.OnShow();
+               
             }
             catch (Exception ex)
             {

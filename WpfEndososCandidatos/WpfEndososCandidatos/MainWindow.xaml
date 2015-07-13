@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:vm="clr-namespace:WpfEndososCandidatos.ViewModels"
-        Title="{Binding Title}" Height="350" Width="525" WindowState="Maximized" Background="DarkGray"  >
+        Title="{Binding Title}" Height="350" Width="525" WindowState="Maximized" Background="DarkGray" Icon="WindowsJournal.ico"  >
     
     
     <i:Interaction.Triggers>

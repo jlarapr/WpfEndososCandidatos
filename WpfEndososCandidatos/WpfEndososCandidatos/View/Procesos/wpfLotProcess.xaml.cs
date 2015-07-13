@@ -13,14 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfEndososCandidatos.View
+namespace WpfEndososCandidatos.View.Procesos
 {
     /// <summary>
-    /// Interaction logic for wpfLotReverse.xaml
+    /// Interaction logic for wpfLotProcess.xaml
     /// </summary>
-    public partial class wpfLotReverse : Window, IDialogView
+    public partial class wpfLotProcess : Window, IDialogView
     {
-        public wpfLotReverse()
+        public wpfLotProcess()
         {
             InitializeComponent();
         }

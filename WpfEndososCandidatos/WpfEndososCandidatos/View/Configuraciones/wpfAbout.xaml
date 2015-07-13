@@ -19,6 +19,7 @@
                 <Button x:Name="cmOk" Command="{Binding ok_Click}" Content="O_k" HorizontalAlignment="Left" Margin="260,238,0,0" VerticalAlignment="Top" Width="75"/>
 
                 <Line X1="10" Y1="200" X2="350" Y2="200" StrokeThickness="4"  Stroke="Red" ></Line>
+                <Image HorizontalAlignment="Left" Height="78" Margin="10,210,0,0" VerticalAlignment="Top" Width="82" Source="/WpfEndososCandidatos;component/WindowsJournal.ico"/>
             </Grid>
 
         </Border>

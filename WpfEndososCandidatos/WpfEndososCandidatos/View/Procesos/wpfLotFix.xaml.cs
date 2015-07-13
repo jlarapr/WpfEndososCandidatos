@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jolcode.MyInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace WpfEndososCandidatos.View
     /// <summary>
     /// Interaction logic for wpfLotFix.xaml
     /// </summary>
-    public partial class wpfLotFix : Window
+    public partial class wpfLotFix : Window, IDialogView
     {
         public wpfLotFix()
         {
