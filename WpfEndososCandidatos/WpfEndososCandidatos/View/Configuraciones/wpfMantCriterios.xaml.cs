@@ -13,14 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfEndososCandidatos.View
+namespace WpfEndososCandidatos.View.Configuraciones
 {
     /// <summary>
-    /// Interaction logic for wpfMantAreas.xaml
+    /// Interaction logic for wpfMantCriterios.xaml
     /// </summary>
-    public partial class wpfMantAreas : Window, IDialogView
+    public partial class wpfMantCriterios : Window, IDialogView
     {
-        public wpfMantAreas()
+        public wpfMantCriterios()
         {
             InitializeComponent();
         }

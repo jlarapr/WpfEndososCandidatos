@@ -49,62 +49,60 @@
         {
             try
             {
-
-                vmfLogin frmfLogin = new vmfLogin();
-                frmfLogin.View.Owner = this.View as Window;
-                frmfLogin.OnShow();
-
-                Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
-                if (frmfLogin.View.DialogResult == false)
-                    return;
-                
-                Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName," ",frmfLogin._Id.ToString());
-                _Id = frmfLogin._Id;
-                mnuLogin_IsEnabled = false;
-                mnuLogout_IsEnabled = true;
-
-                foreach(char c in frmfLogin._AreasDeAcceso.ToCharArray())
+                using (vmfLogin frmfLogin = new vmfLogin())
                 {
-                    switch (c)
+                    frmfLogin.View.Owner = this.View as Window;
+                    frmfLogin.OnShow();
+
+
+                    Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
+                    if (frmfLogin.View.DialogResult == false)
+                        return;
+
+                    Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString());
+                    _Id = frmfLogin._Id;
+                    mnuLogin_IsEnabled = false;
+                    mnuLogout_IsEnabled = true;
+
+                    foreach (char c in frmfLogin._AreasDeAcceso.ToCharArray())
                     {
-                        case 'A'://CambiarPassword
-                            mnuChangePassword_IsEnabled = true;
-                            break;
-                        case 'B':// AutorizarLotes
-                            mnuAutoRizarLotes_IsEnabled = true;
-                            break;
-                        case 'C':// ProcesarLotes
-                            mnuRecibirLotes_IsEnabled = true;                            
-                            mnuProcesarLotes_IsEnabled = true;
-                            
-                            break;
-                        case 'D':// VerElector
-                            mnuVerElector_IsEnabled = true;
-                            break;
-                        case 'E'://Reportes
-                           
-                            break;
-                        case 'F'://ReversarLote
-                            mnuRevLote_IsEnabled = true; 
-                            break;
-                        case 'G'://Configuracione
-                            mnuAreas_IsEnabled = true;
-                            mnuPartidos_IsEnabled = true;
-                            mnuNotarios_IsEnabled = true;
-                            mnuValidaciones_IsEnabled = true;
-                            mnuUsuarios_IsEnabled = true;
-                            mnuBaseDeDatos_IsEnabled = true;
-                            mnuInicializarLotes_IsEnabled = true;
-                            break;
-                        case 'H'://corregirEndosos
-                            mnuCorregirEndosos_IsEnabled = true;
-                            break;
+                        switch (c)
+                        {
+                            case 'A'://CambiarPassword
+                                mnuChangePassword_IsEnabled = true;
+                                break;
+                            case 'B':// AutorizarLotes
+                                mnuAutoRizarLotes_IsEnabled = true;
+                                break;
+                            case 'C':// ProcesarLotes
+                                mnuRecibirLotes_IsEnabled = true;
+                                mnuProcesarLotes_IsEnabled = true;
+
+                                break;
+                            case 'D':// VerElector
+                                mnuVerElector_IsEnabled = true;
+                                break;
+                            case 'E'://Reportes
+
+                                break;
+                            case 'F'://ReversarLote
+                                mnuRevLote_IsEnabled = true;
+                                break;
+                            case 'G'://Configuracione
+                                mnuAreas_IsEnabled = true;
+                                mnuPartidos_IsEnabled = true;
+                                mnuNotarios_IsEnabled = true;
+                                mnuValidaciones_IsEnabled = true;
+                                mnuUsuarios_IsEnabled = true;
+                                mnuBaseDeDatos_IsEnabled = true;
+                                mnuInicializarLotes_IsEnabled = true;
+                                break;
+                            case 'H'://corregirEndosos
+                                mnuCorregirEndosos_IsEnabled = true;
+                                break;
+                        }
                     }
-                }
-
-
-                       
-
+                }//end using
             }
             catch (Exception ex)
             {
@@ -202,10 +200,12 @@
         {
             try
             {
-                vmMantPass frmMantPass = new vmMantPass();
-                frmMantPass.View.Owner = this.View as Window;
-                frmMantPass._Id = _Id;
-                frmMantPass.OnShow();
+                using (vmMantPass frmMantPass = new vmMantPass())
+                {
+                    frmMantPass.View.Owner = this.View as Window;
+                    frmMantPass._Id = _Id;
+                    frmMantPass.OnShow();
+                }
               
             }
             catch (Exception ex)

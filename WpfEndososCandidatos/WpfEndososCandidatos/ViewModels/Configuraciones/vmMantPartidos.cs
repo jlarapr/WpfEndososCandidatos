@@ -1,6 +1,5 @@
 ﻿
-
-namespace WpfEndososCandidatos.ViewModels.Procesos
+namespace WpfEndososCandidatos.ViewModels.Configuraciones
 {
     using jolcode;
     using jolcode.Base;
@@ -14,15 +13,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
     using System.Threading.Tasks;
     using System.Windows;
     using WpfEndososCandidatos.View;
-   public class vmLotFix : ViewModelBase<IDialogView>,IDisposable 
+
+    class vmMantPartidos : ViewModelBase<IDialogView>, IDisposable
     {
-       public vmLotFix()
-           : base(new wpfLotFix())
-       {
-           initWindow = new RelayCommand(param => InitWindow());
-           cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
-       }
-       #region initWindow OnShow
+
+        public vmMantPartidos()
+            : base(new wpfMantPartidos())
+        {
+            initWindow = new RelayCommand(param => InitWindow());
+            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+        }
+
+
+        #region initWindow OnShow
        private void InitWindow()
        {
            try
@@ -46,8 +49,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
            get;
            private set;
        }
-       #endregion
-       #region Exit
+       #endregion       
+        #region Exit
        public RelayCommand cmdSalir_Click
        {
            get;
@@ -66,11 +69,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
            }
        }
-
+       private bool CommandCan
+       {
+           get
+           {
+               return true;
+           }
+       }
 
 
        #endregion
-       #region Dispose
+        #region Dispose
        
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
 
@@ -81,7 +90,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             GC.SuppressFinalize(this);
         }
 
-        ~vmLotFix()
+        ~vmMantPartidos()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);
@@ -107,5 +116,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         
         #endregion
-    }//end
-}//end
+
+    }
+}

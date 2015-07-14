@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jolcode.MyInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace WpfEndososCandidatos.View
     /// <summary>
     /// Interaction logic for wpfElector.xaml
     /// </summary>
-    public partial class wpfElector : Window
+    public partial class wpfElector : Window, IDialogView
     {
         public wpfElector()
         {

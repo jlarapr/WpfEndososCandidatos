@@ -1,25 +1,29 @@
-﻿namespace WpfEndososCandidatos.ViewModels.Procesos
+﻿namespace WpfEndososCandidatos.ViewModels.Configuraciones
 {
     using jolcode;
-using jolcode.Base;
-using jolcode.MyInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using WpfEndososCandidatos.View.Procesos;
-    public class vmLotReceive : ViewModelBase<IDialogView>,IDisposable 
+    using jolcode.Base;
+    using jolcode.MyInterface;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using WpfEndososCandidatos.View;
+
+    class vmMantAreas : ViewModelBase<IDialogView>, IDisposable
     {
 
-        public vmLotReceive () : base (new wpfLotReceive())
+        public vmMantAreas()
+            : base(new wpfMantAreas())
         {
             initWindow = new RelayCommand(param => InitWindow());
-            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
+            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
         }
+
+
         #region initWindow OnShow
         private void InitWindow()
         {
@@ -64,13 +68,18 @@ using WpfEndososCandidatos.View.Procesos;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        private bool CommandCan
+        {
+            get
+            {
+                return true;
+            }
+        }
 
 
         #endregion
-         
         #region Dispose
-       
+
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
 
 
@@ -80,7 +89,7 @@ using WpfEndososCandidatos.View.Procesos;
             GC.SuppressFinalize(this);
         }
 
-        ~vmLotReceive()
+        ~vmMantAreas()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);
@@ -104,7 +113,7 @@ using WpfEndososCandidatos.View.Procesos;
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
-    }//end
-}//end
+    }
+}

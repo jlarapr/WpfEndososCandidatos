@@ -225,91 +225,92 @@ namespace WpfEndososCandidatos.ViewModels
                 //    (_ImageSvr == "") || (_ImageUsr == "") || (_ImageDB == "") || (_ImagePass == "") ||  (_ImgPath == "") || (_ValiSvr == "") || (_ValiUsr == "") || (_ValiDB == "") ||
                 //    (_ValiPass == ""))
 
-                if ((_SqlServer.Trim().Length == 0)     ||
-                        (_Username.Trim().Length == 0)  ||
-                        (_Database.Trim().Length == 0)  ||
-                       (_Password.Trim().Length == 0)   ||
-                       (_MastSvr.Trim().Length == 0)    ||
-                       (_MastUsr.Trim().Length == 0)    ||
-                       (_MastDB.Trim().Length == 0)     ||
-                       (_MastPass.Trim().Length == 0)   ||
-                       (_ImageSvr.Trim().Length == 0)   ||
-                       (_ImageUsr.Trim().Length == 0)   ||
-                       (_ImageDB.Trim().Length == 0)    ||
-                       (_ImagePass.Trim().Length == 0)  ||
-                       (_ImgPath.Trim().Length == 0)    ||
-                       (_ValiSvr.Trim().Length == 0)    ||
-                       (_ValiUsr.Trim().Length == 0)    ||
-                       (_ValiDB.Trim().Length == 0)     ||
+                if ((_SqlServer.Trim().Length == 0) ||
+                        (_Username.Trim().Length == 0) ||
+                        (_Database.Trim().Length == 0) ||
+                       (_Password.Trim().Length == 0) ||
+                       (_MastSvr.Trim().Length == 0) ||
+                       (_MastUsr.Trim().Length == 0) ||
+                       (_MastDB.Trim().Length == 0) ||
+                       (_MastPass.Trim().Length == 0) ||
+                       (_ImageSvr.Trim().Length == 0) ||
+                       (_ImageUsr.Trim().Length == 0) ||
+                       (_ImageDB.Trim().Length == 0) ||
+                       (_ImagePass.Trim().Length == 0) ||
+                       (_ImgPath.Trim().Length == 0) ||
+                       (_ValiSvr.Trim().Length == 0) ||
+                       (_ValiUsr.Trim().Length == 0) ||
+                       (_ValiDB.Trim().Length == 0) ||
                        (_ValiPass.Trim().Length == 0))
                 {
-                    vmMantDB frmMantDB = new vmMantDB(_REGPATH);
+                    using (vmMantDB frmMantDB = new vmMantDB(_REGPATH))
+                    {
+                        frmMantDB.sqlServer = _SqlServer;
+                        frmMantDB.userName = _Username;
+                        frmMantDB.password = _Password;
+                        frmMantDB.database = _Database;
 
-                    frmMantDB.sqlServer = _SqlServer;
-                    frmMantDB.userName = _Username;
-                    frmMantDB.password = _Password;
-                    frmMantDB.database = _Database;
+                        frmMantDB.mastSvr = _MastSvr;
+                        frmMantDB.mastUsr = _MastUsr;
+                        frmMantDB.mastPass = _MastPass;
+                        frmMantDB.mastDB = _MastDB;
 
-                    frmMantDB.mastSvr = _MastSvr;
-                    frmMantDB.mastUsr = _MastUsr;
-                    frmMantDB.mastPass = _MastPass;
-                    frmMantDB.mastDB = _MastDB;
+                        frmMantDB.imageSvr = _ImageSvr;
+                        frmMantDB.imageUsr = _ImageUsr;
+                        frmMantDB.imagePass = _ImagePass;
+                        frmMantDB.imageDB = _ImageDB;
 
-                    frmMantDB.imageSvr = _ImageSvr;
-                    frmMantDB.imageUsr = _ImageUsr;
-                    frmMantDB.imagePass = _ImagePass;
-                    frmMantDB.imageDB = _ImageDB;
+                        frmMantDB.valiSvr = _ValiSvr;
+                        frmMantDB.valiUsr = _ValiUsr;
+                        frmMantDB.valiPass = _ValiPass;
+                        frmMantDB.valiDB = _ValiDB;
 
-                    frmMantDB.valiSvr = _ValiSvr;
-                    frmMantDB.valiUsr = _ValiUsr;
-                    frmMantDB.valiPass = _ValiPass;
-                    frmMantDB.valiDB = _ValiDB;
+                        frmMantDB.imgPath = _ImgPath;
 
-                    frmMantDB.imgPath = _ImgPath;
+                        frmMantDB.View.Owner = this.View as Window;
 
-                    frmMantDB.View.Owner = this.View as Window;
+                        frmMantDB.OnShow();
 
-                    frmMantDB.OnShow();
+                        _SqlServer = frmMantDB.sqlServer;
+                        _Username = frmMantDB.userName;
+                        _Password = frmMantDB.password;
+                        _Database = frmMantDB.database;
 
-                    _SqlServer = frmMantDB.sqlServer;
-                    _Username = frmMantDB.userName;
-                    _Password = frmMantDB.password;
-                    _Database = frmMantDB.database;
+                        _MastSvr = frmMantDB.mastSvr;
+                        _MastUsr = frmMantDB.mastUsr;
+                        _MastPass = frmMantDB.mastPass;
+                        _MastDB = frmMantDB.mastDB;
 
-                    _MastSvr = frmMantDB.mastSvr;
-                    _MastUsr = frmMantDB.mastUsr;
-                    _MastPass = frmMantDB.mastPass;
-                    _MastDB = frmMantDB.mastDB;
+                        _ImageSvr = frmMantDB.imageSvr;
+                        _ImageUsr = frmMantDB.imageUsr;
+                        _ImagePass = frmMantDB.imagePass;
+                        _ImageDB = frmMantDB.imageDB;
 
-                    _ImageSvr = frmMantDB.imageSvr;
-                    _ImageUsr = frmMantDB.imageUsr;
-                    _ImagePass = frmMantDB.imagePass;
-                    _ImageDB = frmMantDB.imageDB;
+                        _ValiSvr = frmMantDB.valiSvr;
+                        _ValiUsr = frmMantDB.valiUsr;
+                        _ValiPass = frmMantDB.valiPass;
+                        _ValiDB = frmMantDB.valiDB;
 
-                    _ValiSvr = frmMantDB.valiSvr;
-                    _ValiUsr = frmMantDB.valiUsr;
-                    _ValiPass = frmMantDB.valiPass;
-                    _ValiDB = frmMantDB.valiDB;
-
-                    _ImgPath = frmMantDB.imgPath;
+                        _ImgPath = frmMantDB.imgPath;
+                    }// end using
                 }//End IF
-                mnuChangePassword_IsEnabled = false;
-                mnuLogout_IsEnabled = false;
-                mnuLogin_IsEnabled = true;
-                mnuVerElector_IsEnabled = false;
-                mnuRecibirLotes_IsEnabled = false;
-                mnuAutoRizarLotes_IsEnabled = false;
-                mnuProcesarLotes_IsEnabled = false;
-                mnuCorregirEndosos_IsEnabled = false;
-                mnuRevLote_IsEnabled = false;
-                mnuAreas_IsEnabled = false;
-                mnuPartidos_IsEnabled = false;
-                mnuNotarios_IsEnabled = false;
-                mnuValidaciones_IsEnabled = false;
-                mnuUsuarios_IsEnabled = false;
-                mnuBaseDeDatos_IsEnabled = false;             
-                mnuInicializarLotes_IsEnabled = false;
-                Login_Click();
+                    mnuChangePassword_IsEnabled = false;
+                    mnuLogout_IsEnabled = false;
+                    mnuLogin_IsEnabled = true;
+                    mnuVerElector_IsEnabled = false;
+                    mnuRecibirLotes_IsEnabled = false;
+                    mnuAutoRizarLotes_IsEnabled = false;
+                    mnuProcesarLotes_IsEnabled = false;
+                    mnuCorregirEndosos_IsEnabled = false;
+                    mnuRevLote_IsEnabled = false;
+                    mnuAreas_IsEnabled = false;
+                    mnuPartidos_IsEnabled = false;
+                    mnuNotarios_IsEnabled = false;
+                    mnuValidaciones_IsEnabled = false;
+                    mnuUsuarios_IsEnabled = false;
+                    mnuBaseDeDatos_IsEnabled = false;
+                    mnuInicializarLotes_IsEnabled = false;
+                    Login_Click();
             }
             catch(Exception ex)
             {

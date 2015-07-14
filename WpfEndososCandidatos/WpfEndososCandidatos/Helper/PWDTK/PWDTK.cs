@@ -118,6 +118,36 @@
             }
         }
 
+
+        public struct UserPolicy
+        {
+            private readonly int _aUserMinLength;
+            private readonly int _aUserMaxLength;
+
+            public UserPolicy(int minLength, int maxLength)
+            {
+                _aUserMinLength = minLength;
+                _aUserMaxLength = maxLength;
+            }
+
+            public int UserdMinLength
+            {
+                get
+                {
+                    return _aUserMinLength;
+                }
+            }
+
+            public int UserMaxLength
+            {
+                get
+                {
+                    return _aUserMaxLength;
+                }
+            }
+
+        }
+
         #endregion
 
         #region PWDTK Public Methods
@@ -284,6 +314,19 @@
 
             return false;
         }
+        public static Boolean TryUserNamePolicyCompliance(String username,UserPolicy usrPolicy,ref UserPolicyException usrPolicyException)
+        {
+            try
+            {//by lara
+                PCheckUserPolicyCompliance(username, usrPolicy);
+                return true;
+            }
+            catch (UserPolicyException ex)
+            {
+                usrPolicyException = ex;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Converts String to UTF8 friendly Byte Array
@@ -337,6 +380,19 @@
             }
         }
 
+        private static void PCheckUserPolicyCompliance(string userName, UserPolicy usrPolicy)
+        {//by lara
+            if (userName.Length < usrPolicy.UserdMinLength)
+            {
+                throw new UserPolicyException("The username does not have a length of at least " + usrPolicy.UserdMinLength + " characters");
+            }
+            if (userName.Length > usrPolicy.UserMaxLength)
+            {
+                throw new UserPolicyException("The username is longer than " + usrPolicy.UserMaxLength + " characters");
+
+            }
+        }
+
         private static Byte[] PGenerateRandomSalt(Int32 saltLength)
         {
             Byte[] salt = new byte[saltLength];
@@ -387,6 +443,16 @@
         {
 
         }
+    }
+
+    public class UserPolicyException : Exception
+    {
+        public UserPolicyException(String message) : 
+            base(message)
+        {
+
+        }
+
     }
 
     public class PasswordTooLongException : Exception

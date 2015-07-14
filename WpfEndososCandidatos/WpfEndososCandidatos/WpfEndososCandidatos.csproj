@@ -104,6 +104,10 @@
     </Compile>
     <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
     <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantAreas.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantCriterios.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
@@ -117,8 +121,12 @@
     <Compile Include="ViewModels\Procesos\vmLotProcess.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReceive.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReverse.cs" />
+    <Compile Include="ViewModels\Ver\vmElector.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
+      <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Procesos\wpfLotProcess.xaml.cs">
       <DependentUpon>wpfLotProcess.xaml</DependentUpon>
@@ -188,6 +196,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Configuraciones\wpfAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantCriterios.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -305,9 +317,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\Ver\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

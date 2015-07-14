@@ -23,7 +23,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Collections.ObjectModel;
     using System.Data.SqlClient;
 
-    public  class vmMatUsers : ViewModelBase<IDialogView>
+    public class vmMatUsers : ViewModelBase<IDialogView>, IDisposable 
     {
         //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
         private const int numberUpper = 1;
@@ -37,7 +37,7 @@ namespace WpfEndososCandidatos.ViewModels
         private const int saltSize = PWDTK.CDefaultSaltLength + 2;
         private const int iterations = 10002;
         PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
-
+        PWDTK.UserPolicy UserPolicy = new PWDTK.UserPolicy(4, Int32.MaxValue);
 
         dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
         private int _Operation;
@@ -62,9 +62,7 @@ namespace WpfEndososCandidatos.ViewModels
         public string _userName { get;set; }
         public string _userPassword { get;set; }
         public string _database { get; set; }
-
         
-
         private bool _CbUser_IsEditable;
         private bool _Password_IsEnabled;
         private bool _AreasdeAcceso_IsEnabled;
@@ -79,7 +77,6 @@ namespace WpfEndososCandidatos.ViewModels
         private bool _cmdEditPass_IsEnabled;
         private Visibility _Password_Cls_Visibility;
        
-
         public vmMatUsers()
             : base(new wpfMantUsers())
         {
@@ -212,6 +209,7 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
+
         #region SaveBorrarEdiatarAnadir
 
         public RelayCommand guardar_Click { get; private set; }
@@ -246,8 +244,12 @@ namespace WpfEndososCandidatos.ViewModels
                                 throw new Exception("Error con el Password");
                             }
 
-                            //Hash password
+                            //Policy 
+                            if (!userMeetsPolicy(CbUser_Text, UserPolicy)) return;
+
                             if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
+                            
+                            //Hash password
                             _salt = PWDTK.GetRandomSalt(saltSize);
 
                             string salt = PWDTK.GetSaltHexString(_salt);
@@ -319,9 +321,12 @@ namespace WpfEndososCandidatos.ViewModels
                                 throw new Exception("Error con el Password");
                             }
 
-                            //Hash password
+                            //Policy
+                            if (!userMeetsPolicy(CbUser_Text, UserPolicy)) return;
+
                             if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
-                            
+
+                            //Hash password                                                        
                             _salt = PWDTK.GetRandomSalt(saltSize);
 
                             string salt = PWDTK.GetSaltHexString(_salt);
@@ -1364,8 +1369,57 @@ namespace WpfEndososCandidatos.ViewModels
                 //return false;
             }
         }
+        private bool userMeetsPolicy(string username, PWDTK.UserPolicy userPolicy)
+        {
+            UserPolicyException usrEx = new UserPolicyException("");
+            if (PWDTK.TryUserNamePolicyCompliance(username, userPolicy, ref usrEx))
+            {
+                return true;
+            }
+            else
+            {
+                throw new Exception(usrEx.Message);
+            }
+        }
+
 
         #endregion
 
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmMatUsers()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
+        }
+        
+        #endregion
     }//end
 }//end

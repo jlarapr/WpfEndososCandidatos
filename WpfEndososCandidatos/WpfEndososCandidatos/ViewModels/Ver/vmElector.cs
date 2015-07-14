@@ -1,28 +1,29 @@
-﻿
-
-namespace WpfEndososCandidatos.ViewModels.Procesos
+﻿namespace WpfEndososCandidatos.ViewModels.Ver
 {
     using jolcode;
-    using jolcode.Base;
-    using jolcode.MyInterface;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows;
+using jolcode.Base;
+using jolcode.MyInterface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
     using WpfEndososCandidatos.View;
-   public class vmLotFix : ViewModelBase<IDialogView>,IDisposable 
+    class vmElector : ViewModelBase<IDialogView>, IDisposable
     {
-       public vmLotFix()
-           : base(new wpfLotFix())
-       {
-           initWindow = new RelayCommand(param => InitWindow());
-           cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
-       }
-       #region initWindow OnShow
+
+
+        public vmElector()
+            : base(new wpfElector())
+        {
+            initWindow = new RelayCommand(param => InitWindow());
+            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+        }
+
+        #region initWindow OnShow
        private void InitWindow()
        {
            try
@@ -46,8 +47,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
            get;
            private set;
        }
-       #endregion
-       #region Exit
+       #endregion       
+        #region Exit
        public RelayCommand cmdSalir_Click
        {
            get;
@@ -66,11 +67,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
            }
        }
-
+       private bool CommandCan
+       {
+           get
+           {
+               return true;
+           }
+       }
 
 
        #endregion
-       #region Dispose
+        #region Dispose
        
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
 
@@ -81,7 +88,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             GC.SuppressFinalize(this);
         }
 
-        ~vmLotFix()
+        ~vmElector()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);
@@ -107,5 +114,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         
         #endregion
-    }//end
-}//end
+
+    }
+}

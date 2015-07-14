@@ -20,8 +20,9 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Security.Claims;
     using System.ComponentModel;
     using WpfEndososCandidatos.Helper.PWDTK;
+    using System.Runtime.InteropServices;
 
-    class vmfLogin : ViewModelBase<IDialogView>, INotifyPropertyChanged
+    class vmfLogin : ViewModelBase<IDialogView>,  IDisposable 
     {
         //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
         private const int numberUpper = 1;
@@ -35,6 +36,7 @@ namespace WpfEndososCandidatos.ViewModels
         private const int saltSize = PWDTK.CDefaultSaltLength + 2;
 
         PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
+        PWDTK.UserPolicy userPolicy = new PWDTK.UserPolicy(4, Int32.MaxValue);
 
         private RelayCommand _InitWindow;
         private RelayCommand _cancel_Click;
@@ -46,7 +48,7 @@ namespace WpfEndososCandidatos.ViewModels
         public vmfLogin() :
             base(new wpfLogin())
         {
-            
+            cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
         }
 
         public string WhatIsUserName { get; set; }
@@ -76,6 +78,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 txtUserName_txt = string.Empty;
                 txtPassword_txt = string.Empty;
+                Password_Cls_Visibility = Visibility.Hidden;
 
                 
             }
@@ -115,6 +118,8 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+
+
         public string txtUserName_txt
         {
             get
@@ -130,7 +135,49 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
+        public RelayCommand cmdVerPass_Click
+        {
+            get;
+            private set;
 
+        }
+        private void CmdVerPass_Click()
+        {
+            try
+            {
+
+                if (Password_Cls_Visibility == Visibility.Visible)
+                {
+                    Password_Cls_Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    Password_Cls_Visibility = Visibility.Visible;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+        public Visibility Password_Cls_Visibility
+        {
+            get
+            {
+                return _Password_Cls_Visibility;
+            }
+            set
+            {
+                if (_Password_Cls_Visibility != value)
+                {
+                    _Password_Cls_Visibility = value;
+                    this.RaisePropertychanged("Password_Cls_Visibility");
+                }
+            }
+        }
         public string txtPassword_txt
         {
             get
@@ -154,10 +201,38 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_oK_Click == null)
                 {
-                    _oK_Click = new RelayCommand(param => OK_Click(param));
+                    _oK_Click = new RelayCommand(param => OK_Click(param),param=>Ok_Can);
                 }
                 return _oK_Click;
             }
+        }
+
+        private bool Ok_Can
+        {
+            get
+            {
+                try
+                {
+                    if ((txtUserName_txt == null) || (txtPassword_txt == null))
+                        return false;
+
+                    PasswordPolicyException pwdEx = new PasswordPolicyException("");
+                    UserPolicyException usrEx = new UserPolicyException("");
+
+
+                    if (!PWDTK.TryUserNamePolicyCompliance(txtUserName_txt, userPolicy, ref usrEx))
+                        return false;
+
+                    if (!PWDTK.TryPasswordPolicyCompliance(txtPassword_txt, PwdPolicy, ref pwdEx))
+                        return false;
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }          
         }
 
         private  void OK_Click(object param)
@@ -185,7 +260,7 @@ namespace WpfEndososCandidatos.ViewModels
                     throw new Exception("Error con el usuario o el password.");
 
 
-                if (!PasswordMeetsPolicy(txtPassword_txt, PwdPolicy)) return;
+             //   if (!PasswordMeetsPolicy(txtPassword_txt, PwdPolicy)) return;
 
                 string hashedPassword = user.First().passwordHash;
 
@@ -196,7 +271,7 @@ namespace WpfEndososCandidatos.ViewModels
 
                 if (!PWDTK.ComparePasswordToHash(_salt, txtPassword_txt, _hash, iterations))
                 {
-                    throw new Exception("Error con el usuario o el password.");
+                    throw new Exception("Error con el password.");
                 }
 
                 WhatIsUserName = " " + txtUserName_txt;
@@ -233,6 +308,45 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
+
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        private bool _Ok_Can;
+        private Visibility _Password_Cls_Visibility;
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmfLogin()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
+        }
+        
+        #endregion
        
     }//end
 }//end

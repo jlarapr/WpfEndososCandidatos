@@ -17,7 +17,7 @@ namespace WpfEndososCandidatos.ViewModels
     using WpfEndososCandidatos.Models;
     using WpfEndososCandidatos.View;
 
-    public class vmMantPass:ViewModelBase<IDialogView>
+    public class vmMantPass : ViewModelBase<IDialogView>, IDisposable
     {
         //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
         private const int numberUpper = 1;
@@ -244,5 +244,44 @@ namespace WpfEndososCandidatos.ViewModels
                 //return false;
             }
         }
+    
+    
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmMantPass()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
+        }
+        
+        #endregion
+    
     }
 }

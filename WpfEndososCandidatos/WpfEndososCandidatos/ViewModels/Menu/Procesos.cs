@@ -52,9 +52,11 @@
         {
             try
             {
-                vmLotReceive frmLotReceive = new vmLotReceive();
-                frmLotReceive.View.Owner = this.View as Window;
-                frmLotReceive.OnShow();
+                using (vmLotReceive frmLotReceive = new vmLotReceive())
+                {
+                    frmLotReceive.View.Owner = this.View as Window;
+                    frmLotReceive.OnShow();
+                }
                
             }
             catch (Exception ex)
@@ -98,9 +100,11 @@
         {
             try
             {
-                vmLotAuth frmLotAuth= new vmLotAuth();
-                frmLotAuth.View.Owner = this.View as Window;
-                frmLotAuth.OnShow();
+                using (vmLotAuth frmLotAuth = new vmLotAuth())
+                {
+                    frmLotAuth.View.Owner = this.View as Window;
+                    frmLotAuth.OnShow();
+                }
                
             }
             catch (Exception ex)
@@ -143,9 +147,11 @@
         {
             try
             {
-                vmLotProcess frmLotProcess = new vmLotProcess();
-                frmLotProcess.View.Owner = this.View as Window;
-                frmLotProcess.OnShow();
+                using (vmLotProcess frmLotProcess = new vmLotProcess())
+                {
+                    frmLotProcess.View.Owner = this.View as Window;
+                    frmLotProcess.OnShow();
+                }
             }
             catch (Exception ex)
             {
@@ -186,9 +192,11 @@
         {
             try
             {
-                vmLotFix frmLotFix = new vmLotFix();
-                frmLotFix.View.Owner = this.View as Window;
-                frmLotFix.OnShow();
+                using (vmLotFix frmLotFix = new vmLotFix())
+                {
+                    frmLotFix.View.Owner = this.View as Window;
+                    frmLotFix.OnShow();
+                }
             }
             catch (Exception ex)
             {
@@ -230,9 +238,11 @@
         {
             try
             {
-                vmLotReverse frmLotReverse = new vmLotReverse();
-                frmLotReverse.View.Owner = this.View as Window;
-                frmLotReverse.OnShow();
+                using (vmLotReverse frmLotReverse = new vmLotReverse())
+                {
+                    frmLotReverse.View.Owner = this.View as Window;
+                    frmLotReverse.OnShow();
+                }
                
             }
             catch (Exception ex)

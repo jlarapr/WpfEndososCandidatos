@@ -18,7 +18,7 @@
     using System.Windows.Controls;
     using WpfEndososCandidatos.Helper;
     using WpfEndososCandidatos.View;
-    class vmMantDB : ViewModelBase<IDialogView>
+    class vmMantDB : ViewModelBase<IDialogView>, IDisposable 
     {
         private string _dfPathtoPictures_txt;
         
@@ -929,6 +929,43 @@
             }
             ss.MakeReadOnly();
             return ss;
+        }
+        
+        #endregion
+
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmMantDB()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
         }
         
         #endregion

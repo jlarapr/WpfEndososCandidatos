@@ -1,13 +1,14 @@
 ﻿namespace WpfEndososCandidatos.ViewModels
 {
     using jolcode;
-    using jolcode.Base;
-    using jolcode.MyInterface;
-    using System;
-    using System.Reflection;
-    using WpfEndososCandidatos.View;
+using jolcode.Base;
+using jolcode.MyInterface;
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using WpfEndososCandidatos.View;
 
-    class vmAbout : ViewModelBase<IDialogView>
+    class vmAbout : ViewModelBase<IDialogView>, IDisposable
     {
         private string _mensaje;
         private RelayCommand _InitWindow;
@@ -85,5 +86,44 @@
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
+
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmAbout()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
+        }
+        
+        #endregion
+
+
     }
 }

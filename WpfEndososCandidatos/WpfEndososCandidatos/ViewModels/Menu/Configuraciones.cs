@@ -6,6 +6,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System;
     using System.Reflection;
     using System.Windows;
+    using WpfEndososCandidatos.ViewModels.Configuraciones;
     partial class MainVM
     {
         private RelayCommand _baseDeDatos;
@@ -81,59 +82,59 @@ namespace WpfEndososCandidatos.ViewModels
                     _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
                 }
 
-                
+
                 {
-                    vmMantDB frmMantDB = new vmMantDB(_REGPATH);
+                    using (vmMantDB frmMantDB = new vmMantDB(_REGPATH))
+                    {
+                        frmMantDB.sqlServer = _SqlServer;
+                        frmMantDB.userName = _Username;
+                        frmMantDB.password = _Password;
+                        frmMantDB.database = _Database;
 
-                    frmMantDB.sqlServer = _SqlServer;
-                    frmMantDB.userName = _Username;
-                    frmMantDB.password = _Password;
-                    frmMantDB.database = _Database;
+                        frmMantDB.mastSvr = _MastSvr;
+                        frmMantDB.mastUsr = _MastUsr;
+                        frmMantDB.mastPass = _MastPass;
+                        frmMantDB.mastDB = _MastDB;
 
-                    frmMantDB.mastSvr = _MastSvr;
-                    frmMantDB.mastUsr = _MastUsr;
-                    frmMantDB.mastPass = _MastPass;
-                    frmMantDB.mastDB = _MastDB;
+                        frmMantDB.imageSvr = _ImageSvr;
+                        frmMantDB.imageUsr = _ImageUsr;
+                        frmMantDB.imagePass = _ImagePass;
+                        frmMantDB.imageDB = _ImageDB;
 
-                    frmMantDB.imageSvr = _ImageSvr;
-                    frmMantDB.imageUsr = _ImageUsr;
-                    frmMantDB.imagePass = _ImagePass;
-                    frmMantDB.imageDB = _ImageDB;
+                        frmMantDB.valiSvr = _ValiSvr;
+                        frmMantDB.valiUsr = _ValiUsr;
+                        frmMantDB.valiPass = _ValiPass;
+                        frmMantDB.valiDB = _ValiDB;
 
-                    frmMantDB.valiSvr = _ValiSvr;
-                    frmMantDB.valiUsr = _ValiUsr;
-                    frmMantDB.valiPass = _ValiPass;
-                    frmMantDB.valiDB = _ValiDB;
+                        frmMantDB.imgPath = _ImgPath;
 
-                    frmMantDB.imgPath = _ImgPath;
+                        frmMantDB.View.Owner = this.View as Window;
+                        frmMantDB.OnShow();
 
-                    frmMantDB.View.Owner = this.View as Window;
-                    frmMantDB.OnShow();
+                        _SqlServer = frmMantDB.sqlServer;
+                        _Username = frmMantDB.userName;
+                        _Password = frmMantDB.password;
+                        _Database = frmMantDB.database;
 
-                    _SqlServer = frmMantDB.sqlServer;
-                    _Username = frmMantDB.userName;
-                    _Password = frmMantDB.password;
-                    _Database = frmMantDB.database;
+                        _MastSvr = frmMantDB.mastSvr;
+                        _MastUsr = frmMantDB.mastUsr;
+                        _MastPass = frmMantDB.mastPass;
+                        _MastDB = frmMantDB.mastDB;
 
-                    _MastSvr = frmMantDB.mastSvr;
-                    _MastUsr = frmMantDB.mastUsr;
-                    _MastPass = frmMantDB.mastPass;
-                    _MastDB = frmMantDB.mastDB;
+                        _ImageSvr = frmMantDB.imageSvr;
+                        _ImageUsr = frmMantDB.imageUsr;
+                        _ImagePass = frmMantDB.imagePass;
+                        _ImageDB = frmMantDB.imageDB;
 
-                    _ImageSvr = frmMantDB.imageSvr;
-                    _ImageUsr = frmMantDB.imageUsr;
-                    _ImagePass = frmMantDB.imagePass;
-                    _ImageDB = frmMantDB.imageDB;
+                        _ValiSvr = frmMantDB.valiSvr;
+                        _ValiUsr = frmMantDB.valiUsr;
+                        _ValiPass = frmMantDB.valiPass;
+                        _ValiDB = frmMantDB.valiDB;
 
-                    _ValiSvr = frmMantDB.valiSvr;
-                    _ValiUsr = frmMantDB.valiUsr;
-                    _ValiPass = frmMantDB.valiPass;
-                    _ValiDB = frmMantDB.valiDB;
+                        _ImgPath = frmMantDB.imgPath;
 
-                    _ImgPath = frmMantDB.imgPath;
-
-                }//End IF
-
+                    }//End IF
+                }
             }
             catch (Exception ex)
             {
@@ -173,8 +174,12 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-
-                throw new NotImplementedException();
+                using (vmMantAreas frmMantAreas = new vmMantAreas())
+                {
+                    frmMantAreas.View.Owner = this.View as Window;
+                    frmMantAreas.OnShow();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -216,8 +221,13 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
+                using (vmMantPartidos frmMantPartidos = new vmMantPartidos())
+                {
+                    frmMantPartidos.View.Owner = this.View as Window;
+                    frmMantPartidos.OnShow();
 
-                throw new NotImplementedException();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -258,8 +268,12 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-
-                throw new NotImplementedException();
+                using (vmMantNotarios frmMantNotarios = new vmMantNotarios())
+                {
+                    frmMantNotarios.View.Owner = this.View as Window;
+                    frmMantNotarios.OnShow();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -301,8 +315,12 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-
-                throw new NotImplementedException();
+                using (vmMantCriterios frmMantCriterios = new vmMantCriterios())
+                {
+                    frmMantCriterios.View.Owner = this.View as Window;
+                    frmMantCriterios.OnShow();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -342,18 +360,15 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                vmMatUsers frmMatUsers = new vmMatUsers();
-                frmMatUsers.View.Owner = this.View as Window;
-
-                frmMatUsers._sqlServer = _SqlServer;
-                frmMatUsers._userName = _Username;
-                frmMatUsers._userPassword = _Password;
-                frmMatUsers._database = _Database;
-
-                frmMatUsers.OnShow();
-                     
-
-                
+                using (vmMatUsers frmMatUsers = new vmMatUsers())
+                {
+                    frmMatUsers.View.Owner = this.View as Window;
+                    frmMatUsers._sqlServer = _SqlServer;
+                    frmMatUsers._userName = _Username;
+                    frmMatUsers._userPassword = _Password;
+                    frmMatUsers._database = _Database;
+                    frmMatUsers.OnShow();
+                }   
             }
             catch (Exception ex)
             {
@@ -421,9 +436,11 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                vmAbout frmAbout = new vmAbout();
-                frmAbout.View.Owner = this.View as Window;
-                frmAbout.OnShow();
+                using (vmAbout frmAbout = new vmAbout())
+                {
+                    frmAbout.View.Owner = this.View as Window;
+                    frmAbout.OnShow();
+                }
             }
             catch (Exception ex)
             {

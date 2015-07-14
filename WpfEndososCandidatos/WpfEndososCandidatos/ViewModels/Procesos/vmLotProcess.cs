@@ -1,18 +1,19 @@
 ﻿namespace WpfEndososCandidatos.ViewModels.Procesos
 {
     using jolcode;
-    using jolcode.Base;
-    using jolcode.MyInterface;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using WpfEndososCandidatos.View.Procesos;
+using jolcode.Base;
+using jolcode.MyInterface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using WpfEndososCandidatos.View.Procesos;
 
-    public class vmLotProcess : ViewModelBase<IDialogView>
+    public class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
     {
         public vmLotProcess()
             : base(new wpfLotProcess())
@@ -67,6 +68,43 @@
 
 
 
+        #endregion
+        #region Dispose
+       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~vmLotProcess()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources AnotherResource 
+                //if (managedResource != null)
+                //{
+                //    managedResource.Dispose();
+                //    managedResource = null;
+                //}
+            }
+            // free native resources if there are any.
+            if (nativeResource != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(nativeResource);
+                nativeResource = IntPtr.Zero;
+            }
+        }
+        
         #endregion
 
     }//end

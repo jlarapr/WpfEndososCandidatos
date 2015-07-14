@@ -4,6 +4,7 @@
     using System;
     using System.Reflection;
     using System.Windows;
+    using WpfEndososCandidatos.ViewModels.Ver;
      partial class MainVM
      {
          private RelayCommand _verElector_click;
@@ -43,8 +44,14 @@
          {
              try
              {
+                 using (vmElector frmElector = new vmElector())
+                 {
 
-                 throw new NotImplementedException();
+                     frmElector.View.Owner = this.View as Window;
+                     frmElector.OnShow();
+                 }
+
+                 
              }
              catch (Exception ex)
              {
