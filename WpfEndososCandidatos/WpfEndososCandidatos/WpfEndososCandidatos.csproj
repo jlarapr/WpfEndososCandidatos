@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
     <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmLotInit.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantAreas.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantCriterios.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />

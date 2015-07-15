@@ -409,8 +409,11 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-
-                throw new NotImplementedException();
+                using (vmLotInit frmLotInit = new vmLotInit())
+                {
+                    frmLotInit.View.Owner = this.View as Window;
+                    frmLotInit.OnShow();
+                }
             }
             catch (Exception ex)
             {
