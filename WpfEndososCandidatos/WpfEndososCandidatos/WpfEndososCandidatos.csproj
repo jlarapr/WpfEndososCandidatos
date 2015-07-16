@@ -48,9 +48,6 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="jolcode">
-      <HintPath>C:\Users\jlara\Documents\Visual Studio 2013\Projects\miPruebaWpf_MEF\jolcode\bin\Release\jolcode.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -84,6 +81,13 @@
     <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="Helper\PWDTK\PWDTK.cs" />
     <Compile Include="Helper\PWDTK\Rfc2898.cs" />
+    <Compile Include="jolcode\Base\ViewModelBase.cs" />
+    <Compile Include="jolcode\GetRegistry.cs" />
+    <Compile Include="jolcode\MyInterface\ICustomButton.cs" />
+    <Compile Include="jolcode\MyInterface\IDialogView.cs" />
+    <Compile Include="jolcode\MyInterface\IMainView.cs" />
+    <Compile Include="jolcode\MyInterface\IView.cs" />
+    <Compile Include="jolcode\RelayCommand.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
