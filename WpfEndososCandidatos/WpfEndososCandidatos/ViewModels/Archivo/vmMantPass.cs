@@ -6,6 +6,7 @@ namespace WpfEndososCandidatos.ViewModels
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -13,6 +14,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Media;
     using WpfEndososCandidatos.Helper.PWDTK;
     using WpfEndososCandidatos.Models;
     using WpfEndososCandidatos.View;
@@ -36,13 +38,34 @@ namespace WpfEndososCandidatos.ViewModels
         private SecureString _password;
         private SecureString _passwordVerification;
         public Guid _Id { get; set; }
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        private Brush _BorderBrush;
+
         public vmMantPass() : base (new wpfMantPass())
         {
-            initWindow = new RelayCommand(param => InitWindow(),null );
+            initWindow = new RelayCommand(param => MyInitWindow(),null );
             cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(),null);
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
             cmdGuardar_Click = new RelayCommand(param => CmdGuardar_Click(), null);
         }
+
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
+
+            }
+        }
+
         public string Id
         {
             get
@@ -67,11 +90,23 @@ namespace WpfEndososCandidatos.ViewModels
             get;
             private set;
         }
-        private void InitWindow()
+        private void MyInitWindow()
         {
             try
             {
                 Password_Cls_Visibility = Visibility.Hidden;
+
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
+
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
+
             }
             catch (Exception ex)
             {
@@ -248,8 +283,8 @@ namespace WpfEndososCandidatos.ViewModels
     
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-        
+      
+
         public void Dispose()
         {
             Dispose(true);

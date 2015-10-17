@@ -4,6 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
          xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" 
         Background="Beige"
+        Cursor="{Binding MiCursor}"
         Title="Login" Height="264" Width="359" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
 
     <i:Interaction.Triggers>
@@ -13,7 +14,7 @@
     </i:Interaction.Triggers>
 
     <Grid Margin="0,0,0,0">
-        <Border BorderBrush="Red"  BorderThickness="5" Margin="0" CornerRadius="5">
+        <Border BorderBrush="{Binding BorderBrush}"   BorderThickness="5" Margin="-2" CornerRadius="5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="302*"/>

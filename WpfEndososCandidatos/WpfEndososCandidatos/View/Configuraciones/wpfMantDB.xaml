@@ -16,7 +16,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Border BorderBrush="Red" BorderThickness="5"  Margin="0" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="5"  Margin="-2" CornerRadius="5">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

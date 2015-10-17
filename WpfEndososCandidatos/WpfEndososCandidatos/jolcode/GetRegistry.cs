@@ -35,8 +35,8 @@ namespace jolcode
 		{
 			try 
 			{
-				Microsoft.Win32.RegistryKey  subKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(key); 			 
-				subKey.SetValue(valueName,valuesData); 
+                Microsoft.Win32.RegistryKey subKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(key);
+                subKey.SetValue(valueName, valuesData);
 				return true;
 			}
 			catch (Exception ex) 

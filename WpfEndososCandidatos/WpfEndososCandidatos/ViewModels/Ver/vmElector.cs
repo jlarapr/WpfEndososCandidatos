@@ -1,20 +1,23 @@
 ﻿namespace WpfEndososCandidatos.ViewModels.Ver
 {
     using jolcode;
-using jolcode.Base;
-using jolcode.MyInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+    using jolcode.Base;
+    using jolcode.MyInterface;
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Media;
     using WpfEndososCandidatos.View;
     class vmElector : ViewModelBase<IDialogView>, IDisposable
     {
-
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        private Brush _BorderBrush;
 
         public vmElector()
             : base(new wpfElector())
@@ -22,15 +25,39 @@ using System.Windows;
             initWindow = new RelayCommand(param => InitWindow());
             cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
         }
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
 
+            }
+        }
         #region initWindow OnShow
-       private void InitWindow()
+        private void InitWindow()
        {
            try
            {
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
 
-           }
+            }
            catch (Exception ex)
            {
 
@@ -79,8 +106,7 @@ using System.Windows;
        #endregion
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-
+       
 
         public void Dispose()
         {

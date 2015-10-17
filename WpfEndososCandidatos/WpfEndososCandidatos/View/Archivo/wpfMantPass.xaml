@@ -12,7 +12,7 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <Border BorderBrush="Red"  BorderThickness="5" Margin="0" CornerRadius="5">
+        <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
             <Grid>
                 <Label Content="Cambiar Password" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="36" Margin="5,5,5,0"/>
                 <Label Content="Password" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="117"/>

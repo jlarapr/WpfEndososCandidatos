@@ -49,7 +49,8 @@
 
 
             </Menu>
-        </DockPanel>
+        <Image x:Name="image" Height="131" Margin="0,75,0,0" VerticalAlignment="Top" Width="195" Source="Images/ImageData-logoPropV2-300x139.png"/>
+    </DockPanel>
         
     <!--</Grid>-->
 </Window>

@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("WpfEndososCandidatos")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Applica, Inc.")]
 [assembly: AssemblyProduct("WpfEndososCandidatos")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Applica©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2015.7.10.0")]
-[assembly: AssemblyFileVersion("2015.7.10.0")]
+[assembly: AssemblyVersion("2015.10.17.0")]
+[assembly: AssemblyFileVersion("2015.10.17.0")]

@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Configuration;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Reflection;
@@ -16,10 +17,12 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
     using WpfEndososCandidatos.Helper;
     using WpfEndososCandidatos.View;
     class vmMantDB : ViewModelBase<IDialogView>, IDisposable 
     {
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _dfPathtoPictures_txt;
         
         private RelayCommand _InitWindow;
@@ -55,7 +58,8 @@
         
         private string _REGPATH;
         private bool _SaveReg;
-        
+        private Brush _BorderBrush;
+
         public string sqlServer { get; set; }
         public string userName { get; set; }
         public string password { get; set; }
@@ -81,9 +85,26 @@
         {
             _REGPATH = regpath;         
         }
-           
+
 
         #region Property
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
+
+            }
+        }
+
         public string dfPathtoPictures_txt
         {
             get
@@ -368,6 +389,8 @@
         #endregion
 
         #region Button
+              
+
         public RelayCommand cmdBrowseImagesPath_Click
         {
             get
@@ -771,6 +794,17 @@
                 }
                 dfPathtoPictures_txt = imgPath;
 
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
+
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
+
             }
             catch (Exception ex)
             {
@@ -935,8 +969,8 @@
 
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-        
+
+
         public void Dispose()
         {
             Dispose(true);

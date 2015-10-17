@@ -22,6 +22,8 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Runtime.InteropServices;
     using System.Collections.ObjectModel;
     using System.Data.SqlClient;
+    using System.Windows.Media;
+    using System.Configuration;
 
     public class vmMatUsers : ViewModelBase<IDialogView>, IDisposable 
     {
@@ -76,7 +78,8 @@ namespace WpfEndososCandidatos.ViewModels
         private Guid _Id;
         private bool _cmdEditPass_IsEnabled;
         private Visibility _Password_Cls_Visibility;
-       
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        private Brush _BorderBrush;
         public vmMatUsers()
             : base(new wpfMantUsers())
         {
@@ -99,7 +102,22 @@ namespace WpfEndososCandidatos.ViewModels
             cbUser_ChangeItem = new RelayCommand(param => CbUser_ChangeItem());
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click());
         }
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
 
+            }
+        }
         public bool AreasdeAcceso_IsEnabled
         {
             get
@@ -1271,6 +1289,17 @@ namespace WpfEndososCandidatos.ViewModels
                 if (CbUser.Count > 0)
                     CbUser_SelectedIndex = -1;
                 //GetUsers(_sqlServer,_database, _userName, PasswordHash.Decrypt(_userPassword),this.CbUser);
+
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
+
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
             }
             catch (Exception ex)
             {
@@ -1387,8 +1416,8 @@ namespace WpfEndososCandidatos.ViewModels
 
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-        
+       
+
         public void Dispose()
         {
             Dispose(true);

@@ -55,7 +55,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_InitWindow == null)
                 {
-                    _InitWindow = new RelayCommand(param => OnInitWindow());
+                    _InitWindow = new RelayCommand(param => MyOnInitWindow());
                 }
                 return _InitWindow;
             }
@@ -93,7 +93,7 @@ namespace WpfEndososCandidatos.ViewModels
         }
        
 
-        private void OnInitWindow()
+        private void MyOnInitWindow()
         {
             Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
 
@@ -314,8 +314,18 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "OnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+                if (ex is InvalidOperationException)
+                {
+                    MessageBox.Show(ex.ToString(), "MyOnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.View.Close();
+
+                }else
+                {
+                    MessageBox.Show(ex.ToString(), "MyOnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                }
+            } 
+
         }        
     }         
 }

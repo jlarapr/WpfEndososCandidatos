@@ -28,9 +28,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,6 +42,9 @@
   <PropertyGroup>
     <ApplicationIcon>WindowsJournal.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -50,6 +54,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -82,6 +87,7 @@
     <Compile Include="Helper\PWDTK\PWDTK.cs" />
     <Compile Include="Helper\PWDTK\Rfc2898.cs" />
     <Compile Include="jolcode\Base\ViewModelBase.cs" />
+    <Compile Include="jolcode\ExcuteScript.cs" />
     <Compile Include="jolcode\GetRegistry.cs" />
     <Compile Include="jolcode\MyInterface\ICustomButton.cs" />
     <Compile Include="jolcode\MyInterface\IDialogView.cs" />
@@ -299,6 +305,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="app.manifest" />
     <None Include="Models\EndososPartidos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
@@ -322,7 +329,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\APPLICA-20Aniv-logoV2.png" />
+    <Resource Include="Images\APPLICA-logo-300x76.png" />
+    <Resource Include="Images\ImageData-logoPropV2-300x139.png" />
+    <Content Include="Models\CREATEDATABASE.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\CREATETABLE.sql" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

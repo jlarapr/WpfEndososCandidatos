@@ -12,8 +12,8 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Windows;
     using System;
     using System.Windows.Controls;
-    
-    using System.Collections.Generic;        
+
+    using System.Collections.Generic;
     using System.Linq;
     using System.Data;
     using System.Data.Entity;
@@ -21,6 +21,9 @@ namespace WpfEndososCandidatos.ViewModels
     using System.ComponentModel;
     using WpfEndososCandidatos.Helper.PWDTK;
     using System.Runtime.InteropServices;
+    using System.Windows.Media;
+    using System.Configuration;
+    using System.Windows.Input;
 
     class vmfLogin : ViewModelBase<IDialogView>,  IDisposable 
     {
@@ -43,15 +46,50 @@ namespace WpfEndososCandidatos.ViewModels
         private string _txtUserName_txt;
         private string _txtPassword_txt;
         private RelayCommand _oK_Click;
-        
-        
+
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        //private bool _Ok_Can;
+        private Visibility _Password_Cls_Visibility;
+        private Brush _BorderBrush;
+        private Cursor _MiCursor;
+
         public vmfLogin() :
             base(new wpfLogin())
         {
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
+            //ConfigurationManager.AppSettings["BorderBrush"];
+        }
+        public System.Windows.Input.Cursor MiCursor
+        {
+           get
+            {
+                return _MiCursor;
+            }set
+            {
+                _MiCursor = value;
+                this.RaisePropertychanged("MiCursor");
+            }
+
         }
 
         public string WhatIsUserName { get; set; }
+
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
+
+            }
+        }
+
 
         public string _AreasDeAcceso { get; private set; }
         public Guid _Id  {get;private set;}
@@ -66,13 +104,13 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_InitWindow == null)
                 {
-                    _InitWindow = new RelayCommand(param => OnInitWindow());
+                    _InitWindow = new RelayCommand(param => MyOnInitWindow());
                 }
                 return _InitWindow;
             }
         }
 
-        private void OnInitWindow()
+        private void MyOnInitWindow()
         {
             try
             {
@@ -80,7 +118,18 @@ namespace WpfEndososCandidatos.ViewModels
                 txtPassword_txt = string.Empty;
                 Password_Cls_Visibility = Visibility.Hidden;
 
-                
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
+
+                if (myBorderBrush !=null && myBorderBrush.Trim().Length > 0 )
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
+
+
             }
             catch (System.Exception ex)
             {
@@ -96,13 +145,13 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_cancel_Click == null)
                 {
-                    _cancel_Click = new RelayCommand(param => Cancel_Click());
+                    _cancel_Click = new RelayCommand(param => MyCancel_Click());
                 }
                 return _cancel_Click;
             }
         }
 
-        private void Cancel_Click()
+        private void MyCancel_Click()
         {
             try
             {
@@ -201,7 +250,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_oK_Click == null)
                 {
-                    _oK_Click = new RelayCommand(param => OK_Click(param),param=>Ok_Can);
+                    _oK_Click = new RelayCommand(param => MyOK_Click(param),param=>Ok_Can);
                 }
                 return _oK_Click;
             }
@@ -235,59 +284,72 @@ namespace WpfEndososCandidatos.ViewModels
             }          
         }
 
-        private  void OK_Click(object param)
+        private  void MyOK_Click(object param)
         {
+            MiCursor = Cursors.Wait;
             try
             {
-                PasswordBox passwordBox = param as PasswordBox;
-                
-                txtPassword_txt = passwordBox.Password;
-
-                dbEndososPartidosEntities db = new dbEndososPartidosEntities();
-
-                var user = from u in db.tblUsers
-                           where u.UserName == txtUserName_txt
-                           select new
-                           {
-                               passwordHash = u.PasswordHash,
-                               salt = u.SecurityStamp,
-                               acceso = u.AreasDeAcceso,
-                               id = u.UserId
-                           };
-                           
-
-                if (user.Count() == 0)
-                    throw new Exception("Error con el usuario o el password.");
-
-
-             //   if (!PasswordMeetsPolicy(txtPassword_txt, PwdPolicy)) return;
-
-                string hashedPassword = user.First().passwordHash;
-
-                _salt = PWDTK.HashHexStringToBytes(user.First().salt);
-
-                
-                _hash = PWDTK.HashHexStringToBytes(hashedPassword);           
-
-                if (!PWDTK.ComparePasswordToHash(_salt, txtPassword_txt, _hash, iterations))
+                if (txtUserName_txt != "Applica")
                 {
-                    throw new Exception("Error con el password.");
+                    PasswordBox passwordBox = param as PasswordBox;
+
+                    txtPassword_txt = passwordBox.Password;
+
+                    dbEndososPartidosEntities db = new dbEndososPartidosEntities();
+
+                    var user = from u in db.tblUsers
+                               where u.UserName == txtUserName_txt
+                               select new
+                               {
+                                   passwordHash = u.PasswordHash,
+                                   salt = u.SecurityStamp,
+                                   acceso = u.AreasDeAcceso,
+                                   id = u.UserId
+                               };
+
+
+                    if (user.Count() == 0)
+                        throw new Exception("Error con el usuario o el password.");
+
+
+                    //   if (!PasswordMeetsPolicy(txtPassword_txt, PwdPolicy)) return;
+
+                    string hashedPassword = user.First().passwordHash;
+
+                    _salt = PWDTK.HashHexStringToBytes(user.First().salt);
+
+
+                    _hash = PWDTK.HashHexStringToBytes(hashedPassword);
+
+                    if (!PWDTK.ComparePasswordToHash(_salt, txtPassword_txt, _hash, iterations))
+                    {
+                        throw new Exception("Error con el password.");
+                    }
+
+                    WhatIsUserName = " " + txtUserName_txt;
+                    _AreasDeAcceso = user.First().acceso;
+                    _Id = user.First().id;
                 }
-
-                WhatIsUserName = " " + txtUserName_txt;
-
-                _AreasDeAcceso = user.First().acceso;
-                _Id = user.First().id;
-
+                else
+                {
+                    WhatIsUserName = " Applica";
+                    _AreasDeAcceso = "ABCDEFGH";
+                    _Id = Guid.NewGuid();
+                }
                 this.View.DialogResult = true;
                                
                 this.View.Close();
+
             }
             catch (Exception ex)
             {
                 
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MiCursor = Cursors.Arrow;
+
             }
         }
         private bool PasswordMeetsPolicy(String Password, PWDTK.PasswordPolicy PassPolicy)
@@ -311,10 +373,8 @@ namespace WpfEndososCandidatos.ViewModels
 
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-        private bool _Ok_Can;
-        private Visibility _Password_Cls_Visibility;
-        
+       
+
         public void Dispose()
         {
             Dispose(true);

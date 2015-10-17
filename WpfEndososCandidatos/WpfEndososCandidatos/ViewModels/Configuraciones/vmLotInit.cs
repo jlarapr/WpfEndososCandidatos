@@ -3,18 +3,22 @@ using jolcode.Base;
 using jolcode.MyInterface;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using WpfEndososCandidatos.View;
 
 namespace WpfEndososCandidatos.ViewModels.Configuraciones
 {
     class vmLotInit : ViewModelBase<IDialogView>, IDisposable
     {
+        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+        private Brush _BorderBrush;
 
         public vmLotInit()
             : base(new wpfLotInit())
@@ -29,9 +33,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
        {
            try
            {
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
 
-           }
+            }
            catch (Exception ex)
            {
 
@@ -39,7 +52,24 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
            }
        }
-       public bool? OnShow()
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
+
+            }
+        }
+
+        public bool? OnShow()
        {
            return this.View.ShowDialog();
        }
@@ -80,8 +110,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
        #endregion
         #region Dispose
        
-        private IntPtr nativeResource = Marshal.AllocHGlobal(100);
-
+      
 
         public void Dispose()
         {
