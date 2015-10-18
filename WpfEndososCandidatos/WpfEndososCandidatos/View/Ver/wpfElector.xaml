@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        Title="wpfElector" Height="282.456" Width="351.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfElector" Height="591.456" Width="463.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -11,8 +11,59 @@
     <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
 
         <Grid>
-            <Label Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="36" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="133,234,0,0" VerticalAlignment="Top" Width="75"/>
+            <Label Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="373,555,0,0" VerticalAlignment="Top" Width="75"/>
+            <GroupBox x:Name="groupBox" Header="Información del Elector" Margin="5,65,5,0" VerticalAlignment="Top" Height="485">
+                <Grid>
+                    <Label x:Name="label" Content="Número Electoral" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="dfElecNum" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="cmdFind" Command="{Binding cmdFind}" Content="Buscar..." HorizontalAlignment="Left" Margin="135,44,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Label x:Name="label_Copy" Content="Nombre" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy1" Content="Paterno" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy2" Content="Materno" HorizontalAlignment="Left" Margin="260,69,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="dfElecNum_Copy" HorizontalAlignment="Left" Height="23" Margin="7,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="dfElecNum_Copy1" HorizontalAlignment="Left" Height="23" Margin="135,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="dfElecNum_Copy2" HorizontalAlignment="Left" Height="23" Margin="260,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <Label x:Name="label_Copy3" Content="Padre" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy4" Content="Madre" HorizontalAlignment="Left" Margin="135,132,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy5" Content="Fecha de Nacimiento" HorizontalAlignment="Left" Margin="260,132,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="dfElecNum_Copy3" HorizontalAlignment="Left" Height="23" Margin="7,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="dfElecNum_Copy4" HorizontalAlignment="Left" Height="23" Margin="135,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="dfElecNum_Copy5" HorizontalAlignment="Left" Height="23" Margin="260,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
+                    <TextBox x:Name="dfElecNum_Copy6" HorizontalAlignment="Left" Height="23" Margin="293,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
+                    <TextBox x:Name="dfElecNum_Copy7" HorizontalAlignment="Left" Height="23" Margin="326,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
+                    <Label x:Name="label_Copy6" Content="Día" HorizontalAlignment="Left" Margin="260,191,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy7" Content="Mes" HorizontalAlignment="Left" Margin="294,191,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy8" Content="Año" HorizontalAlignment="Left" Margin="326,191,0,0" VerticalAlignment="Top"/>
+                    <GroupBox x:Name="gbInfoElecotral" Header="Información Electoral" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,225,0,0" Height="97" Width="245">
+                        <Grid>
+                            <TextBox x:Name="dfPrecinto" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap" Text="{Binding dfPrecinto}" VerticalAlignment="Top" Width="55"/>
+                            <TextBox x:Name="dfUnidad" HorizontalAlignment="Left" Height="23" Margin="70,26,0,0" TextWrapping="Wrap" Text="{Binding dfUnidad}" VerticalAlignment="Top" Width="55"/>
+                            <Label x:Name="label1" Content="Precinto" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy" Content="Unidad" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="obStatus" Content="Activo" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="obStatus_Copy" Content="Inactivo" HorizontalAlignment="Left" Margin="147,37,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="obStatus_Copy1" Content="Excluido" HorizontalAlignment="Left" Margin="147,57,0,0" VerticalAlignment="Top"/>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="gbInfoElecotral_Copy" Header="Sexo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,225,0,0" Height="97" Width="111">
+                        <Grid>
+                            <RadioButton x:Name="obSex" Content="Masculino" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="obSex_Copy" Content="Femenina" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <Label x:Name="label2" Content="Firma" HorizontalAlignment="Left" Margin="12,327,0,0" VerticalAlignment="Top"/>
+                    <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Margin="7,358,10,10">
+                        <Grid>
+                            <Image x:Name="imageFirma" Margin="5"/>
+
+
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </GroupBox>
 
         </Grid>
     </Border>

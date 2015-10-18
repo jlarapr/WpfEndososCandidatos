@@ -24,6 +24,7 @@ namespace WpfEndososCandidatos
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

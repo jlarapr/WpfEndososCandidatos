@@ -6,7 +6,8 @@
     using System.Windows;
     using WpfEndososCandidatos.Models;
     using System.Linq;
-    
+    using System.Windows.Input;
+
     partial class MainVM
     {
         private RelayCommand _login_Click;
@@ -47,6 +48,8 @@
         }
         private void Login_Click()
         {
+            MiCursor =  Cursors.Wait;
+
             try
             {
                 using (vmfLogin frmfLogin = new vmfLogin())
@@ -108,6 +111,10 @@
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MiCursor = Cursors.Arrow;
+
             }
         }
 

@@ -21,8 +21,8 @@
         {
             this.view = view;
             this.view.DataContext = this;
-            //this.view.Loaded += view_Loaded;
-         
+            this.view.Loaded += view_Loaded;
+
         }
 
         

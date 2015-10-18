@@ -13,6 +13,12 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding oK_Click}"  CommandParameter="{Binding ElementName=txtPassword}" />
+    </Window.InputBindings>
+ 
+
+
     <Grid Margin="0,0,0,0">
         <Border BorderBrush="{Binding BorderBrush}"   BorderThickness="5" Margin="-2" CornerRadius="5">
             <Grid>
@@ -24,21 +30,22 @@
                     <RowDefinition Height="99*"/>
                     <RowDefinition Height="28*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="cmdCancel" Command="{Binding cancel_Click}" Content="Cancel" Margin="0,10,9,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="80" Grid.Row="1"/>
-                <Button x:Name="cmdOK" Command="{Binding oK_Click}"  Content="Ok" HorizontalAlignment="Right" Margin="0,10,94,0" Width="75" CommandParameter="{Binding ElementName=txtPassword}" Grid.Row="1" Height="24" VerticalAlignment="Top"/>
+                <Button x:Name="cmdCancel" Command="{Binding cancel_Click}" Content="Cancel" Margin="0,10,9,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Right" Width="80" Grid.Row="1" TabIndex="3"/>
+                <Button x:Name="cmdOK" Command="{Binding oK_Click}"  Content="Ok" HorizontalAlignment="Right" Margin="0,10,94,0" Width="75" CommandParameter="{Binding ElementName=txtPassword}" Grid.Row="1" Height="24" VerticalAlignment="Top" TabIndex="2"/>
                 <Label Content="User Name:" HorizontalAlignment="Left" Margin="7,0,0,63" Width="71" Height="26" VerticalAlignment="Bottom"/>
                 <Label Content="Password:" HorizontalAlignment="Left" Margin="7,0,0,32" Width="63" Height="26" VerticalAlignment="Bottom"/>
-                <TextBox x:Name="txtUserName" Margin="83,0,10,63" TextWrapping="Wrap" 
+                <TextBox x:Name="txtUserName" Margin="83,0,10,63" TextWrapping="Wrap" Focusable="True"   
                          Text="{Binding txtUserName_txt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
-                         Height="24" VerticalAlignment="Bottom"/>
+                         Height="24" VerticalAlignment="Bottom" TabIndex="0"/>
                 <Label Content="Login" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="55" Width="211" FontWeight="Bold" FontSize="36"/>
                 <PasswordBox x:Name="txtPassword"
                              Helper:PasswordHelper.Attach="True"
                              Helper:PasswordHelper.Password="{Binding Text,ElementName=txtPassword_txt_Cls,Mode=TwoWay}"
-                             Margin="83,0,10,37" Height="21" VerticalAlignment="Bottom">
+                             Margin="83,0,10,37" Height="21" VerticalAlignment="Bottom" TabIndex="1">
                     <i:Interaction.Behaviors>
                         <Helper:PasswordBoxBindingBehavior Password="{Binding Password}" />
                     </i:Interaction.Behaviors>
+                   
                 </PasswordBox>
                 <Image Margin="0,0,10,92" Source="/WpfEndososCandidatos;component/Images/Security.png" Height="92" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="99"/>
                 <TextBlock x:Name="txtPassword_txt_Cls" Visibility="{Binding Password_Cls_Visibility}"   
@@ -48,7 +55,7 @@
                         Command="{Binding cmdVerPass_Click}" 
                         Margin="10,0,0,32" BorderBrush="Beige" 
                         HorizontalAlignment="Left" Width="29" 
-                        Grid.Column="1" Height="31" VerticalAlignment="Bottom" >
+                        Grid.Column="1" Height="31" VerticalAlignment="Bottom" IsTabStop="False" Focusable="False" >
 
                     <Grid Width="20" Margin="0" Height="20" >
                         <Image Source="/WpfEndososCandidatos;component/Images/ojo1.png" Width="20" Height="20"  Margin="0,-1,0,1" />

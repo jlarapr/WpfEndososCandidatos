@@ -11,9 +11,10 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Threading;
     using WpfEndososCandidatos.View;
+    using System.Windows.Input;
 
-    
     partial class  MainVM : ViewModelBase<IMainView>
     {
         private RelayCommand _InitWindow;
@@ -41,14 +42,29 @@ namespace WpfEndososCandidatos.ViewModels
         private string _ValiDB = string.Empty;
 
         private string _ImgPath = string.Empty;
-        
-        
+        private string _Hora;
+        private string _Dia;
+        private Cursor _MiCursor;
+
         public MainVM()
             : base(new MainWindow())
         {
 
+          
         }
+        public Cursor MiCursor
+        {
+            get
+            {
+                return _MiCursor;
+            }
+            set
+            {
+                _MiCursor = value;
+                this.RaisePropertychanged("MiCursor");
+            }
 
+        }
         public RelayCommand InitWindow
         {
             get
@@ -61,7 +77,31 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
-        
+        public string Hora
+        {
+            get
+            {
+                return _Hora;
+            }
+            set
+            {
+                _Hora = value;
+                this.RaisePropertychanged("Hora");
+            }
+        }
+        public string Dia
+        {
+            get
+            {
+                return _Dia;
+            }
+            set
+            {
+                _Dia = value;
+                this.RaisePropertychanged("Dia");
+            }
+        }
+
 
         public string Title
         {
@@ -91,12 +131,28 @@ namespace WpfEndososCandidatos.ViewModels
         {
             this.View.Show();
         }
-       
+
+        private void MyDispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            Hora = DateTime.Now.ToString("hh:mm:ss tt");
+        }
 
         private void MyOnInitWindow()
         {
             Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
+            Dia = DateTime.Now.ToString("MMM/dd/yyyy");
+            Hora = DateTime.Now.ToString("hh:mm:ss tt");
 
+            //DispatcherTimer timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            //    {
+            //        Hora = DateTime.Now.ToString("hh:mm:ss tt");
+            //    },this.View.Dispatcher);
+            //  DispatcherTimer setup
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(MyDispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+        
             try
             {
                 {//Get values from register

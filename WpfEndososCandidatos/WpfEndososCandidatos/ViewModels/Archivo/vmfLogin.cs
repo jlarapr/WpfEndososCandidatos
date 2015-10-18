@@ -117,6 +117,7 @@ namespace WpfEndososCandidatos.ViewModels
                 txtUserName_txt = string.Empty;
                 txtPassword_txt = string.Empty;
                 Password_Cls_Visibility = Visibility.Hidden;
+               
 
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
@@ -287,6 +288,7 @@ namespace WpfEndososCandidatos.ViewModels
         private  void MyOK_Click(object param)
         {
             MiCursor = Cursors.Wait;
+          
             try
             {
                 if (txtUserName_txt != "Applica")
