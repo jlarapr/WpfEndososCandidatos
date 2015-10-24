@@ -1,20 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfEndososCandidatos", "WpfEndososCandidatos\WpfEndososCandidatos.csproj", "{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jolcode", "jolcode\jolcode.csproj", "{8C5F7D48-15C7-4AFD-9A40-CB4C4AD7E485}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://jlaraprgmail.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WpfEndososCandidatos\\WpfEndososCandidatos.csproj
-		SccProjectName1 = WpfEndososCandidatos
-		SccLocalPath1 = WpfEndososCandidatos
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -24,8 +17,24 @@ Global
 		{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5F7D48-15C7-4AFD-9A40-CB4C4AD7E485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5F7D48-15C7-4AFD-9A40-CB4C4AD7E485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5F7D48-15C7-4AFD-9A40-CB4C4AD7E485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5F7D48-15C7-4AFD-9A40-CB4C4AD7E485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://jlaraprgmail.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WpfEndososCandidatos\\WpfEndososCandidatos.csproj
+		SccProjectName1 = WpfEndososCandidatos
+		SccLocalPath1 = WpfEndososCandidatos
+		SccProjectUniqueName2 = jolcode\\jolcode.csproj
+		SccProjectName2 = jolcode
+		SccLocalPath2 = jolcode
 	EndGlobalSection
 EndGlobal
