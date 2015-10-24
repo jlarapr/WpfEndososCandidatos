@@ -55,6 +55,10 @@
                 using (vmfLogin frmfLogin = new vmfLogin())
                 {
                     frmfLogin.View.Owner = this.View as Window;
+                    frmfLogin.DBEndososCnnStr = _DBEndososCnnStr;
+                    frmfLogin.DBCeeMasterCnnStr = _DBCeeMasterCnnStr;
+                    frmfLogin.DBImagenesCnnStr = _DBImagenesCnnStr;
+
                     frmfLogin.OnShow();
 
 

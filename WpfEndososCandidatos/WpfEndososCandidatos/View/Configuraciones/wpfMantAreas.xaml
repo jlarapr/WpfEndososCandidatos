@@ -15,8 +15,16 @@
             <Label Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
             <GroupBox x:Name="Frame1" Header="Frame1" Height="277" Margin="10,65,10,0" VerticalAlignment="Top">
                 <Grid Margin="0,0,5,0">
-                    <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,48,0,10" Width="145"/>
-                    <ListBox x:Name="lsValidPrecints" Margin="233,48,5,10"/>
+                    <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,81,0,10" Width="145"
+                              ItemsSource="{Binding lsAllPrecints}"
+                              SelectedItem="{Binding lsAllPrecints_Item,Mode=TwoWay}"                                     
+                              SelectedIndex="{Binding lsAllPrecints_Item_Id,Mode=TwoWay}"                             
+                             />
+                    <ListBox x:Name="lsValidPrecints" Margin="233,81,5,10"
+                              ItemsSource="{Binding lsValidPrecints}"
+                              SelectedItem="{Binding lsValidPrecints_Item,Mode=TwoWay}"                                     
+                              SelectedIndex="{Binding lsValidPrecints_Item_Id,Mode=TwoWay}"                             
+                             />
                     <Button x:Name="cmdAddAllPrec" Content=">>" HorizontalAlignment="Left" Margin="160,81,0,0" VerticalAlignment="Top" Width="68"/>
                     <Button x:Name="cmdAddPrec" Content=">" HorizontalAlignment="Left" Margin="160,106,0,0" VerticalAlignment="Top" Width="68"/>
                     <Button x:Name="cmdRemovePrec" Content="&lt;" HorizontalAlignment="Left" Margin="160,131,0,0" VerticalAlignment="Top" Width="68"/>
@@ -26,7 +34,13 @@
                     <TextBox x:Name="dfArea1" HorizontalAlignment="Left" Height="23" Margin="45,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30"/>
                     <TextBox x:Name="dfArea2" HorizontalAlignment="Left" Height="23" Margin="80,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="75"/>
                     <Label x:Name="lblCargo" Content="Cargo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,0,0,0"/>
-                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="160,20,0,0" VerticalAlignment="Top" Width="213"/>
+                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="160,20,0,0" VerticalAlignment="Top" Width="213"
+                              ItemsSource="{Binding cbArea}"
+                              SelectedItem="{Binding cbArea_Item,Mode=TwoWay}"                                     
+                              SelectedIndex="{Binding cbArea_Item_Id,Mode=TwoWay}"
+                              />
+                        <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,48,0,0" Width="145"/>
+                    <Label x:Name="lblPrecintosValidos" Content="Precintos Válidos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="233,50,0,0" Width="145"/>
                 </Grid>
             </GroupBox>
             <Button Content="Editar" Command="{Binding cmdEditar_Click}" HorizontalAlignment="Left" Margin="10,347,0,0" VerticalAlignment="Top" Width="75" Height="29"/>

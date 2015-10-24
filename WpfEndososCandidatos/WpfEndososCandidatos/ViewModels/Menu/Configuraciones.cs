@@ -177,6 +177,9 @@ namespace WpfEndososCandidatos.ViewModels
                 using (vmMantAreas frmMantAreas = new vmMantAreas())
                 {
                     frmMantAreas.View.Owner = this.View as Window;
+                    frmMantAreas.DBCeeMasterCnnStr = _DBCeeMasterCnnStr;
+                    frmMantAreas.DBEndososCnnStr = _DBEndososCnnStr;
+                    frmMantAreas.DBImagenesCnnStr = _DBImagenesCnnStr;
                     frmMantAreas.OnShow();
                 }
                 

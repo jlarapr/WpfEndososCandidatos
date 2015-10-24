@@ -52,6 +52,9 @@ namespace WpfEndososCandidatos.ViewModels
         private Visibility _Password_Cls_Visibility;
         private Brush _BorderBrush;
         private Cursor _MiCursor;
+        private string _DBEndososCnnStr;
+        private string _DBCeeMasterCnnStr;
+        private string _DBImagenesCnnStr;
 
         public vmfLogin() :
             base(new wpfLogin())
@@ -59,6 +62,39 @@ namespace WpfEndososCandidatos.ViewModels
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
             //ConfigurationManager.AppSettings["BorderBrush"];
         }
+
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }set
+            {
+                _DBCeeMasterCnnStr = value;
+            }
+        }
+        public string DBImagenesCnnStr
+        {
+            get
+            {
+                return _DBImagenesCnnStr;
+            }set
+            {
+                _DBImagenesCnnStr = value;
+            }
+        }
+
+
         public System.Windows.Input.Cursor MiCursor
         {
            get

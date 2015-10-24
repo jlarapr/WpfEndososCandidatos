@@ -14,6 +14,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Windows.Threading;
     using WpfEndososCandidatos.View;
     using System.Windows.Input;
+    using Helper;
 
     partial class  MainVM : ViewModelBase<IMainView>
     {
@@ -45,6 +46,9 @@ namespace WpfEndososCandidatos.ViewModels
         private string _Hora;
         private string _Dia;
         private Cursor _MiCursor;
+        private string _DBEndososCnnStr;
+        private string _DBCeeMasterCnnStr;
+        private string _DBImagenesCnnStr;
 
         public MainVM()
             : base(new MainWindow())
@@ -126,6 +130,28 @@ namespace WpfEndososCandidatos.ViewModels
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+        }
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }
+        }
+        public string DBImagenesCnnStr
+        {
+            get
+            {
+                return _DBImagenesCnnStr;
+            }
+        }
+
 
         public void OnShow()
         {
@@ -366,7 +392,12 @@ namespace WpfEndososCandidatos.ViewModels
                     mnuUsuarios_IsEnabled = false;
                     mnuBaseDeDatos_IsEnabled = false;
                     mnuInicializarLotes_IsEnabled = false;
-                    Login_Click();
+
+                _DBEndososCnnStr = string.Concat( "Persist Security Info=False;Data Source=", _SqlServer ,";Initial Catalog=", _Database,";User ID=", _Username, ";Password=", PasswordHash.Decrypt1(_Password));
+                _DBCeeMasterCnnStr = string.Concat("Persist Security Info=False;Data Source=", _MastSvr, ";Initial Catalog=", _MastDB, ";User ID=", _MastUsr, ";Password=", PasswordHash.Decrypt1(_MastPass));
+                _DBImagenesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _ImageSvr, ";Initial Catalog=", _ImageDB, ";User ID=", _ImageUsr, ";Password=", PasswordHash.Decrypt1(_ImagePass));
+
+                Login_Click();
             }
             catch(Exception ex)
             {
