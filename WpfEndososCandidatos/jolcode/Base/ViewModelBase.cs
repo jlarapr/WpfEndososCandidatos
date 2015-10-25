@@ -1,6 +1,7 @@
 ﻿namespace jolcode.Base
 {
     using jolcode.MyInterface;
+    using System;
     using System.ComponentModel;
     using System.Windows.Input;
 
@@ -29,9 +30,14 @@
 
         void view_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
-            e1.RoutedEvent = Keyboard.KeyDownEvent;
-            InputManager.Current.ProcessInput(e1);
+            try {
+                KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
+                e1.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput(e1);
+            }catch 
+            {
+                //throw new Exception(ex.ToString());
+            }
         }
         public void RaisePropertychanged(string proertyName)
         {

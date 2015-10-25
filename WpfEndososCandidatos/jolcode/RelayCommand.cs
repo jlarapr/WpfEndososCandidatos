@@ -19,6 +19,9 @@ namespace jolcode
             _execute = execute;
             _canExecute = canExecute;
         }
+
+        
+
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
@@ -46,6 +49,6 @@ namespace jolcode
         /// Predicate
         /// </summary>
         private readonly Predicate<object> _canExecute;
-
+       
     }//end
 }

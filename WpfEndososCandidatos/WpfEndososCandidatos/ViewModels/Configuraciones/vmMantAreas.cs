@@ -15,10 +15,20 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
+    using Models;
     using WpfEndososCandidatos.View;
+    using System.Collections;
+    using MVVM.Client.Infrastructure.Behaviors;
+    using System.Windows.Interactivity;
+    using System.Windows.Controls;
+    using MVVM.Client.Infrastructure;
+    using System.Collections.Specialized;
 
-    class vmMantAreas : ViewModelBase<IDialogView>, IDisposable
+    class vmMantAreas : ViewModelBase<IDialogViewAreas>, IDisposable 
     {
+       
+        
+
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
         private ObservableCollection<string> _cbArea;
@@ -27,18 +37,114 @@
         private string _DBEndososCnnStr;
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
-        private ObservableCollection<string> _lsAllPrecints;
-        private string _lsAllPrecints_Item;
+        private ObservableCollection<Precintos> _lsAllPrecints;
+        private Precintos _lsAllPrecints_Item;
         private int _lsAllPrecints_Item_Id;
-        private ObservableCollection<string> _lsValidPrecints;
-        private string _lsValidPrecints_Item;
+        private ObservableCollection<Precintos> _lsValidPrecints;
+        private Precintos _lsValidPrecints_Item;
+     
 
         public vmMantAreas()
             : base(new wpfMantAreas())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+            cmdAddAllPrec_Click = new RelayCommand(param => MyCmdAddAllPrec_Click());
+            cmdRemoveAllPrec_Click = new RelayCommand(param => MyCmdRemoveAllPrec_Click());
+            cmdAddPrec_Click = new RelayCommand(param => MyCmdAddPrec_Click());
+            cmdRemovePrec_Click = new RelayCommand(param => MyCmdRemovePrec_Click());
+
         }
+
+
+        #region MyCmd
+        private void MyCmdRemovePrec_Click()
+        {
+            try
+            {
+                while (this.View.lsValidPrecints.SelectedItems.Count > 0)
+                {
+                    lsAllPrecints.Add(lsValidPrecints_Item);
+                    lsValidPrecints.Remove(lsValidPrecints_Item);
+                }
+              // lsAllPrecints = new ObservableCollection<Precintos>(from i in lsAllPrecints orderby i.PrecintoKey select i);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        private void MyCmdAddAllPrec_Click()
+        {
+            try
+            {
+                var myCopy = new ObservableCollection<Precintos>(this.lsAllPrecints);
+                foreach(var item in myCopy)
+                {
+                    this.lsValidPrecints.Add(item);
+                    this.lsAllPrecints.Remove(item);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        private void MyCmdRemoveAllPrec_Click()
+        {
+            try
+            {
+                var myCopy = new ObservableCollection<Precintos>(this.lsValidPrecints);
+                foreach (var item in myCopy)
+                {
+                    this.lsAllPrecints.Add(item);
+                    this.lsValidPrecints.Remove(item);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        private void MyCmdAddPrec_Click()
+        {
+            try
+            {
+                if (this.View.lsAllPrecints != null)
+                {
+                    while (this.View.lsAllPrecints.SelectedItems.Count > 0)
+                    {
+                        this.lsValidPrecints.Add(lsAllPrecints_Item);
+                        this.lsAllPrecints.Remove(lsAllPrecints_Item);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public RelayCommand cmdAddAllPrec_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdRemoveAllPrec_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdAddPrec_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdRemovePrec_Click
+        {
+            get;private set;
+        }
+
+        #endregion
+
 
         public Brush BorderBrush
         {
@@ -86,7 +192,7 @@
                 _DBImagenesCnnStr = value;
             }
         }
-        public ObservableCollection<string> lsAllPrecints
+        public ObservableCollection<Precintos> lsAllPrecints
         {
             get
             {
@@ -97,7 +203,7 @@
                 this.RaisePropertychanged("lsAllPrecints");
             }
         }
-        public string lsAllPrecints_Item
+        public Precintos lsAllPrecints_Item
         {
             get
             {
@@ -119,7 +225,7 @@
                 this.RaisePropertychanged("lsAllPrecints_Item_Id");
             }
         }
-        public ObservableCollection<string> lsValidPrecints
+        public ObservableCollection<Precintos> lsValidPrecints
         {
             get
             {
@@ -130,7 +236,7 @@
                 this.RaisePropertychanged("lsValidPrecints");           
             }
         }
-        public string lsValidPrecints_Item
+        public Precintos lsValidPrecints_Item
         {
             get
             {
@@ -174,11 +280,7 @@
                         string myArea = this.cbArea_Item.Substring(0, 4);
                         DataTable t = mySqlExcuteCommand.MyGetPrecintosValidos(myArea);
 
-                        foreach (DataRow row in t.Rows)
-                        {
-                            string[] mypresitos = row[1].ToString().Split('|');
-                            this.lsValidPrecints.Add(row[1].ToString());
-                        }
+                        MySetValidPresintos(t);                        
                     }
                 }
 
@@ -198,7 +300,6 @@
                 this.lsValidPrecints.Clear();
             }
         }
-
         #region initWindow OnShow
         private void MyInitWindow()
         {
@@ -216,10 +317,12 @@
                     BorderBrush = Brushes.Black;
 
                 cbArea = new ObservableCollection<string>();
-                lsAllPrecints = new ObservableCollection<string>();
-                lsValidPrecints = new ObservableCollection<string>();
+                lsAllPrecints = new ObservableCollection<Precintos>();
+                lsValidPrecints = new ObservableCollection<Precintos>();
                 cbArea_Item_Id = -1;
-
+                              
+                
+               
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
@@ -236,10 +339,24 @@
 
                     DataTable myPrecintos = get.MyGetPrecintos();
 
-                    foreach(DataRow row in myPrecintos.Rows)
+                    //this.View.lsAllPrecints.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription("NAME", System.ComponentModel.ListSortDirection.Ascending));
+                    //this.View.lsValidPrecints.Items.SortDescriptions.Add(new System.ComponentModel.SortDescription("NAME", System.ComponentModel.ListSortDirection.Ascending));
+
+                    this.View.lsAllPrecints.ItemsSource = lsAllPrecints;
+                    this.View.lsValidPrecints.ItemsSource = lsValidPrecints;
+
+                    foreach (DataRow row in myPrecintos.Rows)
                     {
-                        lsAllPrecints.Add(row[0].ToString());
+                        string myPrecinto = row["Precinto"].ToString();
+                        string myDesc = row["Desc"].ToString();
+                        Precintos item = new Precintos();
+                        item.PrecintoKey = myPrecinto;
+                        item.Desc = myDesc;
+                        lsAllPrecints.Add(item);
+                  
                     }
+                    
+
                 }
             }
             catch (Exception ex)
@@ -249,6 +366,9 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+   
+
         public bool? OnShow()
         {
             return this.View.ShowDialog();
@@ -259,6 +379,39 @@
             private set;
         }
         #endregion
+        #region Metodos
+        private bool MySetValidPresintos(DataTable Table)
+        {
+            bool myBoolOut = false;
+            try
+            {
+                string[] myPrecitosBuff = Table.Rows[0][1].ToString().Split('|');
+
+                foreach (string precinto in myPrecitosBuff)
+                {
+                    foreach (Precintos itemprecinto in this.lsAllPrecints.ToList())
+                    {
+                        string myPrecinto = itemprecinto.PrecintoKey;
+                        if (myPrecinto == precinto)
+                        {
+                            this.lsValidPrecints.Add(itemprecinto);
+                        }
+                    }
+
+                }
+                myBoolOut = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return myBoolOut;
+        }
+        #endregion
+
+
+
         #region Exit
         public RelayCommand cmdSalir_Click
         {

@@ -78,7 +78,8 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select Precinto + ' - ' + [Desc] from Precintos order by Precinto";
+                //string mySqlstr = "Select Precinto + ' - ' + [Desc] from Precintos order by Precinto";
+                string mySqlstr = "Select * from Precintos order by Precinto";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {

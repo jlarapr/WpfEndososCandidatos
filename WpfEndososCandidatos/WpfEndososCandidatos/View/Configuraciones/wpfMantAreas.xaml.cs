@@ -18,11 +18,38 @@ namespace WpfEndososCandidatos.View
     /// <summary>
     /// Interaction logic for wpfMantAreas.xaml
     /// </summary>
-    public partial class wpfMantAreas : Window, IDialogView
+    public partial class wpfMantAreas : Window, IDialogViewAreas
     {
         public wpfMantAreas()
         {
             InitializeComponent();
+          
+        }
+
+        ListBox IDialogViewAreas.lsAllPrecints
+        {
+            get
+            {
+                return lsAllPrecints;
+            }
+
+            set
+            {
+                lsAllPrecints = value;
+            }
+        }
+
+        ListBox IDialogViewAreas.lsValidPrecints
+        {
+            get
+            {
+                return lsValidPrecints;
+            }
+
+            set
+            {
+                lsValidPrecints = value;
+            }
         }
     }
 }

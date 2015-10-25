@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\Infrastructure\Behaviors\SynchronizeSelectedItems.cs" />
     <Compile Include="Helper\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
@@ -86,6 +87,7 @@
     <Compile Include="Helper\PasswordHelper.cs" />
     <Compile Include="Helper\PWDTK\PWDTK.cs" />
     <Compile Include="Helper\PWDTK\Rfc2898.cs" />
+    <Compile Include="Helper\Infrastructure\WeakEventHandler.cs" />
     <Compile Include="Models\EndososPartidos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -101,6 +103,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Precintos.cs" />
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>EndososPartidos.tt</DependentUpon>
     </Compile>

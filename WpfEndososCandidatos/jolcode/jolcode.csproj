@@ -54,6 +54,7 @@
     <Compile Include="GetRegistry.cs" />
     <Compile Include="MyInterface\ICustomButton.cs" />
     <Compile Include="MyInterface\IDialogView.cs" />
+    <Compile Include="MyInterface\IDialogViewAreas.cs" />
     <Compile Include="MyInterface\IMainView.cs" />
     <Compile Include="MyInterface\IView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
