@@ -18,6 +18,7 @@
                 <Grid Margin="0,0,5,0">
                     <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,81,0,10" Width="145"
                              SelectionMode="Multiple"
+                             ItemsSource="{Binding lsAllPrecints,Mode=TwoWay}"
                                SelectedItem="{Binding lsAllPrecints_Item,Mode=TwoWay}"      
                              SelectedIndex="{Binding lsAllPrecints_Item_Id,Mode=TwoWay}"
                              >
@@ -26,6 +27,7 @@
 
                     <ListBox x:Name="lsValidPrecints" Margin="233,81,5,10"
                              SelectionMode="Multiple"
+                             ItemsSource="{Binding lsValidPrecints,Mode=TwoWay}"
                               SelectedItem="{Binding lsValidPrecints_Item,Mode=TwoWay}"                                     
                               SelectedIndex="{Binding lsValidPrecints_Item_Id,Mode=TwoWay}"                             
                              />

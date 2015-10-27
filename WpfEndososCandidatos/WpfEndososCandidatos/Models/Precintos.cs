@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace WpfEndososCandidatos.Models
 {
-    class Precintos : IEquatable<Precintos>
+    class Precintos : IEquatable<Precintos>, IComparable
     {
        public string PrecintoKey { get; set; }
        public string Desc { get; set; }
@@ -35,6 +37,13 @@ namespace WpfEndososCandidatos.Models
         {
             if (other == null) return false;
             return (this.PrecintoKey.Equals(other.PrecintoKey));
+        }
+
+        public int CompareTo(object obj)
+        {
+            Precintos a = this;
+            Precintos b = (Precintos)obj;
+            return string.Compare (a.PrecintoKey, b.PrecintoKey);
         }
     }
 }

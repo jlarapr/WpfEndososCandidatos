@@ -10,7 +10,7 @@
     </i:Interaction.Triggers>
     <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
         <Grid>
-            <Label Content="Mantyenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
+            <Label Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="460,386,0,0" VerticalAlignment="Top" Width="75"/>
             <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="283">
                 <Grid Margin="0"/>
