@@ -40,6 +40,14 @@
         private int _lsAllPrecints_Item_Id;
         private ObservableCollection<Precintos> _lsValidPrecints;
         private Precintos _lsValidPrecints_Item;
+        private bool _IsEnabled_CmdAddAllPrec;
+        private bool _IsEnabled_CmdAddPrec;
+        private bool _IsEnabled_CmdRemovePrec;
+        private bool _IsEnabled_CmdRemoveAllPrec;
+        private bool _IsEnabled_CmdEditar;
+        private bool _IsEnabled_CmdGuardar;
+        private bool _IsEnabled_cbArea;
+        private bool _IsEnabled_CmdCancel;
 
         public vmMantAreas()
             : base(new wpfMantAreas())
@@ -50,7 +58,8 @@
             cmdRemoveAllPrec_Click = new RelayCommand(param => MyCmdRemoveAllPrec_Click());
             cmdAddPrec_Click = new RelayCommand(param => MyCmdAddPrec_Click());
             cmdRemovePrec_Click = new RelayCommand(param => MyCmdRemovePrec_Click());
-
+            cmdEditar_Click = new RelayCommand(param => MyCmdEditar_Click());
+            cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click());
         }
 
 
@@ -130,6 +139,49 @@
                 throw;
             }
         }
+        private void MyCmdEditar_Click()
+        {
+            try
+            {
+                IsEnabled_CmdGuardar = false;
+                IsEnabled_cbArea = false;
+
+                IsEnabled_CmdAddAllPrec = true;
+                IsEnabled_CmdAddPrec = true;
+                IsEnabled_CmdRemoveAllPrec = true;
+                IsEnabled_CmdRemovePrec = true;
+                IsEnabled_CmdCancel = true;
+
+            }
+            catch (Exception)
+            {
+               
+                throw;
+            }
+        }
+        private void MyCmdCancel_Click()
+        {
+            try
+            {
+                IsEnabled_CmdGuardar = true;
+                IsEnabled_cbArea = true;
+
+                IsEnabled_CmdAddAllPrec = false;
+                IsEnabled_CmdAddPrec = false;
+                IsEnabled_CmdRemoveAllPrec = false;
+                IsEnabled_CmdRemovePrec = false;
+                IsEnabled_CmdCancel = false;
+                cbArea_Item_Id = -1;
+                lsAllPrecints.Clear();
+                lsValidPrecints.Clear();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public RelayCommand cmdAddAllPrec_Click
         {
             get;private set;
@@ -146,7 +198,14 @@
         {
             get;private set;
         }
-
+        public RelayCommand cmdEditar_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdCancel_Click
+        {
+            get;private set;
+        }
         #endregion
 
 
@@ -300,11 +359,114 @@
             }
             set
             {
+                if (value >-1)
+                {
+                    IsEnabled_CmdGuardar = true;
+                    IsEnabled_CmdEditar = true;
+                }else
+                {
+                    IsEnabled_CmdGuardar = false;
+                    IsEnabled_CmdEditar = false;
+                }
                 _cbArea_Item_Id = value;
-                this.RaisePropertychanged("cbArea_Item_Id");
-               
+                this.RaisePropertychanged("cbArea_Item_Id");               
             }
         }
+
+        public bool IsEnabled_CmdAddAllPrec
+        {
+            get
+            {
+                return _IsEnabled_CmdAddAllPrec;
+            }set
+            {
+                _IsEnabled_CmdAddAllPrec = value;
+                this.RaisePropertychanged("IsEnabled_CmdAddAllPrec");
+            }
+        }
+        public bool IsEnabled_CmdAddPrec
+        {
+            get
+            {
+                return _IsEnabled_CmdAddPrec;
+            }set
+            {
+                _IsEnabled_CmdAddPrec = value;
+                this.RaisePropertychanged("IsEnabled_CmdAddPrec");
+            }
+        }
+        public bool IsEnabled_CmdRemovePrec
+        {
+            get
+            {
+                return _IsEnabled_CmdRemovePrec;
+            }
+            set
+            {
+                _IsEnabled_CmdRemovePrec = value;
+                this.RaisePropertychanged("IsEnabled_CmdRemovePrec");
+            }
+        }
+        public bool IsEnabled_CmdRemoveAllPrec
+        {
+            get
+            {
+                return _IsEnabled_CmdRemoveAllPrec;
+            }set
+            {
+                _IsEnabled_CmdRemoveAllPrec = value;
+                this.RaisePropertychanged("IsEnabled_CmdRemoveAllPrec");
+            }
+        }
+        public bool IsEnabled_CmdEditar
+        {
+            get
+            {
+                return _IsEnabled_CmdEditar;
+            }
+            set
+            {
+                _IsEnabled_CmdEditar = value;
+                this.RaisePropertychanged("IsEnabled_CmdEditar");
+            }
+        }
+        public bool IsEnabled_CmdGuardar
+        {
+            get
+            {
+                return _IsEnabled_CmdGuardar;
+            }
+            set
+            {
+                _IsEnabled_CmdGuardar = value;
+                this.RaisePropertychanged("IsEnabled_CmdGuardar");
+            }
+        }
+        public bool IsEnabled_cbArea
+        {
+            get
+            {
+                return _IsEnabled_cbArea;
+            }
+            set
+            {
+                _IsEnabled_cbArea = value;
+                this.RaisePropertychanged("IsEnabled_cbArea");
+            }
+        }
+        public bool IsEnabled_CmdCancel
+        {
+            get
+            {
+                return _IsEnabled_CmdCancel;
+            }
+            set
+            {
+                _IsEnabled_CmdCancel = value;
+                this.RaisePropertychanged("IsEnabled_CmdCancel");
+            }
+        }
+
         #region initWindow OnShow
         private void MyInitWindow()
         {
@@ -325,9 +487,18 @@
                 lsAllPrecints = new ObservableCollection<Precintos>();
                 lsValidPrecints = new ObservableCollection<Precintos>();
                 cbArea_Item_Id = -1;
-                              
-                
-               
+
+
+                IsEnabled_CmdAddAllPrec = false;
+                IsEnabled_CmdAddPrec = false;
+                IsEnabled_CmdRemovePrec = false;
+                IsEnabled_CmdRemoveAllPrec = false;
+
+                IsEnabled_CmdEditar = false;
+                IsEnabled_CmdGuardar = false;
+                IsEnabled_CmdCancel = false;
+
+                IsEnabled_cbArea = true;
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {

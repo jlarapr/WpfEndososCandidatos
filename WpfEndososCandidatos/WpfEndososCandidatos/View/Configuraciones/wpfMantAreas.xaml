@@ -3,18 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Behaviors ="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
-        Title="wpfMantAreas" Height="426.317" Width="426.317" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantAreas" Height="610.317" Width="659.317" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="5" Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="10" Margin="-2" CornerRadius="5">
 
         <Grid Margin="0,0,0,0">
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="170,347,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="252,521,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
             <Label Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
-            <GroupBox x:Name="Frame1" Header="Frame1" Height="277" Margin="10,65,10,0" VerticalAlignment="Top">
+            <GroupBox x:Name="Frame1" Header="Frame1" Height="451" Margin="10,65,10,0" VerticalAlignment="Top">
                 <Grid Margin="0,0,5,0">
                     <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,81,0,10" Width="145"
                              SelectionMode="Multiple"
@@ -25,23 +25,27 @@
 
                     </ListBox>
 
-                    <ListBox x:Name="lsValidPrecints" Margin="233,81,5,10"
+                    <ListBox x:Name="lsValidPrecints" Margin="233,81,0,10"
                              SelectionMode="Multiple"
                              ItemsSource="{Binding lsValidPrecints,Mode=TwoWay}"
                               SelectedItem="{Binding lsValidPrecints_Item,Mode=TwoWay}"                                     
-                              SelectedIndex="{Binding lsValidPrecints_Item_Id,Mode=TwoWay}"                             
+                              SelectedIndex="{Binding lsValidPrecints_Item_Id,Mode=TwoWay}" HorizontalAlignment="Left" Width="140"                             
                              />
                     <Button x:Name="cmdAddAllPrec" Content=">>" HorizontalAlignment="Left" Margin="160,81,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdAddAllPrec_Click}"
+                            IsEnabled="{Binding IsEnabled_CmdAddAllPrec }"
                             />
                     <Button x:Name="cmdAddPrec" Content=">" HorizontalAlignment="Left" Margin="160,106,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdAddPrec_Click}"
+                            IsEnabled="{Binding IsEnabled_CmdAddPrec}"
                             />
                     <Button x:Name="cmdRemovePrec" Content="&lt;" HorizontalAlignment="Left" Margin="160,131,0,0" VerticalAlignment="Top" Width="68"
-                            Command="{Binding cmdRemovePrec_Click}"                            
+                            Command="{Binding cmdRemovePrec_Click}"      
+                            IsEnabled="{Binding IsEnabled_CmdRemovePrec}"
                             />
                     <Button x:Name="cmdRemoveAllPrec" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="160,156,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdRemoveAllPrec_Click}"
+                            IsEnabled="{Binding IsEnabled_CmdRemoveAllPrec}"
                             />
                     <Label x:Name="lblArea" Content="Área" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <TextBox x:Name="dfArea0" HorizontalAlignment="Left" Height="23" Margin="10,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30"/>
@@ -52,13 +56,38 @@
                               ItemsSource="{Binding cbArea}"
                               SelectedItem="{Binding cbArea_Item,Mode=TwoWay}"                                     
                               SelectedIndex="{Binding cbArea_Item_Id,Mode=TwoWay}"
+                              IsEnabled="{Binding IsEnabled_cbArea}"
                               />
-                        <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,48,0,0" Width="145"/>
+                    <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,48,0,0" Width="145"/>
                     <Label x:Name="lblPrecintosValidos" Content="Precintos Válidos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="233,50,0,0" Width="145"/>
+                    <GroupBox x:Name="gpbCargo" Header="Cargo" HorizontalAlignment="Left" Margin="383,70,0,10" Width="219">
+                        <Grid Margin="0">
+                            <RadioButton x:Name="rdbGobernador" Content="Gobernador" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbComisionadoResidente" Content="Comisionado Residente" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbSenadorDistrito" Content="Senador Distrito" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbSenadorporAcumulacion" Content="Senador por Acumulación" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbRepresentanteDistrito" Content="Representante Distrito" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbRepresentanteporAcumulacion" Content="Representante por Acumulación" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbAlcalde" Content="Alcalde" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="rdbAsambleista" Content="Asambleista" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="txtTotalEndosos" HorizontalAlignment="Left" Height="23" Margin="10,208,0,0" TextWrapping="Wrap" Text="{Binding TxtEndosos}" VerticalAlignment="Top" Width="120"/>
+                            <Label x:Name="label" Content="Endosos Requeridos:" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.474,-0.5"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </GroupBox>
-            <Button Content="Editar" Command="{Binding cmdEditar_Click}" HorizontalAlignment="Left" Margin="10,347,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
-            <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" Margin="90,347,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
+            <Button Content="Editar"  HorizontalAlignment="Left" Margin="12,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdEditar_Click}"
+                    IsEnabled="{Binding IsEnabled_CmdEditar}"
+                    />
+            <Button Content="Guardar" HorizontalAlignment="Left" Margin="92,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdGuardar_Click}"
+                    IsEnabled="{Binding IsEnabled_CmdGuardar}"
+                    />
+            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="172,521,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+                    Command="{Binding cmdCancel_Click}"
+                    IsEnabled="{Binding IsEnabled_CmdCancel}"
+                    />
 
         </Grid>
     </Border>
