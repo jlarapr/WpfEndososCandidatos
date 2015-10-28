@@ -48,6 +48,16 @@
         private bool _IsEnabled_CmdGuardar;
         private bool _IsEnabled_cbArea;
         private bool _IsEnabled_CmdCancel;
+        private DataTable _MyAreasTable;
+        private DataTable _MyPrecintosTable;
+        private bool _IsEditable_cbArea;
+        private bool _IsEnabled_CmdSalir;
+        private bool _IsEnabled_txtArea1;
+        private bool _IsEnabled_txtArea2;
+        private string _txtArea1;
+        private string _txtArea2;
+        private string _txtArea0;
+        private Visibility _Visibility_cbArea;
 
         public vmMantAreas()
             : base(new wpfMantAreas())
@@ -143,15 +153,20 @@
         {
             try
             {
-                IsEnabled_CmdGuardar = false;
                 IsEnabled_cbArea = false;
+                IsEnabled_CmdEditar = false;
+                IsEnabled_CmdSalir = false;
 
+                Visibility_cbArea = Visibility.Hidden;
+
+                IsEnabled_CmdGuardar = true;
                 IsEnabled_CmdAddAllPrec = true;
                 IsEnabled_CmdAddPrec = true;
                 IsEnabled_CmdRemoveAllPrec = true;
                 IsEnabled_CmdRemovePrec = true;
                 IsEnabled_CmdCancel = true;
-
+                IsEnabled_txtArea1 = true;
+                IsEnabled_txtArea2 = true;
             }
             catch (Exception)
             {
@@ -163,17 +178,27 @@
         {
             try
             {
-                IsEnabled_CmdGuardar = true;
                 IsEnabled_cbArea = true;
+                IsEnabled_CmdSalir = true;
 
+                IsEnabled_CmdGuardar = false;
                 IsEnabled_CmdAddAllPrec = false;
                 IsEnabled_CmdAddPrec = false;
                 IsEnabled_CmdRemoveAllPrec = false;
                 IsEnabled_CmdRemovePrec = false;
                 IsEnabled_CmdCancel = false;
+
+                IsEnabled_txtArea1 = false;
+                IsEnabled_txtArea2 = false;
+                txtArea0 = string.Empty;
+                txtArea1 = string.Empty;
+                txtArea2 = string.Empty;
+                Visibility_cbArea = Visibility.Visible;
+
                 cbArea_Item_Id = -1;
                 lsAllPrecints.Clear();
                 lsValidPrecints.Clear();
+                MySetAllPrecinto(_MyPrecintosTable);
 
             }
             catch (Exception)
@@ -207,7 +232,6 @@
             get;private set;
         }
         #endregion
-
 
         public Brush BorderBrush
         {
@@ -340,11 +364,13 @@
                         DBCnnStr = _DBEndososCnnStr
                     })
                     {
-                        string myArea = this.cbArea_Item.Substring(0, 4);
-
+                        string myArea = value.Substring(0, 4);
+                        txtArea0 = value.Substring(0, 1);
+                        txtArea1 = value.Substring(1, 3);
+                        txtArea2 = value.Split('-')[1];
                         DataTable t = mySqlExcuteCommand.MyGetPrecintosValidos(myArea);
 
-                        MySetValidPrecintos(t);                        
+                        MySetValidPrecintos(t);
                     }
                 }
 
@@ -361,7 +387,7 @@
             {
                 if (value >-1)
                 {
-                    IsEnabled_CmdGuardar = true;
+                    IsEnabled_CmdGuardar = false;
                     IsEnabled_CmdEditar = true;
                 }else
                 {
@@ -466,6 +492,110 @@
                 this.RaisePropertychanged("IsEnabled_CmdCancel");
             }
         }
+        public bool IsEditable_cbArea
+        {
+            get
+            {
+                return _IsEditable_cbArea;
+            }
+            set
+            {
+                _IsEditable_cbArea = value;
+                this.RaisePropertychanged("IsEditable_cbArea");
+            }
+        }
+        public bool IsEnabled_CmdSalir
+        {
+            get
+             {
+                return _IsEnabled_CmdSalir;
+            }
+            set
+            {
+                _IsEnabled_CmdSalir = value;
+                this.RaisePropertychanged("IsEnabled_CmdSalir");
+            }
+        }
+        public bool IsEnabled_txtArea1
+        {
+            get
+            {
+                return _IsEnabled_txtArea1;
+            }
+            set
+            {
+                _IsEnabled_txtArea1 = value;
+                this.RaisePropertychanged("IsEnabled_txtArea1");
+            }
+        }
+        public bool IsEnabled_txtArea2
+        {
+            get
+            {
+                return _IsEnabled_txtArea2;
+            }
+            set
+            {
+                _IsEnabled_txtArea2 = value;
+                this.RaisePropertychanged("IsEnabled_txtArea2");
+            }
+        }
+
+        public Visibility Visibility_cbArea
+        {
+            get
+            {
+                return _Visibility_cbArea;
+            }set
+            {
+                _Visibility_cbArea = value;
+                this.RaisePropertychanged("Visibility_cbArea");
+            }
+        }
+
+        public string txtArea1
+        {
+            get
+            {
+                return _txtArea1;
+            }
+            set
+            {
+                _txtArea1 = value;
+                this.RaisePropertychanged("txtArea1");
+            }
+        }
+        public string txtArea2
+        {
+            get
+            {
+                return _txtArea2;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _txtArea2 = value.Trim();
+                    this.RaisePropertychanged("txtArea2");
+                }
+            }
+        }
+        public string txtArea0
+        {
+            get
+            {
+                return _txtArea0;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _txtArea0 = value.Trim();
+                    this.RaisePropertychanged("txtArea0");
+                }
+            }
+        }
+
 
         #region initWindow OnShow
         private void MyInitWindow()
@@ -488,6 +618,9 @@
                 lsValidPrecints = new ObservableCollection<Precintos>();
                 cbArea_Item_Id = -1;
 
+                txtArea0 = string.Empty;
+                txtArea1 = string.Empty;
+                txtArea2 = string.Empty;
 
                 IsEnabled_CmdAddAllPrec = false;
                 IsEnabled_CmdAddPrec = false;
@@ -497,8 +630,15 @@
                 IsEnabled_CmdEditar = false;
                 IsEnabled_CmdGuardar = false;
                 IsEnabled_CmdCancel = false;
+                IsEditable_cbArea = false;
+
+                IsEnabled_txtArea1 = false;
+                IsEnabled_txtArea2 = false;
 
                 IsEnabled_cbArea = true;
+                IsEnabled_CmdSalir = true;
+
+                Visibility_cbArea = Visibility.Visible;
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
@@ -506,19 +646,19 @@
                 })
                 {
 
-                    DataTable myAreas = get.MyGetAreas();
+                    _MyAreasTable = get.MyGetAreas();
 
-                    foreach (DataRow row in myAreas.Rows)
+                    foreach (DataRow row in _MyAreasTable.Rows)
                     {
                         cbArea.Add(row[0].ToString());
                     }
 
-                    DataTable myPrecintos = get.MyGetPrecintos();
+                    _MyPrecintosTable = get.MyGetPrecintos();
 
                     this.View.lsAllPrecints.ItemsSource = lsAllPrecints;
                     this.View.lsValidPrecints.ItemsSource = lsValidPrecints;
 
-                    MySetAllPrecinto(myPrecintos);
+                    MySetAllPrecinto(_MyPrecintosTable);
 
 
                 }

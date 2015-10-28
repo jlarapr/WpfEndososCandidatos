@@ -12,11 +12,14 @@
     <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="10" Margin="-2" CornerRadius="5">
 
         <Grid Margin="0,0,0,0">
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="252,521,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
+            <Button Content="Salir"  HorizontalAlignment="Left" Margin="252,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdSalir_Click}"
+                    IsEnabled="{Binding IsEnabled_CmdSalir}"
+                    />
             <Label Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
             <GroupBox x:Name="Frame1" Header="Frame1" Height="451" Margin="10,65,10,0" VerticalAlignment="Top">
                 <Grid Margin="0,0,5,0">
-                    <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,81,0,10" Width="145"
+                    <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,168,0,10" Width="145"
                              SelectionMode="Multiple"
                              ItemsSource="{Binding lsAllPrecints,Mode=TwoWay}"
                                SelectedItem="{Binding lsAllPrecints_Item,Mode=TwoWay}"      
@@ -25,41 +28,52 @@
 
                     </ListBox>
 
-                    <ListBox x:Name="lsValidPrecints" Margin="233,81,0,10"
+                    <ListBox x:Name="lsValidPrecints" Margin="233,168,0,10"
                              SelectionMode="Multiple"
                              ItemsSource="{Binding lsValidPrecints,Mode=TwoWay}"
                               SelectedItem="{Binding lsValidPrecints_Item,Mode=TwoWay}"                                     
                               SelectedIndex="{Binding lsValidPrecints_Item_Id,Mode=TwoWay}" HorizontalAlignment="Left" Width="140"                             
                              />
-                    <Button x:Name="cmdAddAllPrec" Content=">>" HorizontalAlignment="Left" Margin="160,81,0,0" VerticalAlignment="Top" Width="68"
+                    <Button x:Name="cmdAddAllPrec" Content=">>" HorizontalAlignment="Left" Margin="160,173,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdAddAllPrec_Click}"
                             IsEnabled="{Binding IsEnabled_CmdAddAllPrec }"
                             />
-                    <Button x:Name="cmdAddPrec" Content=">" HorizontalAlignment="Left" Margin="160,106,0,0" VerticalAlignment="Top" Width="68"
+                    <Button x:Name="cmdAddPrec" Content=">" HorizontalAlignment="Left" Margin="160,198,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdAddPrec_Click}"
                             IsEnabled="{Binding IsEnabled_CmdAddPrec}"
                             />
-                    <Button x:Name="cmdRemovePrec" Content="&lt;" HorizontalAlignment="Left" Margin="160,131,0,0" VerticalAlignment="Top" Width="68"
+                    <Button x:Name="cmdRemovePrec" Content="&lt;" HorizontalAlignment="Left" Margin="160,223,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdRemovePrec_Click}"      
                             IsEnabled="{Binding IsEnabled_CmdRemovePrec}"
                             />
-                    <Button x:Name="cmdRemoveAllPrec" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="160,156,0,0" VerticalAlignment="Top" Width="68"
+                    <Button x:Name="cmdRemoveAllPrec" Content="&lt;&lt;" HorizontalAlignment="Left" Margin="160,248,0,0" VerticalAlignment="Top" Width="68"
                             Command="{Binding cmdRemoveAllPrec_Click}"
                             IsEnabled="{Binding IsEnabled_CmdRemoveAllPrec}"
                             />
                     <Label x:Name="lblArea" Content="Área" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfArea0" HorizontalAlignment="Left" Height="23" Margin="10,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30"/>
-                    <TextBox x:Name="dfArea1" HorizontalAlignment="Left" Height="23" Margin="45,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="30"/>
-                    <TextBox x:Name="dfArea2" HorizontalAlignment="Left" Height="23" Margin="80,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="75"/>
-                    <Label x:Name="lblCargo" Content="Cargo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,0,0,0"/>
-                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="160,20,0,0" VerticalAlignment="Top" Width="213"
+                    <TextBox x:Name="txtArea0" HorizontalAlignment="Left" Height="23" Margin="4,25,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"
+                             IsEnabled="False"
+                             Text="{Binding txtArea0}"
+                             />
+                    <TextBox x:Name="txtArea1" HorizontalAlignment="Left" Height="23" Margin="39,25,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="64"
+                             IsEnabled="{Binding IsEnabled_txtArea1}"
+                             Text="{Binding txtArea1}"
+                             />
+                    <TextBox x:Name="txtArea2" HorizontalAlignment="Left" Height="23" Margin="108,25,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="194"
+                             IsEnabled="{Binding IsEnabled_txtArea2}"
+                             Text="{Binding txtArea2}"
+                             />
+                    <Label x:Name="lblCargo" Content="Cargo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="127,0,0,0"/>
+                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="15,70,0,0" VerticalAlignment="Top" Width="287"
                               ItemsSource="{Binding cbArea}"
                               SelectedItem="{Binding cbArea_Item,Mode=TwoWay}"                                     
                               SelectedIndex="{Binding cbArea_Item_Id,Mode=TwoWay}"
                               IsEnabled="{Binding IsEnabled_cbArea}"
+                              IsEditable="{Binding IsEditable_cbArea}"
+                              Visibility="{Binding Visibility_cbArea}"
                               />
-                    <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,48,0,0" Width="145"/>
-                    <Label x:Name="lblPrecintosValidos" Content="Precintos Válidos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="233,50,0,0" Width="145"/>
+                    <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,137,0,0" Width="145"/>
+                    <Label x:Name="lblPrecintosValidos" Content="Precintos Válidos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="233,137,0,0" Width="145"/>
                     <GroupBox x:Name="gpbCargo" Header="Cargo" HorizontalAlignment="Left" Margin="383,70,0,10" Width="219">
                         <Grid Margin="0">
                             <RadioButton x:Name="rdbGobernador" Content="Gobernador" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
