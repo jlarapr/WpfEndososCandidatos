@@ -154,6 +154,45 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public bool MyDeleteArea(string where)
+        {
+            bool myBoolReturn = false;
+            string[] myDelete =
+                       {
+                            "Delete from [dbo].[Areas] ",
+                            " WHERE Area=@Where "
+                        };
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(myDelete)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+                        cmd.Parameters["@Where"].Value = where;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+        }
         public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
         {
             bool myBoolReturn = false;
@@ -162,7 +201,7 @@ namespace jolcode
                 string[] myInsert = 
                         {
                             "INSERT INTO [dbo].[Areas]([Area],[Desc],[Precintos],[ElectivePositionID],[DemarcationID]) ",
-                            "VALUES(@Areas,@Desc,@Precintos,@ElectivePositionID,@DemarcationID)"
+                            "VALUES(@Area,@Desc,@Precintos,@ElectivePositionID,@DemarcationID)"
                         };
 
                 string[] myUpdate =
@@ -196,14 +235,17 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Precintos", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@ElectivePositionID", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@DemarcationID", SqlDbType.Int));
-                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+                        if (!isInsert)
+                            cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
 
                         cmd.Parameters["@Area"].Value = area;
                         cmd.Parameters["@Desc"].Value = desc;
                         cmd.Parameters["@Precintos"].Value = precintos;
                         cmd.Parameters["@ElectivePositionID"].Value = electivePositionID;
                         cmd.Parameters["@DemarcationID"].Value = demarcationID;
-                        cmd.Parameters["@Where"].Value = where;
+
+                        if (!isInsert)
+                            cmd.Parameters["@Where"].Value = where;
 
                         cmd.ExecuteNonQuery();
 
