@@ -154,6 +154,71 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myInsert = 
+                        {
+                            "INSERT INTO [dbo].[Areas]([Area],[Desc],[Precintos],[ElectivePositionID],[DemarcationID]) ",
+                            "VALUES(@Areas,@Desc,@Precintos,@ElectivePositionID,@DemarcationID)"
+                        };
+
+                string[] myUpdate =
+                        {
+                            "UPDATE [dbo].[Areas]",
+                            " SET [Area] =@Area",
+                            ",[Desc] = @Desc",
+                            ",[Precintos] = @Precintos",
+                            ",[ElectivePositionID] = @ElectivePositionID",
+                            ",[DemarcationID] = @DemarcationID",
+                            " WHERE Area=@Where"
+                        };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = isInsert == true?string.Concat(myInsert):string.Concat(myUpdate)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+                        
+                        cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Desc", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Precintos", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@ElectivePositionID", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@DemarcationID", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+
+                        cmd.Parameters["@Area"].Value = area;
+                        cmd.Parameters["@Desc"].Value = desc;
+                        cmd.Parameters["@Precintos"].Value = precintos;
+                        cmd.Parameters["@ElectivePositionID"].Value = electivePositionID;
+                        cmd.Parameters["@DemarcationID"].Value = demarcationID;
+                        cmd.Parameters["@Where"].Value = where;
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
+            }
+            return myBoolReturn;
+        }
+
+
         #endregion
 
         #region Dispose

@@ -70,10 +70,63 @@
             cmdRemovePrec_Click = new RelayCommand(param => MyCmdRemovePrec_Click());
             cmdEditar_Click = new RelayCommand(param => MyCmdEditar_Click());
             cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click());
+            cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click());
         }
 
 
         #region MyCmd
+        private void MyCmdGuardar_Click ()
+        {
+            try
+            {
+                string myArea=string.Empty;
+                string myDesc = string.Empty;
+                string myPrecintos = string.Empty;
+                string myElectivePositionID = "0";
+                string myDemarcationID = "0";
+                string myWhere = string.Empty;
+               
+
+                myWhere = cbArea_Item.Substring(0, 4);
+                myArea = string.Concat(txtArea0, txtArea1);
+                myDesc = txtArea2;
+
+                foreach (Precintos p in lsValidPrecints.ToList())
+                {
+                    myPrecintos += p.ToString().Split('-')[0].Trim() + "|";
+                }
+
+                bool myUpDate = false;
+
+                using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = _DBEndososCnnStr
+                })
+                {
+                    myUpDate = mySqlExe.MyChangeArea(false, myArea, myDesc, myPrecintos, myElectivePositionID, myDemarcationID, myWhere);
+
+                    if (myUpDate)
+                    {
+                        _MyAreasTable = mySqlExe.MyGetAreas();
+                        cbArea.Clear();
+                        foreach (DataRow row in _MyAreasTable.Rows)
+                        {
+                            cbArea.Add(row[0].ToString());
+                        }
+                    }
+                }
+
+                if (!myUpDateError)
+                    throw new Exception("Error en la Base de Data");
+
+                MyCmdCancel_Click();
+                MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(),"Error",MessageBoxButton.OK,MessageBoxImage.Error); 
+            }
+        }
         private void MyCmdRemovePrec_Click()
         {
             try
@@ -228,6 +281,10 @@
             get;private set;
         }
         public RelayCommand cmdCancel_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdGuardar_Click
         {
             get;private set;
         }
@@ -575,7 +632,7 @@
             {
                 if (value != null)
                 {
-                    _txtArea2 = value.Trim();
+                    _txtArea2 = value.Trim().ToUpper();
                     this.RaisePropertychanged("txtArea2");
                 }
             }
