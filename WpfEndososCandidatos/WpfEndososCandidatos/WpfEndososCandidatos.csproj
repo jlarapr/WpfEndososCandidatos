@@ -104,6 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Partidos.cs" />
     <Compile Include="Models\Precintos.cs" />
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>EndososPartidos.tt</DependentUpon>

@@ -561,7 +561,7 @@
         }
         #endregion
 
-        #region initWindow OnShow
+        #region MyCmd
         private void MyInitWindow()
         {
             try
@@ -641,9 +641,6 @@
         {
             return this.View.ShowDialog();
         }
-        #endregion
-
-        #region MyCmd
         private void MyCmdDelete_Click()
         {
             try

@@ -227,7 +227,8 @@ namespace WpfEndososCandidatos.ViewModels
                 using (vmMantPartidos frmMantPartidos = new vmMantPartidos())
                 {
                     frmMantPartidos.View.Owner = this.View as Window;
-                    frmMantPartidos.OnShow();
+                    frmMantPartidos.DBEndososCnnStr = _DBEndososCnnStr;
+                    frmMantPartidos.MyOnShow();
 
                 }
                 
