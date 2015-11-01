@@ -12,24 +12,32 @@
 
         <Grid>
             <Label Content="Mantenimiento - Partidos" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="173,338,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
+            <Button Content="Salir"  HorizontalAlignment="Left" Margin="173,338,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdSalir_Click}"
+                    IsEnabled="{Binding IsEnabled_cmdSalir}"
+                    />
             <GroupBox x:Name="groupBox" Header="Partidos"  HorizontalAlignment="Left" Height="234" Margin="5,65,0,0" VerticalAlignment="Top" Width="490">
                 <Grid Margin="0">
                     <Label x:Name="lblNumPartido" Content="Partido" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="lblNombre" Content="Nombre" HorizontalAlignment="Left" Margin="64,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfNumPartido" HorizontalAlignment="Left" Height="23" Margin="5,31,0,0" TextWrapping="Wrap" Text="{Binding dfNumPartido}" VerticalAlignment="Top" Width="54"/>
-                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="64,59,0,0" VerticalAlignment="Top" Width="250"
+                    <TextBox x:Name="dfNumPartido" HorizontalAlignment="Left" Height="23" Margin="5,31,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="54"
+                             Text="{Binding txtNumPartido}"
+                             />
+                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="64,59,0,0" VerticalAlignment="Top" Width="299"
                         ItemsSource="{Binding cbPartidos}"
                     	SelectedItem="{Binding cbPartidos_Item, Mode=TwoWay}"                                     
                         SelectedIndex="{Binding cbPartidos_Item_Id, Mode=TwoWay}"
+                              Visibility="{Binding Visibility_cbPartidos}"
                               />
                     <Label x:Name="lblArea" Content="Area Geografica" HorizontalAlignment="Left" Margin="5,112,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="lblEndoReq" Content="Endosos Req." HorizontalAlignment="Left" Margin="5,155,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtEndoReq" HorizontalAlignment="Left" Height="23" Margin="5,181,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="54"
                              Text="{Binding txtEndoReq}"
                              />
-                    <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="64,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"
+                    <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="64,31,0,0"  VerticalAlignment="Top" Width="261"
+                             TextWrapping="NoWrap"
                              Text="{Binding txtNombre}"
+                             Visibility="{Binding Visibility_txtNombre}"
                              />
                     <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="250"
                     	ItemsSource="{Binding cbArea}"
@@ -41,10 +49,22 @@
                               />
                 </Grid>
             </GroupBox>
-            <Button x:Name="cmdAdd" Content="Añadir" Command="{Binding cmdAdd_Click}" HorizontalAlignment="Left" Margin="13,304,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
-            <Button x:Name="cmdDelete" Content="Borrar" Command="{Binding cmdDelete_Click}" HorizontalAlignment="Left" Margin="93,304,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
-            <Button x:Name="cmdEdit" Content="Editar" Command="{Binding cmdEdit_Click}" HorizontalAlignment="Left" Margin="13,338,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
-            <Button x:Name="cmdSave" Content="Guardar" Command="{Binding cmdSavet_Click}" HorizontalAlignment="Left" Margin="93,338,0,0" VerticalAlignment="Top" Width="75" Height="29"/>
+            <Button x:Name="cmdAdd" Content="Añadir"  HorizontalAlignment="Left" Margin="13,304,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdAdd_Click}"
+                    IsEnabled="{Binding IsEnabled_cmdAdd}"
+                    />
+            <Button x:Name="cmdDelete" Content="Borrar"  HorizontalAlignment="Left" Margin="93,304,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdDelete_Click}"
+                    IsEnabled="{Binding IsEnabled_cmdDelete}"
+                    />
+            <Button x:Name="cmdEdit" Content="Editar" HorizontalAlignment="Left" Margin="13,338,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdEdit_Click}" 
+                    IsEnabled="{Binding IsEnabled_cmdEdit}"
+                    />
+            <Button x:Name="cmdSave" Content="Guardar"  HorizontalAlignment="Left" Margin="93,338,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    Command="{Binding cmdSavet_Click}"
+                    IsEnabled="{Binding IsEnabled_cmdSavet}"
+                    />
             <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="173,304,0,0" VerticalAlignment="Top" Width="75"  Height="29"
             	Command="{Binding cmdCancel_Click}"
             	IsEnabled="{Binding IsEnabled_CmdCancel}"
