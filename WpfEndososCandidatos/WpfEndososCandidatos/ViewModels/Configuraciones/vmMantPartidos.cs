@@ -23,7 +23,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
-        private ObservableCollection<string> _cbArea;
+        private ObservableCollection<Area> _cbArea;
         private string _cbArea_Item;
         private int _cbArea_Item_Id;
         private DataTable _MyAreasTable;
@@ -43,6 +43,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _txtNumPartido;
         private Visibility _Visibility_txtNombre;
         private Visibility _Visibility_cbPartidos;
+        private Visibility _Visibility_txtAreaGeografica;
+        private string _txtAreaGeografica;
+        private Visibility _Visibility_cbArea;
 
         public vmMantPartidos()
             : base(new wpfMantPartidos())
@@ -52,7 +55,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click());
             cmdEdit_Click = new RelayCommand(param => MyCmdEdit_Click());
 
-            cbArea = new ObservableCollection<string>();
+            cbArea = new ObservableCollection<Area>();
             cbPartidos = new ObservableCollection<Partidos>();
 
         }
@@ -151,6 +154,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("txtNombre");
             }
         }
+        public string txtAreaGeografica
+        {
+            get
+            {
+                return _txtAreaGeografica;
+            }set
+            {
+                _txtAreaGeografica = value;
+                this.RaisePropertychanged("txtAreaGeografica");
+            }
+        }
         public Visibility Visibility_txtNombre
         {
             get
@@ -173,6 +187,28 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("Visibility_cbPartidos");
             }
         }
+        public Visibility Visibility_txtAreaGeografica
+        {
+            get
+            {
+                return _Visibility_txtAreaGeografica;
+            }set
+            {
+                _Visibility_txtAreaGeografica = value;
+                this.RaisePropertychanged("Visibility_txtAreaGeografica");
+            }
+        }
+        public Visibility Visibility_cbArea
+        {
+            get
+            {
+                return _Visibility_cbArea;
+            }set
+            {
+                _Visibility_cbArea = value;
+                this.RaisePropertychanged("Visibility_cbArea");
+            }
+        }
         public string txtNumPartido
         {
             get
@@ -185,7 +221,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
-        public ObservableCollection<string> cbArea
+        public ObservableCollection<Area> cbArea
         {
             get
             {
@@ -245,11 +281,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     string[] myData = value.Split('-');
 
                     _cbPartidos_Item = value;
-                    txtNumPartido = myData[0];
-                    txtNombre = myData[1];
-                    txtEndoReq = myData[2];
+                    txtNumPartido = myData[0].Trim();
+                    txtNombre = myData[1].Trim();
+                    txtEndoReq = myData[2].Trim();
 
                     IsEnabled_cmdEdit = true;
+
+                    cbArea_Item_Id = FindByArea(myData[3].Trim());
+                    txtAreaGeografica = cbArea_Item;
 
                     this.RaisePropertychanged("cbPartidos_Item");
                 }
@@ -312,11 +351,19 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    _MyAreasTable = get.MyGetAreas();
+                    _MyAreasTable = get.MyGetAreas(true);
 
                     foreach (DataRow row in _MyAreasTable.Rows)
                     {
-                        cbArea.Add(row[0].ToString());
+                        Area myArea = new Area();
+
+                        myArea.AreaKey = row["Area"].ToString();
+                        myArea.Precintos = row["Precintos"].ToString();
+                        myArea.Desc = row["Desc"].ToString();
+                        myArea.ElectivePositionID = row["ElectivePositionID"].ToString();
+                        myArea.DemarcationID = row["DemarcationID"].ToString();
+
+                        cbArea.Add(myArea);
                     }
                     _MyPartidosTable = get.MyGetPartidos();
 
@@ -370,7 +417,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             try
             {
                 Visibility_txtNombre = Visibility.Visible;
+                Visibility_txtAreaGeografica = Visibility.Hidden;
+
                 Visibility_cbPartidos = Visibility.Hidden;
+                Visibility_cbArea = Visibility.Visible;
                 IsEnabled_CmdCancel = true;
             }
             catch (Exception ex)
@@ -416,11 +466,32 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             txtNumPartido = string.Empty;
             txtNombre = string.Empty;
             txtEndoReq = string.Empty;
+            txtAreaGeografica = string.Empty;
 
             Visibility_txtNombre = Visibility.Hidden;
             Visibility_cbPartidos = Visibility.Visible;
+            Visibility_txtAreaGeografica = Visibility.Visible;
+            Visibility_cbArea = Visibility.Hidden;
+        }
+
+        private int FindByArea(string Area )
+        {
+            Area myOut = cbArea.Where(x => x.AreaKey.Substring(0,4) == Area).Single<Area>();
+
+            int myIndex = cbArea.IndexOf(myOut);
 
 
+
+            //foreach(Area area in coll)
+            //{
+            //    if (area.AreaKey.Substring(0,4) == Area)
+            //    {
+                    
+            //        myOut= area;
+            //        break;
+            //    }
+            //}
+            return myIndex;
         }
         #endregion
 

@@ -77,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Area.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Helper\Infrastructure\Behaviors\SynchronizeSelectedItems.cs" />
     <Compile Include="Helper\BindablePasswordBox.xaml.cs">

@@ -34,12 +34,15 @@ namespace jolcode
 
 
         #region Areas      
-        public DataTable MyGetAreas ()
+        public DataTable MyGetAreas (bool allColumm)
         {
             DataTable myTableReturn = new DataTable(); 
             try
             {
                 string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
+
+                if (allColumm)
+                    mySqlstr = "Select * from areas order by area";
 
                 using (SqlConnection cnn = new SqlConnection()
                 { 

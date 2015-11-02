@@ -615,7 +615,7 @@
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    _MyAreasTable = get.MyGetAreas();
+                    _MyAreasTable = get.MyGetAreas(false);
 
                     foreach (DataRow row in _MyAreasTable.Rows)
                     {
@@ -667,7 +667,7 @@
 
                     if (myDelete)
                     {
-                        _MyAreasTable = mySqlExe.MyGetAreas();
+                        _MyAreasTable = mySqlExe.MyGetAreas(false);
                         cbArea.Clear();
                         foreach (DataRow row in _MyAreasTable.Rows)
                         {
@@ -762,7 +762,7 @@
 
                     if (myUpDate)
                     {
-                        _MyAreasTable = mySqlExe.MyGetAreas();
+                        _MyAreasTable = mySqlExe.MyGetAreas(false);
                         cbArea.Clear();
                         foreach (DataRow row in _MyAreasTable.Rows)
                         {
