@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        Title="wpfMantPartidos" Height="294.965" Width="442.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantPartidos" Height="308.965" Width="442.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="10">
+    <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="10" Margin="-1" CornerRadius="10">
 
         <Grid>
             <Label Content="Mantenimiento - Partidos" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
@@ -19,10 +19,11 @@
             <GroupBox x:Name="groupBox" Header="Partidos"  HorizontalAlignment="Left" Height="144" Margin="5,65,0,0" VerticalAlignment="Top" Width="425">
                 <Grid Margin="0">
                     <Label x:Name="lblNumPartido" Content="Partido" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="lblNombre" Content="Nombre" HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lblNombre" Content="Nombre" HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Width="149"/>
                     <TextBox x:Name="dfNumPartido" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="54"
                              Text="{Binding txtNumPartido}"
-                             
+                             IsReadOnly="{Binding IsReadOnly_txtNumPartido}"
+                             Background="{Binding Background_txtNumPartido}"
                              />
                     <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="104,32,0,0" VerticalAlignment="Top" Width="299"
                         ItemsSource="{Binding cbPartidos}"
@@ -34,6 +35,8 @@
                     <Label x:Name="lblEndoReq" Content="Endosos Req." HorizontalAlignment="Left" Margin="5,59,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtEndoReq" HorizontalAlignment="Left" Height="23" Margin="10,85,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="54"
                              Text="{Binding txtEndoReq}"
+                             IsReadOnly="{Binding IsReadOnly_txtEndoReq}"
+                             Background="{Binding Background_txtEndoReq}"
                              />
                     <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="104,32,0,0"  VerticalAlignment="Top" Width="279"
                              TextWrapping="NoWrap"
@@ -50,6 +53,8 @@
                     <TextBox x:Name="txtAreaGeografica" HorizontalAlignment="Left" Height="23" Margin="104,85,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279"
                              Text="{Binding txtAreaGeografica}"
                              Visibility="{Binding Visibility_txtAreaGeografica}"
+                             IsReadOnly="{Binding IsReadOnly_txtAreaGeografica}"
+                             Background="Yellow"
                              />
                 </Grid>
             </GroupBox>
@@ -66,8 +71,8 @@
                     IsEnabled="{Binding IsEnabled_cmdEdit}"
                     />
             <Button x:Name="cmdSave" Content="Guardar"  HorizontalAlignment="Left" Margin="183,248,0,0" VerticalAlignment="Top" Width="75" Height="29"
-                    Command="{Binding cmdSavet_Click}"
-                    IsEnabled="{Binding IsEnabled_cmdSavet}"
+                    Command="{Binding cmdSave_Click}"
+                    IsEnabled="{Binding IsEnabled_cmdSave}"
                     />
             <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="263,214,0,0" VerticalAlignment="Top" Width="75"  Height="29"
             	Command="{Binding cmdCancel_Click}"

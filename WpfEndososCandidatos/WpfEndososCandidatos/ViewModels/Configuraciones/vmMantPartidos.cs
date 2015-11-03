@@ -22,29 +22,41 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     class vmMantPartidos : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+
         private Brush _BorderBrush;
+        private Brush _Background_txtNumPartido;
+        private Brush _Background_txtEndoReq;
+
+        private ObservableCollection<Partidos> _cbPartidos;
         private ObservableCollection<Area> _cbArea;
-        private string _cbArea_Item;
+
+        private int _cbPartidos_Item_Id;
         private int _cbArea_Item_Id;
+
         private DataTable _MyAreasTable;
         private DataTable _MyPartidosTable;
+
+        private string _cbArea_Item;
         private string _DBEndososCnnStr;
         private string _txtEndoReq;
-        private ObservableCollection<Partidos> _cbPartidos;
         private string _cbPartidos_Item;
-        private int _cbPartidos_Item_Id;
+        private string _txtNombre;
+        private string _txtNumPartido;
+        private string _txtAreaGeografica;
+
         private bool _IsEnabled_cmdAdd;
         private bool _IsEnabled_cmdDelete;
         private bool _IsEnabled_CmdCancel;
         private bool _IsEnabled_cmdEdit;
-        private bool _IsEnabled_cmdSavet;
+        private bool _IsEnabled_cmdSave;
         private bool _IsEnabled_cmdSalir;
-        private string _txtNombre;
-        private string _txtNumPartido;
+        private bool _IsReadOnly_txtNumPartido;
+        private bool _IsReadOnly_txtEndoReq;
+        private bool _IsReadOnly_txtAreaGeografica;
+
         private Visibility _Visibility_txtNombre;
         private Visibility _Visibility_cbPartidos;
         private Visibility _Visibility_txtAreaGeografica;
-        private string _txtAreaGeografica;
         private Visibility _Visibility_cbArea;
 
         public vmMantPartidos()
@@ -54,11 +66,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
             cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click());
             cmdEdit_Click = new RelayCommand(param => MyCmdEdit_Click());
+            cmdSave_Click = new RelayCommand(param => MyCmdSave_Click());
+            cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
+            cmdAdd_Click = new RelayCommand(param => MyCmdAdd_Click());
 
             cbArea = new ObservableCollection<Area>();
             cbPartidos = new ObservableCollection<Partidos>();
-
         }
+
         #region MyProperty
         public Brush BorderBrush
         {
@@ -76,6 +91,63 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
+        public Brush Background_txtNumPartido
+        {
+            get
+            {
+                return _Background_txtNumPartido;
+            }set
+            {
+                _Background_txtNumPartido = value;
+                this.RaisePropertychanged("Background_txtNumPartido");
+            }
+        }
+        public Brush Background_txtEndoReq
+        {
+            get
+            {
+                return _Background_txtEndoReq;
+            }set
+            {
+                _Background_txtEndoReq = value;
+                this.RaisePropertychanged("Background_txtEndoReq");
+            }
+        }
+
+        public bool IsReadOnly_txtNumPartido
+        {
+            get
+            {
+                return _IsReadOnly_txtNumPartido;
+            }set
+            {
+                _IsReadOnly_txtNumPartido = value;
+                this.RaisePropertychanged("IsReadOnly_txtNumPartido");
+            }
+        }
+        public bool IsReadOnly_txtEndoReq
+        {
+            get
+            {
+                return _IsReadOnly_txtEndoReq;
+            }set
+            {
+                _IsReadOnly_txtEndoReq = value;
+                this.RaisePropertychanged("IsReadOnly_txtEndoReq");
+            }
+        }
+        public bool IsReadOnly_txtAreaGeografica
+        {
+            get
+            {
+                return _IsReadOnly_txtAreaGeografica;
+            }set
+            {
+                _IsReadOnly_txtAreaGeografica = value;
+                this.RaisePropertychanged("IsReadOnly_txtAreaGeografica");
+            }
+        }
+
         public bool IsEnabled_cmdAdd
         {
             get
@@ -120,15 +192,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("IsEnabled_cmdEdit");
             }
         }
-        public bool IsEnabled_cmdSavet
+        public bool IsEnabled_cmdSave
         {
             get
             {
-                return _IsEnabled_cmdSavet;
+                return _IsEnabled_cmdSave;
             }set
             {
-                _IsEnabled_cmdSavet = value;
-                this.RaisePropertychanged("IsEnabled_cmdSavet");
+                _IsEnabled_cmdSave = value;
+                this.RaisePropertychanged("IsEnabled_cmdSave");
             }
         }
         public bool IsEnabled_cmdSalir
@@ -143,6 +215,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("IsEnabled_cmdSalir");
             }
         }
+
         public string txtNombre
         {
             get
@@ -165,6 +238,42 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("txtAreaGeografica");
             }
         }
+        public string txtNumPartido
+        {
+            get
+            {
+                return _txtNumPartido;
+            }
+            set
+            {
+                _txtNumPartido = value;
+                this.RaisePropertychanged("txtNumPartido");
+            }
+        }
+        public string txtEndoReq
+        {
+            get
+            {
+                return _txtEndoReq;
+            }
+            set
+            {
+                _txtEndoReq = value;
+                this.RaisePropertychanged("txtEndoReq");
+            }
+        }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+            set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+
         public Visibility Visibility_txtNombre
         {
             get
@@ -209,18 +318,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("Visibility_cbArea");
             }
         }
-        public string txtNumPartido
-        {
-            get
-            {
-                return _txtNumPartido;
-            }set
-            {
-                _txtNumPartido = value;
-                this.RaisePropertychanged("txtNumPartido");
-            }
-        }
-
+   
         public ObservableCollection<Area> cbArea
         {
             get
@@ -286,6 +384,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtEndoReq = myData[2].Trim();
 
                     IsEnabled_cmdEdit = true;
+                    IsEnabled_cmdDelete = true;
+                    IsEnabled_cmdAdd = false;
+                    IsEnabled_CmdCancel = true;
+                    
 
                     cbArea_Item_Id = FindByArea(myData[3].Trim());
                     txtAreaGeografica = cbArea_Item;
@@ -305,32 +407,11 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("cbPartidos_Item_Id");
             }
         }
-
-        public string DBEndososCnnStr
-        {
-            get
-            {
-                return _DBEndososCnnStr;
-            }
-            set
-            {
-                _DBEndososCnnStr = value;
-            }
-        }
-        public string txtEndoReq
-        {
-            get
-            {
-                return _txtEndoReq;
-            }set
-            {
-                _txtEndoReq = value;
-                this.RaisePropertychanged("txtEndoReq");
-            }
-        }
+        
         #endregion
 
         #region MyCmd
+
         private void MyInitWindow()
         {
             try
@@ -390,11 +471,11 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         public bool? MyOnShow()
         {
             return this.View.ShowDialog();
         }
+
         public void MyCmdSalir_Click()
         {
             try
@@ -421,12 +502,69 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                 Visibility_cbPartidos = Visibility.Hidden;
                 Visibility_cbArea = Visibility.Visible;
+
                 IsEnabled_CmdCancel = true;
+                IsEnabled_cmdDelete = false;
+                IsEnabled_cmdSave= true;
+
+                IsEnabled_cmdSalir = false;
+                IsReadOnly_txtNumPartido = false;
+                IsReadOnly_txtEndoReq = false;
+                IsReadOnly_txtAreaGeografica = false;
+
+                Background_txtEndoReq = Brushes.Beige;
+                Background_txtNumPartido = Brushes.Beige;
             }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void MyCmdSave_Click()
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MyReset();
+            }
+        }
+        private void MyCmdDelete_Click()
+        {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MyReset();
+            }
+        }
+        private void MyCmdAdd_Click()
+        {
+            try
+            {
+                throw new NotImplementedException();
+         
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MyReset();
             }
         }
 
@@ -448,9 +586,23 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get;private set;
         }
+        public RelayCommand cmdSave_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdDelete_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdAdd_Click
+        {
+            get;private set;
+        }
+        
         #endregion
 
         #region MyMeodos
+
         private void MyReset()
         {
             cbArea_Item_Id = -1;
@@ -460,7 +612,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             IsEnabled_cmdDelete = false;
             IsEnabled_CmdCancel = false;
             IsEnabled_cmdEdit = false;
-            IsEnabled_cmdSavet = false;
+            IsEnabled_cmdSave = false;
             IsEnabled_cmdSalir = true;
 
             txtNumPartido = string.Empty;
@@ -472,6 +624,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             Visibility_cbPartidos = Visibility.Visible;
             Visibility_txtAreaGeografica = Visibility.Visible;
             Visibility_cbArea = Visibility.Hidden;
+
+            IsReadOnly_txtNumPartido = true;
+            IsReadOnly_txtEndoReq = true;
+            IsReadOnly_txtAreaGeografica = true;
+
+            Background_txtEndoReq = Brushes.Yellow;
+            Background_txtNumPartido = Brushes.Yellow;
         }
 
         private int FindByArea(string Area )
@@ -494,11 +653,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             return myIndex;
         }
         #endregion
-
-
-
-
-
 
         #region Dispose
 
@@ -535,5 +689,5 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         
         #endregion
 
-    }
-}
+    }//end
+}//end

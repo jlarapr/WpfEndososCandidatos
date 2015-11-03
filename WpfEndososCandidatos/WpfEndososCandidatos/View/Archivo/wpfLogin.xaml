@@ -16,8 +16,6 @@
     <Window.InputBindings>
         <KeyBinding Key="Return" Command="{Binding oK_Click}"  CommandParameter="{Binding ElementName=txtPassword}" />
     </Window.InputBindings>
- 
-
 
     <Grid Margin="0,0,0,0">
         <Border BorderBrush="{Binding BorderBrush}"   BorderThickness="5" Margin="-2" CornerRadius="5">
@@ -45,7 +43,7 @@
                     <i:Interaction.Behaviors>
                         <Helper:PasswordBoxBindingBehavior Password="{Binding Password}" />
                     </i:Interaction.Behaviors>
-                   
+
                 </PasswordBox>
                 <Image Margin="0,0,10,92" Source="/WpfEndososCandidatos;component/Images/Security.png" Height="92" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="99"/>
                 <TextBlock x:Name="txtPassword_txt_Cls" Visibility="{Binding Password_Cls_Visibility}"   
