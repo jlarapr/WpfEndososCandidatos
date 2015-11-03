@@ -347,6 +347,8 @@
     <Resource Include="Images\APPLICA-20Aniv-logoV2.png" />
     <Resource Include="Images\APPLICA-logo-300x76.png" />
     <Resource Include="Images\ImageData-logoPropV2-300x139.png" />
+    <Resource Include="Images\CEElogo.jpg" />
+    <Resource Include="Images\CEEbrand.gif" />
     <Content Include="Models\CREATEDATABASE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

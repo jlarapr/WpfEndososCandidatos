@@ -43,6 +43,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _txtNombre;
         private string _txtNumPartido;
         private string _txtAreaGeografica;
+        private string _PartidoTmp;
 
         private bool _IsEnabled_cmdAdd;
         private bool _IsEnabled_cmdDelete;
@@ -53,6 +54,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsReadOnly_txtNumPartido;
         private bool _IsReadOnly_txtEndoReq;
         private bool _IsReadOnly_txtAreaGeografica;
+        private bool _IsInsert;
+        private bool _IsEdit;
 
         private Visibility _Visibility_txtNombre;
         private Visibility _Visibility_cbPartidos;
@@ -66,7 +69,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
             cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click());
             cmdEdit_Click = new RelayCommand(param => MyCmdEdit_Click());
-            cmdSave_Click = new RelayCommand(param => MyCmdSave_Click());
+            cmdSave_Click = new RelayCommand(param => MyCmdSave_Click(),param=>MyCanSave);
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdAdd_Click = new RelayCommand(param => MyCmdAdd_Click());
 
@@ -246,6 +249,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
+                _PartidoTmp = _txtNumPartido;
                 _txtNumPartido = value;
                 this.RaisePropertychanged("txtNumPartido");
             }
@@ -258,7 +262,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
-                _txtEndoReq = value;
+                int myEndoReq = 0;
+
+                if (int.TryParse(value, out myEndoReq))
+                    _txtEndoReq = value;
+                else
+                    _txtEndoReq = "0";
+
                 this.RaisePropertychanged("txtEndoReq");
             }
         }
@@ -340,6 +350,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             set
             {
                 _cbArea_Item = value;
+                txtAreaGeografica = value;
                 this.RaisePropertychanged("cbArea_Item");
             }
         }
@@ -506,11 +517,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 IsEnabled_CmdCancel = true;
                 IsEnabled_cmdDelete = false;
                 IsEnabled_cmdSave= true;
+                IsEnabled_cmdEdit = false;
 
                 IsEnabled_cmdSalir = false;
                 IsReadOnly_txtNumPartido = false;
                 IsReadOnly_txtEndoReq = false;
                 IsReadOnly_txtAreaGeografica = false;
+
+                _IsEdit = true;
 
                 Background_txtEndoReq = Brushes.Beige;
                 Background_txtNumPartido = Brushes.Beige;
@@ -525,7 +539,30 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
-                throw new NotImplementedException();
+                if ((txtNumPartido.Trim().Length == 0) || (txtNombre.Trim().Length == 0) || (txtEndoReq.Trim().Length == 0) || (txtAreaGeografica.Trim().Length == 0))
+                    return;
+
+                bool myUpDate = false;
+
+                string myWhere = string.Empty;
+
+                myWhere = _IsInsert == false ? _PartidoTmp : "";
+
+                if (myWhere.Trim().Length == 0)
+                    myWhere = txtNumPartido;
+
+                using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = _DBEndososCnnStr
+                })
+                {
+                    myUpDate = mySqlExe.MyChangePartidos(_IsInsert, txtNumPartido, txtNombre, txtEndoReq, txtAreaGeografica, myWhere);
+                }
+
+                if (!myUpDate)
+                    throw new Exception("Error en la Base de Data");
+
+                MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -533,14 +570,51 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }finally
             {
+                MyRefresh();
                 MyReset();
+
+            }
+        }
+        private bool MyCanSave
+        {
+            get
+            {
+                if ((txtNumPartido == null) || (txtNombre == null) || (txtEndoReq == null) || (txtAreaGeografica == null) || (_IsEdit == false))
+                    return false;
+
+                if ((txtNumPartido.Trim().Length == 0) || (txtNombre.Trim().Length == 0) || (txtEndoReq.Trim().Length == 0) || (txtAreaGeografica.Trim().Length == 0))
+                    return false;
+
+                return true;
             }
         }
         private void MyCmdDelete_Click()
         {
             try
             {
-                throw new NotImplementedException();
+                var response = MessageBox.Show("!!!Do you really want to Delete this Partido?\r\n" + txtNumPartido, "Deleting...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+
+                if (response == MessageBoxResult.No)
+                    return;
+
+                string myWhere = string.Empty;
+                myWhere = txtNumPartido;
+                bool myDelete = false;
+
+                using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = _DBEndososCnnStr
+                })
+                {
+                    myDelete = mySqlExe.MyDeletePartidos(myWhere);
+
+                  
+                }
+
+                if (!myDelete)
+                    throw new Exception("Error en la Base de Data");
+
+                MessageBox.Show("Done...", "Delete", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -548,6 +622,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }finally
             {
+                MyRefresh();
                 MyReset();
             }
         }
@@ -555,7 +630,29 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
-                throw new NotImplementedException();
+                Visibility_txtNombre = Visibility.Visible;
+                Visibility_txtAreaGeografica = Visibility.Hidden;
+
+                Visibility_cbPartidos = Visibility.Hidden;
+                Visibility_cbArea = Visibility.Visible;
+
+                IsEnabled_CmdCancel = true;
+                IsEnabled_cmdDelete = false;
+                IsEnabled_cmdSave = true;
+                IsEnabled_cmdEdit = false;
+
+                IsEnabled_cmdSalir = false;
+                IsReadOnly_txtNumPartido = false;
+                IsReadOnly_txtEndoReq = false;
+                IsReadOnly_txtAreaGeografica = false;
+
+                Background_txtEndoReq = Brushes.Beige;
+                Background_txtNumPartido = Brushes.Beige;
+
+                IsEnabled_cmdAdd = false;
+
+                _IsInsert = true;
+                _IsEdit = true;
          
             }
             catch (Exception ex)
@@ -564,7 +661,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }finally
             {
-                MyReset();
+               
             }
         }
 
@@ -608,6 +705,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cbArea_Item_Id = -1;
             cbPartidos_Item_Id = -1;
 
+            _IsEdit = false;
+            _IsInsert = false;
+            _PartidoTmp = string.Empty;
+
             IsEnabled_cmdAdd = true;
             IsEnabled_cmdDelete = false;
             IsEnabled_CmdCancel = false;
@@ -631,6 +732,53 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             Background_txtEndoReq = Brushes.Yellow;
             Background_txtNumPartido = Brushes.Yellow;
+        }
+
+        private void MyRefresh()
+        {
+            try
+            {
+                cbArea.Clear();
+                cbPartidos.Clear();
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    _MyAreasTable = get.MyGetAreas(true);
+
+                    foreach (DataRow row in _MyAreasTable.Rows)
+                    {
+                        Area myArea = new Area();
+
+                        myArea.AreaKey = row["Area"].ToString();
+                        myArea.Precintos = row["Precintos"].ToString();
+                        myArea.Desc = row["Desc"].ToString();
+                        myArea.ElectivePositionID = row["ElectivePositionID"].ToString();
+                        myArea.DemarcationID = row["DemarcationID"].ToString();
+
+                        cbArea.Add(myArea);
+                    }
+                    _MyPartidosTable = get.MyGetPartidos();
+
+                    foreach (DataRow row in _MyPartidosTable.Rows)
+                    {
+                        Partidos mypartido = new Partidos();
+
+                        mypartido.PartidoKey = row["Partido"].ToString();
+                        mypartido.Desc = row["Desc"].ToString();
+                        mypartido.EndoReq = (int)row["EndoReq"];
+                        mypartido.Area = row["Area"].ToString();
+
+                        cbPartidos.Add(mypartido);
+                    }
+                }
+                cbPartidos.Sort();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private int FindByArea(string Area )

@@ -29,9 +29,7 @@ namespace jolcode
                 _DBCnnStr = value;
             }
         }
-
-
-
+        
 
         #region Areas      
         public DataTable MyGetAreas (bool allColumm)
@@ -158,6 +156,48 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public bool MyDeletePartidos(string where)
+        {
+            bool myBoolReturn = false;
+
+            try
+            {
+                string[] myDelete =
+                      {
+                            "Delete from [dbo].[Partidos] ",
+                            " WHERE Partido=@Where "
+                        };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(myDelete)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+                        cmd.Parameters["@Where"].Value = where;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+
+        }
         public bool MyDeleteArea(string where)
         {
             bool myBoolReturn = false;
@@ -197,6 +237,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
+
         public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
         {
             bool myBoolReturn = false;
@@ -264,6 +305,70 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area,   string where)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myInsert =
+                        {
+                            "INSERT INTO [dbo].[Partidos] ([Partido],[Desc],[EndoReq],[Area]) ",
+                            "VALUES (@Partido,@Desc,@EndoReq,@Area)"
+                        };
+
+                string[] myUpdate =
+                    {
+                            "UPDATE [dbo].[Partidos] ",
+                            "SET [Partido] = @Partido, ",
+                            "[Desc] = @Desc,",
+                            "[EndoReq] = @EndoReq,",
+                            "[Area] = @Area ",
+                            "WHERE Partido=@Where"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Desc", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@EndoReq", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
+
+                        if (!isInsert)
+                            cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+
+                        cmd.Parameters["@Partido"].Value = partido;
+                        cmd.Parameters["@Desc"].Value = desc;
+                        cmd.Parameters["@EndoReq"].Value = endoReq;
+                        cmd.Parameters["@Area"].Value = area.Substring(0,4);
+
+                        if (!isInsert)
+                            cmd.Parameters["@Where"].Value = where;
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
+            }
+            return myBoolReturn;
+        }
 
         #endregion
 

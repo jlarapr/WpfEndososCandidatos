@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:vm="clr-namespace:WpfEndososCandidatos.ViewModels"
          Cursor="{Binding MiCursor}"
-        Title="{Binding Title}" Height="376.771" Width="619.193" WindowState="Maximized" Background="DarkGray" Icon="WindowsJournal.ico"  >
+        Title="{Binding Title}" Height="376.771" Width="619.193" WindowState="Maximized" Background="LightGray" Icon="WindowsJournal.ico"  >
 
 
     <i:Interaction.Triggers>
@@ -15,49 +15,54 @@
 
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="209*"/>
+            <ColumnDefinition Width="199*"/>
+            <ColumnDefinition Width="203*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="94*"/>
-            <RowDefinition Height="79*"/>
+            <RowDefinition Height="46*"/>
+            <RowDefinition Height="173*"/>
+            <RowDefinition Height="127*"/>
         </Grid.RowDefinitions>
-        <DockPanel Margin="0,0,0,9.156">
-
-            <Menu x:Name="MainMenu" VerticalAlignment="Top" DockPanel.Dock="Top" Height="31">
-                <MenuItem Name="mnuMainFile" Header="_Archivo"  >
-                    <MenuItem Name="mnuLogin" IsEnabled="{Binding mnuLogin_IsEnabled}" Header="_Login" Command="{Binding login_Click}" />
-                    <MenuItem Name="mnuLogout" IsEnabled="{Binding mnuLogout_IsEnabled}" Header="_Logout" Command="{Binding logout_Click}"  />
-                    <MenuItem Name="mnuChangePassword" IsEnabled="{Binding mnuChangePassword_IsEnabled}" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
-                    <Separator></Separator>
-                    <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
-                </MenuItem>
-                <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
-                    <MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
-                    <MenuItem Name="mnuAutoRizarLotes" IsEnabled="{Binding mnuAutoRizarLotes_IsEnabled}" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
-                    <MenuItem Name="mnuProcesarLotes" IsEnabled="{Binding mnuProcesarLotes_IsEnabled,Mode=TwoWay}" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
-                    <Separator></Separator>
-                    <MenuItem Name="mnuCorregirEndosos" IsEnabled="{Binding mnuCorregirEndosos_IsEnabled}" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
-                    <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
-                </MenuItem>
-                <MenuItem Name="mnuMainVer" Header="_Ver"  >
-                    <MenuItem Name="mnuVerElector" IsEnabled="{Binding mnuVerElector_IsEnabled}" Header="_Ver Elector" Command="{Binding verElector_click}" />
-                </MenuItem>
-                <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
-                    <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
-                    <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
-                    <MenuItem Name="mnuNotarios" IsEnabled="{Binding mnuNotarios_IsEnabled}" Header="_Notarios" Command="{Binding notarios_Click}" />
-                    <MenuItem Name="mnuValidaciones" IsEnabled="{Binding mnuValidaciones_IsEnabled}"  Header="_Validaciones" Command="{Binding validaciones_Click}" />
-                    <MenuItem Name="mnuUsuarios" IsEnabled="{Binding mnuUsuarios_IsEnabled}" Header="_Usuarios" Command="{Binding usuarios_Click}" />
-                    <MenuItem Name="mnuBaseDeDatos" IsEnabled="{Binding mnuBaseDeDatos_IsEnabled}" Header="_Base de Datos" Command="{Binding baseDeDatos_Click}" />
-                    <MenuItem Name="mnuInicializarLotes" IsEnabled="{Binding mnuInicializarLotes_IsEnabled}" Header="_Inicializar Lotes" Command="{Binding inicializarLotes_Click}" />
-                    <Separator></Separator>
-                    <MenuItem Name="mnuConf8" Header="_About" Command="{Binding about_Click}"/>
-                </MenuItem>
 
 
-            </Menu>
-            <Image x:Name="image" Height="120" Margin="0,25,0,0" VerticalAlignment="Top" Width="203" Source="Images/ImageData-logoPropV2-300x139.png"/>
+        <Menu x:Name="MainMenu" VerticalAlignment="Top" Height="31" Grid.ColumnSpan="3" Background="DarkGray" >
+            <MenuItem Name="mnuMainFile" Header="_Archivo"  >
+                <MenuItem Name="mnuLogin" IsEnabled="{Binding mnuLogin_IsEnabled}" Header="_Login" Command="{Binding login_Click}" />
+                <MenuItem Name="mnuLogout" IsEnabled="{Binding mnuLogout_IsEnabled}" Header="_Logout" Command="{Binding logout_Click}"  />
+                <MenuItem Name="mnuChangePassword" IsEnabled="{Binding mnuChangePassword_IsEnabled}" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
+                <Separator></Separator>
+                <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
+            </MenuItem>
+            <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
+                <MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
+                <MenuItem Name="mnuAutoRizarLotes" IsEnabled="{Binding mnuAutoRizarLotes_IsEnabled}" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
+                <MenuItem Name="mnuProcesarLotes" IsEnabled="{Binding mnuProcesarLotes_IsEnabled,Mode=TwoWay}" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
+                <Separator></Separator>
+                <MenuItem Name="mnuCorregirEndosos" IsEnabled="{Binding mnuCorregirEndosos_IsEnabled}" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
+                <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
+            </MenuItem>
+            <MenuItem Name="mnuMainVer" Header="_Ver"  >
+                <MenuItem Name="mnuVerElector" IsEnabled="{Binding mnuVerElector_IsEnabled}" Header="_Ver Elector" Command="{Binding verElector_click}" />
+            </MenuItem>
+            <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
+                <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
+                <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
+                <MenuItem Name="mnuNotarios" IsEnabled="{Binding mnuNotarios_IsEnabled}" Header="_Notarios" Command="{Binding notarios_Click}" />
+                <MenuItem Name="mnuValidaciones" IsEnabled="{Binding mnuValidaciones_IsEnabled}"  Header="_Validaciones" Command="{Binding validaciones_Click}" />
+                <MenuItem Name="mnuUsuarios" IsEnabled="{Binding mnuUsuarios_IsEnabled}" Header="_Usuarios" Command="{Binding usuarios_Click}" />
+                <MenuItem Name="mnuBaseDeDatos" IsEnabled="{Binding mnuBaseDeDatos_IsEnabled}" Header="_Base de Datos" Command="{Binding baseDeDatos_Click}" />
+                <MenuItem Name="mnuInicializarLotes" IsEnabled="{Binding mnuInicializarLotes_IsEnabled}" Header="_Inicializar Lotes" Command="{Binding inicializarLotes_Click}" />
+                <Separator></Separator>
+                <MenuItem Name="mnuConf8" Header="_About" Command="{Binding about_Click}"/>
+            </MenuItem>
 
-        </DockPanel>
-        <StatusBar Grid.Row="1" Height="23" VerticalAlignment="Bottom">
+
+        </Menu>
+
+
+        <StatusBar Grid.Row="2" Height="23" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Background="DarkGray" >
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
