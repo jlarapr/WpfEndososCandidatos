@@ -275,6 +275,7 @@ namespace WpfEndososCandidatos.ViewModels
                 using (vmMantNotarios frmMantNotarios = new vmMantNotarios())
                 {
                     frmMantNotarios.View.Owner = this.View as Window;
+                    frmMantNotarios.DBEndososCnnStr = _DBEndososCnnStr;
                     frmMantNotarios.MyOnShow();
                 }
                 

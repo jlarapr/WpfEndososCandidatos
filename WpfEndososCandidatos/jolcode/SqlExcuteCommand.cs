@@ -416,6 +416,50 @@ namespace jolcode
 
         #endregion
 
+        #region Notario
+
+        public DataTable MyGetNotarios()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string mySqlstr = "Select * from notarios order by NumElec";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
+            }
+            return myTableReturn;
+        }
+
+        #endregion
+
         #region Dispose
         public void Dispose()
         {

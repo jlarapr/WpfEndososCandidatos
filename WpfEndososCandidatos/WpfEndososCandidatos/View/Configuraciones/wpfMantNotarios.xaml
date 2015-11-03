@@ -22,31 +22,53 @@
                     <TextBox x:Name="txtNumElec" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="87"
                              MaxLength="7"
                              Text="{Binding txtNumElec}"
+                             Background="{Binding Background_txtNumElec}"
+                             IsReadOnly="{Binding IsReadOnly_txtNumElec}"
                              />
-                    <ComboBox x:Name="cmbNotario" HorizontalAlignment="Left" Margin="124,41,0,0" VerticalAlignment="Top" Width="214" Height="23"/>
+                    <ComboBox x:Name="cbNotario" HorizontalAlignment="Left" Margin="122,41,0,0" VerticalAlignment="Top" Width="214" Height="23"
+                              ItemsSource="{Binding cbNotario}"
+                    	      SelectedItem="{Binding cbNotario_Item, Mode=TwoWay}"                                     
+                    	      SelectedIndex="{Binding cbNotario_Item_Id, Mode=TwoWay}"
+                              Visibility="{Binding Visibility_cbNotario}"
+                    
+                              />
                     <Label x:Name="lblApellido1" Content="Apellido Paterno" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="txtApellido1" HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap" Text="{Binding txtApellido1}" VerticalAlignment="Top" Width="328"/>
+                    <TextBox x:Name="txtApellido1" HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="328"
+                             Text="{Binding txtApellido1}"
+                             Background="{Binding Background_txtApellido1}"
+                             IsReadOnly="{Binding IsReadOnly_txtApellido1}"
+                             />
                     <Label x:Name="lblApellido2" Content="Apellido Materno" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtApellido2" HorizontalAlignment="Left" Height="23" Margin="10,151,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="328"
                              Text="{Binding txtApellido2}"
                              Background="{Binding Background_txtApellido2}"
+                             IsReadOnly="{Binding IsReadOnly_txtApellido2}"
+                             
                              />
                     <Label x:Name="lblPartido" Content="Partido" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="122,41,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="192"
                              Text="{Binding txtNombre}"
+                             Background="{Binding Background_txtNombre}"
+                             Visibility="{Binding Visibility_txtNombre}"
+                             CharacterCasing="Upper"
+                             IsReadOnly="{Binding IsReadOnly_txtNombre}"
+                             
                              />
-                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="12,206,0,0" VerticalAlignment="Top" Width="326"
+                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="10,206,0,0" VerticalAlignment="Top" Width="326"
                     	ItemsSource="{Binding cbPartidos}"
                     	SelectedItem="{Binding cbPartidos_Item, Mode=TwoWay}"                                     
                     	SelectedIndex="{Binding cbPartidos_Item_Id, Mode=TwoWay}"
                     	Visibility="{Binding Visibility_cbPartidos}" Height="23"
+                              IsEnabled="{Binding IsEnabled_cbPartidos}"
                               />
                     <TextBox x:Name="txtNombrePartido" HorizontalAlignment="Left" Height="23" Margin="10,206,0,0"  VerticalAlignment="Top" Width="304"
                     	TextWrapping="NoWrap"
-                    	Text="{Binding txtNombre}"
-                    	Visibility="{Binding Visibility_txtNombre}"
+                    	Text="{Binding txtNombrePartido}"
+                    	Visibility="{Binding Visibility_txtNombrePartido}"
                     	CharacterCasing ="Upper"
-                             Background="{Binding Background_txtNombre}"
+                             Background="{Binding Background_txtNombrePartido}"
+                             IsReadOnly="{Binding IsReadOnly_txtNombrePartido }"
+                             IsEnabled="{Binding IsEnabled_txtNombrePartido}"
                              />
                     <Button Content="Salir"  HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="75" Height="29"
                     	Command="{Binding cmdSalir_Click}"
@@ -70,6 +92,7 @@
                     />
                     <Button x:Name="cmdSave" Content="Guardar"  HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" Width="75" Height="29"
                     	Command="{Binding cmdSave_Click}" Grid.Column="1"
+                            IsEnabled="{Binding IsEnabled_cmdSave}"
                     
                     />
                 </Grid>
