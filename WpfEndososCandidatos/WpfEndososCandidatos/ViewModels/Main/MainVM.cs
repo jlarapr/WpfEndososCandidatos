@@ -15,6 +15,7 @@ namespace WpfEndososCandidatos.ViewModels
     using WpfEndososCandidatos.View;
     using System.Windows.Input;
     using Helper;
+    using System.Diagnostics;
 
     partial class  MainVM : ViewModelBase<IMainView>
     {
@@ -174,11 +175,42 @@ namespace WpfEndososCandidatos.ViewModels
             //        Hora = DateTime.Now.ToString("hh:mm:ss tt");
             //    },this.View.Dispatcher);
             //  DispatcherTimer setup
+
             DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(MyDispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-        
+
+            Logclass myLogClass = new Logclass();
+          
+            try {
+
+                //if (System.Diagnostics.EventLog.Exists("Applica"))
+                //{
+                //    System.Diagnostics.EventLog.Delete("Applica");
+                //}
+
+                //if (EventLog.SourceExists("Applica"))
+                //{
+                //    EventLog.DeleteEventSource("Applica");
+
+                //}
+
+                myLogClass.LogName = "Applica";
+                myLogClass.MessageFile = string.Empty;
+                myLogClass.SourceName = "MainVM";
+                myLogClass.CategoryCount = 0;
+                myLogClass.DisplayNameMsgId = 256;
+                myLogClass.CreateEvent();
+
+                myLogClass.MYEventLog.WriteEntry("APP Start:" + Dia + " " + Hora,EventLogEntryType.Information);
+               
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error en el EventLog " + ex.ToString());
+            }
+
             try
             {
                 {//Get values from register
@@ -411,7 +443,13 @@ namespace WpfEndososCandidatos.ViewModels
                     MessageBox.Show(ex.ToString(), "MyOnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 }
-            } 
+                try {
+                    myLogClass.MYEventLog.WriteEntry(ex.ToString(), EventLogEntryType.Error, 9000);
+                }
+                catch { }
+
+
+            }
 
         }        
     }         

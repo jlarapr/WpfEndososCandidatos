@@ -370,6 +370,78 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        public bool MyChangeNotario(bool isInsert, string NumElec, string Partido, string Nombre, string Apellido1, string Apellido2, string where)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                
+
+                string[] myInsert =
+                        {
+                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[Nombre],[Apellido1],[Apellido2]) ",
+                            "VALUES (@NumElec,@Partido,@Nombre,@Apellido1,@Apellido2)"
+                        };
+
+                string[] myUpdate =
+                    {
+                            "UPDATE [dbo].[Notarios] ",
+                            "SET [NumElec] = @NumElec, ",
+                            "[Partido] = @Partido,",
+                            "[Nombre] = @Nombre,",
+                            "[Apellido1] = @Apellido1 ",
+                            "[Apellido2] = @Apellido2 ",
+                            "WHERE NumElec=@where"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@NumElec", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Apellido1", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Apellido2", SqlDbType.VarChar));
+
+                        if (!isInsert)
+                            cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+
+                        cmd.Parameters["@NumElec"].Value = NumElec;
+                        cmd.Parameters["@Partido"].Value = Partido;
+                        cmd.Parameters["@Nombre"].Value = Nombre;
+                        cmd.Parameters["@Apellido1"].Value = Apellido1;
+                        cmd.Parameters["@Apellido2"].Value = Apellido2;
+
+                        if (!isInsert)
+                            cmd.Parameters["@Where"].Value = where;
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+                }
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
+            }
+            return myBoolReturn;
+        }
+
+
+
         #endregion
 
         #region Partidos

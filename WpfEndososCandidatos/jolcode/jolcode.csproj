@@ -52,6 +52,7 @@
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="ExcuteScript.cs" />
     <Compile Include="GetRegistry.cs" />
+    <Compile Include="Logclass.cs" />
     <Compile Include="MyInterface\ICustomButton.cs" />
     <Compile Include="MyInterface\IDialogView.cs" />
     <Compile Include="MyInterface\IDialogViewAreas.cs" />

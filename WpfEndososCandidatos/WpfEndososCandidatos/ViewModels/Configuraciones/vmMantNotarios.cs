@@ -19,10 +19,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using Models;
     using WpfEndososCandidatos.View;
     using System.Data;
+    using System.Diagnostics;
 
     class vmMantNotarios : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
+
+        private Logclass _LogClass;
 
         private Brush _BorderBrush;
         private Brush _Background_txtNombre;
@@ -62,6 +65,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsEnabled_cmdSave;
         private bool _IsEnabled_cmdEdit;
         private bool _IsEnabled_CmdCancel;
+        private bool _IsEnabled_cmdSalir;
+        private bool _IsInsert;
+        private string _NumElecTmp;
 
         public vmMantNotarios() : base(new wpfMantNotarios())
         {
@@ -75,6 +81,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             cbPartidos = new ObservableCollection<Partidos>();
             cbNotario = new ObservableCollection<Notarios>();
+            _LogClass = new Logclass();
         }
 
         #region MyPrperty
@@ -295,7 +302,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("IsEnabled_CmdCancel");
             }
         }
-
+        public bool IsEnabled_cmdSalir
+        {
+            get
+            {
+                return _IsEnabled_cmdSalir;
+            }set
+            {
+                _IsEnabled_cmdSalir = value;
+                this.RaisePropertychanged("IsEnabled_cmdSalir");
+            }
+        }
 
         public string txtNumElec
         {
@@ -305,6 +322,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }set
             {
                 _txtNumElec = value;
+                _NumElecTmp = value;
                 this.RaisePropertychanged("txtNumElec");
             }
         }
@@ -488,6 +506,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     IsEnabled_cmdEdit = true;
                     IsEnabled_cmdAdd = false;
                     IsEnabled_CmdCancel = true;
+                    IsEnabled_cmdSalir = false;
 
                     this.RaisePropertychanged("cbNotario_Item");
                 }
@@ -516,6 +535,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
+                string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
+                string Hora = DateTime.Now.ToString("hh:mm:ss tt");
+
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -526,6 +548,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 }
                 else
                     BorderBrush = Brushes.Black;
+
+                _LogClass.LogName = "Applica";
+                _LogClass.SourceName = "Notario";
+                _LogClass.MessageFile = string.Empty;
+                _LogClass.CreateEvent();
+                _LogClass.MYEventLog.WriteEntry("Notario Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
                 MyRefresh();
                 MyReset();
@@ -551,6 +579,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name),EventLogEntryType.Error,9999);
             }
         }
         private void MyCmdCancel_Click()
@@ -589,6 +618,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
         private void MyCmdSave_Click()
@@ -596,24 +626,31 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             try
             {
                 bool myUpDate = false;
+                string myWhere = string.Empty;
+
+                myWhere = _IsInsert == false ? _NumElecTmp : "";
 
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                 //   myUpDate = mySqlExe.MyChangePartidos(_IsInsert, txtNumPartido, txtNombre, txtEndoReq, txtAreaGeografica, myWhere);
+                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombrePartido, txtNombre, txtApellido1, txtApellido2, myWhere);
                 }
 
                 if (!myUpDate)
                     throw new Exception("Error en la Base de Data");
 
                 MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                _LogClass.MYEventLog.WriteEntry("Save..." + txtNumElec, EventLogEntryType.Information, 100);
+
             }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
             finally
             {
@@ -649,12 +686,16 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 if (!myDelete)
                     throw new Exception("Error en la Base de Data");
 
+
+                _LogClass.MYEventLog.WriteEntry("Delete...", EventLogEntryType.Information, 9999);
+
                 MessageBox.Show("Done...", "Delete", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
             finally
             {
@@ -685,12 +726,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 IsEnabled_cmdAdd = false;
                 IsEnabled_cmdSave = true;
                 IsEnabled_CmdCancel = true;
+                IsEnabled_cmdSalir = false;
 
-            }
+                _IsInsert = true ;
+
+
+    }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
             finally
             {
@@ -749,6 +795,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             IsEnabled_cmdSave = false;
             IsEnabled_cmdEdit = false;
             IsEnabled_CmdCancel = false;
+            IsEnabled_cmdSalir = true;
 
             txtNombrePartido = string.Empty;
             txtNombre = string.Empty;
@@ -767,6 +814,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             Visibility_txtNombre = Visibility.Hidden;
             Visibility_cbPartidos = Visibility.Hidden;
             Visibility_cbNotario = Visibility.Visible;
+
+            _IsInsert = false;
 
             cbPartidos_Item_Id = -1;
             cbNotario_Item_Id = -1;
@@ -811,7 +860,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
 
@@ -847,6 +898,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             if (disposing)
             {
                 // free managed resources AnotherResource 
+
+                if (_LogClass != null)
+                {
+                    _LogClass.Dispose();
+                    _LogClass = null;
+                }
+
                 //if (managedResource != null)
                 //{
                 //    managedResource.Dispose();
