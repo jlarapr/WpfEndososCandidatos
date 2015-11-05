@@ -323,7 +323,8 @@ namespace WpfEndososCandidatos.ViewModels
                 using (vmMantCriterios frmMantCriterios = new vmMantCriterios())
                 {
                     frmMantCriterios.View.Owner = this.View as Window;
-                    frmMantCriterios.OnShow();
+                    frmMantCriterios.DBEndososCnnStr = DBEndososCnnStr;
+                    frmMantCriterios.MyOnShow();
                 }
                 
             }

@@ -2,19 +2,83 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        Title="wpfMantCriterios" Height="422.456" Width="550.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantCriterios" Height="557.79" Width="466.557" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="10" Margin="-2" CornerRadius="5">
         <Grid>
-            <Label Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="460,386,0,0" VerticalAlignment="Top" Width="75"/>
-            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="283">
-                <Grid Margin="0"/>
+            <Label Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="20" Margin="5,5,5,0"/>
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="366,411,0,0" VerticalAlignment="Top" Width="75"/>
+            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="338">
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label x:Name="label" Content="Warning" HorizontalAlignment="Left" Margin="212,2,0,0" VerticalAlignment="Top" Height="26" Width="151"/>
+                    <Border BorderBrush="Black" BorderThickness="1" Height="279" Margin="212,33,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="204">
+                        <StackPanel Margin="9">
+                            <CheckBox x:Name="ckbW1" Content="{Binding ckbW1}" HorizontalAlignment="Left" Width="16" Height="15" VerticalAlignment="Top"/>
+                            <CheckBox x:Name="ckbW1_Copy" Content="{Binding ckbW2}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy1" Content="{Binding ckbW3}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy2" Content="{Binding ckbW4}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy3" Content="{Binding ckbW5}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy4" Content="{Binding ckbW6}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy5" Content="{Binding ckbW7}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy6" Content="{Binding ckbW8}" HorizontalAlignment="Left" Width="16" RenderTransformOrigin="0.562,0.489" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy7" Content="{Binding ckbW9}" HorizontalAlignment="Left" Width="16" RenderTransformOrigin="-7.333,1.689" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy8" Content="{Binding ckbW10}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy9" Content="{Binding ckbW11}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy10" Content="{Binding ckbW12}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy11" Content="{Binding ckbW13}" HorizontalAlignment="Left" Width="16" Height="15"/>
+                            <CheckBox x:Name="ckbW1_Copy12" Content="{Binding ckbW14}" HorizontalAlignment="Left" Width="16" Height="15" VerticalAlignment="Top"/>
+                            <CheckBox x:Name="ckbW1_Copy13" Content="{Binding ckbW15}" HorizontalAlignment="Left" Width="16" Height="15" VerticalAlignment="Bottom"/>
+                            <CheckBox x:Name="ckbW1_Copy14" Content="{Binding ckbW16}" HorizontalAlignment="Left" Width="16" Height="15" VerticalAlignment="Bottom"/>
+                            <CheckBox x:Name="ckbW1_Copy15" Content="{Binding ckbW17}" HorizontalAlignment="Left" Width="16" Height="15" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="279" Margin="10,33,0,0" VerticalAlignment="Top" Width="204">
+                        <StackPanel Margin="9">
+                            <CheckBox x:Name="ckb1" VerticalAlignment="Top" Height="15"
+                                       Content="{Binding chk[0].Campo}" Margin="0,0,10,0"
+                                      IsChecked="{Binding chk[0].Editar}"
+                                      />
+                            <CheckBox x:Name="ckb1_Copy" VerticalAlignment="Top" Height="15"
+                                      Content="{Binding chk[1].Campo}" Margin="0,0,10,0"
+                                      />
+                            <CheckBox x:Name="ckb1_Copy1" VerticalAlignment="Top" Height="15"
+                                      Content="{Binding chk[2].Campo}" Margin="0,0,10,0" 
+                                      />
+                            <CheckBox x:Name="ckb1_Copy2" Content="{Binding chk[3].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy3" Content="{Binding chk[4].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy4" Content="{Binding chk[5].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy5" Content="{Binding chk[6].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy6" Content="{Binding chk[7].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy7" Content="{Binding chk[8].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy8" Content="{Binding chk[9].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy9" Content="{Binding chk[10].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy10" Content="{Binding chk[11].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy11" Content="{Binding chk[12].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy13" Content="{Binding chk[13].Campo}" VerticalAlignment="Bottom" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy14" Content="{Binding chk[14].Campo}" VerticalAlignment="Bottom" Height="15" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy15" Content="{Binding chk[15].Campo}" Height="15" VerticalAlignment="Bottom" Margin="0,0,10,0"/>
+                            <CheckBox x:Name="ckb1_Copy12" Content="{Binding chk[16].Campo}" VerticalAlignment="Top" Height="15" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </GroupBox>
+            <Label x:Name="label1" Content="Explicación" HorizontalAlignment="Left" Margin="5,405,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="78,411,0,0" VerticalAlignment="Top" Width="75"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="101" Margin="10,436,0,0" VerticalAlignment="Top" Width="431"
+                    CornerRadius="10"
+                    >
+                <TextBox x:Name="textBox" TextWrapping="Wrap" Text="{Binding txtExplicacion}" Margin="9"/>
+            </Border>
 
         </Grid>
     </Border>

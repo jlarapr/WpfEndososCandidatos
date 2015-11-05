@@ -8,6 +8,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Data;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -15,18 +17,36 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
+    using Models;
     using WpfEndososCandidatos.View.Configuraciones;
+    using System.Collections.ObjectModel;
+
     class vmMantCriterios : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private Logclass _LogClass;
+        private DataTable _MyCriteriosTable;
+        private List<Criterios> _Criterios;
+        private string _DBEndososCnnStr;
+        private ObservableCollection<Criterios> _chk;
+
         public vmMantCriterios()
             : base(new wpfMantCriterios())
         {
-            initWindow = new RelayCommand(param => InitWindow());
+            initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+
+            _LogClass = new Logclass();
+            _Criterios = new List<Criterios>();
+
+            chk = new ObservableCollection<Criterios>();
+
         }
 
+
+
+        #region MyProperty
         public Brush BorderBrush
         {
             get
@@ -43,12 +63,42 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+            set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
 
-        #region initWindow OnShow
-        private void InitWindow()
-       {
-           try
-           {
+        public ObservableCollection<Criterios> chk
+        {
+            get
+            {
+                return _chk;
+            }set
+            {
+                _chk = value;
+                this.RaisePropertychanged("chk");
+            }
+
+        }
+
+
+        #endregion
+
+        #region MyCmd
+        private void MyInitWindow()
+        {
+            try
+            {
+                string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
+                string Hora = DateTime.Now.ToString("hh:mm:ss tt");
+
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -60,26 +110,80 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 else
                     BorderBrush = Brushes.Black;
 
-            }
-           catch (Exception ex)
-           {
 
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
-       public bool? OnShow()
-       {
-           return this.View.ShowDialog();
-       }
-       public RelayCommand initWindow
-       {
-           get;
-           private set;
-       }
-       #endregion       
+                _LogClass.LogName = "Applica";
+                _LogClass.SourceName = "Criterios";
+                _LogClass.MessageFile = string.Empty;
+                _LogClass.CreateEvent();
+                _LogClass.MYEventLog.WriteEntry("Criterios Start:" + Dia + " " + Hora, EventLogEntryType.Information);
+
+              
+             
+              
+
+                MyRefresh();
+                //MyReset();
+
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public bool? MyOnShow()
+        {
+            return this.View.ShowDialog();
+        }
+
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
+        }
+        #endregion
+
+        #region MyMetodos
+
+        private void MyRefresh()
+        {
+            try
+            {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    _MyCriteriosTable = get.MyGetCriterios();
+
+                    foreach (DataRow row in _MyCriteriosTable.Rows)
+                    {
+                        chk.Add(new Models.Criterios
+                        {
+                            Campo = row["Campo"].ToString(),
+                            Editar = row["Editar"] as bool?,
+                            Desc = row["Desc"].ToString(),
+                            Warning = row["Warning"].ToString()
+                        });
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        private void MyReset()
+        {
+
+        }
+
+        #endregion
+
         #region Exit
-       public RelayCommand cmdSalir_Click
+        public RelayCommand cmdSalir_Click
        {
            get;
            private set;
@@ -107,6 +211,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
 
        #endregion
+
         #region Dispose
        
        
