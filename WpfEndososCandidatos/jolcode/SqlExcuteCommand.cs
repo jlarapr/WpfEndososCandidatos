@@ -238,6 +238,48 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        public bool MyDeleteNotario(string where,string where2)
+        {
+            bool myBoolReturn = false;
+            string[] myDelete =
+                       {
+                            "Delete from [dbo].[Notarios] ",
+                            " WHERE NumElec=@Where and partido=@where2"
+                        };
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(myDelete)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Where2", SqlDbType.VarChar));
+                        cmd.Parameters["@Where"].Value = where;
+                        cmd.Parameters["@Where2"].Value = where2;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+        }
+
         public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
         {
             bool myBoolReturn = false;
@@ -386,10 +428,10 @@ namespace jolcode
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Notarios] ",
-                            "SET [NumElec] = @NumElec, ",
+                            "SET [NumElec] = @NumElec,",
                             "[Partido] = @Partido,",
                             "[Nombre] = @Nombre,",
-                            "[Apellido1] = @Apellido1 ",
+                            "[Apellido1] = @Apellido1,",
                             "[Apellido2] = @Apellido2 ",
                             "WHERE NumElec=@where"
                 };
