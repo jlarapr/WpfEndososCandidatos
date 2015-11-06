@@ -20,6 +20,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using Models;
     using WpfEndososCandidatos.View.Configuraciones;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
 
     class vmMantCriterios : ViewModelBase<IDialogView>, IDisposable
     {
@@ -30,18 +31,39 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private List<Criterios> _Criterios;
         private string _DBEndososCnnStr;
         private ObservableCollection<Criterios> _chk;
+        private int _Idx;
+        private string _txtExplicacion;
 
         public vmMantCriterios()
             : base(new wpfMantCriterios())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
-            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            cmdActualize_Click = new RelayCommand(param => MyCmdActualize_Click());
+            Checked = new RelayCommand(param => MyChecked(param));
+            UnChecked = new RelayCommand(param => MyUnChecked(param));
 
             _LogClass = new Logclass();
             _Criterios = new List<Criterios>();
 
             chk = new ObservableCollection<Criterios>();
+          
 
+        }
+
+        private void MyChecked(object param)
+        {
+
+            if (!int.TryParse(param.ToString(), out _Idx))
+                _Idx = 0;
+
+            string myString = chk[_Idx].Txt;
+
+            txtExplicacion = myString.Split('-')[1];
+        }
+        private void MyUnChecked(object param)
+        {
+            txtExplicacion = string.Empty;
         }
 
 
@@ -74,7 +96,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBEndososCnnStr = value;
             }
         }
-
         public ObservableCollection<Criterios> chk
         {
             get
@@ -82,13 +103,25 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 return _chk;
             }set
             {
-                _chk = value;
-                this.RaisePropertychanged("chk");
+                if (value != null)
+                {
+                    _chk = value;
+                    this.RaisePropertychanged("chk");
+                }
             }
 
         }
-
-
+        public string txtExplicacion
+        {
+            get
+            {
+                return _txtExplicacion;
+            }set
+            {
+                _txtExplicacion = value;
+                this.RaisePropertychanged("txtExplicacion");
+            }
+        }
         #endregion
 
         #region MyCmd
@@ -110,20 +143,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 else
                     BorderBrush = Brushes.Black;
 
-
                 _LogClass.LogName = "Applica";
                 _LogClass.SourceName = "Criterios";
                 _LogClass.MessageFile = string.Empty;
                 _LogClass.CreateEvent();
                 _LogClass.MYEventLog.WriteEntry("Criterios Start:" + Dia + " " + Hora, EventLogEntryType.Information);
-
-              
-             
-              
-
+                
                 MyRefresh();
                 //MyReset();
-
             }
             catch (Exception ex)
             {
@@ -136,12 +163,76 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             return this.View.ShowDialog();
         }
+        public void MyCmdActualize_Click()
+        {
+            try
+            {
+                
+                bool myUpDate = false;
+                string myWhere = string.Empty;
+               
+                using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    myUpDate = mySqlExe.MyChangeCriterios(chk[_Idx].Campo,chk[_Idx].Editar,chk[_Idx].Desc,chk[_Idx].Warning);
+                }
+
+                if (!myUpDate)
+                    throw new Exception("Error en la Base de Data");
+
+                MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                _LogClass.MYEventLog.WriteEntry("Save...", EventLogEntryType.Information, 100);
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
+            }
+        }
+        public void MyCmdSalir_Click()
+        {
+            try
+            {
+                this.View.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public RelayCommand initWindow
         {
             get;
             private set;
         }
+        public RelayCommand cmdActualize_Click
+        {
+            get;
+            private set;
+        }
+        public RelayCommand cmdSalir_Click
+        {
+            get;
+            private set;
+        }
+        public RelayCommand Checked
+        {
+            get;private set;
+        }
+        public RelayCommand UnChecked
+        {
+            get; private set;
+        }
+
+
         #endregion
 
         #region MyMetodos
@@ -162,15 +253,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         chk.Add(new Models.Criterios
                         {
                             Campo = row["Campo"].ToString(),
-                            Editar = row["Editar"] as bool?,
+                            Editar = row["Editar"].ToString().Trim() == "1" ? true : false,
                             Desc = row["Desc"].ToString(),
-                            Warning = row["Warning"].ToString()
+                            Warning = row["Warning"].ToString().Trim() == "1" ? true : false
                         });
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
@@ -182,35 +273,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         #endregion
 
-        #region Exit
-        public RelayCommand cmdSalir_Click
-       {
-           get;
-           private set;
-       }
-       public void CmdSalir_Click()
-       {
-           try
-           {
-               this.View.Close();
-           }
-           catch (Exception ex)
-           {
-
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
-       private bool CommandCan
-       {
-           get
-           {
-               return true;
-           }
-       }
-
-
-       #endregion
 
         #region Dispose
        

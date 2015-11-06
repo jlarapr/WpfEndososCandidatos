@@ -29,9 +29,7 @@ namespace jolcode
                 _DBCnnStr = value;
             }
         }
-        
-
-        #region Areas      
+          
         public DataTable MyGetAreas (bool allColumm)
         {
             DataTable myTableReturn = new DataTable(); 
@@ -156,6 +154,128 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public DataTable MyGetCriterios()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //string mySqlstr = "Select Precinto + ' - ' + [Desc] from Precintos order by Precinto";
+                string mySqlstr = "Select * from Criterios order by Campo";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetCriterio Error");
+            }
+            return myTableReturn;
+        }
+
+        public DataTable MyGetPartidos()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
+                string mySqlstr = "Select * from Partidos order by partido";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
+            }
+            return myTableReturn;
+        }
+
+        public DataTable MyGetNotarios()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string mySqlstr = "Select * from notarios order by NumElec";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
+            }
+            return myTableReturn;
+        }
+
         public bool MyDeletePartidos(string where)
         {
             bool myBoolReturn = false;
@@ -198,6 +318,7 @@ namespace jolcode
             return myBoolReturn;
 
         }
+
         public bool MyDeleteArea(string where)
         {
             bool myBoolReturn = false;
@@ -483,13 +604,20 @@ namespace jolcode
         }
 
 
-        public DataTable MyGetCriterios()
+        public bool MyChangeCriterios( string Campo, bool? Editar, string Desc, bool? Warning)
         {
-            DataTable myTableReturn = new DataTable();
+            bool myBoolReturn = false;
             try
             {
-                //string mySqlstr = "Select Precinto + ' - ' + [Desc] from Precintos order by Precinto";
-                string mySqlstr = "Select * from Criterios order by Campo";
+                
+                string[] myUpdate =
+                    {
+                            "UPDATE [dbo].[Criterios] ",
+                            "SET [Editar] = @Editar,",
+                            "[Desc] = @Desc,",
+                            "[Warning] = @Warning,",
+                            "WHERE Campo=@Campo"
+                    };
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -500,120 +628,37 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = mySqlstr
+                        CommandText = string.Concat(myUpdate)
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        using (SqlDataAdapter da = new SqlDataAdapter()
-                        {
-                            SelectCommand = cmd
-                        })
-                        {
-                            da.Fill(myTableReturn);
-                        }
+                        cmd.Parameters.Add(new SqlParameter("@Campo", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Editar", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Desc", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Warning", SqlDbType.VarChar));
+
+                        cmd.Parameters["@Campo"].Value = Campo;
+                        cmd.Parameters["@Editar"].Value = Editar == true?"1":"0";
+                        cmd.Parameters["@Desc"].Value = Desc;
+                        cmd.Parameters["@Warning"].Value = Warning == true?"1":"0";
+
+                        cmd.ExecuteNonQuery();
 
                     }
                 }
+                myBoolReturn = true;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString() + "\r\nMyGetCriterio Error");
+                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
             }
-            return myTableReturn;
+            return myBoolReturn;
         }
 
 
-        #endregion
 
-        #region Partidos
-        public DataTable MyGetPartidos()
-        {
-            DataTable myTableReturn = new DataTable();
-            try
-            {
-                //string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
-                string mySqlstr = "Select * from Partidos order by partido";
-
-                using (SqlConnection cnn = new SqlConnection()
-                {
-                    ConnectionString = DBCnnStr
-                })
-                {
-                    using (SqlCommand cmd = new SqlCommand()
-                    {
-                        Connection = cnn,
-                        CommandType = CommandType.Text,
-                        CommandText = mySqlstr
-                    })
-                    {
-                        if (cnn.State == ConnectionState.Closed)
-                            cnn.Open();
-
-                        using (SqlDataAdapter da = new SqlDataAdapter()
-                        {
-                            SelectCommand = cmd
-                        })
-                        {
-                            da.Fill(myTableReturn);
-                        }
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
-            }
-            return myTableReturn;
-        }
-
-        #endregion
-
-        #region Notario
-
-        public DataTable MyGetNotarios()
-        {
-            DataTable myTableReturn = new DataTable();
-            try
-            {
-                string mySqlstr = "Select * from notarios order by NumElec";
-
-                using (SqlConnection cnn = new SqlConnection()
-                {
-                    ConnectionString = DBCnnStr
-                })
-                {
-                    using (SqlCommand cmd = new SqlCommand()
-                    {
-                        Connection = cnn,
-                        CommandType = CommandType.Text,
-                        CommandText = mySqlstr
-                    })
-                    {
-                        if (cnn.State == ConnectionState.Closed)
-                            cnn.Open();
-
-                        using (SqlDataAdapter da = new SqlDataAdapter()
-                        {
-                            SelectCommand = cmd
-                        })
-                        {
-                            da.Fill(myTableReturn);
-                        }
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
-            }
-            return myTableReturn;
-        }
-
-        #endregion
 
         #region Dispose
         public void Dispose()

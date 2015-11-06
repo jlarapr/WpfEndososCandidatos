@@ -11,8 +11,21 @@ namespace WpfEndososCandidatos.Models
         public string Campo { get; set; }
         public Nullable<bool> Editar { get; set; } 
         public string Desc { get; set; }
-        public string Warning { get; set; }
+        public Nullable<bool> Warning { get; set; }
 
+        public string Txt
+        {
+            get
+            {
+                List<string> myOut = new List<string>()
+            {
+               Campo.Trim(),
+               Desc.Trim(),
+            };
+                string myJoined = string.Join("-", myOut);
+                return myJoined;
+            }
+        }
 
         public override string ToString()
         {
@@ -21,7 +34,7 @@ namespace WpfEndososCandidatos.Models
                Campo.Trim(),
                Editar.ToString(),
                Desc.Trim(),
-               Warning.Trim()
+               Warning.ToString()
             };
             string myJoined = string.Join("-", myOut);
             return myJoined;

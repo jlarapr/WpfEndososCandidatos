@@ -8,8 +8,9 @@
     public class ViewModelBase<ViewType> : INotifyPropertyChanged
         where ViewType : IView
     {
-       
-         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private readonly ViewType view;
         public ViewType View
         {
@@ -25,8 +26,6 @@
             this.view.Loaded += view_Loaded;
 
         }
-
-        
 
         void view_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
