@@ -32,43 +32,36 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _DBEndososCnnStr;
         private ObservableCollection<Criterios> _chk;
         private int _Idx;
+        private int _Idx_Warning;
         private string _txtExplicacion;
 
         public vmMantCriterios()
             : base(new wpfMantCriterios())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
+
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+
             cmdActualize_Click = new RelayCommand(param => MyCmdActualize_Click());
+
             Checked = new RelayCommand(param => MyChecked(param));
+
             UnChecked = new RelayCommand(param => MyUnChecked(param));
 
+            CheckedWarning = new RelayCommand(param => MyCheckedWarning(param));
+
+            UnCheckedWarning = new RelayCommand(param => MyUnCheckedWarning(param));
+
             _LogClass = new Logclass();
+
             _Criterios = new List<Criterios>();
 
             chk = new ObservableCollection<Criterios>();
-          
 
         }
-
-        private void MyChecked(object param)
-        {
-
-            if (!int.TryParse(param.ToString(), out _Idx))
-                _Idx = 0;
-
-            string myString = chk[_Idx].Txt;
-
-            txtExplicacion = myString.Split('-')[1];
-        }
-        private void MyUnChecked(object param)
-        {
-            txtExplicacion = string.Empty;
-        }
-
-
 
         #region MyProperty
+
         public Brush BorderBrush
         {
             get
@@ -85,6 +78,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
+
         public string DBEndososCnnStr
         {
             get
@@ -96,6 +90,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBEndososCnnStr = value;
             }
         }
+
         public ObservableCollection<Criterios> chk
         {
             get
@@ -111,6 +106,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
 
         }
+
         public string txtExplicacion
         {
             get
@@ -118,13 +114,21 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 return _txtExplicacion;
             }set
             {
-                _txtExplicacion = value;
-                this.RaisePropertychanged("txtExplicacion");
+                if (value != null)
+                {
+                    _txtExplicacion = value;
+
+                    chk[_Idx].Desc = value;
+
+                    this.RaisePropertychanged("txtExplicacion");
+                }
             }
         }
+        
         #endregion
 
         #region MyCmd
+
         private void MyInitWindow()
         {
             try
@@ -159,10 +163,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public bool? MyOnShow()
         {
             return this.View.ShowDialog();
         }
+
         public void MyCmdActualize_Click()
         {
             try
@@ -194,6 +200,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
+
         public void MyCmdSalir_Click()
         {
             try
@@ -208,31 +215,77 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
+        private void MyChecked(object param)
+        {
+
+            if (!int.TryParse(param.ToString(), out _Idx))
+                _Idx = -1;
+
+            string myString = chk[_Idx].Txt;
+
+            txtExplicacion = myString.Split('-')[1];
+        }
+
+        private void MyUnChecked(object param)
+        {
+            if (!int.TryParse(param.ToString(), out _Idx))
+                _Idx = -1;
+
+            txtExplicacion = string.Empty;
+        }
+
+        private void MyCheckedWarning(object param)
+        {
+            if (!int.TryParse(param.ToString(), out _Idx_Warning))
+                _Idx_Warning = -1;
+
+
+        }
+
+        private void MyUnCheckedWarning(object param)
+        {
+            if (!int.TryParse(param.ToString(), out _Idx_Warning))
+                _Idx_Warning = -1;
+        }
+
         public RelayCommand initWindow
         {
             get;
             private set;
         }
+
         public RelayCommand cmdActualize_Click
         {
             get;
             private set;
         }
+
         public RelayCommand cmdSalir_Click
         {
             get;
             private set;
         }
+
         public RelayCommand Checked
         {
             get;private set;
         }
+
         public RelayCommand UnChecked
         {
             get; private set;
         }
 
+        public RelayCommand CheckedWarning
+        {
+            get;private set;
+        }
 
+        public RelayCommand UnCheckedWarning
+        {
+            get;private set;
+        }
+        
         #endregion
 
         #region MyMetodos
@@ -272,7 +325,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #endregion
-
 
         #region Dispose
        

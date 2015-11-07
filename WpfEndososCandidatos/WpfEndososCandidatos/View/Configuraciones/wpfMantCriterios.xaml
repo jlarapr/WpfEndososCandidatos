@@ -24,56 +24,211 @@
                     <Border BorderBrush="Black" BorderThickness="1" Margin="849,33,0,10" HorizontalAlignment="Left" Width="28">
                         <StackPanel Margin="0,9">
                             <CheckBox x:Name="ckbW1" Height="26" VerticalAlignment="Top" Margin="5,0,0,0"
-                                       Content="{Binding chk[0].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[0].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="0"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="0"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[1].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[1].Warning}"
+                                     >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="1"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="1"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy1"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[2].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[2].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="2"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="2"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy2"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[3].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[3].Warning}"
+                                     >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="3"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="3"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy3"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[4].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[4].Warning}"
+                                     >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="4"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="4"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy4"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[5].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[5].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="5"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="5"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy5"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[6].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[6].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="6"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="6"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy6"    Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[7].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[7].Warning}"
+                                     >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="7"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="7"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy7"    Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[8].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[8].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="8"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="8"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy8"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[9].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[9].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="9"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="9"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy9"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[10].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[10].Warning}"
+                                     >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="10"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="10"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy10"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[11].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[11].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="11"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="11"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy11"   Height="26" Margin="5,0,0,0"
                                        Content="{Binding chk[12].Warning}"
-                                      />
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="12"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="12"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy12"  Height="26"  Margin="5,0,0,0"
-                                       Content="{Binding chk[13].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[13].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="13"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="13"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy13"   Height="26"  Margin="5,0,0,0"
-                                       Content="{Binding chk[14].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[14].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="14"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="14"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy14"   Height="26"   Margin="5,0,0,0"
-                                       Content="{Binding chk[15].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[15].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="15"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="15"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy15"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[16].Warning}"
-                                      />
+                                       IsChecked="{Binding chk[16].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="16"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="16"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                         </StackPanel>
                     </Border>
                     <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="10,33,0,10" Width="834">
@@ -83,10 +238,10 @@
                                        IsChecked="{Binding chk[0].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
-                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="0"/>
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="17"/>
                                     </i:EventTrigger>
                                     <i:EventTrigger EventName="Unchecked">
-                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="0"/>
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="17"/>
                                     </i:EventTrigger>
                                  </i:Interaction.Triggers>
                             </CheckBox>

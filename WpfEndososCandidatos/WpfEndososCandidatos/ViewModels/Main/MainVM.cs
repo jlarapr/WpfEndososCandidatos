@@ -387,17 +387,17 @@ namespace WpfEndososCandidatos.ViewModels
 
                         _SqlServer = frmMantDB.sqlServer;
                         _Username = frmMantDB.userName;
-                        _Password = frmMantDB.password;
+                        _Password = PasswordHash.Encrypt1( frmMantDB.password);
                         _Database = frmMantDB.database;
 
                         _MastSvr = frmMantDB.mastSvr;
                         _MastUsr = frmMantDB.mastUsr;
-                        _MastPass = frmMantDB.mastPass;
+                        _MastPass = PasswordHash.Encrypt1(frmMantDB.mastPass);
                         _MastDB = frmMantDB.mastDB;
 
                         _ImageSvr = frmMantDB.imageSvr;
                         _ImageUsr = frmMantDB.imageUsr;
-                        _ImagePass = frmMantDB.imagePass;
+                        _ImagePass = PasswordHash.Encrypt1(frmMantDB.imagePass);
                         _ImageDB = frmMantDB.imageDB;
 
                         _ValiSvr = frmMantDB.valiSvr;
