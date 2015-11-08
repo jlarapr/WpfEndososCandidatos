@@ -21,6 +21,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using WpfEndososCandidatos.View.Configuraciones;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Collections;
 
     class vmMantCriterios : ViewModelBase<IDialogView>, IDisposable
     {
@@ -34,30 +35,29 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private int _Idx;
         private int _Idx_Warning;
         private string _txtExplicacion;
+        private ObservableCollection<Brush> _Background_0;
+        private string _Explicacion = string.Empty;
+        private bool _IsEnabled_txtExplicacion;
+        private bool _isEdit;
 
         public vmMantCriterios()
             : base(new wpfMantCriterios())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
-
-            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-
-            cmdActualize_Click = new RelayCommand(param => MyCmdActualize_Click());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(),param=> CanSalir);
+            cmdActualize_Click = new RelayCommand(param => MyCmdActualize_Click(), param => CanActualize);
+            cmdEditar_Click = new RelayCommand(param => MyCmdEditar_Click(),param => CanEditar);
+            cmdCancel_Click = new RelayCommand(param => MyCmdCancel_Click(), param => CanCancel);
 
             Checked = new RelayCommand(param => MyChecked(param));
-
             UnChecked = new RelayCommand(param => MyUnChecked(param));
-
             CheckedWarning = new RelayCommand(param => MyCheckedWarning(param));
-
             UnCheckedWarning = new RelayCommand(param => MyUnCheckedWarning(param));
 
             _LogClass = new Logclass();
-
             _Criterios = new List<Criterios>();
-
             chk = new ObservableCollection<Criterios>();
-
+            Background_0 = new ObservableCollection<Brush>();
         }
 
         #region MyProperty
@@ -78,7 +78,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
-
+        public ObservableCollection <Brush> Background_0 {
+            get
+            {
+                return _Background_0;
+            }
+            set
+            {
+                _Background_0 = value;
+                this.RaisePropertychanged("Background_0");
+            }
+        }
         public string DBEndososCnnStr
         {
             get
@@ -90,7 +100,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBEndososCnnStr = value;
             }
         }
-
         public ObservableCollection<Criterios> chk
         {
             get
@@ -106,7 +115,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
 
         }
-
         public string txtExplicacion
         {
             get
@@ -114,17 +122,70 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 return _txtExplicacion;
             }set
             {
-                if (value != null)
+                _txtExplicacion = value;
+                if (!string.IsNullOrEmpty(value))
                 {
-                    _txtExplicacion = value;
-
-                    chk[_Idx].Desc = value;
-
-                    this.RaisePropertychanged("txtExplicacion");
+                    if (chk[_Idx].Desc != value.Trim())
+                        chk[_Idx].Desc = value.Trim();
+                  
                 }
+                this.RaisePropertychanged("txtExplicacion");
             }
         }
-        
+        public string Explicacion
+        {
+            get
+            {
+                return "Explicación:" + _Explicacion;
+            }set
+            {
+                _Explicacion = value;
+                this.RaisePropertychanged("Explicacion");
+
+            }
+                
+        }
+        public bool IsEnabled_txtExplicacion
+        {
+            get
+            {
+                return _IsEnabled_txtExplicacion;
+            }set
+            {
+                _IsEnabled_txtExplicacion = value;
+                this.RaisePropertychanged("IsEnabled_txtExplicacion");
+            }
+        }
+        public bool isEdit
+        {
+            get
+            {
+                return _isEdit;
+            }
+            set
+            {
+                _isEdit = value;
+                this.RaisePropertychanged("isEdit");
+            }
+        }
+        public bool CanActualize
+        {
+            get; private set;
+        }
+        public bool CanEditar
+        {
+            get;
+            private set;
+        }
+        public bool CanCancel
+        {
+            get; private set;
+        }
+        public bool CanSalir
+        {
+            get; private set;
+        }
+
         #endregion
 
         #region MyCmd
@@ -154,7 +215,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.MYEventLog.WriteEntry("Criterios Start:" + Dia + " " + Hora, EventLogEntryType.Information);
                 
                 MyRefresh();
-                //MyReset();
+                MyReset();
             }
             catch (Exception ex)
             {
@@ -163,35 +224,37 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         public bool? MyOnShow()
         {
             return this.View.ShowDialog();
         }
-
         public void MyCmdActualize_Click()
         {
             try
             {
-                
                 bool myUpDate = false;
-                string myWhere = string.Empty;
-               
+
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myUpDate = mySqlExe.MyChangeCriterios(chk[_Idx].Campo,chk[_Idx].Editar,chk[_Idx].Desc,chk[_Idx].Warning);
+                    for (int i = 0; i < 17; i++)
+                    {
+                        myUpDate = mySqlExe.MyChangeCriterios(chk[i].Campo, chk[i].Editar, chk[i].Desc, chk[i].Warning);
+                    }
+
+                    if (!myUpDate)
+                        throw new Exception("Error en la Base de Data");
+
+                    MyRefresh();
+
+                    MyReset();
+
+                    MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    _LogClass.MYEventLog.WriteEntry("Save...", EventLogEntryType.Information, 100);
                 }
-
-                if (!myUpDate)
-                    throw new Exception("Error en la Base de Data");
-
-                MessageBox.Show("Done...", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                _LogClass.MYEventLog.WriteEntry("Save...", EventLogEntryType.Information, 100);
-
             }
             catch (Exception ex)
             {
@@ -200,7 +263,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
-
         public void MyCmdSalir_Click()
         {
             try
@@ -214,7 +276,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void MyChecked(object param)
         {
 
@@ -223,29 +284,70 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             string myString = chk[_Idx].Txt;
 
-            txtExplicacion = myString.Split('-')[1];
-        }
+            for (int i = 0; i < Background_0.Count; i++)
+                Background_0[i] = Brushes.White;
+            
+            Background_0[_Idx] = (Brushes.Red);
 
+            Explicacion = (_Idx + 1).ToString();
+
+            txtExplicacion = myString.Split('-')[1];
+
+            IsEnabled_txtExplicacion = true;
+
+            CanActualize = true;
+
+        }
         private void MyUnChecked(object param)
         {
             if (!int.TryParse(param.ToString(), out _Idx))
                 _Idx = -1;
 
-            txtExplicacion = string.Empty;
-        }
+            for (int i = 0; i < Background_0.Count; i++)
+                Background_0[i] = Brushes.White;
 
+            Explicacion = string.Empty;
+
+            txtExplicacion = string.Empty;
+
+            IsEnabled_txtExplicacion = false;
+
+            CanActualize = true;
+
+
+        }
         private void MyCheckedWarning(object param)
         {
             if (!int.TryParse(param.ToString(), out _Idx_Warning))
                 _Idx_Warning = -1;
 
+            CanActualize = true;
 
         }
-
         private void MyUnCheckedWarning(object param)
         {
             if (!int.TryParse(param.ToString(), out _Idx_Warning))
                 _Idx_Warning = -1;
+
+            CanActualize = true;
+
+        }
+        private void MyCmdEditar_Click()
+        {
+            CanEditar = false;
+            CanSalir = false;
+            IsEnabled_txtExplicacion = false;
+            CanActualize = false;
+
+            CanCancel = true;
+            isEdit = true;
+        }
+        private void MyCmdCancel_Click()
+        {
+            if (CanActualize)
+                MyRefresh();
+
+            MyReset();
         }
 
         public RelayCommand initWindow
@@ -253,39 +355,41 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get;
             private set;
         }
-
         public RelayCommand cmdActualize_Click
         {
             get;
             private set;
         }
-
         public RelayCommand cmdSalir_Click
         {
             get;
             private set;
         }
-
         public RelayCommand Checked
         {
             get;private set;
         }
-
         public RelayCommand UnChecked
         {
             get; private set;
         }
-
         public RelayCommand CheckedWarning
         {
             get;private set;
         }
-
         public RelayCommand UnCheckedWarning
         {
             get;private set;
         }
-        
+        public RelayCommand cmdEditar_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdCancel_Click
+        {
+            get;private set;
+        }
+
         #endregion
 
         #region MyMetodos
@@ -299,7 +403,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
+
                     _MyCriteriosTable = get.MyGetCriterios();
+
+                    Explicacion = string.Empty;
+
+                    chk.Clear();
 
                     foreach (DataRow row in _MyCriteriosTable.Rows)
                     {
@@ -312,7 +421,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         });
                     }
                 }
-
             }
             catch (Exception )
             {
@@ -321,7 +429,23 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
         private void MyReset()
         {
+            CanCancel = false;
+            CanActualize = false;
+            IsEnabled_txtExplicacion = false;
 
+            CanEditar = true;
+            CanSalir = true;
+            isEdit = false;
+
+            txtExplicacion = string.Empty;
+
+            Explicacion = string.Empty;
+
+            Background_0.Clear();
+
+            for (int i=0; i <=17;i++ )
+                Background_0.Add(Brushes.White);
+            
         }
 
         #endregion

@@ -615,7 +615,7 @@ namespace jolcode
                             "UPDATE [dbo].[Criterios] ",
                             "SET [Editar] = @Editar,",
                             "[Desc] = @Desc,",
-                            "[Warning] = @Warning,",
+                            "[Warning] = @Warning ",
                             "WHERE Campo=@Campo"
                     };
 
