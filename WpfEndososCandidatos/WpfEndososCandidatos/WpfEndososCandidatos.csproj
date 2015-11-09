@@ -124,6 +124,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Lots.cs" />
     <Compile Include="Models\Notarios.cs" />
     <Compile Include="Models\Partidos.cs" />
     <Compile Include="Models\Precintos.cs" />

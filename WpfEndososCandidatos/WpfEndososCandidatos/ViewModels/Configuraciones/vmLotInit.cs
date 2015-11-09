@@ -3,7 +3,10 @@ using jolcode.Base;
 using jolcode.MyInterface;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -11,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using WpfEndososCandidatos.Models;
 using WpfEndososCandidatos.View;
 
 namespace WpfEndososCandidatos.ViewModels.Configuraciones
@@ -19,39 +23,26 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private DataTable _MyLotsTable;
+        private string _DBEndososCnnStr;
+        private ObservableCollection<string> _cbLots;
+        private string _cbLots_Item;
+        private int _cbLots_Item_Id;
+        private Logclass _LogClass;
 
+
+        //ObservableCollection
         public vmLotInit()
             : base(new wpfLotInit())
         {
-            initWindow = new RelayCommand(param => InitWindow());
-            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(), param => CommandCan);
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(), param => CommandCan);
+
+            _LogClass = new Logclass();
+            cbLots = new ObservableCollection<string>();
         }
 
-          
-        #region initWindow OnShow
-       private void InitWindow()
-       {
-           try
-           {
-                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
-
-                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
-                {
-                    Type t = typeof(Brushes);
-                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
-                    BorderBrush = b;
-                }
-                else
-                    BorderBrush = Brushes.Black;
-
-            }
-           catch (Exception ex)
-           {
-
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
+        #region MyProperty
         public Brush BorderBrush
         {
             get
@@ -68,46 +59,174 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+            set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+        private bool CommandCan
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public ObservableCollection<string> cbLots
+        {
+            get
+            {
+                return _cbLots;
+            }
+            set
+            {
+                _cbLots = value;
+                this.RaisePropertychanged("cbLots");
+            }
+        }
+        public string cbLots_Item
+        {
+            get
+            {
+                return _cbLots_Item;
+            }set
+            {
+                _cbLots_Item = value;
+                this.RaisePropertychanged("cbLots_Item");
+            }
+        }
+        public int cbLots_Item_Id
+        {
+            get
+            {
+                return _cbLots_Item_Id;
+            }set
+            {
+                _cbLots_Item_Id = value;
+                this.RaisePropertychanged("cbLots_Item_Id");
+            }
+        }
 
-        public bool? OnShow()
-       {
-           return this.View.ShowDialog();
-       }
-       public RelayCommand initWindow
-       {
-           get;
-           private set;
-       }
+
+
+        #endregion
+
+        #region MyCmd
+        public void MyCmdSalir_Click()
+        {
+            try
+            {
+                this.View.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public bool? MyOnShow()
+        {
+            return this.View.ShowDialog();
+        }
+        private void MyInitWindow()
+        {
+            try
+            {
+                string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
+                string Hora = DateTime.Now.ToString("hh:mm:ss tt");
+
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
+
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush = b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
+
+                _LogClass.LogName = "Applica";
+                _LogClass.SourceName = "LotIni";
+                _LogClass.MessageFile = string.Empty;
+                _LogClass.CreateEvent();
+                _LogClass.MYEventLog.WriteEntry("LotInt Start:" + Dia + " " + Hora, EventLogEntryType.Information);
+
+                MyReset();
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
+
+            }
+        }
+
+
+
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
+        }
+        public RelayCommand cmdSalir_Click
+        {
+            get;
+            private set;
+        }
+        #endregion
+
+        #region MyMetodos
+
+
+        private void MyReset()
+        {
+            using (SqlExcuteCommand get = new SqlExcuteCommand()
+            {
+                DBCnnStr = DBEndososCnnStr
+            })
+            {
+                _MyLotsTable = get.MyGetLot();
+                cbLots.Clear();
+
+                foreach (DataRow row in _MyLotsTable.Rows)
+                {
+                    Lots myLots = new Lots();
+
+                    myLots.Partido = row["Partido"].ToString();
+                    myLots.Lot = row["Lot"].ToString();
+                    myLots.Amount = row["Amount"].ToString();
+                    myLots.Usercode = row["Usercode"].ToString();
+                    myLots.AuthDate = row["AuthDate"].ToString();
+                    myLots.Status = row["Status"].ToString();
+                    myLots.VerDate = row["VerDate"].ToString();
+                    myLots.VerUser = row["VerUser"].ToString();
+                    myLots.FinUser = row["FinUser"].ToString();
+                    myLots.FinDate = row["FinDate"].ToString();
+                    myLots.RevDate = row["RevDate"].ToString();
+                    myLots.RevUser = row["RevUser"].ToString();
+                    myLots.conditions = row["conditions"].ToString();
+                    myLots.ImportDate = row["ImportDate"].ToString();
+
+                    
+                    cbLots.Add(myLots.Lot);
+                    
+                }
+            }
+        }
+
+       
+    
        #endregion       
-        #region Exit
-       public RelayCommand cmdSalir_Click
-       {
-           get;
-           private set;
-       }
-       public void CmdSalir_Click()
-       {
-           try
-           {
-               this.View.Close();
-           }
-           catch (Exception ex)
-           {
-
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
-       private bool CommandCan
-       {
-           get
-           {
-               return true;
-           }
-       }
-
-
-       #endregion
+      
         #region Dispose
        
       

@@ -600,6 +600,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
+                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

@@ -418,7 +418,8 @@ namespace WpfEndososCandidatos.ViewModels
                 using (vmLotInit frmLotInit = new vmLotInit())
                 {
                     frmLotInit.View.Owner = this.View as Window;
-                    frmLotInit.OnShow();
+                    frmLotInit.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotInit.MyOnShow();
                 }
             }
             catch (Exception ex)

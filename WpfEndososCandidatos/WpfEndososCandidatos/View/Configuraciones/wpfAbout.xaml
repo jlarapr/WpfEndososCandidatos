@@ -18,7 +18,7 @@
 
                 <Button x:Name="cmOk" Command="{Binding ok_Click}" Content="O_k" HorizontalAlignment="Left" Margin="281,293,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.036,0.474"/>
 
-                <Line X1="10" Y1="200" X2="350" Y2="200" StrokeThickness="4"  Stroke="Red" ></Line>
+                <Line X1="10" Y1="200" X2="350" Y2="200" StrokeThickness="4"  Stroke="Black" ></Line>
                 <Image HorizontalAlignment="Left" Height="78" Margin="274,210,0,0" VerticalAlignment="Top" Width="82" Source="/WpfEndososCandidatos;component/WindowsJournal.ico"/>
                 <Image x:Name="image" HorizontalAlignment="Left" Height="94" Margin="10,210,0,0" VerticalAlignment="Top" Width="158" Source="/WpfEndososCandidatos;component/Images/APPLICA-20Aniv-logoV2.png"/>
             </Grid>
