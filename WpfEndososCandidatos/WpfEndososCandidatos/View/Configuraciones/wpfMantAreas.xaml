@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Behaviors ="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
-        Title="wpfMantAreas" Height="610.317" Width="659.317" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantAreas" Height="542.317" Width="516.317" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -12,10 +12,6 @@
     <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="10" Margin="-2" CornerRadius="5">
 
         <Grid Margin="0,0,0,0">
-            <Button Content="Salir"  HorizontalAlignment="Left" Margin="412,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
-                    Command="{Binding cmdSalir_Click}"
-                    IsEnabled="{Binding IsEnabled_CmdSalir}"
-                    />
             <Label Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
             <GroupBox x:Name="Frame1" Header="Frame1" Height="451" Margin="10,65,10,0" VerticalAlignment="Top">
                 <Grid Margin="0,0,5,0">
@@ -70,7 +66,7 @@
                              Visibility="{Binding Visibility_txtArea2}"
                              />
                     <Label x:Name="lblCargo" Content="Cargo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,-1,0,0"/>
-                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="4,25,0,0" VerticalAlignment="Top" Width="369"
+                    <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="4,25,0,0" VerticalAlignment="Top" Width="449"
                               ItemsSource="{Binding cbArea}"
                               SelectedItem="{Binding cbArea_Item,Mode=TwoWay}"                                     
                               SelectedIndex="{Binding cbArea_Item_Id,Mode=TwoWay}"
@@ -80,42 +76,32 @@
                               />
                     <Label x:Name="lblPrecintos" Content="Precintos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,70,0,0" Width="145"/>
                     <Label x:Name="lblPrecintosValidos" Content="Precintos Válidos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="228,70,0,0" Width="145"/>
-                    <GroupBox x:Name="gpbCargo" Header="Cargo" HorizontalAlignment="Left" Margin="383,92,0,10" Width="219">
-                        <Grid Margin="0">
-                            <RadioButton x:Name="rdbGobernador" Content="Gobernador" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbComisionadoResidente" Content="Comisionado Residente" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbSenadorDistrito" Content="Senador Distrito" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbSenadorporAcumulacion" Content="Senador por Acumulación" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbRepresentanteDistrito" Content="Representante Distrito" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbRepresentanteporAcumulacion" Content="Representante por Acumulación" HorizontalAlignment="Left" Margin="10,112,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbAlcalde" Content="Alcalde" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="rdbAsambleista" Content="Asambleista" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top"/>
-                            <TextBox x:Name="txtTotalEndosos" HorizontalAlignment="Left" Height="23" Margin="10,208,0,0" TextWrapping="Wrap" Text="{Binding TxtEndosos}" VerticalAlignment="Top" Width="120"/>
-                            <Label x:Name="label" Content="Endosos Requeridos:" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.474,-0.5"/>
-                        </Grid>
-                    </GroupBox>
+                    <Button Content="Salir"  HorizontalAlignment="Left" Margin="381,272,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    	Command="{Binding cmdSalir_Click}"
+                    	IsEnabled="{Binding IsEnabled_CmdSalir}"
+                    />
+                    <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="381,238,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+                    	Command="{Binding cmdCancel_Click}"
+                    	IsEnabled="{Binding IsEnabled_CmdCancel}"
+                    />
+                    <Button Content="Guardar" HorizontalAlignment="Left" Margin="381,204,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    	Command="{Binding cmdGuardar_Click}"
+                    	IsEnabled="{Binding IsEnabled_CmdGuardar}"
+                    />
+                    <Button x:Name="cmdAnadir" Content="Añadir" HorizontalAlignment="Left" Margin="381,170,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+                    	Command="{Binding cmdAnadir_Click}"
+                    	IsEnabled="{Binding IsEnabled_cmdAnadir}"
+                    />
+                    <Button x:Name="cmdDelete" Content="Borrar" HorizontalAlignment="Left" Margin="381,136,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+                    	Command="{Binding cmdDelete_Click}"
+                    	IsEnabled="{Binding IsEnabled_CmdDelete}"
+                    />
+                    <Button Content="Editar"  HorizontalAlignment="Left" Margin="381,101,0,0" VerticalAlignment="Top" Width="75" Height="29"
+                    	Command="{Binding cmdEditar_Click}"
+                    	IsEnabled="{Binding IsEnabled_CmdEditar}"
+                    />
                 </Grid>
             </GroupBox>
-            <Button Content="Editar"  HorizontalAlignment="Left" Margin="12,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
-                    Command="{Binding cmdEditar_Click}"
-                    IsEnabled="{Binding IsEnabled_CmdEditar}"
-                    />
-            <Button Content="Guardar" HorizontalAlignment="Left" Margin="252,521,0,0" VerticalAlignment="Top" Width="75" Height="29"
-                    Command="{Binding cmdGuardar_Click}"
-                    IsEnabled="{Binding IsEnabled_CmdGuardar}"
-                    />
-            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="332,521,0,0" VerticalAlignment="Top" Width="75"  Height="29"
-                    Command="{Binding cmdCancel_Click}"
-                    IsEnabled="{Binding IsEnabled_CmdCancel}"
-                    />
-            <Button x:Name="cmdAnadir" Content="Añadir" HorizontalAlignment="Left" Margin="172,521,0,0" VerticalAlignment="Top" Width="75"  Height="29"
-            	Command="{Binding cmdAnadir_Click}"
-            	IsEnabled="{Binding IsEnabled_cmdAnadir}"
-                    />
-            <Button x:Name="cmdDelete" Content="Borrar" HorizontalAlignment="Left" Margin="92,521,0,0" VerticalAlignment="Top" Width="75"  Height="29"
-            	Command="{Binding cmdDelete_Click}"
-            	IsEnabled="{Binding IsEnabled_CmdDelete}"
-                    />
 
         </Grid>
     </Border>

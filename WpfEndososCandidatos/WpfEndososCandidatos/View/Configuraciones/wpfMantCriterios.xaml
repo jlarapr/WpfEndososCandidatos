@@ -22,7 +22,7 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="label" Content="Warning" HorizontalAlignment="Left" Margin="834,0,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="849,33,0,10" HorizontalAlignment="Left" Width="28">
-                        <StackPanel Margin="0,9" IsEnabled="{Binding isEdit}">
+                        <StackPanel Margin="0,9,-1,9" IsEnabled="{Binding isEdit}">
                             <CheckBox x:Name="ckbW1" Height="26" VerticalAlignment="Top" Margin="5,0,0,0"
                                        IsChecked="{Binding chk[0].Warning}"
                                       >
@@ -170,7 +170,7 @@
                                 </i:Interaction.Triggers>
                             </CheckBox>
                             <CheckBox x:Name="ckbW1_Copy11"   Height="26" Margin="5,0,0,0"
-                                       Content="{Binding chk[12].Warning}"
+                                       IsChecked="{Binding chk[12].Warning}"
                                       >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
