@@ -36,7 +36,7 @@
                 <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
             </MenuItem>
             <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
-                <MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />
+                <!--<MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />-->
                 <MenuItem Name="mnuAutoRizarLotes" IsEnabled="{Binding mnuAutoRizarLotes_IsEnabled}" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
                 <MenuItem Name="mnuProcesarLotes" IsEnabled="{Binding mnuProcesarLotes_IsEnabled,Mode=TwoWay}" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
                 <Separator></Separator>

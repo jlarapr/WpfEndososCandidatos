@@ -29,6 +29,145 @@ namespace jolcode
                 _DBCnnStr = value;
             }
         }
+
+        public DataTable MyGetCitizen(string CitizenID)
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+
+                int myCitizenID = 0;
+
+                if (int.TryParse(CitizenID,out myCitizenID))
+                {
+                    CitizenID = string.Format("{0:0000000}", myCitizenID);
+                }
+
+
+
+                string mySqlstr = "Select * From TblCitizen Where CitizenID =@CitizenID ";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@CitizenID", SqlDbType.VarChar));
+                            cmd.Parameters["@CitizenID"].Value = CitizenID;
+
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetAreas Error");
+            }
+            return myTableReturn;
+        }
+
+
+        public bool MyInitLot(string lotNum,Logclass logClass)
+        {
+            /*
+            'STATUS LOTE
+                '0 - SIN IMPORTAR
+                '1 - SIENDO IMPORTADO
+                '2 - IMPORTADO
+        */
+            bool myBoolReturn = false;
+
+            try
+            {
+
+                string[] myDeleteLots =
+                {
+                    "delete from [dbo].[lots] ",
+                    "WHERE lot=@lot;"
+               };
+
+                string[] myDeleteLotsEndo =
+                {
+                    "Delete from LotsEndo ",
+                    "Where lot=@lot"
+                };
+
+                string[] myDeleteLotsVoid =
+                {
+                    "Delete from LotsVoid ",
+                    "Where lot=@lot"
+                };
+
+                string[] myUpDateLotsTF_Partidos =
+                {
+                    "update [dbo].[TF-Partidos] ",
+                    "Set Imported=0 ",
+                    "WHERE BatchTrack=@lot;"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@lot", SqlDbType.VarChar));
+                        cmd.Parameters["@lot"].Value = lotNum;
+
+                        cmd.CommandText = string.Concat(myDeleteLots);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myDeleteLotsEndo);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myDeleteLotsVoid);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myUpDateLotsTF_Partidos);
+                        cmd.ExecuteNonQuery();
+
+                        logClass.MYEventLog.WriteEntry(string.Concat(myDeleteLots) + "\r\n" + 
+                                                       string.Concat(myDeleteLotsEndo) + "\r\n" +
+                                                       string.Concat(myDeleteLotsVoid) + "\r\n" +
+                                                       string.Concat(myUpDateLotsTF_Partidos),System.Diagnostics.EventLogEntryType.Information,100);
+
+                    }
+                }
+
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+        }
         public DataTable MyGetLot()
         {
             DataTable myTableReturn = new DataTable();

@@ -46,12 +46,10 @@
              {
                  using (vmElector frmElector = new vmElector())
                  {
-
-                     frmElector.View.Owner = this.View as Window;
-                     frmElector.OnShow();
+                    frmElector.View.Owner = this.View as Window;
+                    frmElector.DBCeeMasterCnnStr = _DBCeeMasterCnnStr;
+                    frmElector.MyOnShow();
                  }
-
-                 
              }
              catch (Exception ex)
              {

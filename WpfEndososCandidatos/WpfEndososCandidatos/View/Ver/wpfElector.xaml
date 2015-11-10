@@ -16,47 +16,111 @@
             <GroupBox x:Name="groupBox" Header="Información del Elector" Margin="5,65,5,0" VerticalAlignment="Top" Height="485">
                 <Grid>
                     <Label x:Name="label" Content="Número Electoral" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfElecNum" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
-                    <Button x:Name="cmdFind" Command="{Binding cmdFind}" Content="Buscar..." HorizontalAlignment="Left" Margin="135,44,0,0" VerticalAlignment="Top" Width="75"/>
+                    <TextBox x:Name="TxtElecNum" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtElecNum}"
+                             MaxLength="7"
+                             CharacterCasing="Upper"
+                             />
+                    <Button x:Name="cmdFind" Content="Buscar..." HorizontalAlignment="Left" Margin="135,41,0,0" VerticalAlignment="Top" Width="75"
+                            Command="{Binding cmdFind_Click}" Height="23"
+                            />
                     <Label x:Name="label_Copy" Content="Nombre" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy1" Content="Paterno" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy2" Content="Materno" HorizontalAlignment="Left" Margin="260,69,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfElecNum_Copy" HorizontalAlignment="Left" Height="23" Margin="7,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="dfElecNum_Copy1" HorizontalAlignment="Left" Height="23" Margin="135,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="dfElecNum_Copy2" HorizontalAlignment="Left" Height="23" Margin="260,100,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="dfNombre" HorizontalAlignment="Left" Height="23" Margin="7,100,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtNombre}"
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             />
+                    <TextBox x:Name="TxtPaterno" HorizontalAlignment="Left" Height="23" Margin="135,100,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtPaterno}"
+                             Background="Yellow"
+                             IsReadOnly="True"
+                             />
+                    <TextBox x:Name="TxtMaterno" HorizontalAlignment="Left" Height="23" Margin="260,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtMaterno}" 
+                             Background="Yellow"
+                             IsReadOnly="True"
+                             />
                     <Label x:Name="label_Copy3" Content="Padre" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy4" Content="Madre" HorizontalAlignment="Left" Margin="135,132,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy5" Content="Fecha de Nacimiento" HorizontalAlignment="Left" Margin="260,132,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfElecNum_Copy3" HorizontalAlignment="Left" Height="23" Margin="7,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="dfElecNum_Copy4" HorizontalAlignment="Left" Height="23" Margin="135,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="120"/>
-                    <TextBox x:Name="dfElecNum_Copy5" HorizontalAlignment="Left" Height="23" Margin="260,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
-                    <TextBox x:Name="dfElecNum_Copy6" HorizontalAlignment="Left" Height="23" Margin="293,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
-                    <TextBox x:Name="dfElecNum_Copy7" HorizontalAlignment="Left" Height="23" Margin="326,163,0,0" TextWrapping="Wrap" Text="{Binding dfElecNum}" VerticalAlignment="Top" Width="28"/>
+                    <TextBox x:Name="TxtPadre" HorizontalAlignment="Left" Height="23" Margin="7,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtPadre}" 
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             />
+                    <TextBox x:Name="TxtMadre" HorizontalAlignment="Left" Height="23" Margin="135,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                             Text="{Binding TxtMadre}" 
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             />
+                    <TextBox x:Name="TxtDia" HorizontalAlignment="Left" Height="23" Margin="260,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28"
+                             Text="{Binding TxtDia}" 
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             
+                             />
+                    <TextBox x:Name="TxtMes" HorizontalAlignment="Left" Height="23" Margin="293,163,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="28"
+                             Text="{Binding TxtMes}"
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             />
+                    <TextBox x:Name="TxtAno" HorizontalAlignment="Left" Height="23" Margin="326,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"
+                             Text="{Binding TxtAno}" 
+                             IsReadOnly="True"
+                             Background="Yellow"
+                             />
                     <Label x:Name="label_Copy6" Content="Día" HorizontalAlignment="Left" Margin="260,191,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy7" Content="Mes" HorizontalAlignment="Left" Margin="294,191,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy8" Content="Año" HorizontalAlignment="Left" Margin="326,191,0,0" VerticalAlignment="Top"/>
                     <GroupBox x:Name="gbInfoElecotral" Header="Información Electoral" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,225,0,0" Height="97" Width="245">
-                        <Grid>
-                            <TextBox x:Name="dfPrecinto" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap" Text="{Binding dfPrecinto}" VerticalAlignment="Top" Width="55"/>
-                            <TextBox x:Name="dfUnidad" HorizontalAlignment="Left" Height="23" Margin="70,26,0,0" TextWrapping="Wrap" Text="{Binding dfUnidad}" VerticalAlignment="Top" Width="55"/>
+                        <Grid >
+                            <TextBox x:Name="TxtPrecinto" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="55"
+                                     Text="{Binding TxtPrecinto}"
+                                     Background="Yellow"
+                                     IsReadOnly="True"
+                                     />
+                            <TextBox x:Name="TxtUnidad" HorizontalAlignment="Left" Height="23" Margin="70,26,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="55"
+                                     Text="{Binding TxtUnidad}"
+                                     Background="Yellow"
+                                     IsReadOnly="True"                                     
+                                     />
                             <Label x:Name="label1" Content="Precinto" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
                             <Label x:Name="label1_Copy" Content="Unidad" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="obStatus" Content="Activo" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="obStatus_Copy" Content="Inactivo" HorizontalAlignment="Left" Margin="147,37,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="obStatus_Copy1" Content="Excluido" HorizontalAlignment="Left" Margin="147,57,0,0" VerticalAlignment="Top"/>
+                            <RadioButton x:Name="obActivo" Content="Activo" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding IsChecked_Activo}"
+                                         IsEnabled="False"
+                                         />
+                            <RadioButton x:Name="obInactivo" Content="Inactivo" HorizontalAlignment="Left" Margin="147,37,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding IsChecked_Inactivo}" 
+                                         IsEnabled="False"
+                                         />
+                            <RadioButton x:Name="obExcluido" Content="Excluido" HorizontalAlignment="Left" Margin="147,57,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding IsChecked_Excluido}"
+                                         IsEnabled="False"
+                                         />
 
                         </Grid>
                     </GroupBox>
                     <GroupBox x:Name="gbInfoElecotral_Copy" Header="Sexo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,225,0,0" Height="97" Width="111">
-                        <Grid>
-                            <RadioButton x:Name="obSex" Content="Masculino" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="obSex_Copy" Content="Femenina" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+                        <Grid >
+                            <RadioButton x:Name="obSexM" Content="Masculino" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding IsChecked_SexM}"
+                                         IsEnabled="False"
+                                         />
+                            <RadioButton x:Name="obSexF" Content="Femenina" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"
+                                         IsChecked="{Binding IsChecked_SexF}"                                         
+                                         IsEnabled="False"
+                                         />
                         </Grid>
                     </GroupBox>
                     <Label x:Name="label2" Content="Firma" HorizontalAlignment="Left" Margin="12,327,0,0" VerticalAlignment="Top"/>
                     <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Margin="7,358,10,10">
                         <Grid>
-                            <Image x:Name="imageFirma" Margin="5"/>
+                            <Image x:Name="imageFirma" Margin="5"
+                                   
+                                   />
 
 
                         </Grid>

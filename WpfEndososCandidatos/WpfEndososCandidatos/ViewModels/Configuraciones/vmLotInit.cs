@@ -35,8 +35,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         public vmLotInit()
             : base(new wpfLotInit())
         {
-            initWindow = new RelayCommand(param => MyInitWindow());
+            initWindow = new RelayCommand(param => MyInitWindow(),null);
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(), param => CommandCan);
+            cmdReverse_Click = new RelayCommand(param => MyCmdReverse_Click(),param=>CanCmdReverse);
 
             _LogClass = new Logclass();
             cbLots = new ObservableCollection<string>();
@@ -112,6 +113,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
+        public bool CanCmdReverse
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(cbLots_Item);
+            }
+        }
 
 
         #endregion
@@ -169,9 +177,43 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             }
         }
+        private void MyCmdReverse_Click()
+        {
+            try
+            {
+                var response = MessageBox.Show("!!!Esta Acción es Irreversible " + cbLots_Item + " Desea Continuar ?", "Lots...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 
+                if (response == MessageBoxResult.Yes)
+                {
+                    using (SqlExcuteCommand get = new SqlExcuteCommand()
+                    {
+                        DBCnnStr = DBEndososCnnStr
+                    })
+                    {
+                        if (!string.IsNullOrEmpty(cbLots_Item))
+                            if (get.MyInitLot(cbLots_Item,_LogClass))
+                            {
+                                MessageBox.Show("Done..");
+                                MyReset();
+                            }else
+                            {
+                                MessageBox.Show("Error en la base de datos");
+                            }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
+            }
+        }
 
-
+        public RelayCommand cmdReverse_Click
+        {
+            get;private set;
+        }
         public RelayCommand initWindow
         {
             get;

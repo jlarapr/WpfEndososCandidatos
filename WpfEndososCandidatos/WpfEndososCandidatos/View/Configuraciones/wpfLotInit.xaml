@@ -15,7 +15,9 @@
            
             
             <Label x:Name="lblLote" Content="Lote" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
-            <Button Content="Inicializar" Command="{Binding cmdReverse_Click}" HorizontalAlignment="Left" Margin="227,123,0,0" VerticalAlignment="Top" Width="75" Height="30"/>
+            <Button Content="Inicializar"  HorizontalAlignment="Left" Margin="227,123,0,0" VerticalAlignment="Top" Width="75" Height="30"
+                    Command="{Binding cmdReverse_Click}"
+                    />
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="84" Margin="10,123,0,0" TextWrapping="Wrap" Text="Nota: Esta Acción es Irreversible" VerticalAlignment="Top" Width="212" Foreground="#FFDC2121"/>
             <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="292"
                         ItemsSource="{Binding cbLots}"
