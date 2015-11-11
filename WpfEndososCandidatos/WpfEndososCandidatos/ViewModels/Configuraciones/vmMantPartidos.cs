@@ -544,9 +544,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 bool myUpDate = false;
 
                 string myWhere = string.Empty;
-                string myPartidoTmp = cbPartidos_Item.Split('-')[0];
 
-                myWhere = _IsInsert == false ? myPartidoTmp : "";
+               
+
+                if (!_IsInsert)
+                    myWhere = cbPartidos_Item.Split('-')[0];
+                else 
+                    myWhere ="";
 
                 if (myWhere.Trim().Length == 0)
                     myWhere = txtNumPartido;

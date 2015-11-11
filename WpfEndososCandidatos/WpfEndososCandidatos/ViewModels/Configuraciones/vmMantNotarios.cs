@@ -667,9 +667,16 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 bool myUpDate = false;
                 string myWhere = string.Empty;
-                string myNumElecTmp = cbNotario_Item.Split('-')[0] ;
 
-                myWhere = _IsInsert == false ? myNumElecTmp: "";
+
+                if (!_IsInsert)
+                {
+                    myWhere = cbNotario_Item.Split('-')[0];
+                }else
+                {
+                    myWhere = "";
+                }
+
 
 
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
@@ -691,7 +698,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
                 _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
             finally
