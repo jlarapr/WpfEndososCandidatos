@@ -458,11 +458,11 @@
             if (disposing)
             {
                 // free managed resources AnotherResource 
-                //if (managedResource != null)
-                //{
-                //    managedResource.Dispose();
-                //    managedResource = null;
-                //}
+                if (_LogClass != null)
+                {
+                    _LogClass.Dispose();
+                    _LogClass = null;
+                }
             }
             // free native resources if there are any.
             if (nativeResource != IntPtr.Zero)

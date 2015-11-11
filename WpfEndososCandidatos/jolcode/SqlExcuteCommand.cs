@@ -30,6 +30,259 @@ namespace jolcode
             }
         }
 
+        public DataTable MyGetLotFix()
+        {
+            /*
+             'STATUS LOTE
+                '0 - LISTO PARA PROCESAR
+                '1 - SIENDO PROCESADA
+                '2 - FINALIZADO
+                '3 - CON ERRORES
+                '4 - SIENDO REVISADA
+            */
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string[] mySqlstr = { "Select Lot  ",
+                                      "from From Lots ",
+                                      "Where Status = 3;" };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetLot Error");
+            }
+            return myTableReturn;
+        }
+
+
+        public DataTable MyGetLotFromTF()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+
+                //string mySqlstr = "Select distinct BatchTrack  from [dbo].[TF-Partidos] Where Imported = 0 order by BatchTrack";
+                string[] mySqlstr = { "Select [Partido],BatchTrack, count(*) as Amount  ",
+                                      "from [dbo].[TF-Partidos] ",
+                                      "Where Imported = 0 ",
+                                      "Group By Partido,BatchTrack ",
+                                      "Order By Partido,BatchTrack;" };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetLot Error");
+            }
+            return myTableReturn;
+        }
+        public DataTable MyGetSelectLotes(string lot,string cantidad)
+        {
+            DataTable myTableReturn = new DataTable();
+            bool myBoolError = true;
+            try
+            {
+                int myIntCanridad = 0;
+
+                if (!int.TryParse(cantidad, out myIntCanridad))
+                    throw new Exception("Error en la Cantidad");
+
+                string[] mySqlstrCount =
+                {
+                    "Select count(*) as Total ",
+                    "From [dbo].[lots] ",
+                    "Where lot=@lot ",
+                    "And Status = 0;"
+                };
+
+
+                string[] mySqlstrExiste =
+              {
+                    "Select count(*) ",
+                    "From [dbo].[TF-Partidos] ",
+                    "Where BatchTrack =@lot ",
+                    "And Imported = 0; "
+                };
+
+
+                string[] mySqlstrAll =
+                {
+                    "Select Partido,BatchTrack, count(*) as Amount ",
+                    "From [dbo].[TF-Partidos] ",
+                    "Where BatchTrack =@lot ",
+                    "And Imported = 0 ",
+                    "Group By Partido,BatchTrack ",
+                    "Order By Partido,BatchTrack;"
+                };
+
+                string[] mySqlstrCountVerificar =
+              {
+                    "Select count(*) as Total ",
+                    "From [dbo].[TF-Partidos] ",
+                    "Where BatchTrack=@lot ",
+                    "And Imported = 0;"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                       
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+
+                            cmd.Parameters.Add(new SqlParameter("@lot",SqlDbType.VarChar)).Value = lot;
+                            
+
+                            cmd.CommandText = string.Concat(mySqlstrCount);
+                            if ((int)cmd.ExecuteScalar() > 0)
+                                throw new Exception("Este Lote ya fue entrado");
+
+                            cmd.CommandText = string.Concat(mySqlstrExiste);
+                            if ((int)cmd.ExecuteScalar() == 0)
+                                throw new Exception("Lote no Existe");
+
+                            cmd.CommandText = string.Concat(mySqlstrCountVerificar);
+                            if ((int)cmd.ExecuteScalar() != myIntCanridad)
+                                throw new Exception("La cantidad de Endosos no concuerda");
+
+
+
+                            myBoolError = false;
+
+                            cmd.CommandText = string.Concat(mySqlstrAll);
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (myBoolError)
+                    throw new Exception(ex.Message);
+                else
+                    throw new Exception(ex.ToString() + "\r\nMyGetAreas Error");
+            }
+            return myTableReturn;
+        }
+
+        public DataTable MyGetTodosLotes()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                
+                string[] mySqlstrAll = 
+                {
+                    "Select Partido,BatchTrack, count(*) as Amount ",
+                    "From [dbo].[TF-Partidos] ",
+                    "Where BatchTrack Is Not Null ",
+                    "And Imported = 0 ",
+                    "Group By Partido,BatchTrack ",
+                    "Order By Partido,BatchTrack;"
+                };
+                            
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstrAll)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetAreas Error");
+            }
+            return myTableReturn;
+        }
+
+
         public DataTable MyGetCitizen(string CitizenID)
         {
             DataTable myTableReturn = new DataTable();
@@ -870,7 +1123,231 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        public bool MyChangeTF(DataTable tableLots,string usercode)
+        {
+            bool myBoolReturn = false;
+            SqlTransaction transaction = null;
+            bool myBoolErrorNoHayLotes = true;
+            try
+            {
 
+                if (tableLots == null )
+                    throw new Exception("No Hay Lotes Para Importar");
+
+                if (tableLots.Rows.Count <= 0)
+                    throw new Exception("No Hay Lotes Para Importar");
+
+                myBoolErrorNoHayLotes = false;
+
+                string[] myInsert =
+                        {
+                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate])  ",
+                            "VALUES (",
+                             "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate",
+                            ");"
+                        };
+
+                string[] myUpdate_Imported1 =
+                    {
+                            "Update [TF-Partidos] ",
+                            "SET [Imported] = 1 ",
+                            "WHERE BatchTrack=@where ",
+                            "And Imported = 0"
+                    };
+
+                string[] myUpdate_Imported2 =
+                   {
+                            "Update [TF-Partidos] ",
+                            "SET [Imported] = 2 ",
+                            "WHERE BatchTrack=@where ",
+                            "And Imported = 1"
+                    };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                       
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+
+                        SqlParameter whereParam = new SqlParameter();
+                        whereParam.ParameterName = "@Where";
+                        whereParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter partidoParam = new SqlParameter();
+                        partidoParam.ParameterName = "@Partido";
+                        partidoParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter lotParam = new SqlParameter();
+                        lotParam.ParameterName = "@Lot";
+                        lotParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter amountParam = new SqlParameter();
+                        amountParam.ParameterName = "@Amount";
+                        amountParam.SqlDbType = SqlDbType.Int;
+
+                        SqlParameter usercodeParam = new SqlParameter();
+                        usercodeParam.ParameterName = "@Usercode";
+                        usercodeParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter authDateParam = new SqlParameter();
+                        authDateParam.ParameterName = "@AuthDate";
+                        authDateParam.SqlDbType = SqlDbType.DateTime;
+
+                        SqlParameter statusParam = new SqlParameter();
+                        statusParam.ParameterName = "@Status";
+                        statusParam.SqlDbType = SqlDbType.VarChar;
+                        /*
+                        SqlParameter verDateParam = new SqlParameter();
+                        verDateParam.ParameterName = "@VerDate";
+                        verDateParam.SqlDbType = SqlDbType.DateTime;
+
+                        SqlParameter verUserParam = new SqlParameter();
+                        verUserParam.ParameterName = "@VerUser";
+                        verUserParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter finUserParam = new SqlParameter();
+                        finUserParam.ParameterName = "@FinUser";
+                        finUserParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter finDateParam = new SqlParameter();
+                        finDateParam.ParameterName = "@FinDate";
+                        finDateParam.SqlDbType = SqlDbType.DateTime;
+
+                        SqlParameter revDateParam = new SqlParameter();
+                        revDateParam.ParameterName = "@RevDate";
+                        revDateParam.SqlDbType = SqlDbType.DateTime;
+
+                        SqlParameter revUserParam = new SqlParameter();
+                        revUserParam.ParameterName = "@RevUser";
+                        revUserParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter conditionsParam = new SqlParameter();
+                        conditionsParam.ParameterName = "@conditions";
+                        conditionsParam.SqlDbType = SqlDbType.VarChar;
+                        */
+                        SqlParameter importDateParam = new SqlParameter();
+                        importDateParam.ParameterName = "@ImportDate";
+                        importDateParam.SqlDbType = SqlDbType.VarChar;
+
+                        cmd.Parameters.Add(whereParam);
+
+                        foreach (DataRow row in tableLots.Rows)
+                        {
+                            // Start a local transaction.
+                            transaction = cnn.BeginTransaction(IsolationLevel.ReadCommitted);
+                            cmd.Transaction = transaction;
+
+                            string where = row["BatchTrack"].ToString();
+
+                            whereParam.Value = where;
+                          
+                            int myReturn = 0;
+
+                            cmd.CommandText = string.Concat(myUpdate_Imported1);
+                            myReturn = cmd.ExecuteNonQuery();
+
+                            if (cmd.Parameters.Contains(whereParam))
+                                cmd.Parameters.Remove(whereParam);
+                                
+
+                            cmd.Parameters.Add(partidoParam);
+                            cmd.Parameters.Add(lotParam);
+                            cmd.Parameters.Add(amountParam);
+                            cmd.Parameters.Add(usercodeParam);
+                            cmd.Parameters.Add(authDateParam);
+                            cmd.Parameters.Add(statusParam);
+                           /* cmd.Parameters.Add(verDateParam);
+                            cmd.Parameters.Add(verUserParam);
+                            cmd.Parameters.Add(finUserParam);
+                            cmd.Parameters.Add(finDateParam);
+                            cmd.Parameters.Add(revDateParam);
+                            cmd.Parameters.Add(revUserParam);
+                            cmd.Parameters.Add(conditionsParam);*/
+                            cmd.Parameters.Add(importDateParam);
+
+                           partidoParam.Value = row["Partido"].ToString(); 
+                           lotParam.Value = row["BatchTrack"].ToString(); 
+                           amountParam.Value = int.Parse(row["Amount"].ToString()); 
+                           usercodeParam.Value = usercode;
+                           authDateParam.Value = DateTime.Now.ToString(); ;
+                           statusParam.Value = "0";
+                           //verDateParam.Value = VerDate;
+                           //verUserParam.Value = VerUser;
+                           //finUserParam.Value = FinUser;
+                           //finDateParam.Value = FinDate;
+                           //revDateParam.Value = RevDate;
+                           //revUserParam.Value = RevUser;
+                           //conditionsParam.Value = conditions;
+                           importDateParam.Value = DateTime.Now.ToString(); 
+
+                            cmd.CommandText = string.Concat(myInsert);
+                            myReturn = cmd.ExecuteNonQuery();
+
+                            cmd.Parameters.Remove(partidoParam);
+                            cmd.Parameters.Remove(lotParam);
+                            cmd.Parameters.Remove(amountParam);
+                            cmd.Parameters.Remove(usercodeParam);
+                            cmd.Parameters.Remove(authDateParam);
+                            cmd.Parameters.Remove(statusParam);
+                            //cmd.Parameters.Remove(verDateParam);
+                            //cmd.Parameters.Remove(verUserParam);
+                            //cmd.Parameters.Remove(finUserParam);
+                            //cmd.Parameters.Remove(finDateParam);
+                            //cmd.Parameters.Remove(revDateParam);
+                            //cmd.Parameters.Remove(revUserParam);
+                            //cmd.Parameters.Remove(conditionsParam);
+                            cmd.Parameters.Remove(importDateParam);
+
+                            cmd.Parameters.Add(whereParam);
+                            whereParam.Value = where;
+
+                            cmd.CommandText = string.Concat(myUpdate_Imported2);
+                            myReturn = cmd.ExecuteNonQuery();
+
+                            transaction.Commit();
+
+                        
+
+                        }
+
+                    }
+                }
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    try
+                    {
+                        transaction.Rollback();
+                    }
+                    catch
+                    {
+                        if (transaction.Connection != null)
+                        {
+                            Console.WriteLine("An exception of type " + ex.GetType() +
+                                " was encountered while attempting to roll back the transaction.");
+                        }
+                    }
+                }
+                if (myBoolErrorNoHayLotes)
+                    throw new Exception(ex.Message );
+                else
+                    throw new Exception(ex.ToString() + "\r\nMyChangeTF Error\r\nAn exception of type" + ex.GetType());
+            }
+            return myBoolReturn;
+        }
 
 
         #region Dispose

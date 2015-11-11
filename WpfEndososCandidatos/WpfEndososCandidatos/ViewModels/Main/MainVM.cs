@@ -50,12 +50,23 @@ namespace WpfEndososCandidatos.ViewModels
         private string _DBEndososCnnStr;
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
+        private string _WhatIsUserName;
 
         public MainVM()
             : base(new MainWindow())
         {
 
           
+        }
+        public string WhatIsUserName
+        {
+            get
+            {
+                return _WhatIsUserName;
+            }set
+            {
+                _WhatIsUserName = value;
+            }
         }
         public Cursor MiCursor
         {
@@ -185,17 +196,7 @@ namespace WpfEndososCandidatos.ViewModels
           
             try {
 
-                //if (System.Diagnostics.EventLog.Exists("Applica"))
-                //{
-                //    System.Diagnostics.EventLog.Delete("Applica");
-                //}
-
-                //if (EventLog.SourceExists("Applica"))
-                //{
-                //    EventLog.DeleteEventSource("Applica");
-
-                //}
-
+               
                 myLogClass.LogName = "Applica";
                 myLogClass.MessageFile = string.Empty;
                 myLogClass.SourceName = "MainVM";

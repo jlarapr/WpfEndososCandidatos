@@ -5,7 +5,10 @@
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Configuration;
+    using System.Data;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -17,23 +20,32 @@
 
     class vmLotAuth : ViewModelBase<IDialogView>,IDisposable 
     {
-        private int _numLote;
-        private int _cantidad;
+        private string _numLote;
+        private string  _cantidad;
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
+        private Logclass _LogClass;
+        private string _SysUser;
+        private ObservableCollection<string> _cbLots;
+        private int _cbLots_Item_Id;
+        private string _cbLots_Item;
+        private string _lblCount;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click());
+            cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click(),param=>CanAddLot);
             cmdAddTodoLot_Click = new RelayCommand(param => MyCmdAddTodoLot_Click());
+
+            _LogClass = new Logclass();
+            cbLots = new ObservableCollection<string>();
         }
 
         #region MyProperty
-        public int numLote
+        public string numLote
         {
             get
             {
@@ -41,9 +53,24 @@
             }
             set
             {
-                if (_numLote != value)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    _numLote = value;
+
+                    long myLongValue = 0;
+
+                    if(long.TryParse(value,out myLongValue))
+                    {
+                        _numLote = value;
+                        this.RaisePropertychanged("numLote");
+                    }else
+                    {
+                        _numLote = "0";
+                        this.RaisePropertychanged("numLote");
+                    }
+                    
+                }else
+                {
+                    _numLote = "0";
                     this.RaisePropertychanged("numLote");
                 }
             }
@@ -64,7 +91,7 @@
 
             }
         }
-        public int cantidad
+        public string cantidad
         {
             get
             {
@@ -72,9 +99,22 @@
             }
             set
             {
-                if (_cantidad != value)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    _cantidad = value;
+                    long myLongValue = 0;
+
+                    if (long.TryParse(value, out myLongValue))
+                    {
+                        _cantidad = value;
+                        this.RaisePropertychanged("cantidad");
+                    }else
+                    {
+                        _cantidad = "0";
+                        this.RaisePropertychanged("cantidad");
+                    }
+                }else
+                {
+                    _cantidad = "0";
                     this.RaisePropertychanged("cantidad");
                 }
             }
@@ -90,6 +130,74 @@
                 _DBEndososCnnStr = value;
             }
         }
+        public string SysUser
+        {
+            get
+            {
+                return _SysUser;
+            }set
+            {
+                _SysUser = value;
+            }
+        }
+        public bool CanAddLot
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(numLote);
+            }
+        }
+        public string lblCount
+        {
+            get
+            {
+                return _lblCount;
+            }set
+            {
+                _lblCount = "Total de Lotes: " + value;
+                this.RaisePropertychanged("lblCount");
+            }
+        }
+        public ObservableCollection<string> cbLots
+        {
+            get
+            {
+                return _cbLots;
+            }
+            set
+            {
+                _cbLots = value;
+                this.RaisePropertychanged("cbLots");
+            }
+        }
+        public string cbLots_Item
+        {
+            get
+            {
+                return _cbLots_Item;
+            }
+            set
+            {
+                _cbLots_Item = value;
+             
+                numLote = value.Split('-')[0];
+                cantidad=  value.Split('-')[1];
+
+                this.RaisePropertychanged("cbLots_Item");
+            }
+        }
+        public int cbLots_Item_Id
+        {
+            get
+            {
+                return _cbLots_Item_Id;
+            }
+            set
+            {
+                _cbLots_Item_Id = value;
+                this.RaisePropertychanged("cbLots_Item_Id");
+            }
+        }
 
         #endregion
 
@@ -98,8 +206,18 @@
         {
             try
             {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
 
-                throw new NotImplementedException();
+                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad), SysUser))
+                        throw new Exception("Error en la base de datos.");
+                    else
+                        MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                MyReset();
             }
             catch (Exception ex)
             {
@@ -112,16 +230,27 @@
         {
             try
             {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    
+                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser))
+                        throw new Exception("Error en la base de datos.");
+                    else
+                        MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                MyReset();
 
-                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
-                
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
             }
-            
+
         }
         public void MyCmdSalir_Click()
         {
@@ -140,6 +269,9 @@
         {
             try
             {
+                string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
+                string Hora = DateTime.Now.ToString("hh:mm:ss tt");
+
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -151,12 +283,22 @@
                 else
                     BorderBrush = Brushes.Black;
 
+                _LogClass.LogName = "Applica";
+                _LogClass.SourceName = "Autorizar_Lotes";
+                _LogClass.MessageFile = string.Empty;
+                _LogClass.CreateEvent();
+                _LogClass.MYEventLog.WriteEntry("Autorizar_Lotes Start:" + Dia + " " + Hora, EventLogEntryType.Information);
+
+                MyReset();
+
             }
             catch (Exception ex)
             {
 
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
+
             }
         }
         public bool? MyOnShow()
@@ -188,6 +330,36 @@
 
         #endregion
 
+        #region MyMetodos
+
+        private void MyReset()
+        {
+         
+
+            using (SqlExcuteCommand get = new SqlExcuteCommand()
+            {
+                DBCnnStr = DBEndososCnnStr
+            })
+            {
+                DataTable myLotsTable = get.MyGetLotFromTF();
+                cbLots.Clear();
+
+                foreach (DataRow row in myLotsTable.Rows)
+                {
+                    cbLots.Add(row["BatchTrack"].ToString() + "-" + row["Amount"].ToString() + "-" + row["Partido"].ToString());
+                }
+
+                cbLots_Item_Id = -1;
+                numLote = "0";
+                cantidad = "0";
+                lblCount = string.Format("{0:0}", _cbLots.Count);
+            }
+
+
+        }
+        #endregion
+
+
         #region Dispose
 
 
@@ -209,11 +381,11 @@
             if (disposing)
             {
                 // free managed resources AnotherResource 
-                //if (managedResource != null)
-                //{
-                //    managedResource.Dispose();
-                //    managedResource = null;
-                //}
+                if (_LogClass != null)
+                {
+                    _LogClass.Dispose();
+                    _LogClass = null;
+                }
             }
             // free native resources if there are any.
             if (nativeResource != IntPtr.Zero)

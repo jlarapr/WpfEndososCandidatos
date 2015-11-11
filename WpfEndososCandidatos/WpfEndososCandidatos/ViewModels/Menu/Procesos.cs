@@ -104,6 +104,7 @@
                 {
                     frmLotAuth.View.Owner = this.View as Window;
                     frmLotAuth.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotAuth.SysUser = WhatIsUserName;
                     frmLotAuth.MyOnShow();
                 }
                

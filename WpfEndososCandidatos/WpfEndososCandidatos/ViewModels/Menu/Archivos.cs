@@ -66,6 +66,8 @@
                     if (frmfLogin.View.DialogResult == false)
                         return;
 
+                    WhatIsUserName = frmfLogin.WhatIsUserName;
+
                     Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString());
                     _Id = frmfLogin._Id;
                     mnuLogin_IsEnabled = false;
