@@ -357,7 +357,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     }
                     else
                     {
-                        _txtNumElec = "0";
+                        _txtNumElec = string.Empty;
                         this.RaisePropertychanged("txtNumElec");
                     }
                 }
@@ -843,7 +843,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             txtNombrePartido = string.Empty;
             txtNombre = string.Empty;
-            txtNumElec = "0";
+            txtNumElec = string.Empty;
             txtNombre = string.Empty;
             txtApellido1 = string.Empty;
             txtApellido2 = string.Empty;

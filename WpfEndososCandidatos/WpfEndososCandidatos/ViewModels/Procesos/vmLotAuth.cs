@@ -21,14 +21,32 @@
         private int _cantidad;
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private string _DBEndososCnnStr;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
         {
-            initWindow = new RelayCommand(param => InitWindow());
-            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
-            cmdAddLot_Click = new RelayCommand(param => CmdAddLot_Click());
-            cmdAddTodoLot_Click = new RelayCommand(param => CmdAddTodoLot_Click());
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click());
+            cmdAddTodoLot_Click = new RelayCommand(param => MyCmdAddTodoLot_Click());
+        }
+
+        #region MyProperty
+        public int numLote
+        {
+            get
+            {
+                return _numLote;
+            }
+            set
+            {
+                if (_numLote != value)
+                {
+                    _numLote = value;
+                    this.RaisePropertychanged("numLote");
+                }
+            }
         }
         public Brush BorderBrush
         {
@@ -46,8 +64,79 @@
 
             }
         }
-        #region initWindow OnShow
-        private void InitWindow()
+        public int cantidad
+        {
+            get
+            {
+                return _cantidad;
+            }
+            set
+            {
+                if (_cantidad != value)
+                {
+                    _cantidad = value;
+                    this.RaisePropertychanged("cantidad");
+                }
+            }
+            
+        }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+
+        #endregion
+
+        #region Mycmd
+        public void MyCmdAddLot_Click()
+        {
+            try
+            {
+
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public void MyCmdAddTodoLot_Click()
+        {
+            try
+            {
+
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+        }
+        public void MyCmdSalir_Click()
+        {
+            try
+            {
+                this.View.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void MyInitWindow()
         {
             try
             {
@@ -65,100 +154,14 @@
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        public bool? OnShow()
+        public bool? MyOnShow()
         {
             return this.View.ShowDialog();
-        }
-        public RelayCommand initWindow
-        {
-            get;
-            private set;
-        }
-        #endregion
-
-        #region property
-        public int numLote
-        {
-            get
-            {
-                return _numLote;
-            }
-            set
-            {
-                if (_numLote != value)
-                {
-                    _numLote = value;
-                    this.RaisePropertychanged("numLote");
-                }
-            }
-        }
-
-        public int cantidad
-        {
-            get
-            {
-                return _cantidad;
-            }
-            set
-            {
-                if (_cantidad != value)
-                {
-                    _cantidad = value;
-                    this.RaisePropertychanged("cantidad");
-                }
-            }
-            
-        }
-        #endregion
-
-        #region Exit
-        public RelayCommand cmdSalir_Click
-        {
-            get;
-            private set;
-        }
-        public void CmdSalir_Click()
-        {
-            try
-            {
-                this.View.Close();                
-            }
-            catch (Exception ex)
-            {
-                
-                MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-
-
-        #endregion
-
-        #region cmd
-        public RelayCommand cmdAddLot_Click
-        {
-            get;
-            private set;
-        }
-        public void CmdAddLot_Click()
-        {
-            try
-            {
-
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                
-                MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         public RelayCommand cmdAddTodoLot_Click
@@ -167,27 +170,27 @@
             private set;
 
         }
-        public void CmdAddTodoLot_Click()
+        public RelayCommand cmdAddLot_Click
         {
-            try
-            {
-
-                throw new NotImplementedException();
-            }
-            catch (Exception ex)
-            {
-                
-                MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            
+            get;
+            private set;
+        }
+        public RelayCommand cmdSalir_Click
+        {
+            get;
+            private set;
+        }
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
         }
 
         #endregion
 
         #region Dispose
-       
-       
+
+
 
         public void Dispose()
         {

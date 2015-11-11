@@ -43,7 +43,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _txtNombre;
         private string _txtNumPartido;
         private string _txtAreaGeografica;
-        private string _PartidoTmp;
+      
 
         private bool _IsEnabled_cmdAdd;
         private bool _IsEnabled_cmdDelete;
@@ -249,7 +249,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
-                _PartidoTmp = _txtNumPartido;
                 _txtNumPartido = value;
                 this.RaisePropertychanged("txtNumPartido");
             }
@@ -545,8 +544,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 bool myUpDate = false;
 
                 string myWhere = string.Empty;
+                string myPartidoTmp = cbPartidos_Item.Split('-')[0];
 
-                myWhere = _IsInsert == false ? _PartidoTmp : "";
+                myWhere = _IsInsert == false ? myPartidoTmp : "";
 
                 if (myWhere.Trim().Length == 0)
                     myWhere = txtNumPartido;
@@ -707,7 +707,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             _IsEdit = false;
             _IsInsert = false;
-            _PartidoTmp = string.Empty;
 
             IsEnabled_cmdAdd = true;
             IsEnabled_cmdDelete = false;

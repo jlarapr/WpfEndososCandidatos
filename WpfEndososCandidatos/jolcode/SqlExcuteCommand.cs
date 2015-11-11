@@ -490,11 +490,15 @@ namespace jolcode
 
                         cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
                         cmd.Parameters["@Where"].Value = where;
-                        cmd.ExecuteNonQuery();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
                     }
                 }
-
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -531,11 +535,15 @@ namespace jolcode
 
                         cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
                         cmd.Parameters["@Where"].Value = where;
-                        cmd.ExecuteNonQuery();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
                     }
                 }
-            
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -573,11 +581,15 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Where2", SqlDbType.VarChar));
                         cmd.Parameters["@Where"].Value = where;
                         cmd.Parameters["@Where2"].Value = where2;
-                        cmd.ExecuteNonQuery();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
                     }
                 }
-
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -640,11 +652,15 @@ namespace jolcode
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
 
-                        cmd.ExecuteNonQuery();
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
 
                     }
                 }
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -705,11 +721,15 @@ namespace jolcode
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
 
-                        cmd.ExecuteNonQuery();
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
 
                     }
                 }
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -775,11 +795,15 @@ namespace jolcode
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
 
-                        cmd.ExecuteNonQuery();
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
 
                     }
                 }
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {
@@ -829,11 +853,15 @@ namespace jolcode
                         cmd.Parameters["@Desc"].Value = Desc;
                         cmd.Parameters["@Warning"].Value = Warning == true?"1":"0";
 
-                        cmd.ExecuteNonQuery();
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
 
                     }
                 }
-                myBoolReturn = true;
             }
             catch (Exception ex)
             {

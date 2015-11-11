@@ -103,7 +103,8 @@
                 using (vmLotAuth frmLotAuth = new vmLotAuth())
                 {
                     frmLotAuth.View.Owner = this.View as Window;
-                    frmLotAuth.OnShow();
+                    frmLotAuth.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotAuth.MyOnShow();
                 }
                
             }
