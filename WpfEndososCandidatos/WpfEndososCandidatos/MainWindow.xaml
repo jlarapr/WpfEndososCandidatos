@@ -49,6 +49,10 @@
             <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
                 <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
                 <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
+                <MenuItem Name="mnuCandidatos" Header="_Candidatos" 
+                          Command="{Binding candidatos_Click}"
+                          IsEnabled="{Binding mnuCandidatos_IsEnabled}"
+                          />
                 <MenuItem Name="mnuNotarios" IsEnabled="{Binding mnuNotarios_IsEnabled}" Header="_Notarios" Command="{Binding notarios_Click}" />
                 <MenuItem Name="mnuValidaciones" IsEnabled="{Binding mnuValidaciones_IsEnabled}"  Header="_Validaciones" Command="{Binding validaciones_Click}" />
                 <MenuItem Name="mnuUsuarios" IsEnabled="{Binding mnuUsuarios_IsEnabled}" Header="_Usuarios" Command="{Binding usuarios_Click}" />

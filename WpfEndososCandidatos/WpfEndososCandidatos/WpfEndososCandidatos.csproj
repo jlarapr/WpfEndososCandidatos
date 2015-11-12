@@ -96,6 +96,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Area.cs" />
+    <Compile Include="Models\Candidatos.cs" />
     <Compile Include="Models\Citizen.cs" />
     <Compile Include="Models\Criterios.cs" />
     <Compile Include="Models\Extensions.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
     <Compile Include="ViewModels\Configuraciones\vmLotInit.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantAreas.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantCandidatos.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantCriterios.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
@@ -155,6 +157,9 @@
     <Compile Include="ViewModels\Ver\vmElector.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantCadidatos.xaml.cs">
+      <DependentUpon>wpfMantCadidatos.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
@@ -227,6 +232,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Configuraciones\wpfAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantCadidatos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

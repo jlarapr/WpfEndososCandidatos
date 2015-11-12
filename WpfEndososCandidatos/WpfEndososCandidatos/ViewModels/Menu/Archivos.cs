@@ -105,6 +105,7 @@
                                 mnuUsuarios_IsEnabled = true;
                                 mnuBaseDeDatos_IsEnabled = true;
                                 mnuInicializarLotes_IsEnabled = true;
+                                mnuCandidatos_IsEnabled = true;
                                 break;
                             case 'H'://corregirEndosos
                                 mnuCorregirEndosos_IsEnabled = true;
@@ -171,6 +172,7 @@
                 mnuUsuarios_IsEnabled = false;
                 mnuBaseDeDatos_IsEnabled = false;
                 mnuInicializarLotes_IsEnabled = false;
+                mnuCandidatos_IsEnabled = false;
                 Login_Click();
             }
             catch (Exception ex)

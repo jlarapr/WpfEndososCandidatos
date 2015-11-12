@@ -425,6 +425,7 @@ namespace WpfEndososCandidatos.ViewModels
                     mnuUsuarios_IsEnabled = false;
                     mnuBaseDeDatos_IsEnabled = false;
                     mnuInicializarLotes_IsEnabled = false;
+                
 
                 _DBEndososCnnStr = string.Concat( "Persist Security Info=False;Data Source=", _SqlServer ,";Initial Catalog=", _Database,";User ID=", _Username, ";Password=", PasswordHash.Decrypt1(_Password));
                 _DBCeeMasterCnnStr = string.Concat("Persist Security Info=False;Data Source=", _MastSvr, ";Initial Catalog=", _MastDB, ";User ID=", _MastUsr, ";Password=", PasswordHash.Decrypt1(_MastPass));

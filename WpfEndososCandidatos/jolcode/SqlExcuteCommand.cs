@@ -79,8 +79,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-
         public DataTable MyGetLotFromTF()
         {
             DataTable myTableReturn = new DataTable();
@@ -229,7 +227,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetTodosLotes()
         {
             DataTable myTableReturn = new DataTable();
@@ -281,8 +278,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-
         public DataTable MyGetCitizen(string CitizenID)
         {
             DataTable myTableReturn = new DataTable();
@@ -335,92 +330,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-
-        public bool MyInitLot(string lotNum,Logclass logClass)
-        {
-            /*
-            'STATUS LOTE
-                '0 - SIN IMPORTAR
-                '1 - SIENDO IMPORTADO
-                '2 - IMPORTADO
-        */
-            bool myBoolReturn = false;
-
-            try
-            {
-
-                string[] myDeleteLots =
-                {
-                    "delete from [dbo].[lots] ",
-                    "WHERE lot=@lot;"
-               };
-
-                string[] myDeleteLotsEndo =
-                {
-                    "Delete from LotsEndo ",
-                    "Where lot=@lot"
-                };
-
-                string[] myDeleteLotsVoid =
-                {
-                    "Delete from LotsVoid ",
-                    "Where lot=@lot"
-                };
-
-                string[] myUpDateLotsTF_Partidos =
-                {
-                    "update [dbo].[TF-Partidos] ",
-                    "Set Imported=0 ",
-                    "WHERE BatchTrack=@lot;"
-                };
-
-                using (SqlConnection cnn = new SqlConnection()
-                {
-                    ConnectionString = DBCnnStr
-                })
-                {
-                    using (SqlCommand cmd = new SqlCommand()
-                    {
-                        Connection = cnn,
-                        CommandType = CommandType.Text,
-                        
-                    })
-                    {
-                        if (cnn.State == ConnectionState.Closed)
-                            cnn.Open();
-
-                        cmd.Parameters.Add(new SqlParameter("@lot", SqlDbType.VarChar));
-                        cmd.Parameters["@lot"].Value = lotNum;
-
-                        cmd.CommandText = string.Concat(myDeleteLots);
-                        cmd.ExecuteNonQuery();
-
-                        cmd.CommandText = string.Concat(myDeleteLotsEndo);
-                        cmd.ExecuteNonQuery();
-
-                        cmd.CommandText = string.Concat(myDeleteLotsVoid);
-                        cmd.ExecuteNonQuery();
-
-                        cmd.CommandText = string.Concat(myUpDateLotsTF_Partidos);
-                        cmd.ExecuteNonQuery();
-
-                        logClass.MYEventLog.WriteEntry(string.Concat(myDeleteLots) + "\r\n" + 
-                                                       string.Concat(myDeleteLotsEndo) + "\r\n" +
-                                                       string.Concat(myDeleteLotsVoid) + "\r\n" +
-                                                       string.Concat(myUpDateLotsTF_Partidos),System.Diagnostics.EventLogEntryType.Information,100);
-
-                    }
-                }
-
-                myBoolReturn = true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
-            return myBoolReturn;
-        }
         public DataTable MyGetLot()
         {
             DataTable myTableReturn = new DataTable();
@@ -467,7 +376,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetAreas (bool allColumm)
         {
             DataTable myTableReturn = new DataTable(); 
@@ -510,7 +418,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetPrecintos()
         {
             DataTable myTableReturn = new DataTable();
@@ -551,7 +458,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetPrecintosValidos(string area)
         {
             DataTable myTableReturn = new DataTable();
@@ -591,7 +497,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetCriterios()
         {
             DataTable myTableReturn = new DataTable();
@@ -632,7 +537,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetPartidos()
         {
             DataTable myTableReturn = new DataTable();
@@ -673,7 +577,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetNotarios()
         {
             DataTable myTableReturn = new DataTable();
@@ -713,7 +616,130 @@ namespace jolcode
             }
             return myTableReturn;
         }
+        public DataTable MyGetCandidatos()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string mySqlstr = "Select * from Candidatos order by NumCand";
 
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+            }
+            return myTableReturn;
+        }
+
+        public bool MyInitLot(string lotNum, Logclass logClass)
+        {
+            /*
+            'STATUS LOTE
+                '0 - SIN IMPORTAR
+                '1 - SIENDO IMPORTADO
+                '2 - IMPORTADO
+        */
+            bool myBoolReturn = false;
+
+            try
+            {
+
+                string[] myDeleteLots =
+                {
+                    "delete from [dbo].[lots] ",
+                    "WHERE lot=@lot;"
+               };
+
+                string[] myDeleteLotsEndo =
+                {
+                    "Delete from LotsEndo ",
+                    "Where lot=@lot"
+                };
+
+                string[] myDeleteLotsVoid =
+                {
+                    "Delete from LotsVoid ",
+                    "Where lot=@lot"
+                };
+
+                string[] myUpDateLotsTF_Partidos =
+                {
+                    "update [dbo].[TF-Partidos] ",
+                    "Set Imported=0 ",
+                    "WHERE BatchTrack=@lot;"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@lot", SqlDbType.VarChar));
+                        cmd.Parameters["@lot"].Value = lotNum;
+
+                        cmd.CommandText = string.Concat(myDeleteLots);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myDeleteLotsEndo);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myDeleteLotsVoid);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Concat(myUpDateLotsTF_Partidos);
+                        cmd.ExecuteNonQuery();
+
+                        logClass.MYEventLog.WriteEntry(string.Concat(myDeleteLots) + "\r\n" +
+                                                       string.Concat(myDeleteLotsEndo) + "\r\n" +
+                                                       string.Concat(myDeleteLotsVoid) + "\r\n" +
+                                                       string.Concat(myUpDateLotsTF_Partidos), System.Diagnostics.EventLogEntryType.Information, 100);
+
+                    }
+                }
+
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+        }
         public bool MyDeletePartidos(string where)
         {
             bool myBoolReturn = false;
@@ -760,7 +786,52 @@ namespace jolcode
             return myBoolReturn;
 
         }
+        public bool MyDeleteCandidato(string where)
+        {
+            bool myBoolReturn = false;
 
+            try
+            {
+                string[] myDelete =
+                      {
+                            "Delete from [dbo].[Candidatos] ",
+                            " WHERE NumCand=@Where "
+                        };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(myDelete)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+                        cmd.Parameters["@Where"].Value = where;
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+
+        }
         public bool MyDeleteArea(string where)
         {
             bool myBoolReturn = false;
@@ -804,7 +875,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyDeleteNotario(string where,string where2)
         {
             bool myBoolReturn = false;
@@ -850,7 +920,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
         {
             bool myBoolReturn = false;
@@ -921,7 +990,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area,   string where)
         {
             bool myBoolReturn = false;
@@ -990,7 +1058,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyChangeNotario(bool isInsert, string NumElec, string Partido, string Nombre, string Apellido1, string Apellido2, string where)
         {
             bool myBoolReturn = false;
@@ -1064,8 +1131,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
-
         public bool MyChangeCriterios( string Campo, bool? Editar, string Desc, bool? Warning)
         {
             bool myBoolReturn = false;
@@ -1122,7 +1187,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyChangeTF(DataTable tableLots,string usercode)
         {
             bool myBoolReturn = false;
@@ -1345,6 +1409,81 @@ namespace jolcode
                     throw new Exception(ex.Message );
                 else
                     throw new Exception(ex.ToString() + "\r\nMyChangeTF Error\r\nAn exception of type" + ex.GetType());
+            }
+            return myBoolReturn;
+        }
+
+        public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area,string cargo, string endoReq, string where)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myInsert =
+                        {
+                            "INSERT INTO [dbo].[Candidatos] ([Partido],[NumCand],[Nombre],[Area],[Cargo],[EndoReq]) ",
+                            "VALUES (@Partido,@NumCand,@Nombre,@Area,@Cargo,@EndoReq)"
+                        };
+
+                string[] myUpdate =
+                    {
+                            "UPDATE [dbo].[Candidatos] ",
+                            "SET [Partido] = @Partido, ",
+                            "[NumCand] = @Desc,",
+                            "[Nombre] = @EndoReq,",
+                            "[Area] = @Area,",
+                            "[Cargo] =@Cargo,",
+                            "[EndoReq]=@EndoReq ",
+                            "WHERE Partido=@Where"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@NumCand", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Cargo", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@EndoReq", SqlDbType.Int));
+
+                        if (!isInsert)
+                            cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
+
+                        cmd.Parameters["@Partido"].Value = partido;
+                        cmd.Parameters["@NumCand"].Value = numCand;
+                        cmd.Parameters["@Nombre"].Value = nombre;
+                        cmd.Parameters["@Area"].Value = area;
+                        cmd.Parameters["@Cargo"].Value = cargo;
+                        cmd.Parameters["@EndoReq"].Value = endoReq;
+
+                        if (!isInsert)
+                            cmd.Parameters["@Where"].Value = where;
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
             }
             return myBoolReturn;
         }
