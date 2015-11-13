@@ -389,6 +389,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 if (value != null)
                 {
+                    string[] myData = value.Split('-');
+                    cbArea_Item_Id = FindByArea(myData[3].Trim());
+                    cbPartidos_Item_Id = FindByPartido(myData[0].Trim());
+                    txtNumCandidato = myData[1].ToString();
+                    txtEndoReq = myData[5].ToString();
+                    int i;
+                    if (int.TryParse(myData[4].ToString(), out i)) 
+                        IsChecked_rbCargos[i] = true;
+
                     _cbNombre_Item = value;
                     this.RaisePropertychanged("cbNombre_Item");
                 }
@@ -478,7 +487,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
+              
                 _cbArea_Item_Id = value;
+
+               
                 this.RaisePropertychanged("cbArea_Item_Id");
             }
         }
@@ -648,10 +660,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     string myEndoReq= txtEndoReq;
 
 
-                    foreach(bool rb in IsChecked_rbCargos)
-                        if (rb == true)
+                    for (int rb =0; rb <8;rb++)
+                        if (IsChecked_rbCargos[rb] == true)
                         {
-                            myCargo++;
+                            myCargo =rb;
                             break;
                         }
 
@@ -844,6 +856,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             cbArea_Item_Id = -1;
             cbPartidos_Item_Id = -1;
+            cbNombre_Item_Id = -1;
             IsEnabled_cbArea = false;
             IsEnabled_cbPartidos = false;
 
@@ -871,15 +884,49 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     myCand.Cargo = row["Cargo"].ToString();
                     myCand.EndoReq = row["EndoReq"].ToString();
 
-                    cbNombre.Add(myCand.Nombre);
+                    cbNombre.Add(myCand.ToString());
                 }
 
             }
 
         }
+        private int FindByPartido(string partidoKey)
+        {
+            int myIndex = -1;
+            try
+            {
+
+                Partidos myInfoPAartido = cbPartidos.Where(x => x.PartidoKey == partidoKey).Single<Partidos>();
+                myIndex = cbPartidos.IndexOf(myInfoPAartido);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            return myIndex;
+        }
+        private int FindByArea(string Area)
+        {
+            Area myOut = cbArea.Where(x => x.AreaKey.Substring(0, 4) == Area).Single<Area>();
+
+            int myIndex = cbArea.IndexOf(myOut);
+
+
+
+            //foreach(Area area in coll)
+            //{
+            //    if (area.AreaKey.Substring(0,4) == Area)
+            //    {
+
+            //        myOut= area;
+            //        break;
+            //    }
+            //}
+            return myIndex;
+        }
         #endregion
 
-            #region Dispose
+        #region Dispose
 
         public void Dispose()
         {

@@ -43,12 +43,13 @@
                     <RadioButton x:Name="rbGobernador" Content="Gobernador" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[0]}"
                                  />
-                    <RadioButton x:Name="rbSenadorDistrito" Content="Senador Distrito" HorizontalAlignment="Left" Margin="35,50,0,0" VerticalAlignment="Top"
+                    <RadioButton x:Name="rbComisionadoResidente" Content="Comisionado Residente" HorizontalAlignment="Left" Margin="35,30,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[1]}"
                                  />
-                    <RadioButton x:Name="rbComisionadoResidente" Content="Comisionado Residente" HorizontalAlignment="Left" Margin="35,30,0,0" VerticalAlignment="Top"
+                    <RadioButton x:Name="rbSenadorDistrito" Content="Senador Distrito" HorizontalAlignment="Left" Margin="35,50,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[2]}"
                                  />
+                   
                     <RadioButton x:Name="rbSenadorPorAcumulacion" Content="Senador por Acumulación" HorizontalAlignment="Left" Margin="35,72,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[3]}"
                                  />
