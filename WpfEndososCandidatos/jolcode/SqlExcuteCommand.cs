@@ -1428,12 +1428,12 @@ namespace jolcode
                     {
                             "UPDATE [dbo].[Candidatos] ",
                             "SET [Partido] = @Partido, ",
-                            "[NumCand] = @Desc,",
-                            "[Nombre] = @EndoReq,",
+                            "[NumCand] = @NumCand,",
+                            "[Nombre] = @Nombre,",
                             "[Area] = @Area,",
                             "[Cargo] =@Cargo,",
                             "[EndoReq]=@EndoReq ",
-                            "WHERE Partido=@Where"
+                            "WHERE NumCand=@Where"
                 };
 
                 using (SqlConnection cnn = new SqlConnection()

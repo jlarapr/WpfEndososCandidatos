@@ -153,7 +153,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                     if (long.TryParse(value, out myLongValue))
                     {
-                        _txtNumCandidato = value;
+                        _txtNumCandidato = value.Trim();
                         this.RaisePropertychanged("txtNumCandidato");
                     }else
                     {
@@ -182,7 +182,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                     if (long.TryParse(value, out myLongValue))
                     {
-                        _txtEndoReq = value;
+                        _txtEndoReq = value.Trim();
                         this.RaisePropertychanged("txtEndoReq");
                     }else
                     {
@@ -397,9 +397,16 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     int i;
                     if (int.TryParse(myData[4].ToString(), out i)) 
                         IsChecked_rbCargos[i] = true;
-
                     _cbNombre_Item = value;
+                    txtNombre = myData[2].ToString();
+                    IsEnabled_cmdEdit = true;
+                    IsEnabled_cmdDelete = true;
+                    IsEnabled_cmdAdd = false;
+                    IsEnabled_CmdCancel = true;
+                    IsEnabled_cmdSalir = false;
                     this.RaisePropertychanged("cbNombre_Item");
+
+
                 }
             }
         }
@@ -640,24 +647,24 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
 
                 if (!_IsInsert)
-                    myWhere = cbPartidos_Item.Split('-')[0];
+                    myWhere = cbNombre_Item.Split('-')[1].Trim();
                 else
                     myWhere = "";
 
                 if (myWhere.Trim().Length == 0)
-                    myWhere = txtNumCandidato;
+                    myWhere = txtNumCandidato.Trim();
 
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
                 {
                     DBCnnStr = _DBEndososCnnStr
                 })
                 {
-                    string myPartido= cbPartidos_Item.Split('-')[0];
-                    string myNumCand= txtNumCandidato;
-                    string myNombre= txtNombre;
-                    string myArea = cbArea_Item.Split('-')[0];
+                    string myPartido= cbPartidos_Item.Split('-')[0].Trim();
+                    string myNumCand= txtNumCandidato.Trim();
+                    string myNombre= txtNombre.Trim();
+                    string myArea = cbArea_Item.Split('-')[0].Trim();
                     int myCargo=0;
-                    string myEndoReq= txtEndoReq;
+                    string myEndoReq= txtEndoReq.Trim();
 
 
                     for (int rb =0; rb <8;rb++)
