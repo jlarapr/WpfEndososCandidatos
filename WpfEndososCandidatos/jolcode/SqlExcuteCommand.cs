@@ -376,6 +376,54 @@ namespace jolcode
             }
             return myTableReturn;
         }
+        public DataTable MyGetLotToProcess()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //'STATUS LOTE
+                //'0 - LISTO PARA PROCESAR
+                //'1 - SIENDO PROCESADA
+                //'2 - FINALIZADO
+                //'3 - CON ERRORES
+                //'4 - SIENDO REVISADA
+
+                string mySqlstr = "Select * from lots Where Status =0 order by Lot";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetLotToProcess Error");
+            }
+            return myTableReturn;
+        }
+
+
         public DataTable MyGetAreas (bool allColumm)
         {
             DataTable myTableReturn = new DataTable(); 

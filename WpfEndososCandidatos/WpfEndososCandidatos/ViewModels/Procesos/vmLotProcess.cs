@@ -17,25 +17,38 @@
     using System.Windows.Media;
     using Models;
     using WpfEndososCandidatos.View.Procesos;
+    using System.Windows.Input;
 
-     class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
+    class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
         private DataTable _MyCriteriosTable;
         private ObservableCollection<Criterios> _CollCriterios;
+        private DataTable _MyLotsTable;
+        private ObservableCollection<string> _cbLots;
+        private string _cbLots_Item;
+        private int _cbLots_Item_Id;
+        private bool _CanView;
+        private Cursor _MiCursor;
 
         public vmLotProcess()
             : base(new wpfLotProcess())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
+            cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
+            cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
 
             CollCriterios = new ObservableCollection<Criterios>();
+            cbLots = new ObservableCollection<string>();
+            CanView = false;
         }
 
         #region MyProperty
+
         public Brush BorderBrush
         {
             get
@@ -52,7 +65,19 @@
 
             }
         }
+        public System.Windows.Input.Cursor MiCursor
+        {
+            get
+            {
+                return _MiCursor;
+            }
+            set
+            {
+                _MiCursor = value;
+                this.RaisePropertychanged("MiCursor");
+            }
 
+        }
         public string DBEndososCnnStr
         {
             get
@@ -63,7 +88,6 @@
                 _DBEndososCnnStr = value;
             }
         }
-
         public ObservableCollection<Criterios> CollCriterios
         {
             get
@@ -79,6 +103,62 @@
                 }
             }
 
+        }
+
+        public ObservableCollection<string> cbLots
+        {
+            get
+            {
+                return _cbLots;
+            }
+            set
+            {
+                _cbLots = value;
+                this.RaisePropertychanged("cbLots");
+            }
+        }
+        public string cbLots_Item
+        {
+            get
+            {
+                return _cbLots_Item;
+            }
+            set
+            {
+               
+                _cbLots_Item = value;
+                this.RaisePropertychanged("cbLots_Item");
+            }
+        }
+        public int cbLots_Item_Id
+        {
+            get
+            {
+                return _cbLots_Item_Id;
+            }
+            set
+            {
+                _cbLots_Item_Id = value;
+                this.RaisePropertychanged("cbLots_Item_Id");
+            }
+        }
+
+        public bool CanCmdProcess
+        {
+            get
+            {
+                return cbLots_Item_Id > -1 ? true : false;
+            }
+        }
+        public bool CanView
+        {
+            get
+            {
+                return _CanView;
+            }set
+            {
+                _CanView = value;
+            }
         }
 
         #endregion
@@ -99,6 +179,8 @@
                 else
                     BorderBrush = Brushes.Black;
 
+                MyRefresh();
+
             }
             catch (Exception ex)
             {
@@ -106,8 +188,11 @@
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+          
+
         }
-        public void MyCmdSalir_Click()
+        private void MyCmdSalir_Click()
         {
             try
             {
@@ -120,11 +205,53 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        public bool? MyOnShow()
+        internal bool? MyOnShow()
         {
             return this.View.ShowDialog();
         }
+        private void MyCmdRefresh_Click()
+        {
+            try
+            {
+                MyRefresh();
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
 
+            }
+        }
+        private void MyCmdProcess_Click()
+        {
+            try
+            {
+                MiCursor = Cursors.Wait;
+                CanView = true;
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                MiCursor = Cursors.Arrow;
+            }
+        }
+
+        private void MyCmdView_Click()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public RelayCommand initWindow
         {
@@ -136,13 +263,22 @@
             get;
             private set;
         }
+        public RelayCommand cmdRefresh_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdProcess_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdView_Click
+        {
+            get;private set;
+        }
 
         #endregion
 
-
-      
         
-
         #region MyMetodos
 
 
@@ -150,6 +286,8 @@
         {
             try
             {
+                CanView = false;
+
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr
@@ -157,9 +295,7 @@
                 {
 
                     _MyCriteriosTable = get.MyGetCriterios();
-
-
-
+                    
                     CollCriterios.Clear();
 
                     foreach (DataRow row in _MyCriteriosTable.Rows)
@@ -172,6 +308,36 @@
                             Warning = row["Warning"].ToString().Trim() == "1" ? true : false
                         });
                     }
+
+                    _MyLotsTable = get.MyGetLotToProcess();
+
+                    cbLots.Clear();
+
+                    foreach (DataRow row in _MyLotsTable.Rows)
+                    {
+                        Lots myLots = new Lots();
+
+                        myLots.Partido = row["Partido"].ToString();
+                        myLots.Lot = row["Lot"].ToString();
+                        myLots.Amount = row["Amount"].ToString();
+                        myLots.Usercode = row["Usercode"].ToString();
+                        myLots.AuthDate = row["AuthDate"].ToString();
+                        myLots.Status = row["Status"].ToString();
+                        myLots.VerDate = row["VerDate"].ToString();
+                        myLots.VerUser = row["VerUser"].ToString();
+                        myLots.FinUser = row["FinUser"].ToString();
+                        myLots.FinDate = row["FinDate"].ToString();
+                        myLots.RevDate = row["RevDate"].ToString();
+                        myLots.RevUser = row["RevUser"].ToString();
+                        myLots.conditions = row["conditions"].ToString();
+                        myLots.ImportDate = row["ImportDate"].ToString();
+
+
+                        cbLots.Add(myLots.Lot);
+
+                    }
+                    cbLots_Item_Id = -1;
+
                 }
             }
             catch (Exception)
@@ -180,7 +346,20 @@
             }
         }
 
+        private void MySendTab()
+        {
+            try
+            {
+                KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
+                e1.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput(e1);
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
         #endregion
 
