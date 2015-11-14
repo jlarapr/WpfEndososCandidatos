@@ -152,7 +152,8 @@
                 using (vmLotProcess frmLotProcess = new vmLotProcess())
                 {
                     frmLotProcess.View.Owner = this.View as Window;
-                    frmLotProcess.OnShow();
+                    frmLotProcess.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotProcess.MyOnShow();
                 }
             }
             catch (Exception ex)

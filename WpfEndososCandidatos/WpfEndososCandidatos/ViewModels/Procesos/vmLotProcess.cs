@@ -5,7 +5,9 @@
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Configuration;
+    using System.Data;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -13,18 +15,27 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
+    using Models;
     using WpfEndososCandidatos.View.Procesos;
 
-    public class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
+     class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private string _DBEndososCnnStr;
+        private DataTable _MyCriteriosTable;
+        private ObservableCollection<Criterios> _CollCriterios;
+
         public vmLotProcess()
             : base(new wpfLotProcess())
         {
-            initWindow = new RelayCommand(param => InitWindow());
-            cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+
+            CollCriterios = new ObservableCollection<Criterios>();
         }
+
+        #region MyProperty
         public Brush BorderBrush
         {
             get
@@ -42,8 +53,38 @@
             }
         }
 
-        #region initWindow OnShow
-        private void InitWindow()
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+
+        public ObservableCollection<Criterios> CollCriterios
+        {
+            get
+            {
+                return _CollCriterios;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _CollCriterios = value;
+                    this.RaisePropertychanged("CollCriterios");
+                }
+            }
+
+        }
+
+        #endregion
+
+        #region MyCmd
+        private void MyInitWindow()
         {
             try
             {
@@ -66,23 +107,7 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        public bool? OnShow()
-        {
-            return this.View.ShowDialog();
-        }
-        public RelayCommand initWindow
-        {
-            get;
-            private set;
-        }
-        #endregion
-        #region Exit
-        public RelayCommand cmdSalir_Click
-        {
-            get;
-            private set;
-        }
-        public void CmdSalir_Click()
+        public void MyCmdSalir_Click()
         {
             try
             {
@@ -95,13 +120,75 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public bool? MyOnShow()
+        {
+            return this.View.ShowDialog();
+        }
+
+
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
+        }
+        public RelayCommand cmdSalir_Click
+        {
+            get;
+            private set;
+        }
+
+        #endregion
+
+
+      
+        
+
+        #region MyMetodos
+
+
+        private void MyRefresh()
+        {
+            try
+            {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+
+                    _MyCriteriosTable = get.MyGetCriterios();
+
+
+
+                    CollCriterios.Clear();
+
+                    foreach (DataRow row in _MyCriteriosTable.Rows)
+                    {
+                        CollCriterios.Add(new Models.Criterios
+                        {
+                            Campo = row["Campo"].ToString(),
+                            Editar = row["Editar"].ToString().Trim() == "1" ? true : false,
+                            Desc = row["Desc"].ToString(),
+                            Warning = row["Warning"].ToString().Trim() == "1" ? true : false
+                        });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
 
         #endregion
+
+
+
         #region Dispose
-       
-       
+
+
 
         public void Dispose()
         {
