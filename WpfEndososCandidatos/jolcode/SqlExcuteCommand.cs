@@ -223,7 +223,7 @@ namespace jolcode
                 if (myBoolError)
                     throw new Exception(ex.Message);
                 else
-                    throw new Exception(ex.ToString() + "\r\nMyGetAreas Error");
+                    throw new Exception(ex.ToString() + "\r\nMyGetSelectLotes Error");
             }
             return myTableReturn;
         }
@@ -335,7 +335,7 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                //'STATUS LOTE
+                //'STATUS LOTE para la tabla lots
                 //'0 - LISTO PARA PROCESAR
                 //'1 - SIENDO PROCESADA
                 //'2 - FINALIZADO
@@ -376,6 +376,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
+      
         public DataTable MyGetLotToProcess()
         {
             DataTable myTableReturn = new DataTable();
@@ -707,7 +708,7 @@ namespace jolcode
         public bool MyInitLot(string lotNum, Logclass logClass)
         {
             /*
-            'STATUS LOTE
+            'STATUS LOTE para la tabla de TF
                 '0 - SIN IMPORTAR
                 '1 - SIENDO IMPORTADO
                 '2 - IMPORTADO
@@ -1536,6 +1537,102 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        public bool MyProcessLot(string numlot, string usercode)
+        {
+            /*
+                'STATUS LOTE para la tabla lots
+                    '0 - LISTO PARA PROCESAR
+                    '1 - SIENDO PROCESADA
+                    '2 - FINALIZADO
+                    '3 - CON ERRORES
+                    '4 - SIENDO REVISADA
+           
+                'STATUS LOTE para la tabla de TF
+                    '0 - SIN IMPORTAR
+                    '1 - SIENDO IMPORTADO
+                    '2 - IMPORTADO
+            */
+
+            bool myBoolReturn = false;
+            bool myBoolErrorNoHayLotes = true;
+            SqlTransaction transaction = null;
+            DataTable myDataToProcessTF=null;
+            DataTable myDataToProcessLots =null;
+
+            try
+            {
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null)
+                {
+                    try
+                    {
+                        string[] mySqlstrTF = { "Select * ",
+                                      "from [dbo].[TF-Partidos] ",
+                                      "Where Imported = 2 and BatchTrack=@lot ",
+                                      "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
+
+                        string[] mySqlstrLots = { "Select * ",
+                                      "from [dbo].[Lots] ",
+                                      "Where Status = 0 and Lot=@lot ",
+                                      "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
+
+
+                        using (SqlConnection cnn = new SqlConnection()
+                        {
+                            ConnectionString = DBCnnStr
+                        })
+                        {
+                            using (SqlCommand cmd = new SqlCommand()
+                            {
+                                Connection = cnn,
+                                CommandType = CommandType.Text,
+                                CommandText = string.Concat(mySqlstrTF)
+                            })
+                            {
+                                if (cnn.State == ConnectionState.Closed)
+                                    cnn.Open();
+
+                                using (SqlDataAdapter da = new SqlDataAdapter()
+                                {
+                                    SelectCommand = cmd
+                                })
+                                {
+                                    da.Fill(myDataToProcessTF);
+
+                                    if (myDataToProcessTF == null)
+                                        throw new Exception("No Hay Lotes Para Importar");
+
+                                    if (myDataToProcessTF.Rows.Count <= 0)
+                                        throw new Exception("No Hay Lotes Para Importar");
+
+                                    myBoolErrorNoHayLotes = false;
+
+
+                                }
+                            }
+                        }
+                                transaction.Rollback();
+                    }
+                    catch
+                    {
+                        if (transaction.Connection != null)
+                        {
+                            Console.WriteLine("An exception of type " + ex.GetType() +
+                                " was encountered while attempting to roll back the transaction.");
+                        }
+                    }
+                }
+                if (myBoolErrorNoHayLotes)
+                    throw new Exception(ex.Message);
+                else
+                    throw new Exception(ex.ToString() + "\r\nMyProcessLot Error");
+            }
+            return myBoolReturn;
+        }
 
         #region Dispose
         public void Dispose()
