@@ -25,13 +25,24 @@
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
         private DataTable _MyCriteriosTable;
-        private ObservableCollection<Criterios> _CollCriterios;
+        private ObservableCollection<Models.Criterios> _CollCriterios;
         private DataTable _MyLotsTable;
         private ObservableCollection<string> _cbLots;
         private string _cbLots_Item;
         private int _cbLots_Item_Id;
         private bool _CanView;
         private Cursor _MiCursor;
+        private string _lblTota;
+        private string _lblLote;
+        private string _lblProcesadas;
+        private string _lblAprobadas;
+        private string _lblRechazadas;
+        private string _lblWarnings;
+        private ObservableCollection<string> _lblNReasons;
+        private string _DBCeeMasterCnnStr;
+        private string _DBImagenesCnnStr;
+        private string _SysUser;
+        private ObservableCollection<Brush> _Foreground_Desc;
 
         public vmLotProcess()
             : base(new wpfLotProcess())
@@ -42,8 +53,10 @@
             cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
             cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
 
-            CollCriterios = new ObservableCollection<Criterios>();
+            CollCriterios = new ObservableCollection<Models.Criterios>();
             cbLots = new ObservableCollection<string>();
+            lblNReasons = new ObservableCollection<string>();
+            Foreground_Desc = new ObservableCollection<Brush>();
             CanView = false;
         }
 
@@ -88,7 +101,123 @@
                 _DBEndososCnnStr = value;
             }
         }
-        public ObservableCollection<Criterios> CollCriterios
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }
+            set
+            {
+                _DBCeeMasterCnnStr = value;
+            }
+        }
+        public string DBImagenesCnnStr
+        {
+            get
+            {
+                return _DBImagenesCnnStr;
+            }
+            set
+            {
+                _DBImagenesCnnStr = value;
+            }
+        }
+        public string SysUser
+        {
+            get
+            {
+                return _SysUser;
+            }set
+            {
+                _SysUser = value;
+            }
+        }
+
+        public string lblTota
+        {
+            get
+            {
+                return _lblTota;
+            }set
+            {
+                _lblTota = value;
+                this.RaisePropertychanged("lblTota");
+            }
+        }
+        public string lblLote
+        {
+            get
+            {
+                return _lblLote;
+            }
+            set
+            {
+                _lblLote = value;
+                this.RaisePropertychanged("lblLote");
+            }
+        }
+        public string lblProcesadas
+        {
+            get
+            {
+                return _lblProcesadas;
+            }
+            set
+            {
+                _lblProcesadas = value;
+                this.RaisePropertychanged("lblProcesadas");
+            }
+        }
+        public string lblAprobadas
+        {
+            get
+            {
+                return _lblAprobadas;
+            }
+            set
+            {
+                _lblAprobadas = value;
+                this.RaisePropertychanged("lblAprobadas");
+            }
+        }
+        public string lblRechazadas
+        {
+            get
+            {
+                return _lblRechazadas;
+            }
+            set
+            {
+                _lblRechazadas = value;
+                this.RaisePropertychanged("lblRechazadas");
+            }
+        }
+        public string lblWarnings
+        {
+            get
+            {
+                return _lblWarnings;
+            }
+            set
+            {
+                _lblWarnings = value;
+                this.RaisePropertychanged("lblWarnings");
+            }
+        }
+
+        public ObservableCollection<Brush> Foreground_Desc
+        {
+            get
+            {
+                return _Foreground_Desc;
+            }set
+            {
+                _Foreground_Desc = value;
+                this.RaisePropertychanged("Foreground_Desc");
+            }
+        }
+        public ObservableCollection<Models.Criterios> CollCriterios
         {
             get
             {
@@ -104,7 +233,17 @@
             }
 
         }
-
+        public ObservableCollection<string> lblNReasons
+        {
+            get
+            {
+                return _lblNReasons;
+            }set
+            {
+                _lblNReasons = value;
+                this.RaisePropertychanged("lblNReasons");
+            }
+        }
         public ObservableCollection<string> cbLots
         {
             get
@@ -229,12 +368,23 @@
                 MiCursor = Cursors.Wait;
                 CanView = true;
 
+                using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr,
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr,
+                    DBImagenesCnnStr = DBImagenesCnnStr
+                })
+                {
+                   // exe.MyProcessLot(cbLots_Item, SysUser);
+                }
+
             }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }finally
+            }
+            finally
             {
                 MiCursor = Cursors.Arrow;
             }
@@ -287,10 +437,21 @@
             try
             {
                 CanView = false;
+                lblLote = "0";
+                lblTota = "0";
+                lblProcesadas = "0";
+                lblAprobadas = "0";
+                lblRechazadas = "0";
+                lblWarnings = "0";
+
+                for (int i = 0; i < 17; i++)
+                    lblNReasons.Add("0");
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
-                    DBCnnStr = DBEndososCnnStr
+                    DBCnnStr = DBEndososCnnStr,
+                    DBCeeMasterCnnStr=DBCeeMasterCnnStr,
+                    DBImagenesCnnStr=DBImagenesCnnStr
                 })
                 {
 
@@ -298,8 +459,12 @@
                     
                     CollCriterios.Clear();
 
+                    Foreground_Desc.Clear();
+
+
                     foreach (DataRow row in _MyCriteriosTable.Rows)
                     {
+                        
                         CollCriterios.Add(new Models.Criterios
                         {
                             Campo = row["Campo"].ToString(),
@@ -307,6 +472,15 @@
                             Desc = row["Desc"].ToString(),
                             Warning = row["Warning"].ToString().Trim() == "1" ? true : false
                         });
+
+                        if (row["Editar"].ToString().Trim() != "1")
+                        {
+                            Foreground_Desc.Add(Brushes.Yellow);
+                        }
+                        else
+                        {
+                            Foreground_Desc.Add(Brushes.Black);
+                        }
                     }
 
                     _MyLotsTable = get.MyGetLotToProcess();
@@ -331,8 +505,7 @@
                         myLots.RevUser = row["RevUser"].ToString();
                         myLots.conditions = row["conditions"].ToString();
                         myLots.ImportDate = row["ImportDate"].ToString();
-
-
+                      
                         cbLots.Add(myLots.Lot);
 
                     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using System.Collections.ObjectModel;
 
 namespace jolcode
 {
@@ -13,6 +14,8 @@ namespace jolcode
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _DBCnnStr;
+        private string _DBCeeMasterCnnStr;
+        private string _DBImagenesCnnStr;
 
         public SqlExcuteCommand()
         {
@@ -29,6 +32,29 @@ namespace jolcode
                 _DBCnnStr = value;
             }
         }
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }
+            set
+            {
+                _DBCeeMasterCnnStr = value;
+            }
+        }
+        public string DBImagenesCnnStr
+        {
+            get
+            {
+                return _DBImagenesCnnStr;
+            }
+            set
+            {
+                _DBImagenesCnnStr = value;
+            }
+        }
+
 
         public DataTable MyGetLotFix()
         {
@@ -1537,7 +1563,7 @@ namespace jolcode
             return myBoolReturn;
         }
 
-        public bool MyProcessLot(string numlot, string usercode)
+        public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios)
         {
             /*
                 'STATUS LOTE para la tabla lots
@@ -1557,10 +1583,227 @@ namespace jolcode
             bool myBoolErrorNoHayLotes = true;
             SqlTransaction transaction = null;
             DataTable myDataToProcessTF=null;
-            DataTable myDataToProcessLots =null;
+
+            //'Define memory variables to hold information from access DB
+            //'and modify them if needed during the validation process
+            String m_BatchTrack = string.Empty;
+            String m_BatchNo = string.Empty;
+            int m_BatchPgNo = 0;
+            String m_N_ELEC = string.Empty;
+            String m_N_PRECINTO = string.Empty;
+            String m_FECHA_N = string.Empty;
+            String m_FECHA_N2 = string.Empty;
+            String m_SEXO = string.Empty;
+            String m_PARTIDO = string.Empty;
+            int m_Cargo = 0;
+            String m_N_CANDIDAT = string.Empty;
+            String m_N_NOTARIO = string.Empty;
+            DateTime? m_Fecha_Endo = null;
+            String m_Suspense_File = string.Empty;
+            String m_Batch = string.Empty;
+            String m_Firma_Peticionario = string.Empty;
+            String m_Firma_Notario = string.Empty;
+            int m_Firma_Pet_Inv = 0;
+            int m_Firma_Not_Inv = 0;
+
+            int Dias = 0;
 
             try
             {
+                string[] mySqlstrTF = { "Select * ",
+                                        "from [dbo].[TF-Partidos] ",
+                                        "Where Imported = 2 and BatchTrack=@lot ",
+                                        "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
+
+                string[] mySqlstrTFCount = { "Select count(*) ",
+                                        "from [dbo].[TF-Partidos] ",
+                                        "Where Imported = 2 and BatchTrack=@lot ",
+                                        "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
+
+
+                string[] mySqlstrLotsCount = { "Select count(*) ",
+                                          "from [dbo].[Lots] ",
+                                          "Where Status = 0 and Lot=@lot; " };
+
+                /* BORRA LOS ERRORES ANTERIORES DEL LOTE */
+                string[] mySqlStrDeleteLotsVoid ={"DELETE FROM LotsVoid ",
+                                                  "WHERE Lot =@lot" };
+
+                string[] mySqlStrDeleteLotsEndo ={"DELETE FROM LotsEndo ",
+                                                  "WHERE Lot =@lot" };
+
+
+                SqlConnection myCnnDBEndosos=new SqlConnection();
+                SqlConnection myCnnDBCeeMaster=new SqlConnection();
+                SqlConnection myCnnDBImg=new SqlConnection();
+
+                SqlCommand myCmdDBEndosos = new SqlCommand();
+                SqlCommand myCmdDBCeeMaster = new SqlCommand();
+                SqlCommand myCmdDBImg = new SqlCommand();
+
+                myCnnDBEndosos.ConnectionString = DBCnnStr;
+                myCnnDBCeeMaster.ConnectionString = DBCeeMasterCnnStr;
+                myCnnDBImg.ConnectionString = DBImagenesCnnStr;
+
+                myCnnDBEndosos.Open();
+                myCnnDBCeeMaster.Open();
+                myCnnDBImg.Open();
+
+                myCmdDBEndosos.Connection = myCnnDBEndosos;
+                myCmdDBCeeMaster.Connection = myCnnDBCeeMaster;
+                myCmdDBImg.Connection = myCnnDBImg;
+
+                myCmdDBEndosos.CommandType = CommandType.Text;
+                myCmdDBEndosos.CommandText = string.Concat(mySqlstrLotsCount);
+
+                SqlParameter lotParam = new SqlParameter();
+                lotParam.ParameterName = "@lot";
+                lotParam.SqlDbType = SqlDbType.VarChar;
+
+                myCmdDBEndosos.Parameters.Add(lotParam).Value=numlot;
+
+
+
+                if (myCmdDBEndosos.ExecuteNonQuery() == 0)
+                    throw new Exception("No encuentro el Lote Seleccionado");
+
+                myCmdDBEndosos.CommandText = string.Concat(mySqlstrTFCount);
+
+                if (myCmdDBEndosos.ExecuteNonQuery() == 0)
+                    throw new Exception("No encuentro el Lote Seleccionado");
+               
+                // Start a local transaction.
+                transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
+                myCmdDBEndosos.Transaction = transaction;
+
+                myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsVoid);
+                myCmdDBEndosos.ExecuteNonQuery();
+
+                myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsEndo);
+                myCmdDBEndosos.ExecuteNonQuery();
+
+                using (SqlDataAdapter da = new SqlDataAdapter()
+                {
+                    SelectCommand = myCmdDBEndosos
+                })
+                {
+                    myCmdDBEndosos.CommandText = string.Concat(mySqlstrTF);
+
+                    da.Fill(myDataToProcessTF);
+
+                    if (myDataToProcessTF == null)
+                        throw new Exception("No encuentro el Lote Seleccionado");
+
+                    if (myDataToProcessTF.Rows.Count <= 0)
+                        throw new Exception("No encuentro el Lote Seleccionado");
+
+                    myBoolErrorNoHayLotes = false;
+
+                    foreach (DataRow row in myDataToProcessTF.Rows)//processing
+                    {
+                        int[] Rechazo = new int[20];
+
+                        string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim(), row["FechaEndo_Dia"].ToString().Trim(), row["FechaEndo_Ano"].ToString().Trim());
+
+                        if (tmpFecha_Endo.Length < 7)
+                            m_Fecha_Endo = null;
+                        else
+                        {
+                            m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
+                        }
+
+                        if ((CollCriterios[0].Editar ==true) && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
+                        {
+                            Rechazo[0]++;
+                        }
+
+                        if ((CollCriterios[1].Editar == true) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
+                        {
+                            Rechazo[1]++;
+                        }
+                        if (CollCriterios[2].Editar == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
+                        {
+                            string[] sqlstr = { "SELECT * ",
+                                                "From [EntregaEndosos] ",
+                                                " Where [NumeroRelacion] = '",  m_BatchTrack , "'"};
+
+                            object fechaEntregaEndosos = null;
+
+                            if ( MyValidarDatos(string.Concat(sqlstr),out fechaEntregaEndosos, myCnnDBEndosos) == null )
+                                Rechazo[2]++;
+                            else
+                            {
+                                if (m_Fecha_Endo !=null)
+                                {
+                                  if (  DateTimeUtil.DateDiff(DateInterval.Day, (DateTime) fechaEntregaEndosos, m_Fecha_Endo) > 7)
+                                        Rechazo[2]++;
+                                }else
+                                    Rechazo[2]++;
+
+                            }
+
+                        }
+                        if (CollCriterios[3].Editar == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
+                        {
+                            string[] sqlstr = { "SELECT * ",
+                                                "From [Notarios] ",
+                                                " Where [VoterIDNotario] = '",  m_N_NOTARIO , "'"};
+
+                            if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndosos) == 0)
+                                Rechazo[3]++;
+
+
+                        }
+                        if (CollCriterios[4].Editar == true)// '5-ELECTOR IGUAL AL NOTARIO
+                        {
+                        }
+                        if (CollCriterios[5].Editar == true)// '6-ELECTOR NO EXISTE
+                        {
+                        }
+                        if (CollCriterios[6].Editar == true)// '7-ASPIRANTE NO EXISTE
+                        {
+                        }
+                        if (CollCriterios[7].Editar == true)//'8-NOTARIO INACTIVO
+                        {
+                        }
+                        if (CollCriterios[8].Editar == true)//9-FECHA NACIMIENTO NO CONCUERDA
+                        {
+                        }
+                        if (CollCriterios[9].Editar == true)//'10-TIPO DE SEXO NO CONUERDA
+                        {
+                        }
+                        if (CollCriterios[10].Editar == true)// '11-STATUS ELECTO EXCLUIDO
+                        {
+                        }
+                        // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
+                        if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
+                        {
+                            if (CollCriterios[11].Editar == true)// 12-'PRECINTO NO CONCUERDA
+                            {
+                            }
+                            if (CollCriterios[12].Editar == true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
+                            {
+                            }
+                        }
+                        if (CollCriterios[13].Editar == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
+                        {
+                        }
+                        if (CollCriterios[14].Editar == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
+                        {
+                        }
+                        if (CollCriterios[15].Editar == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                        {
+                        }
+                        if (CollCriterios[16].Editar == true)// 'FIRMA DEL NOTARIO NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                        {
+                        }
+                      
+
+
+                    }
+
+                }
+
 
                 transaction.Commit();
             }
@@ -1570,51 +1813,6 @@ namespace jolcode
                 {
                     try
                     {
-                        string[] mySqlstrTF = { "Select * ",
-                                      "from [dbo].[TF-Partidos] ",
-                                      "Where Imported = 2 and BatchTrack=@lot ",
-                                      "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
-
-                        string[] mySqlstrLots = { "Select * ",
-                                      "from [dbo].[Lots] ",
-                                      "Where Status = 0 and Lot=@lot ",
-                                      "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
-
-
-                        using (SqlConnection cnn = new SqlConnection()
-                        {
-                            ConnectionString = DBCnnStr
-                        })
-                        {
-                            using (SqlCommand cmd = new SqlCommand()
-                            {
-                                Connection = cnn,
-                                CommandType = CommandType.Text,
-                                CommandText = string.Concat(mySqlstrTF)
-                            })
-                            {
-                                if (cnn.State == ConnectionState.Closed)
-                                    cnn.Open();
-
-                                using (SqlDataAdapter da = new SqlDataAdapter()
-                                {
-                                    SelectCommand = cmd
-                                })
-                                {
-                                    da.Fill(myDataToProcessTF);
-
-                                    if (myDataToProcessTF == null)
-                                        throw new Exception("No Hay Lotes Para Importar");
-
-                                    if (myDataToProcessTF.Rows.Count <= 0)
-                                        throw new Exception("No Hay Lotes Para Importar");
-
-                                    myBoolErrorNoHayLotes = false;
-
-
-                                }
-                            }
-                        }
                                 transaction.Rollback();
                     }
                     catch
@@ -1634,6 +1832,43 @@ namespace jolcode
             return myBoolReturn;
         }
 
+        private int MyValidarDatos(string sql,SqlConnection cnn)
+        {
+            int myIntReturn = 0;
+
+
+            using (SqlCommand cmd = new SqlCommand(sql, cnn)
+            {
+                CommandType = CommandType.Text
+            })
+            {
+                myIntReturn =  cmd.ExecuteNonQuery();
+            }
+
+            return myIntReturn;
+        }
+
+        private object MyValidarDatos(string sql,out object returnValue, SqlConnection cnn)
+        {
+
+            returnValue = null;
+
+            using (SqlCommand cmd = new SqlCommand(sql, cnn)
+            {
+                CommandType = CommandType.Text
+            })
+            {
+                returnValue =  cmd.ExecuteScalar();
+            }
+
+            return returnValue;
+        }
+
+        private string Left (string param,int length)
+        {
+            string result = param.Substring(0, length);
+            return result;
+        }
         #region Dispose
         public void Dispose()
         {

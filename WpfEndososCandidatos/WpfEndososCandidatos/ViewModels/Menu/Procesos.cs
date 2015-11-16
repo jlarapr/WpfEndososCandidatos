@@ -17,9 +17,8 @@
         private bool _mnuProcesarLotes_IsEnabled;
         private bool _mnuCorregirEndosos_IsEnabled;
         private bool _mnuRevLote_IsEnabled;
-
-
-
+        
+       
         public bool mnuRecibirLotes_IsEnabled
         {
             get
@@ -153,6 +152,9 @@
                 {
                     frmLotProcess.View.Owner = this.View as Window;
                     frmLotProcess.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotProcess.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
+                    frmLotProcess.DBImagenesCnnStr = DBImagenesCnnStr;
+                    frmLotProcess.SysUser = WhatIsUserName;
                     frmLotProcess.MyOnShow();
                 }
             }
