@@ -1582,7 +1582,7 @@ namespace jolcode
             bool myBoolReturn = false;
             bool myBoolErrorNoHayLotes = true;
             SqlTransaction transaction = null;
-            DataTable myDataToProcessTF=null;
+            DataTable myDataToProcessTF=new DataTable();
 
             //'Define memory variables to hold information from access DB
             //'and modify them if needed during the validation process
@@ -1617,8 +1617,7 @@ namespace jolcode
 
                 string[] mySqlstrTFCount = { "Select count(*) ",
                                         "from [dbo].[TF-Partidos] ",
-                                        "Where Imported = 2 and BatchTrack=@lot ",
-                                        "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
+                                        "Where Imported = 2 and BatchTrack=@lot;" };
 
 
                 string[] mySqlstrLotsCount = { "Select count(*) ",
@@ -1641,6 +1640,9 @@ namespace jolcode
                 SqlCommand myCmdDBCeeMaster = new SqlCommand();
                 SqlCommand myCmdDBImg = new SqlCommand();
 
+                SqlDataAdapter myDataAdapter = new SqlDataAdapter();
+                    
+
                 myCnnDBEndosos.ConnectionString = DBCnnStr;
                 myCnnDBCeeMaster.ConnectionString = DBCeeMasterCnnStr;
                 myCnnDBImg.ConnectionString = DBImagenesCnnStr;
@@ -1660,9 +1662,8 @@ namespace jolcode
                 lotParam.ParameterName = "@lot";
                 lotParam.SqlDbType = SqlDbType.VarChar;
 
-                myCmdDBEndosos.Parameters.Add(lotParam).Value=numlot;
-
-
+                myCmdDBEndosos.Parameters.Add(lotParam);
+                lotParam.Value = numlot;
 
                 if (myCmdDBEndosos.ExecuteNonQuery() == 0)
                     throw new Exception("No encuentro el Lote Seleccionado");
@@ -1671,7 +1672,21 @@ namespace jolcode
 
                 if (myCmdDBEndosos.ExecuteNonQuery() == 0)
                     throw new Exception("No encuentro el Lote Seleccionado");
-               
+
+
+                myCmdDBEndosos.CommandText = string.Concat(mySqlstrTF);
+                myDataAdapter.SelectCommand = myCmdDBEndosos;
+                myDataAdapter.Fill(myDataToProcessTF);
+
+                if (myDataToProcessTF == null)
+                    throw new Exception("No encuentro el Lote Seleccionado");
+
+                if (myDataToProcessTF.Rows.Count <= 0)
+                    throw new Exception("No encuentro el Lote Seleccionado");
+
+                myBoolErrorNoHayLotes = false;
+
+
                 // Start a local transaction.
                 transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                 myCmdDBEndosos.Transaction = transaction;
@@ -1682,128 +1697,108 @@ namespace jolcode
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsEndo);
                 myCmdDBEndosos.ExecuteNonQuery();
 
-                using (SqlDataAdapter da = new SqlDataAdapter()
+
+                foreach (DataRow row in myDataToProcessTF.Rows)//processing
                 {
-                    SelectCommand = myCmdDBEndosos
-                })
-                {
-                    myCmdDBEndosos.CommandText = string.Concat(mySqlstrTF);
+                    int[] Rechazo = new int[20];
 
-                    da.Fill(myDataToProcessTF);
+                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim(), row["FechaEndo_Dia"].ToString().Trim(), row["FechaEndo_Ano"].ToString().Trim());
 
-                    if (myDataToProcessTF == null)
-                        throw new Exception("No encuentro el Lote Seleccionado");
-
-                    if (myDataToProcessTF.Rows.Count <= 0)
-                        throw new Exception("No encuentro el Lote Seleccionado");
-
-                    myBoolErrorNoHayLotes = false;
-
-                    foreach (DataRow row in myDataToProcessTF.Rows)//processing
+                    if (tmpFecha_Endo.Length < 7)
+                        m_Fecha_Endo = null;
+                    else
                     {
-                        int[] Rechazo = new int[20];
+                        m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
+                    }
 
-                        string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim(), row["FechaEndo_Dia"].ToString().Trim(), row["FechaEndo_Ano"].ToString().Trim());
+                    if ((CollCriterios[0].Editar == true) && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
+                    {
+                        Rechazo[0]++;
+                    }
 
-                        if (tmpFecha_Endo.Length < 7)
-                            m_Fecha_Endo = null;
-                        else
-                        {
-                            m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
-                        }
-
-                        if ((CollCriterios[0].Editar ==true) && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
-                        {
-                            Rechazo[0]++;
-                        }
-
-                        if ((CollCriterios[1].Editar == true) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
-                        {
-                            Rechazo[1]++;
-                        }
-                        if (CollCriterios[2].Editar == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
-                        {
-                            string[] sqlstr = { "SELECT * ",
+                    if ((CollCriterios[1].Editar == true) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
+                    {
+                        Rechazo[1]++;
+                    }
+                    if (CollCriterios[2].Editar == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
+                    {
+                        string[] sqlstr = { "SELECT * ",
                                                 "From [EntregaEndosos] ",
                                                 " Where [NumeroRelacion] = '",  m_BatchTrack , "'"};
 
-                            object fechaEntregaEndosos = null;
+                        object fechaEntregaEndosos = null;
 
-                            if ( MyValidarDatos(string.Concat(sqlstr),out fechaEntregaEndosos, myCnnDBEndosos) == null )
-                                Rechazo[2]++;
-                            else
+                        if (MyValidarDatos(string.Concat(sqlstr), out fechaEntregaEndosos, myCnnDBEndosos) == null)
+                            Rechazo[2]++;
+                        else
+                        {
+                            if (m_Fecha_Endo != null)
                             {
-                                if (m_Fecha_Endo !=null)
-                                {
-                                  if (  DateTimeUtil.DateDiff(DateInterval.Day, (DateTime) fechaEntregaEndosos, m_Fecha_Endo) > 7)
-                                        Rechazo[2]++;
-                                }else
+                                if (DateTimeUtil.DateDiff(DateInterval.Day, (DateTime)fechaEntregaEndosos, m_Fecha_Endo) > 7)
                                     Rechazo[2]++;
-
                             }
+                            else
+                                Rechazo[2]++;
 
                         }
-                        if (CollCriterios[3].Editar == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
-                        {
-                            string[] sqlstr = { "SELECT * ",
+
+                    }
+                    if (CollCriterios[3].Editar == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
+                    {
+                        string[] sqlstr = { "SELECT * ",
                                                 "From [Notarios] ",
                                                 " Where [VoterIDNotario] = '",  m_N_NOTARIO , "'"};
 
-                            if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndosos) == 0)
-                                Rechazo[3]++;
-
-
-                        }
-                        if (CollCriterios[4].Editar == true)// '5-ELECTOR IGUAL AL NOTARIO
-                        {
-                        }
-                        if (CollCriterios[5].Editar == true)// '6-ELECTOR NO EXISTE
-                        {
-                        }
-                        if (CollCriterios[6].Editar == true)// '7-ASPIRANTE NO EXISTE
-                        {
-                        }
-                        if (CollCriterios[7].Editar == true)//'8-NOTARIO INACTIVO
-                        {
-                        }
-                        if (CollCriterios[8].Editar == true)//9-FECHA NACIMIENTO NO CONCUERDA
-                        {
-                        }
-                        if (CollCriterios[9].Editar == true)//'10-TIPO DE SEXO NO CONUERDA
-                        {
-                        }
-                        if (CollCriterios[10].Editar == true)// '11-STATUS ELECTO EXCLUIDO
-                        {
-                        }
-                        // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
-                        if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
-                        {
-                            if (CollCriterios[11].Editar == true)// 12-'PRECINTO NO CONCUERDA
-                            {
-                            }
-                            if (CollCriterios[12].Editar == true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
-                            {
-                            }
-                        }
-                        if (CollCriterios[13].Editar == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
-                        {
-                        }
-                        if (CollCriterios[14].Editar == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
-                        {
-                        }
-                        if (CollCriterios[15].Editar == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
-                        {
-                        }
-                        if (CollCriterios[16].Editar == true)// 'FIRMA DEL NOTARIO NO ES IGUAL A LA DEL ARCHIVO MAESTRO
-                        {
-                        }
-                      
+                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndosos) == 0)
+                            Rechazo[3]++;
 
 
                     }
+                    if (CollCriterios[4].Editar == true)// '5-ELECTOR IGUAL AL NOTARIO
+                    {
+                    }
+                    if (CollCriterios[5].Editar == true)// '6-ELECTOR NO EXISTE
+                    {
+                    }
+                    if (CollCriterios[6].Editar == true)// '7-ASPIRANTE NO EXISTE
+                    {
+                    }
+                    if (CollCriterios[7].Editar == true)//'8-NOTARIO INACTIVO
+                    {
+                    }
+                    if (CollCriterios[8].Editar == true)//9-FECHA NACIMIENTO NO CONCUERDA
+                    {
+                    }
+                    if (CollCriterios[9].Editar == true)//'10-TIPO DE SEXO NO CONUERDA
+                    {
+                    }
+                    if (CollCriterios[10].Editar == true)// '11-STATUS ELECTO EXCLUIDO
+                    {
+                    }
+                    // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
+                    if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
+                    {
+                        if (CollCriterios[11].Editar == true)// 12-'PRECINTO NO CONCUERDA
+                        {
+                        }
+                        if (CollCriterios[12].Editar == true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
+                        {
+                        }
+                    }
+                    if (CollCriterios[13].Editar == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
+                    {
+                    }
+                    if (CollCriterios[14].Editar == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
+                    {
+                    }
+                    if (CollCriterios[15].Editar == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                    {
+                    }
+                    if (CollCriterios[16].Editar == true)// 'FIRMA DEL NOTARIO NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                    {
+                    }
 
                 }
-
 
                 transaction.Commit();
             }

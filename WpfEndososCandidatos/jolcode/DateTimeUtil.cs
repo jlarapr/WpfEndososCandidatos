@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,12 +57,13 @@ namespace jolcode
         {
             DateTime tempdate;
             Xceed.Wpf.Toolkit.MaskedTextBox myMaskedTextBoxValue = new Xceed.Wpf.Toolkit.MaskedTextBox();
-
             myMaskedTextBoxValue.Value = "00/00/0000";
             myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
             myMaskedTextBoxValue.Text = param;
 
-            if (DateTime.TryParse(myMaskedTextBoxValue.Text, out tempdate))
+           
+
+            if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
                 return tempdate;//.ToString("MM/dd/yyyy");
             else
                 return null;

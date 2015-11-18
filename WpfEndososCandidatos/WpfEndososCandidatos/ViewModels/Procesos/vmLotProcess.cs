@@ -25,7 +25,7 @@
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
         private DataTable _MyCriteriosTable;
-        private ObservableCollection<Models.Criterios> _CollCriterios;
+        private ObservableCollection<Criterios> _CollCriterios;
         private DataTable _MyLotsTable;
         private ObservableCollection<string> _cbLots;
         private string _cbLots_Item;
@@ -53,7 +53,7 @@
             cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
             cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
 
-            CollCriterios = new ObservableCollection<Models.Criterios>();
+            CollCriterios = new ObservableCollection<Criterios>();
             cbLots = new ObservableCollection<string>();
             lblNReasons = new ObservableCollection<string>();
             Foreground_Desc = new ObservableCollection<Brush>();
@@ -217,7 +217,7 @@
                 this.RaisePropertychanged("Foreground_Desc");
             }
         }
-        public ObservableCollection<Models.Criterios> CollCriterios
+        public ObservableCollection<Criterios> CollCriterios
         {
             get
             {
@@ -375,7 +375,7 @@
                     DBImagenesCnnStr = DBImagenesCnnStr
                 })
                 {
-                   // exe.MyProcessLot(cbLots_Item, SysUser);
+                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios);
                 }
 
             }
@@ -465,7 +465,7 @@
                     foreach (DataRow row in _MyCriteriosTable.Rows)
                     {
                         
-                        CollCriterios.Add(new Models.Criterios
+                        CollCriterios.Add(new Criterios
                         {
                             Campo = row["Campo"].ToString(),
                             Editar = row["Editar"].ToString().Trim() == "1" ? true : false,

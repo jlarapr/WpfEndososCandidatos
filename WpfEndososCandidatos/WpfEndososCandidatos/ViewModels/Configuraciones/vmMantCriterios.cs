@@ -29,9 +29,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private Brush _BorderBrush;
         private Logclass _LogClass;
         private DataTable _MyCriteriosTable;
-        private List<Models.Criterios> _Criterios;
+        private List<Criterios> _Criterios;
         private string _DBEndososCnnStr;
-        private ObservableCollection<Models.Criterios> _chk;
+        private ObservableCollection<Criterios> _chk;
         private int _Idx;
         private int _Idx_Warning;
         private string _txtExplicacion;
@@ -55,8 +55,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             UnCheckedWarning = new RelayCommand(param => MyUnCheckedWarning(param));
 
             _LogClass = new Logclass();
-            _Criterios = new List<Models.Criterios>();
-            chk = new ObservableCollection<Models.Criterios>();
+            _Criterios = new List<Criterios>();
+            chk = new ObservableCollection<Criterios>();
             Background_0 = new ObservableCollection<Brush>();
         }
 
@@ -100,7 +100,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBEndososCnnStr = value;
             }
         }
-        public ObservableCollection<Models.Criterios> chk
+        public ObservableCollection<Criterios> chk
         {
             get
             {
@@ -412,7 +412,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                     foreach (DataRow row in _MyCriteriosTable.Rows)
                     {
-                        chk.Add(new Models.Criterios
+                        chk.Add(new Criterios
                         {
                             Campo = row["Campo"].ToString(),
                             Editar = row["Editar"].ToString().Trim() == "1" ? true : false,
