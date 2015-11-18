@@ -8,6 +8,7 @@
     using System.Configuration;
     using System.Data;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
@@ -15,6 +16,7 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Media;
+    using System.Windows.Media.Imaging;
     using WpfEndososCandidatos.View;
     class vmElector : ViewModelBase<IDialogView>, IDisposable
     {
@@ -38,6 +40,9 @@
         private bool _IsChecked_Excluido;
         private bool _IsChecked_SexF;
         private bool _IsChecked_SexM;
+        private BitmapImage _Source_image;
+        private BitmapImage _Source_imagePhoto;
+        private bool _CanFind;
 
         public vmElector()
             : base(new wpfElector())
@@ -85,23 +90,16 @@
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    int myIntValue = 0;
+                    if (value != _TxtElecNum)
+                        MyReset();
 
-                    if (int.TryParse(value, out myIntValue))
-                    {
-                        MyReset();
-                        _TxtElecNum = string.Format("{0:0000000}", myIntValue);
-                        this.RaisePropertychanged("TxtElecNum");
-                    }else
-                    {
-                        MyReset();
-                        _TxtElecNum = string.Empty;
-                        this.RaisePropertychanged("TxtElecNum");
-                    }
-                }
-                else
+                      _TxtElecNum = value;
+
+                    this.RaisePropertychanged("TxtElecNum");
+                }else
                 {
-                    MyReset();
+                    _TxtElecNum = null;
+                    this.RaisePropertychanged("TxtElecNum");
                 }
 
             }
@@ -272,13 +270,53 @@
                 this.RaisePropertychanged("IsChecked_SexF");
             }
         }
+        public BitmapImage Source_image
+        {
+            get
+            {
+                return _Source_image;
+            }set
+            {
+                _Source_image = value;
+                this.RaisePropertychanged("Source_image");
+            }
+        }
+        public BitmapImage Source_imagePhoto
+        {
+            get
+            {
+                return _Source_imagePhoto;
+            }set
+            {
+                _Source_imagePhoto = value;
+                this.RaisePropertychanged("Source_imagePhoto");
+            }
+        }
 
         public bool CanFind
         {
             get
             {
-                return !string.IsNullOrEmpty(TxtElecNum);
+                
+                if (string.IsNullOrEmpty(TxtElecNum))
+                {
+                    MyReset();
+                    return false;
+                }
+
+                int i;
+                if (!int.TryParse(TxtElecNum, out i))
+                {
+                    MyReset();
+                    return false;
+                }
+                
+               if ( _CanFind)
+                   return false ;
+
+                return true;// !string.IsNullOrEmpty(TxtElecNum);
             }
+          
         }
         private bool CommandCan
         {
@@ -295,6 +333,7 @@
        {
            try
            {
+                TxtElecNum = string.Empty;
                 string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
                 string Hora = DateTime.Now.ToString("hh:mm:ss tt");
 
@@ -344,32 +383,96 @@
                 {
                     DataTable myTable;
 
+                    if (TxtElecNum.Trim().Length < 7)
+                        TxtElecNum = TxtElecNum.Trim().PadLeft(7, '0');
+
+                    _CanFind = true;
+
                     myTable = get.MyGetCitizen(TxtElecNum);
+
+                    if (myTable.Rows.Count == 0)
+                        throw new Exception("Número electoral invalido.");
 
                     TxtNombre = myTable.Rows[0]["FirstName"].ToString();
                     TxtPaterno = myTable.Rows[0]["LastName1"].ToString();
                     TxtMaterno = myTable.Rows[0]["LastName2"].ToString();
 
-                    TxtPadre = string.Empty;
-                    TxtMadre = string.Empty;
-                    TxtUnidad = string.Empty;
-                    
-                    string Fechanac = myTable.Rows[0]["Fechanac"].ToString();
+                    TxtPadre = myTable.Rows[0]["FatherName"].ToString();
+                    TxtMadre = myTable.Rows[0]["MotherName"].ToString();
+                    TxtUnidad = myTable.Rows[0]["SecondGeoCode"].ToString().PadLeft(2,'0');
+                    TxtPrecinto = myTable.Rows[0]["FirstGeoCode"].ToString().PadLeft(3,'0');
+
+                    string Fechanac = myTable.Rows[0]["DateOfBirth"].ToString();
 
                     if (!string.IsNullOrEmpty(Fechanac))
                     {
-                        TxtDia = Fechanac.Split('-')[0].Trim();
-                        TxtMes = Fechanac.Split('-')[1].Trim();
-                        TxtAno = Fechanac.Split('-')[2].Trim();
+                        TxtMes = Fechanac.Split('/')[0].Trim().PadLeft(2,'0');
+                        TxtDia = Fechanac.Split('/')[1].Trim().PadLeft(2,'0');
+                        TxtAno = Fechanac.Split('/')[2].Trim().Substring(0, 4);
                     }
 
-                    IsChecked_Activo = false;
-                    IsChecked_Excluido = false;
-                    IsChecked_Inactivo = false;
+                    switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                    {
+                        case "A":
+                            IsChecked_Activo = true;
+                            break;
+                        case "E":
+                            IsChecked_Excluido = true;
+                            break;
+                        case "I":
+                            IsChecked_Inactivo = true;
+                            break;
+                        default:
+                            IsChecked_Activo = false;
+                            IsChecked_Excluido = false;
+                            IsChecked_Inactivo = false;
+                            break;
+                    }
+                    switch (myTable.Rows[0]["Gender"].ToString().Trim().ToUpper())
+                    {
+                        case "F":
+                            IsChecked_SexF = true;
+                            break;
+                        case "M":
+                            IsChecked_SexM = true;
+                            break;
+                        default:
+                            IsChecked_SexF = false;
+                            IsChecked_SexM = false;
+                            break;
 
-                    IsChecked_SexF = false;
-                    IsChecked_SexM = false;
+                    }
+                    // 'DESPLIEGA LA FIRMA DEL ELECTOR
+                    
+                    byte[] dataSignature = (byte[])myTable.Rows[0]["SignatureImage"];
+                    MemoryStream strmSignature = new MemoryStream();
+                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                    strmSignature.Position = 0;
+                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    MemoryStream ms = new MemoryStream();
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    bi.StreamSource = ms;
+                    bi.EndInit();
+                    Source_image = bi;
 
+                    // 'DESPLIEGA LA Photo DEL ELECTOR
+                    byte[] dataPhoto = (byte[])myTable.Rows[0]["PhotoImage"];
+
+                    MemoryStream strmPhoto = new MemoryStream();
+                    strmPhoto.Write(dataPhoto, 0, dataPhoto.Length);
+                    strmPhoto.Position = 0;
+                    System.Drawing.Image imgPhoto = System.Drawing.Image.FromStream(strmPhoto);
+                    BitmapImage biPhoto = new BitmapImage();
+                    biPhoto.BeginInit();
+                    MemoryStream msPhoto = new MemoryStream();
+                    imgPhoto.Save(msPhoto, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    msPhoto.Seek(0, SeekOrigin.Begin);
+                    biPhoto.StreamSource = msPhoto;
+                    biPhoto.EndInit();
+                    Source_imagePhoto = biPhoto;
 
                 }
             }
@@ -378,6 +481,9 @@
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
                 _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
+            }finally
+            {
+
             }
         }
         public void MyCmdSalir_Click()
@@ -414,7 +520,7 @@
         #region MyModulos
         private void MyReset()
         {
-            
+            _CanFind = false;
 
             TxtNombre = string.Empty;
             TxtPadre = string.Empty;
@@ -425,12 +531,16 @@
             TxtDia = string.Empty;
             TxtAno = string.Empty;
             TxtMes = string.Empty;
+            TxtPrecinto = string.Empty;
 
             IsChecked_Activo = false;
             IsChecked_Excluido = false;
             IsChecked_Inactivo = false;
             IsChecked_SexF = false;
             IsChecked_SexM = false;
+
+            Source_imagePhoto = null;
+            Source_image = null;
 
         }
         #endregion

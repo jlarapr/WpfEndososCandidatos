@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:vm="clr-namespace:WpfEndososCandidatos.ViewModels"
          Cursor="{Binding MiCursor}"
-        Title="{Binding Title}" Height="376.771" Width="619.193" WindowState="Maximized" Background="LightGray" Icon="WindowsJournal.ico"  >
+        Title="{Binding Title}" Height="446.26" Width="910.537" WindowState="Maximized" Background="LightGray" Icon="WindowsJournal.ico"  >
 
 
     <i:Interaction.Triggers>
@@ -14,20 +14,18 @@
     </i:Interaction.Triggers>
 
 
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="209*"/>
-            <ColumnDefinition Width="199*"/>
-            <ColumnDefinition Width="203*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="46*"/>
-            <RowDefinition Height="173*"/>
-            <RowDefinition Height="127*"/>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="219*"/>
+            <RowDefinition Height="152*"/>
         </Grid.RowDefinitions>
 
 
-        <Menu x:Name="MainMenu" VerticalAlignment="Top" Height="31" Grid.ColumnSpan="3" Background="DarkGray" >
+        <Menu x:Name="MainMenu" VerticalAlignment="Top" Height="31" Background="DarkGray" >
             <MenuItem Name="mnuMainFile" Header="_Archivo"  >
                 <MenuItem Name="mnuLogin" IsEnabled="{Binding mnuLogin_IsEnabled}" Header="_Login" Command="{Binding login_Click}" />
                 <MenuItem Name="mnuLogout" IsEnabled="{Binding mnuLogout_IsEnabled}" Header="_Logout" Command="{Binding logout_Click}"  />
@@ -66,7 +64,7 @@
         </Menu>
 
 
-        <StatusBar Grid.Row="2" Height="23" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Background="DarkGray" >
+        <StatusBar Grid.Row="2" Height="23" VerticalAlignment="Bottom" Background="DarkGray" >
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -94,6 +92,9 @@
             </StatusBarItem>
 
         </StatusBar>
+        <Canvas Margin="15,10,0,0" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Left" Width="883" Height="333" VerticalAlignment="Top">
+            <Image x:Name="image"  Source="Images/Logo CEE1.JPG" Stretch="None" HorizontalAlignment="Left" Width="164" Height="169" Canvas.Left="384" Canvas.Top="27"/>
+        </Canvas>
 
     </Grid>
 </Window>

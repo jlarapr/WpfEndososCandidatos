@@ -56,10 +56,10 @@ namespace jolcode
         public static DateTime? MyValidarFecha(string param)
         {
             DateTime tempdate;
-            Xceed.Wpf.Toolkit.MaskedTextBox myMaskedTextBoxValue = new Xceed.Wpf.Toolkit.MaskedTextBox();
-            myMaskedTextBoxValue.Value = "00/00/0000";
-            myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
-            myMaskedTextBoxValue.Text = param;
+            //Xceed.Wpf.Toolkit.MaskedTextBox myMaskedTextBoxValue = new Xceed.Wpf.Toolkit.MaskedTextBox();
+            //myMaskedTextBoxValue.Value = "00/00/0000";
+            //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
+            //myMaskedTextBoxValue.Text = param;
 
            
 

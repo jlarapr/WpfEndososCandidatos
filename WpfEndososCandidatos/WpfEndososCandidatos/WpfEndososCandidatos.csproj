@@ -73,6 +73,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
@@ -365,6 +366,8 @@
     <Resource Include="Images\ImageData-logoPropV2-300x139.png" />
     <Resource Include="Images\CEElogo.jpg" />
     <Resource Include="Images\CEEbrand.gif" />
+    <Resource Include="Images\Logo CEE.JPG" />
+    <Resource Include="Images\Logo CEE1.JPG" />
     <Content Include="Models\CREATEDATABASE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

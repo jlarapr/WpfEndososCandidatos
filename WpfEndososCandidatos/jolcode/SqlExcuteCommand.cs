@@ -310,16 +310,11 @@ namespace jolcode
             try
             {
 
-                int myCitizenID = 0;
-
-                if (int.TryParse(CitizenID,out myCitizenID))
-                {
-                    CitizenID = string.Format("{0:0000000}", myCitizenID);
-                }
-
-
-
-                string mySqlstr = "Select * From TblCitizen Where CitizenID =@CitizenID ";
+                //string mySqlstr = "Select * From [usercid].[Citizen] Where CitizenID =@CitizenID ";
+                string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
+                                       "FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
+                                       "on a.CItizenId = b.CitizenID ",
+                                        "where a.CItizenId =@CitizenID" };
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -330,7 +325,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = mySqlstr
+                        CommandText = string.Concat(mySqlstr)
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
@@ -1591,7 +1586,7 @@ namespace jolcode
             int m_BatchPgNo = 0;
             String m_N_ELEC = string.Empty;
             String m_N_PRECINTO = string.Empty;
-            String m_FECHA_N = string.Empty;
+            DateTime? m_FECHA_N = null;
             String m_FECHA_N2 = string.Empty;
             String m_SEXO = string.Empty;
             String m_PARTIDO = string.Empty;
@@ -1633,6 +1628,9 @@ namespace jolcode
 
 
                 SqlConnection myCnnDBEndosos=new SqlConnection();
+                SqlConnection myCnnDBEndososValidarDatos=new SqlConnection();
+
+
                 SqlConnection myCnnDBCeeMaster=new SqlConnection();
                 SqlConnection myCnnDBImg=new SqlConnection();
 
@@ -1644,16 +1642,20 @@ namespace jolcode
                     
 
                 myCnnDBEndosos.ConnectionString = DBCnnStr;
+                myCnnDBEndososValidarDatos.ConnectionString = DBCnnStr;
+
                 myCnnDBCeeMaster.ConnectionString = DBCeeMasterCnnStr;
                 myCnnDBImg.ConnectionString = DBImagenesCnnStr;
 
                 myCnnDBEndosos.Open();
+                myCnnDBEndososValidarDatos.Open();
+
                 myCnnDBCeeMaster.Open();
                 myCnnDBImg.Open();
 
                 myCmdDBEndosos.Connection = myCnnDBEndosos;
-                myCmdDBCeeMaster.Connection = myCnnDBCeeMaster;
-                myCmdDBImg.Connection = myCnnDBImg;
+                //myCmdDBCeeMaster.Connection = myCnnDBCeeMaster;
+                //myCmdDBImg.Connection = myCnnDBImg;
 
                 myCmdDBEndosos.CommandType = CommandType.Text;
                 myCmdDBEndosos.CommandText = string.Concat(mySqlstrLotsCount);
@@ -1700,11 +1702,36 @@ namespace jolcode
 
                 foreach (DataRow row in myDataToProcessTF.Rows)//processing
                 {
-                    int[] Rechazo = new int[20];
+                    //default
+                    m_Firma_Peticionario = "0";
+                    m_Firma_Notario = "0";
+                    m_BatchTrack = string.Empty;
+                    m_N_ELEC = string.Empty;
+                    m_N_NOTARIO = string.Empty;
+                    m_N_CANDIDAT = string.Empty;
+                    m_Cargo = 0;
+                    m_FECHA_N = null;
+                    //
+                    int[] Rechazo = new int[20];                    
 
-                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim(), row["FechaEndo_Dia"].ToString().Trim(), row["FechaEndo_Ano"].ToString().Trim());
+                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2,'0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2,'0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4,'0'));
+                   
 
-                    if (tmpFecha_Endo.Length < 7)
+                    m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
+                    m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
+                    m_BatchTrack = row["BatchTrack"].ToString().Trim();
+                    m_N_ELEC = row["NumElec"].ToString().Trim().PadLeft(7,'0');
+                    m_N_NOTARIO= row["Notario"].ToString().Trim().PadLeft(7, '0');
+                    m_N_CANDIDAT = string.Empty;
+                    m_Cargo = 0;
+                   string  tmpFECHA_N = string.Concat(row["FechaNac_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Ano"].ToString().Trim().PadLeft(4, '0'));
+
+                    if (tmpFECHA_N.Trim().Length >0)
+                    {
+                        m_FECHA_N=   DateTimeUtil.MyValidarFecha(tmpFECHA_N);
+                    }
+
+                    if (tmpFecha_Endo.Length < 8)
                         m_Fecha_Endo = null;
                     else
                     {
@@ -1722,13 +1749,13 @@ namespace jolcode
                     }
                     if (CollCriterios[2].Editar == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
                     {
-                        string[] sqlstr = { "SELECT * ",
-                                                "From [EntregaEndosos] ",
-                                                " Where [NumeroRelacion] = '",  m_BatchTrack , "'"};
+                        string[] sqlstr = { "SELECT Entregado ",
+                                                "From [LotsReceive] ",
+                                                " Where [Lot] = '",  m_BatchTrack , "'"};
 
                         object fechaEntregaEndosos = null;
 
-                        if (MyValidarDatos(string.Concat(sqlstr), out fechaEntregaEndosos, myCnnDBEndosos) == null)
+                        if (MyValidarDatos(string.Concat(sqlstr), out fechaEntregaEndosos, myCnnDBEndososValidarDatos) == null)
                             Rechazo[2]++;
                         else
                         {
@@ -1745,29 +1772,76 @@ namespace jolcode
                     }
                     if (CollCriterios[3].Editar == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
                     {
-                        string[] sqlstr = { "SELECT * ",
+                        string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
                                                 " Where [VoterIDNotario] = '",  m_N_NOTARIO , "'"};
 
-                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndosos) == 0)
+                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndososValidarDatos) <= 0)
                             Rechazo[3]++;
 
 
                     }
                     if (CollCriterios[4].Editar == true)// '5-ELECTOR IGUAL AL NOTARIO
                     {
+                        if (m_N_ELEC == m_N_NOTARIO)
+                        {
+                            Rechazo[4]++;
+                        }
                     }
                     if (CollCriterios[5].Editar == true)// '6-ELECTOR NO EXISTE
                     {
+                        string[] sqlstr = { "SELECT count(*) ",
+                                                "From [usercid].[Citizen] ",
+                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+
+                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBCeeMaster) <=0)
+                            Rechazo[5]++;
+
                     }
                     if (CollCriterios[6].Editar == true)// '7-ASPIRANTE NO EXISTE
                     {
+                        string[] sqlstr = { "SELECT count(*) ",
+                                                "From [Aspirantes] ",
+                                                " Where [NumCandidato] = '",  m_N_CANDIDAT , "'"};
+
+                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndososValidarDatos) <= 0)
+                            Rechazo[6]++;
+
                     }
                     if (CollCriterios[7].Editar == true)//'8-NOTARIO INACTIVO
                     {
+                        string[] sqlstr = { "SELECT status ",
+                                                "From [usercid].[Citizen] ",
+                                                " Where [CitizenID] = '",  m_N_NOTARIO , "'"};
+                        object status = null;
+
+                        if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
+                            Rechazo[7]++;
+                        else
+                        {
+                            if (status != null)
+                            {
+                                if (!MyStatus(status.ToString()))
+                                    Rechazo[7]++;
+
+                            }
+                        }
                     }
                     if (CollCriterios[8].Editar == true)//9-FECHA NACIMIENTO NO CONCUERDA
                     {
+                        string[] sqlstr = { "SELECT [DateOfBirth] ",
+                                                "From [usercid].[Citizen] ",
+                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                        object DateOfBirth = null;
+
+                        if (MyValidarDatos(string.Concat(sqlstr),out DateOfBirth, myCnnDBCeeMaster) ==null)
+                            Rechazo[8]++;
+                        else
+                        {
+                            if (DateTimeUtil.DateDiff(DateInterval.Day,  (DateTime)DateOfBirth, m_FECHA_N)  >0 )
+                                Rechazo[8]++;
+                        }
+
                     }
                     if (CollCriterios[9].Editar == true)//'10-TIPO DE SEXO NO CONUERDA
                     {
@@ -1837,7 +1911,7 @@ namespace jolcode
                 CommandType = CommandType.Text
             })
             {
-                myIntReturn =  cmd.ExecuteNonQuery();
+                myIntReturn =  (int)cmd.ExecuteScalar();
             }
 
             return myIntReturn;
@@ -1850,7 +1924,8 @@ namespace jolcode
 
             using (SqlCommand cmd = new SqlCommand(sql, cnn)
             {
-                CommandType = CommandType.Text
+                CommandType = CommandType.Text,
+                
             })
             {
                 returnValue =  cmd.ExecuteScalar();
@@ -1864,6 +1939,23 @@ namespace jolcode
             string result = param.Substring(0, length);
             return result;
         }
+
+        private bool MyStatus(string param)
+        {
+            switch(param.Trim())
+            {
+                case "A":
+                    return true;
+                case "I":
+                case "E":
+                    return false;
+                default:
+                    return false;
+                    
+
+            }
+        }
+
         #region Dispose
         public void Dispose()
         {
