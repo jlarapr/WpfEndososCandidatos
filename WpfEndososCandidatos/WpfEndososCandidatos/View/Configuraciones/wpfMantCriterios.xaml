@@ -11,7 +11,7 @@
     <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="10" Margin="-2" CornerRadius="5">
         <Grid>
             <Label Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="20" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="813,688,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="813,704,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
             <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="524">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
@@ -579,7 +579,7 @@
             <Label x:Name="label1"  HorizontalAlignment="Left" Margin="22,583,0,0" VerticalAlignment="Top"
                    Content="{Binding Explicacion}"
                    />
-            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="813,651,0,0" VerticalAlignment="Top" Width="75" Height="32"
+            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="813,667,0,0" VerticalAlignment="Top" Width="75" Height="32"
                     Command="{Binding cmdActualize_Click}"
                     />
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="101" Margin="22,614,0,0" VerticalAlignment="Top" Width="786"
@@ -590,10 +590,10 @@
                          IsEnabled="{Binding IsEnabled_txtExplicacion}"
                          />
             </Border>
-            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="813,580,0,0" VerticalAlignment="Top" Width="75"
+            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="813,596,0,0" VerticalAlignment="Top" Width="75"
                     Command="{Binding cmdEditar_Click}"
                     />
-            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="813,617,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="813,633,0,0" VerticalAlignment="Top" Width="75"  Height="29"
             	Command="{Binding cmdCancel_Click}"
                     />
 
