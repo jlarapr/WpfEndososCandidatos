@@ -154,6 +154,7 @@
                     frmLotProcess.DBEndososCnnStr = DBEndososCnnStr;
                     frmLotProcess.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
                     frmLotProcess.DBImagenesCnnStr = DBImagenesCnnStr;
+                    frmLotProcess.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frmLotProcess.SysUser = WhatIsUserName;
                     frmLotProcess.MyOnShow();
                 }

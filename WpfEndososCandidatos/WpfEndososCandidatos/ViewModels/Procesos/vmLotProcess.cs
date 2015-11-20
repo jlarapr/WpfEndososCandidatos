@@ -43,6 +43,7 @@
         private string _DBImagenesCnnStr;
         private string _SysUser;
         private ObservableCollection<Brush> _Foreground_Desc;
+        private string _DBRadicacionesCEECnnStr;
 
         public vmLotProcess()
             : base(new wpfLotProcess())
@@ -123,6 +124,17 @@
                 _DBImagenesCnnStr = value;
             }
         }
+        public string DBRadicacionesCEECnnStr
+        {
+            get
+            {
+                return _DBRadicacionesCEECnnStr;
+            }set
+            {
+                _DBRadicacionesCEECnnStr = value;
+            }
+        }
+
         public string SysUser
         {
             get
@@ -372,10 +384,11 @@
                 {
                     DBCnnStr = DBEndososCnnStr,
                     DBCeeMasterCnnStr = DBCeeMasterCnnStr,
-                    DBImagenesCnnStr = DBImagenesCnnStr
+                    DBImagenesCnnStr = DBImagenesCnnStr,
+                    DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
                 })
                 {
-                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios);
+                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios,lblNReasons);
                 }
 
             }

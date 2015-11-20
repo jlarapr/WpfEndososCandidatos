@@ -308,10 +308,10 @@ namespace WpfEndososCandidatos.ViewModels
                     _ImagePass = jolcode.Registry.read(_REGPATH, "ImagePass");
                     _ImageDB = jolcode.Registry.read(_REGPATH, "ImageDB");
 
-                    _ValiSvr = jolcode.Registry.read(_REGPATH, "ValiSvr");
-                    _ValiUsr = jolcode.Registry.read(_REGPATH, "ValiUsr");
-                    _ValiPass = jolcode.Registry.read(_REGPATH, "ValiPass");
-                    _ValiDB = jolcode.Registry.read(_REGPATH, "ValiDB");
+                    _RadicacionesSvr = jolcode.Registry.read(_REGPATH, "RadicacionesSvr");
+                    _RadicacionesUsr = jolcode.Registry.read(_REGPATH, "RadicacionesUsr");
+                    _RadicacionesPass = jolcode.Registry.read(_REGPATH, "RadicacionesPass");
+                    _RadicacionesDB = jolcode.Registry.read(_REGPATH, "RadicacionesDB");
 
                     _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
                 }
@@ -335,10 +335,10 @@ namespace WpfEndososCandidatos.ViewModels
                         frmMantDB.imagePass = _ImagePass;
                         frmMantDB.imageDB = _ImageDB;
 
-                        frmMantDB.valiSvr = _ValiSvr;
-                        frmMantDB.valiUsr = _ValiUsr;
-                        frmMantDB.valiPass = _ValiPass;
-                        frmMantDB.valiDB = _ValiDB;
+                        frmMantDB.RadicacionesSvr = _RadicacionesSvr;
+                        frmMantDB.RadicacionesUsr = _RadicacionesUsr;
+                        frmMantDB.RadicacionesPass = _RadicacionesPass;
+                        frmMantDB.RadicacionesDB = _RadicacionesDB;
 
                         frmMantDB.imgPath = _ImgPath;
 
@@ -360,10 +360,10 @@ namespace WpfEndososCandidatos.ViewModels
                         _ImagePass = frmMantDB.imagePass;
                         _ImageDB = frmMantDB.imageDB;
 
-                        _ValiSvr = frmMantDB.valiSvr;
-                        _ValiUsr = frmMantDB.valiUsr;
-                        _ValiPass = frmMantDB.valiPass;
-                        _ValiDB = frmMantDB.valiDB;
+                        _RadicacionesSvr = frmMantDB.RadicacionesSvr;
+                        _RadicacionesUsr = frmMantDB.RadicacionesUsr;
+                        _RadicacionesPass = frmMantDB.RadicacionesPass;
+                        _RadicacionesDB = frmMantDB.RadicacionesDB;
 
                         _ImgPath = frmMantDB.imgPath;
 

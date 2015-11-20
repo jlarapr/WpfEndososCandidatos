@@ -38,10 +38,10 @@ namespace WpfEndososCandidatos.ViewModels
         private string _ImagePass=string.Empty;
         private string _ImageDB =string.Empty;
         
-        private string _ValiSvr =string.Empty;
-        private string _ValiUsr =string.Empty;
-        private string _ValiPass =string.Empty;
-        private string _ValiDB = string.Empty;
+        private string _RadicacionesSvr = string.Empty;
+        private string _RadicacionesUsr = string.Empty;
+        private string _RadicacionesPass = string.Empty;
+        private string _RadicacionesDB = string.Empty;
 
         private string _ImgPath = string.Empty;
         private string _Hora;
@@ -50,6 +50,7 @@ namespace WpfEndososCandidatos.ViewModels
         private string _DBEndososCnnStr;
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
+        private string _DBRadicacionesCnnStr;
         private string _WhatIsUserName;
 
         public MainVM()
@@ -163,7 +164,13 @@ namespace WpfEndososCandidatos.ViewModels
                 return _DBImagenesCnnStr;
             }
         }
-
+        public string DBRadicacionesCEECnnStr
+        {
+            get
+            {
+                return _DBRadicacionesCnnStr;
+            }
+        }
 
         public void OnShow()
         {
@@ -300,32 +307,32 @@ namespace WpfEndososCandidatos.ViewModels
                         jolcode.Registry.write(_REGPATH, "ImageDB",string.Empty);
                     }
 
-                    try { _ValiSvr = jolcode.Registry.read(_REGPATH, "ValiSvr"); }
+                    try { _RadicacionesSvr = jolcode.Registry.read(_REGPATH, "RadicacionesSvr"); }
                     catch
                     {
-                        _ValiSvr = string.Empty;
-                        jolcode.Registry.write(_REGPATH, "ValiSvr",string.Empty);
+                        _RadicacionesSvr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "RadicacionesSvr", string.Empty);
                     }
 
-                    try { _ValiUsr = jolcode.Registry.read(_REGPATH, "ValiUsr"); }
+                    try { _RadicacionesUsr = jolcode.Registry.read(_REGPATH, "RadicacionesUsr"); }
                     catch
                     {
-                        _ValiUsr = string.Empty;
-                        jolcode.Registry.write(_REGPATH, "ValiUsr",string.Empty);
+                        _RadicacionesUsr = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "RadicacionesUsr", string.Empty);
                     }
 
-                    try { _ValiPass = jolcode.Registry.read(_REGPATH, "ValiPass"); }
+                    try { _RadicacionesPass = jolcode.Registry.read(_REGPATH, "RadicacionesPass"); }
                     catch
                     {
-                        _ValiPass = string.Empty;
-                        jolcode.Registry.write(_REGPATH, "ValiPass",string.Empty);
+                        _RadicacionesPass = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "RadicacionesPass", string.Empty);
                     }
 
-                    try { _ValiDB = jolcode.Registry.read(_REGPATH, "ValiDB"); }
+                    try { _RadicacionesDB = jolcode.Registry.read(_REGPATH, "RadicacionesDB"); }
                     catch
                     {
-                        _ValiDB = string.Empty;
-                        jolcode.Registry.write(_REGPATH, "ValiDB",string.Empty);
+                        _RadicacionesDB = string.Empty;
+                        jolcode.Registry.write(_REGPATH, "RadicacionesDB", string.Empty);
                     }
 
                     try { _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew"); }
@@ -353,10 +360,10 @@ namespace WpfEndososCandidatos.ViewModels
                        (_ImageDB.Trim().Length == 0) ||
                        (_ImagePass.Trim().Length == 0) ||
                        (_ImgPath.Trim().Length == 0) ||
-                       (_ValiSvr.Trim().Length == 0) ||
-                       (_ValiUsr.Trim().Length == 0) ||
-                       (_ValiDB.Trim().Length == 0) ||
-                       (_ValiPass.Trim().Length == 0))
+                       (_RadicacionesSvr.Trim().Length == 0) ||
+                       (_RadicacionesUsr.Trim().Length == 0) ||
+                       (_RadicacionesDB.Trim().Length == 0) ||
+                       (_RadicacionesPass.Trim().Length == 0))
                 {
                     using (vmMantDB frmMantDB = new vmMantDB(_REGPATH))
                     {
@@ -375,10 +382,10 @@ namespace WpfEndososCandidatos.ViewModels
                         frmMantDB.imagePass = _ImagePass;
                         frmMantDB.imageDB = _ImageDB;
 
-                        frmMantDB.valiSvr = _ValiSvr;
-                        frmMantDB.valiUsr = _ValiUsr;
-                        frmMantDB.valiPass = _ValiPass;
-                        frmMantDB.valiDB = _ValiDB;
+                        frmMantDB.RadicacionesSvr = _RadicacionesSvr;
+                        frmMantDB.RadicacionesUsr = _RadicacionesUsr;
+                        frmMantDB.RadicacionesPass = _RadicacionesPass;
+                        frmMantDB.RadicacionesDB = _RadicacionesDB;
 
                         frmMantDB.imgPath = _ImgPath;
 
@@ -401,10 +408,10 @@ namespace WpfEndososCandidatos.ViewModels
                         _ImagePass = PasswordHash.Encrypt1(frmMantDB.imagePass);
                         _ImageDB = frmMantDB.imageDB;
 
-                        _ValiSvr = frmMantDB.valiSvr;
-                        _ValiUsr = frmMantDB.valiUsr;
-                        _ValiPass = frmMantDB.valiPass;
-                        _ValiDB = frmMantDB.valiDB;
+                        _RadicacionesSvr = frmMantDB.RadicacionesSvr;
+                        _RadicacionesUsr = frmMantDB.RadicacionesUsr;
+                        _RadicacionesPass = PasswordHash.Encrypt1(frmMantDB.RadicacionesPass);
+                        _RadicacionesDB = frmMantDB.RadicacionesDB;
 
                         _ImgPath = frmMantDB.imgPath;
                     }// end using
@@ -430,7 +437,8 @@ namespace WpfEndososCandidatos.ViewModels
                 _DBEndososCnnStr = string.Concat( "Persist Security Info=False;Data Source=", _SqlServer ,";Initial Catalog=", _Database,";User ID=", _Username, ";Password=", PasswordHash.Decrypt1(_Password));
                 _DBCeeMasterCnnStr = string.Concat("Persist Security Info=False;Data Source=", _MastSvr, ";Initial Catalog=", _MastDB, ";User ID=", _MastUsr, ";Password=", PasswordHash.Decrypt1(_MastPass));
                 _DBImagenesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _ImageSvr, ";Initial Catalog=", _ImageDB, ";User ID=", _ImageUsr, ";Password=", PasswordHash.Decrypt1(_ImagePass));
-
+                _DBRadicacionesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _RadicacionesSvr, ";Initial Catalog=", _RadicacionesDB, ";User ID=", _RadicacionesUsr, ";Password=", PasswordHash.Decrypt1(_RadicacionesPass));
+                 
                 Login_Click();
             }
             catch(Exception ex)

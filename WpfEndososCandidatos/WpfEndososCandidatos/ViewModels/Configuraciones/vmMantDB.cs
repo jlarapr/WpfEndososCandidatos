@@ -59,6 +59,13 @@
         private string _REGPATH;
         private bool _SaveReg;
         private Brush _BorderBrush;
+        private string _RadicacionesSvr_txt;
+        private string _RadicacionesUsr_txt;
+        private string _RadicacionesUPass_txt;
+        private ObservableCollection<string> _cbRadicacionesDB;
+        private string _cbRadicacionesDB_Item;
+        private int _cbRadicacionesDB_Item_Id;
+        private RelayCommand _cmdReloadRadicacionesDBs_Click;
 
         public string sqlServer { get; set; }
         public string userName { get; set; }
@@ -74,10 +81,10 @@
         public string imageUsr { get; set; }
         public string imagePass { get; set; }
         public string imageDB { get; set; }
-        public string valiSvr { get; set; }
-        public string valiUsr { get; set; }
-        public string valiPass { get; set; }
-        public string valiDB { get; set; }
+        public string RadicacionesSvr { get; set; }
+        public string RadicacionesUsr { get; set; }
+        public string RadicacionesPass { get; set; }
+        public string RadicacionesDB { get; set; }
         public string imgPath { get; set; }
 
         public vmMantDB(string regpath)
@@ -386,10 +393,87 @@
             }
         }
 
+        public string RadicacionesSvr_txt
+        {
+            get
+            {
+                return _RadicacionesSvr_txt;
+            }set
+            {
+                _RadicacionesSvr_txt = value;
+                this.RaisePropertychanged("RadicacionesSvr_txt");
+            }
+        }
+        public string RadicacionesUsr_txt
+        {
+            get
+            {
+                return _RadicacionesUsr_txt;
+            }
+            set
+            {
+                _RadicacionesUsr_txt = value;
+                this.RaisePropertychanged("RadicacionesUsr_txt");
+            }
+        }
+        public string RadicacionesUPass_txt
+        {
+            get
+            {
+                return _RadicacionesUPass_txt;
+            }set
+            {
+                if (_RadicacionesUPass_txt != value)
+                {
+                    _RadicacionesUPass_txt = value;
+                    this.RaisePropertychanged("RadicacionesUPass_txt");
+                }
+            }
+        }
+
+        public ObservableCollection<string> cbRadicacionesDB
+        {
+            get
+            {
+                return _cbRadicacionesDB;
+            }
+            set
+            {
+                _cbRadicacionesDB = value;
+                this.RaisePropertychanged("cbRadicacionesDB");
+            }
+        }
+        public string cbRadicacionesDB_Item
+        {
+            get
+            {
+                return _cbRadicacionesDB_Item;
+            }
+            set
+            {
+                if (_cbRadicacionesDB_Item != value)
+                {
+                    _cbRadicacionesDB_Item = value;
+                    this.RaisePropertychanged("cbRadicacionesDB_Item");
+                }
+            }
+        }
+        public int cbRadicacionesDB_Item_Id
+        {
+            get
+            {
+                return _cbRadicacionesDB_Item_Id;
+            }
+            set
+            {
+                _cbRadicacionesDB_Item_Id = value;
+                this.RaisePropertychanged("cbRadicacionesDB_Item_Id");
+            }
+        }
         #endregion
 
         #region Button
-              
+
 
         public RelayCommand cmdBrowseImagesPath_Click
         {
@@ -458,6 +542,47 @@
                 return _cmdOk_Click;
             }
         }
+        public RelayCommand cmdReloadRadicacionesDBs_Click
+        {
+            get
+            {
+                if (_cmdReloadRadicacionesDBs_Click == null)
+                {
+                    _cmdReloadRadicacionesDBs_Click = new RelayCommand(param => MyCmdReloadRadicacionesDBs_Click());
+                }
+                return _cmdReloadRadicacionesDBs_Click;
+            }
+        }
+
+
+        private void MyCmdReloadRadicacionesDBs_Click()
+        {
+            try
+            {
+                if (RadicacionesSvr_txt.Trim().Length > 0)
+                {
+                    cbRadicacionesDB = null;
+                    cbRadicacionesDB = new ObservableCollection<string>();
+                    cbRadicacionesDB.Clear();
+
+                    GetDataBaseName(RadicacionesSvr_txt, RadicacionesUsr_txt, RadicacionesUPass_txt, cbRadicacionesDB);
+
+
+                    if (cbRadicacionesDB.Count > 0)
+                    {
+                        cbRadicacionesDB_Item_Id = 0;
+                    }
+                    else
+                    {
+                        cbRadicacionesDB_Item_Id = -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "MyCmdReloadRadicacionesDBs_Click", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void CmdOk_Click()
         {
@@ -496,10 +621,11 @@
                  imagePass = dfImagePass_txt;//insecurePassword;
                  imageDB = cbImageDB_Item.Trim();
 
-                 valiSvr = "No hay datos";
-                 valiUsr = "No hay datos";
-                 valiPass = "No hay datos";
-                 valiDB = "No hay datos";
+                RadicacionesSvr = RadicacionesSvr_txt.Trim();
+                RadicacionesUsr = RadicacionesUsr_txt.Trim();
+                RadicacionesPass = RadicacionesUPass_txt.Trim();
+                RadicacionesDB = cbRadicacionesDB_Item.Trim();
+
 
                  string ImagePathNew = dfPathtoPictures_txt.Trim();
 
@@ -520,10 +646,10 @@
                     (imageDB.Trim().Length == 0)    ||
                     (imagePass.Trim().Length == 0)  ||
 
-                    (valiSvr.Trim().Length == 0) ||
-                    (valiUsr.Trim().Length == 0) ||
-                    (valiDB.Trim().Length == 0) ||
-                    (valiPass.Trim().Length == 0))
+                    (RadicacionesSvr.Trim().Length == 0) ||
+                    (RadicacionesUsr.Trim().Length == 0) ||
+                    (RadicacionesDB.Trim().Length == 0) ||
+                    (RadicacionesPass.Trim().Length == 0))
                 {
 
                     throw new Exception("Error con los Parametros de la Base de datos");
@@ -549,10 +675,11 @@
                     jolcode.Registry.write(_REGPATH, "ImagePass", PasswordHash.Encrypt1(imagePass));
                     jolcode.Registry.write(_REGPATH, "ImageDB", imageDB);
 
-                    jolcode.Registry.write(_REGPATH, "ValiSvr", valiSvr);
-                    jolcode.Registry.write(_REGPATH, "ValiUsr", valiUsr);
-                    jolcode.Registry.write(_REGPATH, "ValiPass", valiPass);
-                    jolcode.Registry.write(_REGPATH, "ValiDB", valiDB);
+                    jolcode.Registry.write(_REGPATH, "RadicacionesSvr", RadicacionesSvr);
+                    jolcode.Registry.write(_REGPATH, "RadicacionesUsr", RadicacionesUsr);
+                    jolcode.Registry.write(_REGPATH, "RadicacionesPass", PasswordHash.Encrypt1(RadicacionesPass));
+                    jolcode.Registry.write(_REGPATH, "RadicacionesDB", RadicacionesDB);
+
                     jolcode.Registry.write(_REGPATH, "ImagePathNew", ImagePathNew);
 
                     _SaveReg = true;
@@ -749,7 +876,8 @@
                 cbDatabaseEndoso = new ObservableCollection<string>();
                 cbImageDB = new ObservableCollection<string>();
                 cbMastDB = new ObservableCollection<string>();
-                
+                cbRadicacionesDB = new ObservableCollection<string>();
+
                 dfServer_txt = sqlServer;
                 dfUsername_txt = userName;
                 string decryptPassword;
@@ -792,6 +920,21 @@
                     //dfImagePass_txt = ToSecureString(decryptPassword);
                     dfImagePass_txt = decryptPassword;
                 }
+                if (RadicacionesPass.Trim().Length > 0)
+                {
+                    decryptPassword = PasswordHash.Decrypt1(RadicacionesPass);
+
+                    GetDataBaseName(RadicacionesSvr, RadicacionesUsr, decryptPassword, cbRadicacionesDB);
+
+                    cbRadicacionesDB_Item = RadicacionesDB;
+                    RadicacionesSvr_txt = RadicacionesSvr;
+                    RadicacionesUsr_txt = RadicacionesUsr;
+
+                    RadicacionesUPass_txt = decryptPassword;
+                }
+
+
+
                 dfPathtoPictures_txt = imgPath;
 
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];

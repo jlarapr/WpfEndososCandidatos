@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WpfEndososCandidatos.ViewModels"
         xmlns:ff="clr-namespace:FunctionalFun.UI"
         Background="Beige"
-        Title="Mantenimiento - Base de Datos" Height="654.765" Width="443.031" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
+        Title="Mantenimiento - Base de Datos" Height="455.765" Width="861.212" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -23,11 +23,11 @@
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
             <Label Content="Path para la imágenes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Grid.Column="1" Height="26"/>
-            <TextBox x:Name="dfPathtoPictures" HorizontalAlignment="Left" Height="23" Margin="144,13,0,0" TextWrapping="Wrap" Text="{Binding dfPathtoPictures_txt}" VerticalAlignment="Top" Width="215" Grid.Column="1"/>
-            <Button x:Name="cmdBrowseImagesPath" Content="Buscar..." HorizontalAlignment="Left" Margin="364,14,0,0" VerticalAlignment="Top" Width="53" Command="{Binding cmdBrowseImagesPath_Click}" Grid.Column="1" Height="22" />
+            <TextBox x:Name="dfPathtoPictures" HorizontalAlignment="Left" Height="23" Margin="144,13,0,0" TextWrapping="Wrap" Text="{Binding dfPathtoPictures_txt}" VerticalAlignment="Top" Width="626" Grid.Column="1"/>
+            <Button x:Name="cmdBrowseImagesPath" Content="Buscar..." HorizontalAlignment="Left" Margin="775,12,0,0" VerticalAlignment="Top" Width="53" Command="{Binding cmdBrowseImagesPath_Click}" Grid.Column="1" Height="22" />
 
             <Border BorderBrush="Black" BorderThickness="1"  Margin="10,41,0,0" CornerRadius="5" Grid.Column="1" Height="189" VerticalAlignment="Top" HorizontalAlignment="Left" Width="407">
-                <GroupBox Header="Endosos - Base de Datos" Margin="1">
+                <GroupBox Header="Endosos - TF - Base de Datos" Margin="1">
                     <Grid Margin="2">
                         <Label Content="Servidor" HorizontalAlignment="Left" Margin="10,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.579,-0.154" Width="75"/>
                         <TextBox x:Name="dfServer" HorizontalAlignment="Left" Height="23" Margin="148,20,0,0" TextWrapping="Wrap" Text="{Binding dfServer_txt}" VerticalAlignment="Top" Width="205"/>
@@ -54,9 +54,9 @@
                 </GroupBox>
             </Border>
 
-            <Button x:Name="cmdCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="342,585,0,0" VerticalAlignment="Top" Width="75" Command="{Binding cmdCancel_Click}" Height="22" />
-            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="170" Margin="10,235,0,0" VerticalAlignment="Top" Width="407">
-                <GroupBox Header="Master - Base de Datos" Margin="1">
+            <Button x:Name="cmdCancel" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="753,410,0,0" VerticalAlignment="Top" Width="75" Command="{Binding cmdCancel_Click}" Height="29" />
+            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="189" Margin="422,41,0,0" VerticalAlignment="Top" Width="407">
+                <GroupBox Header="Master - Citizen - Base de Datos" Margin="1">
                     <Grid Margin="2">
                         <Label Content="Servidor" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                         <TextBox x:Name="dfMastSvr" HorizontalAlignment="Left" Height="23" Margin="148,13,0,0" TextWrapping="Wrap" Text="{Binding dfMastSvr_txt}" VerticalAlignment="Top" Width="209"/>
@@ -79,7 +79,7 @@
                     </Grid>
                 </GroupBox>
             </Border>
-            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="170" Margin="10,410,0,0" VerticalAlignment="Top" Width="407">
+            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="170" Margin="10,235,0,0" VerticalAlignment="Top" Width="407">
                 <GroupBox Header="Master - Imagenes" Margin="1">
                     <Grid Margin="2">
                         <Label Content="Servidor" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -101,10 +101,33 @@
                     </Grid>
                 </GroupBox>
             </Border>
-            <Button x:Name="cmdOk" Command="{Binding cmdOk_Click}" Content="Ok" Grid.Column="1" HorizontalAlignment="Left" Margin="262,585,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button x:Name="cmdOk" Command="{Binding cmdOk_Click}" Content="Ok" Grid.Column="1" HorizontalAlignment="Left" Margin="673,412,0,0" VerticalAlignment="Top" Width="75" Height="27"/>
             <TextBlock Visibility="Hidden" Background="Azure" Padding="10,0" x:Name="Password_txt" Text="{Binding dfPassword_txt, Mode=TwoWay}" Margin="422,79,70,515" Grid.Column="1" />
             <TextBlock Visibility="Hidden" Background="Azure" Padding="10,0" x:Name="MastPass_txt" Text="{Binding dfMastPass_txt, Mode=TwoWay}" Margin="422,235,57,371" Grid.Column="1" />
             <TextBlock Visibility="Hidden" Background="Azure" Padding="10,0" x:Name="ImagePass_txt" Text="{Binding dfImagePass_txt, Mode=TwoWay}" Margin="435,444,44,162" Grid.Column="1" />
+            <TextBlock Visibility="Hidden" Background="Azure" Padding="10,0" x:Name="RadicacionesUPass_txt" Text="{Binding RadicacionesUPass_txt, Mode=TwoWay}" Margin="435,444,44,162" Grid.Column="1" />
+            <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Grid.Column="1" HorizontalAlignment="Left" Height="170" Margin="422,235,0,0" VerticalAlignment="Top" Width="407">
+                <GroupBox Header="Master - Secretaría - Radicaciones CEE" Margin="1">
+                    <Grid Margin="2">
+                        <Label Content="Servidor" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="Server" HorizontalAlignment="Left" Height="23" Margin="148,13,0,0" TextWrapping="Wrap" Text="{Binding RadicacionesSvr_txt}" VerticalAlignment="Top" Width="209"/>
+                        <Label Content="Usuario (Base deDatos)" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="Users" HorizontalAlignment="Left" Height="23" Margin="148,44,0,0" TextWrapping="Wrap" Text="{Binding RadicacionesUsr_txt}" VerticalAlignment="Top" Width="209"/>
+                        <Label Content="Password" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="64"/>
+                        <PasswordBox x:Name="dfRadicacionesUPass_txt" 
+            				PassHelper:PasswordHelper.Attach="True"
+            				PassHelper:PasswordHelper.Password="{Binding Text, ElementName=RadicacionesUPass_txt, Mode=TwoWay}"                                     
+            				HorizontalAlignment="Left" Height="23" Margin="148,74,0,0"  VerticalAlignment="Top" Width="209"/>
+
+                        <Label Content="Base de Datos" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="cbImageDBImg1" ItemsSource="{Binding cbRadicacionesDB}"
+            				SelectedItem="{Binding cbRadicacionesDB_Item}"
+            				SelectedIndex="{Binding cbRadicacionesDB_Item_Id}"
+            				HorizontalAlignment="Left" Margin="148,108,0,0" VerticalAlignment="Top" Width="169"/>
+                        <Button x:Name="cmdReloadImageDBs1" Command="{Binding cmdReloadRadicacionesDBs_Click}" Content="..." HorizontalAlignment="Left" Margin="326,108,0,0" VerticalAlignment="Top" Width="31"/>
+                    </Grid>
+                </GroupBox>
+            </Border>
 
         </Grid>
     </Border>
