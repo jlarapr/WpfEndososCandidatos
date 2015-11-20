@@ -32,25 +32,26 @@
         private int _cbLots_Item_Id;
         private bool _CanView;
         private Cursor _MiCursor;
-        private string _lblTota;
-        private string _lblLote;
-        private string _lblProcesadas;
-        private string _lblAprobadas;
-        private string _lblRechazadas;
-        private string _lblWarnings;
         private ObservableCollection<string> _lblNReasons;
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
         private string _SysUser;
         private ObservableCollection<Brush> _Foreground_Desc;
         private string _DBRadicacionesCEECnnStr;
+        private ObservableCollection<int> _ProgressBar_Maximum;
+        private ObservableCollection<int> _ProgressBar_Value;
+        private ObservableCollection<string> _Resultados;
+        private bool _CanCmdSalir;
+        private bool _CanCmdProcess;
+        private bool _RunProcess;
+        private bool _CanCmdRefresh;
 
         public vmLotProcess()
             : base(new wpfLotProcess())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
-            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(),param => CanCmdSalir);
+            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click(),param => CanCmdRefresh);
             cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
             cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
 
@@ -58,11 +59,49 @@
             cbLots = new ObservableCollection<string>();
             lblNReasons = new ObservableCollection<string>();
             Foreground_Desc = new ObservableCollection<Brush>();
+            ProgressBar_Value = new ObservableCollection<int>();
+            ProgressBar_Maximum = new ObservableCollection<int>();
+            Resultados = new ObservableCollection<string>();
+
+
             CanView = false;
         }
 
         #region MyProperty
 
+        public ObservableCollection<string> Resultados
+        {
+            get
+            {
+                return _Resultados;
+            }set
+            {
+                _Resultados = value;
+                this.RaisePropertychanged("Resultados");
+            }
+        }
+        public ObservableCollection<int> ProgressBar_Value
+        {
+            get
+            {
+                return _ProgressBar_Value; 
+            }set
+            {
+                _ProgressBar_Value = value;
+                this.RaisePropertychanged("ProgressBar_Value");
+            }
+        }
+        public ObservableCollection<int> ProgressBar_Maximum
+        {
+            get
+            {
+                return _ProgressBar_Maximum;
+            }set
+            {
+                _ProgressBar_Maximum = value;
+                this.RaisePropertychanged("ProgressBar_Maximum");
+            }
+        }
         public Brush BorderBrush
         {
             get
@@ -146,78 +185,6 @@
             }
         }
 
-        public string lblTota
-        {
-            get
-            {
-                return _lblTota;
-            }set
-            {
-                _lblTota = value;
-                this.RaisePropertychanged("lblTota");
-            }
-        }
-        public string lblLote
-        {
-            get
-            {
-                return _lblLote;
-            }
-            set
-            {
-                _lblLote = value;
-                this.RaisePropertychanged("lblLote");
-            }
-        }
-        public string lblProcesadas
-        {
-            get
-            {
-                return _lblProcesadas;
-            }
-            set
-            {
-                _lblProcesadas = value;
-                this.RaisePropertychanged("lblProcesadas");
-            }
-        }
-        public string lblAprobadas
-        {
-            get
-            {
-                return _lblAprobadas;
-            }
-            set
-            {
-                _lblAprobadas = value;
-                this.RaisePropertychanged("lblAprobadas");
-            }
-        }
-        public string lblRechazadas
-        {
-            get
-            {
-                return _lblRechazadas;
-            }
-            set
-            {
-                _lblRechazadas = value;
-                this.RaisePropertychanged("lblRechazadas");
-            }
-        }
-        public string lblWarnings
-        {
-            get
-            {
-                return _lblWarnings;
-            }
-            set
-            {
-                _lblWarnings = value;
-                this.RaisePropertychanged("lblWarnings");
-            }
-        }
-
         public ObservableCollection<Brush> Foreground_Desc
         {
             get
@@ -276,9 +243,11 @@
             }
             set
             {
-               
-                _cbLots_Item = value;
-                this.RaisePropertychanged("cbLots_Item");
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _cbLots_Item = value;
+                    this.RaisePropertychanged("cbLots_Item");                  
+                }
             }
         }
         public int cbLots_Item_Id
@@ -289,8 +258,13 @@
             }
             set
             {
-                _cbLots_Item_Id = value;
+               
+                _cbLots_Item_Id = value;       
                 this.RaisePropertychanged("cbLots_Item_Id");
+
+                if ((value > -1) && (!_RunProcess))
+                    CanCmdProcess = true;
+
             }
         }
 
@@ -298,7 +272,10 @@
         {
             get
             {
-                return cbLots_Item_Id > -1 ? true : false;
+                return _CanCmdProcess;
+            }set
+            {
+                _CanCmdProcess = value;
             }
         }
         public bool CanView
@@ -312,6 +289,27 @@
             }
         }
 
+        public bool CanCmdSalir
+        {
+            get
+            {
+                return _CanCmdSalir;
+            }set
+            {
+                _CanCmdSalir = value;
+            }
+        }
+        public bool CanCmdRefresh
+        {
+            get
+            {
+                return _CanCmdRefresh;
+            }set
+            {
+                _CanCmdRefresh = value;
+
+            }
+        }
         #endregion
 
         #region MyCmd
@@ -378,7 +376,13 @@
             try
             {
                 MiCursor = Cursors.Wait;
-                CanView = true;
+                CanCmdSalir = false;
+                CanCmdProcess = false;
+                CanView = false;
+                _RunProcess = true;
+                CanCmdRefresh = false;
+
+                MySendTab();
 
                 using (SqlExcuteCommand exe = new SqlExcuteCommand()
                 {
@@ -388,8 +392,17 @@
                     DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
                 })
                 {
-                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios,lblNReasons);
+                    exe.DoEvents();
+                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios,lblNReasons, ProgressBar_Value, ProgressBar_Maximum,Resultados);
                 }
+
+              
+
+                if (int.Parse(Resultados[4]) > 0) //lblRechazadas            4)
+                    CanView = true;
+                else
+                    CanView = false;
+
 
             }
             catch (Exception ex)
@@ -400,6 +413,11 @@
             finally
             {
                 MiCursor = Cursors.Arrow;
+                cbLots_Item_Id = -1;
+                CanCmdSalir = true;
+                _RunProcess = false;
+                CanCmdRefresh = true;
+
             }
         }
 
@@ -450,15 +468,27 @@
             try
             {
                 CanView = false;
-                lblLote = "0";
-                lblTota = "0";
-                lblProcesadas = "0";
-                lblAprobadas = "0";
-                lblRechazadas = "0";
-                lblWarnings = "0";
+                CanCmdSalir = true;
+                _RunProcess = false;
+                CanCmdProcess = false;
+                CanCmdRefresh = true;
 
-                for (int i = 0; i < 17; i++)
-                    lblNReasons.Add("0");
+                ProgressBar_Maximum.Clear();
+                ProgressBar_Value.Clear();
+                ProgressBar_Maximum.Add(100);
+                ProgressBar_Value.Add(0);
+
+                Resultados.Clear();
+                Resultados.Add("0");//lblLote                  0
+                Resultados.Add("0");//lblTota                  1
+                Resultados.Add("0");//lblProcesadas            2    
+                Resultados.Add("0");//lblAprobadas             3    
+                Resultados.Add("0");//lblRechazadas            4
+                Resultados.Add("0");//lblWarnings              5
+
+
+
+               
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
@@ -488,13 +518,20 @@
 
                         if (row["Editar"].ToString().Trim() != "1")
                         {
-                            Foreground_Desc.Add(Brushes.Yellow);
+                            if (row["Warning"].ToString().Trim() != "1" )
+                                Foreground_Desc.Add(Brushes.Yellow);
+                            else
+                                Foreground_Desc.Add(Brushes.Red);
+
                         }
                         else
                         {
                             Foreground_Desc.Add(Brushes.Black);
                         }
                     }
+
+                    for (int i = 0; i < CollCriterios.Count; i++)//17
+                        lblNReasons.Add("0");
 
                     _MyLotsTable = get.MyGetLotToProcess();
 
@@ -523,6 +560,7 @@
 
                     }
                     cbLots_Item_Id = -1;
+                    MySendTab();
 
                 }
             }

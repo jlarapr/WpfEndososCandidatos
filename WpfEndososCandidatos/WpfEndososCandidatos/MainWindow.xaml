@@ -19,21 +19,21 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="219*"/>
-            <RowDefinition Height="152*"/>
+            <RowDefinition Height="31*"/>
+            <RowDefinition Height="200*"/>
+            <RowDefinition Height="184*"/>
         </Grid.RowDefinitions>
 
 
         <Menu x:Name="MainMenu" VerticalAlignment="Top" Height="31" Background="DarkGray" >
-            <MenuItem Name="mnuMainFile" Header="_Archivo"  >
+            <MenuItem Name="mnuMainFile" Header="_Archivo" Margin="0,5,0,0"  >
                 <MenuItem Name="mnuLogin" IsEnabled="{Binding mnuLogin_IsEnabled}" Header="_Login" Command="{Binding login_Click}" />
                 <MenuItem Name="mnuLogout" IsEnabled="{Binding mnuLogout_IsEnabled}" Header="_Logout" Command="{Binding logout_Click}"  />
                 <MenuItem Name="mnuChangePassword" IsEnabled="{Binding mnuChangePassword_IsEnabled}" Header="_Cambiar Password" Command="{Binding cambiarPassword_Click}"  />
                 <Separator></Separator>
                 <MenuItem Name="mnuExit" Header="_Exit" Command="{Binding close_Click}" />
             </MenuItem>
-            <MenuItem Name="mnuMainProcesos" Header="_Procesos"  >
+            <MenuItem Name="mnuMainProcesos" Header="_Procesos" Margin="0,5,0,0"  >
                 <!--<MenuItem Name="mnuRecibirLotes" IsEnabled="{Binding mnuRecibirLotes_IsEnabled}" Header="_Recibir Lotes" Command="{Binding recibirLotes_Click}" />-->
                 <MenuItem Name="mnuAutoRizarLotes" IsEnabled="{Binding mnuAutoRizarLotes_IsEnabled}" Header="_Autorizar Lotes" Command="{Binding autorizarLotes_Click}"/>
                 <MenuItem Name="mnuProcesarLotes" IsEnabled="{Binding mnuProcesarLotes_IsEnabled,Mode=TwoWay}" Header="_Procesar Lotes" Command="{Binding procesarLotes_Click}" />
@@ -41,10 +41,10 @@
                 <MenuItem Name="mnuCorregirEndosos" IsEnabled="{Binding mnuCorregirEndosos_IsEnabled}" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
                 <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
             </MenuItem>
-            <MenuItem Name="mnuMainVer" Header="_Ver"  >
+            <MenuItem Name="mnuMainVer" Header="_Ver" Margin="0,5,0,0"  >
                 <MenuItem Name="mnuVerElector" IsEnabled="{Binding mnuVerElector_IsEnabled}" Header="_Ver Elector" Command="{Binding verElector_click}" />
             </MenuItem>
-            <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones"  >
+            <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones" Margin="0,5,0,0"  >
                 <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
                 <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
                 <MenuItem Name="mnuCandidatos" Header="_Candidatos" 
@@ -92,8 +92,8 @@
             </StatusBarItem>
 
         </StatusBar>
-        <Canvas Margin="15,10,0,0" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Left" Width="883" Height="333" VerticalAlignment="Top">
-            <Image x:Name="image"  Source="Images/Logo CEE1.JPG" Stretch="None" HorizontalAlignment="Left" Width="164" Height="169" Canvas.Left="384" Canvas.Top="27"/>
+        <Canvas Margin="0" Grid.Row="1" HorizontalAlignment="Left" Width="189" Height="193" VerticalAlignment="Top">
+            <Image x:Name="image"  Source="Images/Logo CEE1.JPG" Stretch="None" HorizontalAlignment="Left" Width="169" Height="173" Canvas.Left="10" Canvas.Top="10" Margin="-10,-9,0,0"/>
         </Canvas>
 
     </Grid>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 
 namespace jolcode
 {
@@ -127,7 +128,20 @@ namespace jolcode
                 throw;
             }
         }
+        public void MySendTab()
+        {
+            try
+            {
+                KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
+                e1.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput(e1);
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
 
         #region Dispose
 

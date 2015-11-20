@@ -7,10 +7,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace jolcode
 {
-    public class SqlExcuteCommand  : IDisposable
+    public class SqlExcuteCommand : IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _DBCnnStr;
@@ -28,7 +30,7 @@ namespace jolcode
             get
             {
                 return _DBCnnStr;
-            }set
+            } set
             {
                 _DBCnnStr = value;
             }
@@ -162,7 +164,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetSelectLotes(string lot,string cantidad)
+        public DataTable MyGetSelectLotes(string lot, string cantidad)
         {
             DataTable myTableReturn = new DataTable();
             bool myBoolError = true;
@@ -218,7 +220,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                       
+
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
@@ -230,8 +232,8 @@ namespace jolcode
                         })
                         {
 
-                            cmd.Parameters.Add(new SqlParameter("@lot",SqlDbType.VarChar)).Value = lot;
-                            
+                            cmd.Parameters.Add(new SqlParameter("@lot", SqlDbType.VarChar)).Value = lot;
+
 
                             cmd.CommandText = string.Concat(mySqlstrCount);
                             if ((int)cmd.ExecuteScalar() > 0)
@@ -270,8 +272,8 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                
-                string[] mySqlstrAll = 
+
+                string[] mySqlstrAll =
                 {
                     "Select Partido,BatchTrack, count(*) as Amount ",
                     "From [dbo].[TF-Partidos] ",
@@ -280,7 +282,7 @@ namespace jolcode
                     "Group By Partido,BatchTrack ",
                     "Order By Partido,BatchTrack;"
                 };
-                            
+
 
 
                 using (SqlConnection cnn = new SqlConnection()
@@ -409,7 +411,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-      
+
         public DataTable MyGetLotToProcess()
         {
             DataTable myTableReturn = new DataTable();
@@ -458,9 +460,9 @@ namespace jolcode
         }
 
 
-        public DataTable MyGetAreas (bool allColumm)
+        public DataTable MyGetAreas(bool allColumm)
         {
-            DataTable myTableReturn = new DataTable(); 
+            DataTable myTableReturn = new DataTable();
             try
             {
                 string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
@@ -469,7 +471,7 @@ namespace jolcode
                     mySqlstr = "Select * from areas order by area";
 
                 using (SqlConnection cnn = new SqlConnection()
-                { 
+                {
                     ConnectionString = DBCnnStr
                 })
                 {
@@ -545,7 +547,7 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select [Desc],PRECINTOS from AREAS where Area='" + area +  "'";
+                string mySqlstr = "Select [Desc],PRECINTOS from AREAS where Area='" + area + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -957,7 +959,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyDeleteNotario(string where,string where2)
+        public bool MyDeleteNotario(string where, string where2)
         {
             bool myBoolReturn = false;
             string[] myDelete =
@@ -1002,12 +1004,12 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeArea(bool isInsert,string area,string desc,string precintos,string electivePositionID,string demarcationID,string where)
+        public bool MyChangeArea(bool isInsert, string area, string desc, string precintos, string electivePositionID, string demarcationID, string where)
         {
             bool myBoolReturn = false;
             try
             {
-                string[] myInsert = 
+                string[] myInsert =
                         {
                             "INSERT INTO [dbo].[Areas]([Area],[Desc],[Precintos],[ElectivePositionID],[DemarcationID]) ",
                             "VALUES(@Area,@Desc,@Precintos,@ElectivePositionID,@DemarcationID)"
@@ -1033,12 +1035,12 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = isInsert == true?string.Concat(myInsert):string.Concat(myUpdate)
+                        CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate)
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
-                        
+
                         cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Desc", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Precintos", SqlDbType.VarChar));
@@ -1072,7 +1074,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area,   string where)
+        public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area, string where)
         {
             bool myBoolReturn = false;
             try
@@ -1119,7 +1121,7 @@ namespace jolcode
                         cmd.Parameters["@Partido"].Value = partido;
                         cmd.Parameters["@Desc"].Value = desc;
                         cmd.Parameters["@EndoReq"].Value = endoReq;
-                        cmd.Parameters["@Area"].Value = area.Substring(0,4);
+                        cmd.Parameters["@Area"].Value = area.Substring(0, 4);
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -1145,7 +1147,7 @@ namespace jolcode
             bool myBoolReturn = false;
             try
             {
-                
+
 
                 string[] myInsert =
                         {
@@ -1213,12 +1215,12 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeCriterios( string Campo, bool? Editar, string Desc, bool? Warning)
+        public bool MyChangeCriterios(string Campo, bool? Editar, string Desc, bool? Warning)
         {
             bool myBoolReturn = false;
             try
             {
-                
+
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Criterios] ",
@@ -1249,9 +1251,9 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Warning", SqlDbType.VarChar));
 
                         cmd.Parameters["@Campo"].Value = Campo;
-                        cmd.Parameters["@Editar"].Value = Editar == true?"1":"0";
+                        cmd.Parameters["@Editar"].Value = Editar == true ? "1" : "0";
                         cmd.Parameters["@Desc"].Value = Desc;
-                        cmd.Parameters["@Warning"].Value = Warning == true?"1":"0";
+                        cmd.Parameters["@Warning"].Value = Warning == true ? "1" : "0";
 
                         int myReturn = cmd.ExecuteNonQuery();
 
@@ -1269,7 +1271,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots,string usercode)
+        public bool MyChangeTF(DataTable tableLots, string usercode)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -1277,7 +1279,7 @@ namespace jolcode
             try
             {
 
-                if (tableLots == null )
+                if (tableLots == null)
                     throw new Exception("No Hay Lotes Para Importar");
 
                 if (tableLots.Rows.Count <= 0)
@@ -1318,7 +1320,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                       
+
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
@@ -1396,7 +1398,7 @@ namespace jolcode
                             string where = row["BatchTrack"].ToString();
 
                             whereParam.Value = where;
-                          
+
                             int myReturn = 0;
 
                             cmd.CommandText = string.Concat(myUpdate_Imported1);
@@ -1404,7 +1406,7 @@ namespace jolcode
 
                             if (cmd.Parameters.Contains(whereParam))
                                 cmd.Parameters.Remove(whereParam);
-                                
+
 
                             cmd.Parameters.Add(partidoParam);
                             cmd.Parameters.Add(lotParam);
@@ -1412,29 +1414,29 @@ namespace jolcode
                             cmd.Parameters.Add(usercodeParam);
                             cmd.Parameters.Add(authDateParam);
                             cmd.Parameters.Add(statusParam);
-                           /* cmd.Parameters.Add(verDateParam);
-                            cmd.Parameters.Add(verUserParam);
-                            cmd.Parameters.Add(finUserParam);
-                            cmd.Parameters.Add(finDateParam);
-                            cmd.Parameters.Add(revDateParam);
-                            cmd.Parameters.Add(revUserParam);
-                            cmd.Parameters.Add(conditionsParam);*/
+                            /* cmd.Parameters.Add(verDateParam);
+                             cmd.Parameters.Add(verUserParam);
+                             cmd.Parameters.Add(finUserParam);
+                             cmd.Parameters.Add(finDateParam);
+                             cmd.Parameters.Add(revDateParam);
+                             cmd.Parameters.Add(revUserParam);
+                             cmd.Parameters.Add(conditionsParam);*/
                             cmd.Parameters.Add(importDateParam);
 
-                           partidoParam.Value = row["Partido"].ToString(); 
-                           lotParam.Value = row["BatchTrack"].ToString(); 
-                           amountParam.Value = int.Parse(row["Amount"].ToString()); 
-                           usercodeParam.Value = usercode;
-                           authDateParam.Value = DateTime.Now.ToString(); ;
-                           statusParam.Value = "0";
-                           //verDateParam.Value = VerDate;
-                           //verUserParam.Value = VerUser;
-                           //finUserParam.Value = FinUser;
-                           //finDateParam.Value = FinDate;
-                           //revDateParam.Value = RevDate;
-                           //revUserParam.Value = RevUser;
-                           //conditionsParam.Value = conditions;
-                           importDateParam.Value = DateTime.Now.ToString(); 
+                            partidoParam.Value = row["Partido"].ToString();
+                            lotParam.Value = row["BatchTrack"].ToString();
+                            amountParam.Value = int.Parse(row["Amount"].ToString());
+                            usercodeParam.Value = usercode;
+                            authDateParam.Value = DateTime.Now.ToString(); ;
+                            statusParam.Value = "0";
+                            //verDateParam.Value = VerDate;
+                            //verUserParam.Value = VerUser;
+                            //finUserParam.Value = FinUser;
+                            //finDateParam.Value = FinDate;
+                            //revDateParam.Value = RevDate;
+                            //revUserParam.Value = RevUser;
+                            //conditionsParam.Value = conditions;
+                            importDateParam.Value = DateTime.Now.ToString();
 
                             cmd.CommandText = string.Concat(myInsert);
                             myReturn = cmd.ExecuteNonQuery();
@@ -1462,7 +1464,7 @@ namespace jolcode
 
                             transaction.Commit();
 
-                        
+
 
                         }
 
@@ -1488,14 +1490,14 @@ namespace jolcode
                     }
                 }
                 if (myBoolErrorNoHayLotes)
-                    throw new Exception(ex.Message );
+                    throw new Exception(ex.Message);
                 else
                     throw new Exception(ex.ToString() + "\r\nMyChangeTF Error\r\nAn exception of type" + ex.GetType());
             }
             return myBoolReturn;
         }
 
-        public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area,string cargo, string endoReq, string where)
+        public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area, string cargo, string endoReq, string where)
         {
             bool myBoolReturn = false;
             try
@@ -1570,7 +1572,7 @@ namespace jolcode
             return myBoolReturn;
         }
 
-        public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios, ObservableCollection<string> lblNReasons)
+        public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios, ObservableCollection<string> lblNReasons, ObservableCollection<int> ProgressBar_Value, ObservableCollection<int> ProgressBar_Maximum, ObservableCollection<string> Resultados)
         {
             /*
                 'STATUS LOTE para la tabla lots
@@ -1586,10 +1588,24 @@ namespace jolcode
                     '2 - IMPORTADO
             */
 
+            Resultados.Clear();
+            Resultados.Add(numlot);//lblLote               0
+            Resultados.Add("0");//lblTota                  1
+            Resultados.Add("0");//lblProcesadas            2    
+            Resultados.Add("0");//lblAprobadas             3    
+            Resultados.Add("0");//lblRechazadas            4
+            Resultados.Add("0");//lblWarnings              5
+
+
+            ProgressBar_Maximum.Clear();
+            ProgressBar_Value.Clear();
+            ProgressBar_Maximum.Add(100);
+            ProgressBar_Value.Add(0);
+
             bool myBoolReturn = false;
             bool myBoolErrorNoHayLotes = true;
             SqlTransaction transaction = null;
-            DataTable myDataToProcessTF=new DataTable();
+            DataTable myDataToProcessTF = new DataTable();
 
             //'Define memory variables to hold information from access DB
             //'and modify them if needed during the validation process
@@ -1642,12 +1658,12 @@ namespace jolcode
                                                   "WHERE Lot =@lot" };
 
 
-                SqlConnection myCnnDBEndosos=new SqlConnection();
-                SqlConnection myCnnDBEndososValidarDatos=new SqlConnection();
+                SqlConnection myCnnDBEndosos = new SqlConnection();
+                SqlConnection myCnnDBEndososValidarDatos = new SqlConnection();
 
 
-                SqlConnection myCnnDBCeeMaster=new SqlConnection();
-                SqlConnection myCnnDBImg=new SqlConnection();
+                SqlConnection myCnnDBCeeMaster = new SqlConnection();
+                SqlConnection myCnnDBImg = new SqlConnection();
                 SqlConnection myCnnRadicacionesCEE = new SqlConnection();
 
                 SqlCommand myCmdDBEndosos = new SqlCommand();
@@ -1655,7 +1671,7 @@ namespace jolcode
                 //SqlCommand myCmdDBImg = new SqlCommand();
 
                 SqlDataAdapter myDataAdapter = new SqlDataAdapter();
-                    
+
 
                 myCnnDBEndosos.ConnectionString = DBCnnStr;
                 myCnnDBEndososValidarDatos.ConnectionString = DBCnnStr;
@@ -1686,12 +1702,14 @@ namespace jolcode
                 myCmdDBEndosos.Parameters.Add(lotParam);
                 lotParam.Value = numlot;
 
-                if (myCmdDBEndosos.ExecuteNonQuery() == 0)
+                if ((int)myCmdDBEndosos.ExecuteScalar() <= 0)
                     throw new Exception("No encuentro el Lote Seleccionado");
 
                 myCmdDBEndosos.CommandText = string.Concat(mySqlstrTFCount);
 
-                if (myCmdDBEndosos.ExecuteNonQuery() == 0)
+                ProgressBar_Maximum[0] = (int)myCmdDBEndosos.ExecuteScalar();
+
+                if (ProgressBar_Maximum[0] <= 0)
                     throw new Exception("No encuentro el Lote Seleccionado");
 
 
@@ -1707,7 +1725,6 @@ namespace jolcode
 
                 myBoolErrorNoHayLotes = false;
 
-
                 // Start a local transaction.
                 transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
 
@@ -1720,12 +1737,27 @@ namespace jolcode
                 myCmdDBEndosos.ExecuteNonQuery();
                 transaction.Commit();
 
+                int[] Rechazo = new int[20];
+                int[] Warning = new int[20];
+                bool isRechazo = false;
+                Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
+
+
+
                 foreach (DataRow row in myDataToProcessTF.Rows)//processing
                 {
+                    ProgressBar_Value[0]++;
+
+                    Resultados[2] = ProgressBar_Value[0].ToString();//lblProcesadas            2    
+
+                    Rechazo[19] = 0;
+
                     transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                     myCmdDBEndosos.Transaction = transaction;
 
+
                     //default
+                    isRechazo = false;
                     m_Firma_Peticionario = "0";
                     m_Firma_Notario = "0";
                     m_BatchTrack = string.Empty;
@@ -1749,16 +1781,16 @@ namespace jolcode
                     m_Alteracion = string.Empty;
                     m_Firma_Fecha = null;
                     //
-                    int[] Rechazo = new int[20];
 
-                  
-                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2,'0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2,'0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4,'0'));
+
+
+                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                     string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
 
-                    try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { } ;
-                    try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { } ;
-                    try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { } ;
-                    try {int.TryParse(row["Cargo"].ToString().Trim(), out m_Cargo);}catch { }
+                    try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { };
+                    try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { };
+                    try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { };
+                    try { int.TryParse(row["Cargo"].ToString().Trim(), out m_Cargo); } catch { }
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
@@ -1773,17 +1805,19 @@ namespace jolcode
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
                     m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
                     m_BatchTrack = row["BatchTrack"].ToString().Trim();
-                    m_N_ELEC = row["NumElec"].ToString().Trim().PadLeft(7,'0');
-                    m_N_NOTARIO= row["Notario"].ToString().Trim().PadLeft(7, '0');
+                    m_N_ELEC = row["NumElec"].ToString().Trim().PadLeft(7, '0');
+
+                    m_N_NOTARIO = row["Notario"].ToString().Trim().PadLeft(7, '0');
                     m_N_CANDIDAT = row["N_CANDIDAT"].ToString().PadLeft(3, '0');
-                    m_N_PRECINTO = row["Precinto"].ToString().PadLeft(3,'0');
+                    m_N_PRECINTO = row["Precinto"].ToString().PadLeft(3, '0');
+
                     m_SEXO = row["SEXO"].ToString().Trim();
 
-                   string  tmpFECHA_N = string.Concat(row["FechaNac_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    string tmpFECHA_N = string.Concat(row["FechaNac_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Ano"].ToString().Trim().PadLeft(4, '0'));
 
-                    if (tmpFECHA_N.Trim().Length >0)
+                    if (tmpFECHA_N.Trim().Length > 0)
                     {
-                        m_FECHA_N=   DateTimeUtil.MyValidarFecha(tmpFECHA_N);
+                        m_FECHA_N = DateTimeUtil.MyValidarFecha(tmpFECHA_N);
                     }
 
                     if (tmpmFirma_Fecha.Trim().Length > 0)
@@ -1798,16 +1832,28 @@ namespace jolcode
                         m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
                     }
 
-                    if ((CollCriterios[0].Editar == true) && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
+                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
                     {
-                        Rechazo[0]++;
+                        if (CollCriterios[0].Editar == true)
+                        {
+                            Rechazo[0]++; isRechazo = true;
+                        }
+                        if (CollCriterios[0].Warning == true)
+                            Warning[0]++;
                     }
 
-                    if ((CollCriterios[1].Editar == true) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
+                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
                     {
-                        Rechazo[1]++;
+                        if (CollCriterios[1].Editar == true)
+                        {
+                            Rechazo[1]++; isRechazo = true;
+                        }
+
+                            if (CollCriterios[1].Warning == true)
+                            Warning[1]++;
                     }
-                    if (CollCriterios[2].Editar == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
+
+                    if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
                     {
                         string[] sqlstr = { "SELECT Entregado ",
                                                 "From [LotsReceive] ",
@@ -1816,290 +1862,566 @@ namespace jolcode
                         object fechaEntregaEndosos = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out fechaEntregaEndosos, myCnnDBEndososValidarDatos) == null)
-                            Rechazo[2]++;
+                        {
+                            if (CollCriterios[2].Editar == true)
+                            {
+                                Rechazo[2]++; isRechazo = true;
+                            }
+                            if (CollCriterios[2].Warning == true)
+                                Warning[2]++;
+                        }
                         else
                         {
                             if (m_Fecha_Endo != null)
                             {
                                 if (DateTimeUtil.DateDiff(DateInterval.Day, (DateTime)fechaEntregaEndosos, m_Fecha_Endo) > 7)
-                                    Rechazo[2]++;
+                                {
+                                    if (CollCriterios[2].Editar == true)
+                                    {
+                                        Rechazo[2]++;
+                                        isRechazo = true;
+                                    }
+
+                                    if (CollCriterios[2].Warning == true)
+                                        Warning[2]++;
+                                }
                             }
                             else
-                                Rechazo[2]++;
+                            {
+                                if (CollCriterios[2].Editar == true)
+                                    Rechazo[2]++;
+
+                                if (CollCriterios[2].Warning == true)
+                                    Warning[2]++;
+                            }
 
                         }
 
                     }
-                    if (CollCriterios[3].Editar == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
+
+                    if (CollCriterios[3].Editar == true || CollCriterios[3].Warning == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
-                                                " Where [VoterIDNotario] = '",  m_N_NOTARIO , "'"};
+                                                " Where [VoterIDNotario] = '", FixNum( m_N_NOTARIO) , "'"};
+                        object total = null;
 
-                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndososValidarDatos) <= 0)
-                            Rechazo[3]++;
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
+                        {
+                            if ((int)total == 0)
+                            {
+                                if (CollCriterios[3].Editar == true)
+                                    Rechazo[3]++;
 
+                                if (CollCriterios[3].Warning == true)
+                                    Warning[3]++;
 
+                            }
+                        }
+                        else
+                        {
+                            if (CollCriterios[3].Editar == true)
+                                Rechazo[3]++;
+
+                            if (CollCriterios[3].Warning == true)
+                                Warning[3]++;
+                        }
                     }
-                    if (CollCriterios[4].Editar == true)// '5-ELECTOR IGUAL AL NOTARIO
+
+                    if (CollCriterios[4].Editar == true || CollCriterios[4].Warning==true)// '5-ELECTOR IGUAL AL NOTARIO
                     {
                         if (m_N_ELEC == m_N_NOTARIO)
                         {
-                            Rechazo[4]++;
+                            if (CollCriterios[4].Editar == true)
+                                Rechazo[4]++;
+
+                            if (CollCriterios[4].Warning == true)
+                                Warning[4]++;
                         }
                     }
-                    if (CollCriterios[5].Editar == true)// '6-ELECTOR NO EXISTE
+
+                    if (CollCriterios[5].Editar == true || CollCriterios[5].Warning == true)// '6-ELECTOR NO EXISTE
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                                                " Where [CitizenID] = '",  FixNum(m_N_ELEC) , "'"};
+                        object total = null;
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBCeeMaster) != null)
+                        {
+                            if ((int)total == 0)
+                            {
+                                if (CollCriterios[5].Editar == true)
+                                    Rechazo[5]++;
 
-                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBCeeMaster) <=0)
-                            Rechazo[5]++;
+                                if (CollCriterios[5].Warning == true)
+                                    Warning[5]++;
+                            }
+                        }
+                        else
+                        {
+                            if (CollCriterios[5].Editar == true)
+                                Rechazo[5]++;
+
+                            if (CollCriterios[5].Warning == true)
+                                Warning[5]++;
+                        }
 
                     }
-                    if (CollCriterios[6].Editar == true)// '7-ASPIRANTE NO EXISTE
+
+                    if (CollCriterios[6].Editar == true || CollCriterios[6].Warning == true)// '7-ASPIRANTE NO EXISTE
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Aspirantes]  ",
-                                                " Where [NumCandidato] = '",  m_N_CANDIDAT , "'"};
+                                                " Where [NumCandidato] = '", FixNum( m_N_CANDIDAT ), "'"};
+                        object total = null;
 
-                        if (MyValidarDatos(string.Concat(sqlstr), myCnnRadicacionesCEE) <= 0)
-                            Rechazo[6]++;
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
+                        {
+                            if ((int)total == 0)
+                            {
+                                if (CollCriterios[6].Editar == true)
+                                    Rechazo[6]++;
+
+                                if (CollCriterios[6].Warning == true)
+                                    Warning[6]++;
+                            }
+                        }
+                        else
+                        {
+                            if (CollCriterios[6].Editar == true)
+                                Rechazo[6]++;
+
+                            if (CollCriterios[6].Warning == true)
+                                Warning[6]++;
+                        }
 
                     }
-                    if (CollCriterios[7].Editar == true)//'8-NOTARIO INACTIVO
+
+                    if (CollCriterios[7].Editar == true || CollCriterios[7].Warning==true)//'8-NOTARIO INACTIVO
                     {
                         string[] sqlstr = { "SELECT status ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_NOTARIO , "'"};
+                                                " Where [CitizenID] = '",FixNum(m_N_NOTARIO) , "'"};
                         object status = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
-                            Rechazo[7]++;
+                        {
+                            if (CollCriterios[7].Editar == true)
+                                Rechazo[7]++;
+
+                            if (CollCriterios[7].Warning == true)
+                                Warning[7]++;
+                        }
                         else
                         {
                             if (status != null)
                             {
                                 if (!MyStatus(status.ToString()))
-                                    Rechazo[7]++;
-                            }else
+                                {
+                                    if (CollCriterios[7].Editar == true)
+                                        Rechazo[7]++;
+
+                                    if (CollCriterios[7].Warning == true)
+                                        Warning[7]++;
+                                }
+                            }
+                            else
                             {
-                                Rechazo[7]++;
+                                if (CollCriterios[7].Editar == true)
+                                    Rechazo[7]++;
+
+                                if (CollCriterios[7].Warning == true)
+                                    Warning[7]++;
                             }
                         }
                     }
-                    if (CollCriterios[8].Editar == true)//9-FECHA NACIMIENTO NO CONCUERDA
+
+                    if (CollCriterios[8].Editar == true || CollCriterios[8].Warning == true) //9-FECHA NACIMIENTO NO CONCUERDA
                     {
                         string[] sqlstr = { "SELECT [DateOfBirth] ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                                                " Where [CitizenID] = '", FixNum( m_N_ELEC ), "'"};
                         object DateOfBirth = null;
 
-                        if (MyValidarDatos(string.Concat(sqlstr),out DateOfBirth, myCnnDBCeeMaster) ==null)
-                            Rechazo[8]++;
+                        if (MyValidarDatos(string.Concat(sqlstr), out DateOfBirth, myCnnDBCeeMaster) == null)
+                        {
+                            if (CollCriterios[8].Editar == true)
+                                Rechazo[8]++;
+
+                            if (CollCriterios[8].Warning == true)
+                                Warning[8]++;
+                        }
                         else
                         {
-                            if (DateTimeUtil.DateDiff(DateInterval.Day,  (DateTime)DateOfBirth, m_FECHA_N)  >0 )
-                                Rechazo[8]++;
-                        }
+                            if (DateTimeUtil.DateDiff(DateInterval.Day, (DateTime)DateOfBirth, m_FECHA_N) > 0)
+                            {
+                                if (CollCriterios[8].Editar == true)
+                                    Rechazo[8]++;
 
+                                if (CollCriterios[8].Warning == true)
+                                    Warning[8]++;
+                            }
+                        }
                     }
-                    if (CollCriterios[9].Editar == true)//'10-TIPO DE SEXO NO CONUERDA
+
+                    if (CollCriterios[9].Editar == true || CollCriterios[9].Warning == true)//'10-TIPO DE SEXO NO CONUERDA
                     {
                         string[] sqlstr = { "SELECT [Gender] ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                                                " Where [CitizenID] = '", FixNum( m_N_ELEC) , "'"};
                         object Gender = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out Gender, myCnnDBCeeMaster) == null)
-                            Rechazo[9]++;
+                        {
+                            if (CollCriterios[9].Editar == true)
+                                Rechazo[9]++;
+
+                            if (CollCriterios[9].Warning == true)
+                                Warning[9]++;
+                        }
                         else
                         {
-                          if (Gender.ToString() != m_SEXO)
-                                Rechazo[9]++;
-                        }
+                            if (Gender.ToString() != m_SEXO)
+                            {
+                                if (CollCriterios[9].Editar == true)
+                                    Rechazo[9]++;
 
+                                if (CollCriterios[9].Warning == true)
+                                    Warning[9]++;
+                            }
+                        }
                     }
-                    if (CollCriterios[10].Editar == true)// '11-STATUS ELECTO EXCLUIDO
+
+                    if (CollCriterios[10].Editar == true || CollCriterios[10].Warning==true)// '11-STATUS ELECTO EXCLUIDO
                     {
                         string[] sqlstr = { "SELECT status ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                                                " Where [CitizenID] = '",  FixNum(m_N_ELEC) , "'"};
                         object status = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
-                            Rechazo[10]++;
+                        {
+                            if (CollCriterios[10].Editar == true)
+                                Rechazo[10]++;
+
+                            if (CollCriterios[10].Warning == true)
+                                Warning[10]++;
+                        }
                         else
                         {
                             if (status != null)
                             {
                                 if (!MyStatus(status.ToString()))
-                                    Rechazo[10]++;
-                            }else
+                                {
+                                    if (CollCriterios[10].Editar == true)
+                                        Rechazo[10]++;
+
+                                    if (CollCriterios[10].Warning == true)
+                                        Warning[10]++;
+                                }
+                            }
+                            else
                             {
-                                Rechazo[10]++;
+                                if (CollCriterios[10].Editar == true)
+                                    Rechazo[10]++;
+
+                                if (CollCriterios[10].Warning == true)
+                                    Warning[10]++;
                             }
                         }
 
                     }
+
                     // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
                     if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
                     {
-                        if (CollCriterios[11].Editar == true)// 12-'PRECINTO NO CONCUERDA
+                        if (CollCriterios[11].Editar == true || CollCriterios[11].Warning == true)// 12-'PRECINTO NO CONCUERDA
                         {
                             string[] sqlstr = { "SELECT FirstGeoCode ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '",  m_N_ELEC , "'"};
+                                                " Where [CitizenID] = '", FixNum( m_N_ELEC) , "'"};
                             object FirstGeoCode = null;
 
                             if (MyValidarDatos(string.Concat(sqlstr), out FirstGeoCode, myCnnDBCeeMaster) == null)
-                                Rechazo[11]++;
+                            {
+                                if (CollCriterios[11].Editar == true)
+                                        Rechazo[11]++;
+
+                                if (CollCriterios[11].Warning == true)
+                                    Warning[11]++;
+                            }
                             else
                             {
                                 if (FirstGeoCode != null)
                                 {
                                     string precinto = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
-                                   if (precinto != m_N_PRECINTO)
-                                        Rechazo[11]++;
+                                    if (precinto != m_N_PRECINTO)
+                                    {
+                                        if (CollCriterios[11].Editar == true)
+                                            Rechazo[11]++;
+
+                                        if (CollCriterios[11].Warning == true)
+                                            Warning[11]++;
+                                    }
                                 }
                                 else
                                 {
-                                    Rechazo[11]++;
+                                    if (CollCriterios[11].Editar == true)
+                                        Rechazo[11]++;
+
+                                    if (CollCriterios[11].Warning == true)
+                                        Warning[11]++;
                                 }
                             }
                         }
-                        if (CollCriterios[12].Editar == true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
+
+                        if (CollCriterios[12].Editar == true || CollCriterios[12].Warning ==true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
                         {
                             string[] sqlstr = { "SELECT [NumPrecinto] ",
                                                 "From Aspirantes ",
-                                                " Where [NumCandidato] = '",  m_N_CANDIDAT , "'"};
+                                                " Where [NumCandidato] = '", FixNum(m_N_CANDIDAT) , "'"};
                             object NumPrecinto = null;
 
                             if (MyValidarDatos(string.Concat(sqlstr), out NumPrecinto, myCnnRadicacionesCEE) == null)
-                                Rechazo[12]++;
+                            {
+                                if (CollCriterios[12].Editar == true)
+                                    Rechazo[12]++;
+
+                                if (CollCriterios[12].Warning == true)
+                                    Warning[12]++;
+
+                            }
                             else
                             {
                                 if (NumPrecinto != null)
                                 {
                                     string precinto = NumPrecinto.ToString().Trim().PadLeft(3, '0');
                                     if (precinto != m_N_PRECINTO)
-                                        Rechazo[12]++;
+                                    {
+                                        if (CollCriterios[12].Editar == true)
+                                            Rechazo[12]++;
+
+                                        if (CollCriterios[12].Warning == true)
+                                            Warning[12]++;
+                                    }
                                 }
                                 else
                                 {
-                                    Rechazo[12]++;
+                                    if (CollCriterios[12].Editar == true)
+                                        Rechazo[12]++;
+
+                                    if (CollCriterios[12].Warning == true)
+                                        Warning[12]++;
                                 }
                             }
-
                         }
                     }
-                    if (CollCriterios[13].Editar == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
+
+                    if (CollCriterios[13].Editar == true || CollCriterios[13].Warning == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [LotsEndo]  ",
                                                 "Where [Cargo] = '",  m_Cargo.ToString() , "' ",
                                                 "and ",
                                                 "Candidato='",m_N_CANDIDAT,"' And Status = 0"};
+                        object total = null;
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)//>0
+                        {
+                            if ((int)total > 0)
+                            {
+                                if (CollCriterios[13].Editar == true)
+                                    Rechazo[13]++;
 
-                        if (MyValidarDatos(string.Concat(sqlstr), myCnnDBEndososValidarDatos) > 0)
-                            Rechazo[13]++;
+                                if (CollCriterios[13].Warning == true)
+                                    Warning[13]++;
+                            }
+                        }
                     }
-                    if (CollCriterios[14].Editar == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
+
+                    if (CollCriterios[14].Editar == true || CollCriterios[14].Warning == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [LotsEndo]  ",
-                                                "Where [NumElec] = '", m_N_ELEC , "' ",
+                                                "Where [NumElec] = '", FixNum(m_N_ELEC) , "' ",
                                                 "and ",
                                                 "Cargo='",m_Cargo.ToString(),"' And Status = 0"};
                         object total = null;
 
-                        if (MyValidarDatos(string.Concat(sqlstr),out total ,myCnnDBEndososValidarDatos) != null)
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
                         {
                             switch (m_Cargo)
                             {
-                                   case 1:// 'Gobernador
+                                case 1:// 'Gobernador
                                     {
                                         if ((int)total > 1)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 2://'Comisionado Residente
                                     {
                                         if ((int)total > 1)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 3: //'Senador Distrito
                                     {
                                         if ((int)total > 2)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 4://'Senador Acumulación
                                     {
                                         if ((int)total > 6)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 5: //'Representante Distrito
                                     {
                                         if ((int)total > 1)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 6: //'Representante Acumulación
                                     {
                                         if ((int)total > 6)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 7: //'Alcalde
                                     {
                                         if ((int)total > 1)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                                 case 8: //'Asambleista
                                     {
                                         if ((int)total > 3)
-                                            Rechazo[14]++;
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                                Rechazo[14]++;
+                                            if (CollCriterios[14].Warning == true)
+                                                Warning[14]++;
+                                        }
                                     }
                                     break;
 
                             }
+                        }
+                    }
 
+                    if (CollCriterios[15].Editar == true || CollCriterios[15].Warning == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                    {
+                        if (m_Firma_Pet_Inv == 1)
+                        {
+                            if (CollCriterios[15].Editar == true)
+                                Rechazo[15]++;
+
+                            if (CollCriterios[15].Warning == true)
+                                Warning[15]++;
+                        }
+                    }
+
+                    if (CollCriterios[16].Editar == true || CollCriterios[16].Warning == true)// 'FIRMA DEL NOTARIO NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                    {
+                        if (m_Firma_Not_Inv == 1)
+                        {
+                            if (CollCriterios[16].Editar == true)
+                                Rechazo[16]++;
+                            if (CollCriterios[16].Warning == true)
+                                Warning[16]++;
                         }
 
                     }
-                    if (CollCriterios[15].Editar == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
-                    {
-                       if( m_Firma_Pet_Inv == 1)
-                            Rechazo[15]++;
+                     
 
-                    }
-                    if (CollCriterios[16].Editar == true)// 'FIRMA DEL NOTARIO NO ES IGUAL A LA DEL ARCHIVO MAESTRO
-                    {
-                        if (m_Firma_Not_Inv==1)
-                            Rechazo[16]++;
-
-                    }
                     //'ACTUALIZA LOS COUNTERS DE LA PANTALLA
-                    for (int X=0;X <17; X++)
+                    for (int X = 0; X < CollCriterios.Count; X++) 
                     {
+                        bool writeWarning = true;
+
                         if (Rechazo[X] > 0)
                         {
+                          
                             lblNReasons[X] = Rechazo[X].ToString();
                             Rechazo[19]++;
+
+                            //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 0, myCmdDBEndosos);
+                            writeWarning = false;
+                        }
+                        if (Warning[X] > 0 && writeWarning)
+                        {
+                            lblNReasons[X] = Warning[X].ToString();
+                            Warning[19]++;
+                            //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 2, myCmdDBEndosos);
                         }
                     }
+
+                   
+
+                    if (Rechazo[19] > 0 )
+                    {
+                        int Rechazadas = int.Parse(Resultados[4]);
+                        Rechazadas++;
+                        Resultados[4] = Rechazadas.ToString();//lblRechazadas            4
+                    }
+                    else
+                    {
+                        int Aprobadas = int.Parse(Resultados[3]);
+                        Aprobadas++;
+                        Resultados[3] = Aprobadas.ToString();//lblAprobadas             3  
+                    }
+
+                    if (Warning[19] >0)
+                    {
+                        int Warnings = int.Parse(Resultados[5]);
+                        Warnings++;
+                        Resultados[5]   = Warnings.ToString();//lblWarnings              5
+                    }
+
                     //  'ESCRIBE LOS ENDOSOS A LA TABLA LOTSENDO
 
                     string[] mySqlStrLOTSENDO =
@@ -2134,16 +2456,17 @@ namespace jolcode
                        ")"
 
                     };
-                    
-                    
 
                     myCmdDBEndosos.CommandText = string.Concat(mySqlStrLOTSENDO);
                     myCmdDBEndosos.ExecuteNonQuery();
-                    transaction.Commit();
 
+                  
+
+                    transaction.Commit();
+                    DoEvents();
                 }
 
-              
+
             }
             catch (Exception ex)
             {
@@ -2151,7 +2474,7 @@ namespace jolcode
                 {
                     try
                     {
-                                transaction.Rollback();
+                        transaction.Rollback();
                     }
                     catch
                     {
@@ -2170,9 +2493,9 @@ namespace jolcode
             return myBoolReturn;
         }
 
-        private int MyValidarDatos(string sql,SqlConnection cnn)
+        private object MyValidarDatos(string sql, SqlConnection cnn)
         {
-            int myIntReturn = 0;
+            object myIntReturn = 0;
 
 
             using (SqlCommand cmd = new SqlCommand(sql, cnn)
@@ -2180,13 +2503,20 @@ namespace jolcode
                 CommandType = CommandType.Text
             })
             {
-                myIntReturn =  (int)cmd.ExecuteScalar();
+                try
+                {
+                    myIntReturn = (int)cmd.ExecuteScalar();
+                } catch
+                {
+                    myIntReturn = (string)cmd.ExecuteScalar();
+
+                }
             }
 
             return myIntReturn;
         }
 
-        private object MyValidarDatos(string sql,out object returnValue, SqlConnection cnn)
+        private object MyValidarDatos(string sql, out object returnValue, SqlConnection cnn)
         {
 
             returnValue = null;
@@ -2194,16 +2524,21 @@ namespace jolcode
             using (SqlCommand cmd = new SqlCommand(sql, cnn)
             {
                 CommandType = CommandType.Text,
-                
+
             })
             {
-                returnValue =  cmd.ExecuteScalar();
+                try {
+                    returnValue = cmd.ExecuteScalar();
+                } catch
+                {
+                    throw new Exception("Error " + sql);
+                }
             }
 
             return returnValue;
         }
 
-        private string Left (string param,int length)
+        private string Left(string param, int length)
         {
             string result = param.Substring(0, length);
             return result;
@@ -2211,7 +2546,7 @@ namespace jolcode
 
         private bool MyStatus(string param)
         {
-            switch(param.Trim())
+            switch (param.Trim())
             {
                 case "A":
                     return true;
@@ -2220,7 +2555,7 @@ namespace jolcode
                     return false;
                 default:
                     return false;
-                    
+
 
             }
         }
@@ -2229,12 +2564,48 @@ namespace jolcode
             if (param == null)
                 return string.Empty;
 
-            DateTime d = (DateTime) param;
+            DateTime d = (DateTime)param;
 
 
-             return d.ToString("MM/dd/yyyy");
+            return d.ToString("MM/dd/yyyy");
 
 
+
+        }
+
+        private string FixNum(string param)
+        {
+            int FixNum = 0;
+
+            if (int.TryParse(param, out FixNum))
+                return param;
+            else
+                return "0";
+        }
+        public void DoEvents()
+        {
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+            new Action(delegate { }));
+        }
+
+        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status,SqlCommand dbCmd)
+        {
+            // 'ESCRIBE EL ENDOSO RECHAZADO
+            // 'STATUS DEL RECHAZO
+            //'0 - SIN CORREJIR
+            //'1 - CORREJIDO
+            //'2 - WARNING
+
+            string sqlstr = "Insert Into LotsVoid Values";
+            sqlstr = sqlstr + "('" + m_PARTIDO + "'";
+            sqlstr = sqlstr + ",'" + Lot + "'";
+            sqlstr = sqlstr + ",'" + BatchNo + "'";
+            sqlstr = sqlstr + "," + Formulario;
+            sqlstr = sqlstr + ",'" + Rechazo + "'";
+            sqlstr = sqlstr + ",'" + NumElec + "'";
+            sqlstr = sqlstr + ", " + Status + ")";
+            dbCmd.CommandText = sqlstr;
+            dbCmd.ExecuteNonQuery();
 
         }
 

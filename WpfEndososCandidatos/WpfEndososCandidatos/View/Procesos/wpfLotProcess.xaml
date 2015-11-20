@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
          Cursor="{Binding MiCursor}"
-        Title="wpfLotProcess" Height="820.456" Width="842.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfLotProcess" Height="754.456" Width="842.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -11,7 +11,7 @@
     </i:Interaction.Triggers>
     <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
         <Grid>
-            <Label Content="Proceso de Lote" VerticalAlignment="Top" Height="49" FontWeight="Bold" FontSize="26.667" Margin="10,5,10,0"/>
+            <Label Content="Proceso de Lote" VerticalAlignment="Top" Height="49" FontWeight="Bold" FontSize="26.667" Margin="10,5,588,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="14,487,0,0" VerticalAlignment="Top" Width="112" Height="31"/>
             <Label x:Name="label" Content="Lotes:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="185"
@@ -20,7 +20,7 @@
                         SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}"
                       
                       />
-            <Button x:Name="cmdProcess" Command="{Binding cmdProcess_Click}" Content="Procesar Lote" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="90" Height="35"/>
+            <Button x:Name="cmdProcess" Command="{Binding cmdProcess_Click}"  Content="Procesar Lote" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="90" Height="35"/>
             <Button x:Name="cmdRefresh" Command="{Binding cmdRefresh_Click}" Content="Refrescar" HorizontalAlignment="Left" Margin="105,129,0,0" VerticalAlignment="Top" Width="90" Height="35"/>
             <GroupBox x:Name="groupBox" Header="Resultados" HorizontalAlignment="Left" Margin="14,189,0,0" VerticalAlignment="Top" Height="236" Width="235">
                 <Grid Margin="0,6,0,-6" Background="Gray">
@@ -28,33 +28,33 @@
                         <ColumnDefinition Width="107*"/>
                         <ColumnDefinition Width="116*"/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="label1" Content="Lote:" Margin="10,10,32,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1" Content="Lote:" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65"/>
                     <Label x:Name="label1_Copy" Content="Total:" Margin="10,41,32,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1_Copy1" Content="Procesadas:" Margin="10,72,32,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1_Copy2" Content="Aprobadas:" Margin="10,103,32,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1_Copy3" Content="Rechazadas:" Margin="10,134,32,0" VerticalAlignment="Top"/>
                     <Label x:Name="label1_Copy4" Content="Warnings:" Margin="10,165,32,0" VerticalAlignment="Top"/>
                     <Label x:Name="lblLote"  Margin="10,10,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding lblLote}"
+                            Content="{Binding Resultados[0]}"
                            />
                     <Label x:Name="lblTota" Margin="10,41,10,0" VerticalAlignment="Top" Grid.Column="1"
-                           Content="{Binding lblTota}"
+                           Content="{Binding Resultados[1]}"
                            />
                     <Label x:Name="lblProcesadas"  Margin="10,72,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding lblProcesadas}"
+                            Content="{Binding Resultados[2]}"
                            />
                     <Label x:Name="lblAprobadas" Margin="10,103,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding lblAprobadas}"
+                            Content="{Binding Resultados[3]}"
                            />
                     <Label x:Name="lblRechazadas"  Margin="10,134,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding lblRechazadas}"
+                            Content="{Binding Resultados[4]}"
                            />
                     <Label x:Name="lblWarnings" Margin="10,165,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding lblWarnings}"
+                            Content="{Binding Resultados[5]}"
                            />
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="groupBox1" Header="Razones de Rechazo" Margin="266,59,10,10">
+            <GroupBox x:Name="groupBox1" Header="Razones de Rechazo" Margin="266,0,10,10">
                 <Grid Margin="0,0,0,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
@@ -97,11 +97,14 @@
                         <TextBlock x:Name="txt14" Text="{Binding CollCriterios[14].Desc}" Height="30" TextWrapping="Wrap" Margin="5" Foreground="{Binding Foreground_Desc[14]}"/>
                         <TextBlock x:Name="txt15" Text="{Binding CollCriterios[15].Desc}" Height="30" TextWrapping="Wrap" Margin="5" Foreground="{Binding Foreground_Desc[15]}"/>
                         <TextBlock x:Name="txt16" Text="{Binding CollCriterios[16].Desc}" Height="30" TextWrapping="Wrap" Margin="5" Foreground="{Binding Foreground_Desc[16]}"/>
-                       
+
                     </StackPanel>
                 </Grid>
             </GroupBox>
-            <ProgressBar HorizontalAlignment="Left" Height="19" Margin="14,430,0,0" VerticalAlignment="Top" Width="235"/>
+            <ProgressBar HorizontalAlignment="Left" Height="19" Margin="14,430,0,0" VerticalAlignment="Top" Width="235"
+                         Value="{Binding ProgressBar_Value[0]}" 
+                         Maximum="{Binding ProgressBar_Maximum[0]}"
+                         />
             <Button x:Name="cmdView" Command="{Binding cmdView_Click}" Content="Ver Rechazadas" HorizontalAlignment="Left" Margin="137,487,0,0" VerticalAlignment="Top" Width="112" Height="31"/>
 
         </Grid>
