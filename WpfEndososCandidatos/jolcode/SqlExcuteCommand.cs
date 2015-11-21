@@ -1740,6 +1740,7 @@ namespace jolcode
                 int[] Rechazo = new int[20];
                 int[] Warning = new int[20];
                 bool isRechazo = false;
+                bool isWarning = false;
                 Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
 
 
@@ -1750,14 +1751,12 @@ namespace jolcode
 
                     Resultados[2] = ProgressBar_Value[0].ToString();//lblProcesadas            2    
 
-                    Rechazo[19] = 0;
-
                     transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                     myCmdDBEndosos.Transaction = transaction;
 
-
                     //default
                     isRechazo = false;
+                    isWarning = false;
                     m_Firma_Peticionario = "0";
                     m_Firma_Notario = "0";
                     m_BatchTrack = string.Empty;
@@ -1836,21 +1835,29 @@ namespace jolcode
                     {
                         if (CollCriterios[0].Editar == true)
                         {
-                            Rechazo[0]++; isRechazo = true;
+                            Rechazo[0]++;
+                            isRechazo = true;
                         }
                         if (CollCriterios[0].Warning == true)
+                        {
                             Warning[0]++;
+                            isWarning = true;
+                        }
                     }
 
                     if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[1].Editar == true)
                         {
-                            Rechazo[1]++; isRechazo = true;
+                            Rechazo[1]++;
+                            isRechazo = true;
                         }
 
-                            if (CollCriterios[1].Warning == true)
+                        if (CollCriterios[1].Warning == true)
+                        {
                             Warning[1]++;
+                            isWarning = true;
+                        }
                     }
 
                     if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
@@ -1865,10 +1872,14 @@ namespace jolcode
                         {
                             if (CollCriterios[2].Editar == true)
                             {
-                                Rechazo[2]++; isRechazo = true;
+                                Rechazo[2]++;
+                                isRechazo = true;
                             }
                             if (CollCriterios[2].Warning == true)
+                            {
                                 Warning[2]++;
+                                isWarning = true;
+                            }
                         }
                         else
                         {
@@ -1883,16 +1894,24 @@ namespace jolcode
                                     }
 
                                     if (CollCriterios[2].Warning == true)
+                                    {
                                         Warning[2]++;
+                                        isWarning = true;
+                                    }
                                 }
                             }
                             else
                             {
                                 if (CollCriterios[2].Editar == true)
+                                {
                                     Rechazo[2]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[2].Warning == true)
+                                {
                                     Warning[2]++;
+                                    isWarning = true;
+                                }
                             }
 
                         }
@@ -1911,20 +1930,30 @@ namespace jolcode
                             if ((int)total == 0)
                             {
                                 if (CollCriterios[3].Editar == true)
+                                {
                                     Rechazo[3]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[3].Warning == true)
+                                {
                                     Warning[3]++;
-
+                                    isWarning = true;
+                                }
                             }
                         }
                         else
                         {
                             if (CollCriterios[3].Editar == true)
+                            {
                                 Rechazo[3]++;
+                                isRechazo = true;
+                            }
 
                             if (CollCriterios[3].Warning == true)
+                            {
                                 Warning[3]++;
+                                isWarning = true;
+                            }
                         }
                     }
 
@@ -1933,10 +1962,15 @@ namespace jolcode
                         if (m_N_ELEC == m_N_NOTARIO)
                         {
                             if (CollCriterios[4].Editar == true)
+                            {
                                 Rechazo[4]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[4].Warning == true)
+                            {
                                 Warning[4]++;
+                                isWarning = true;
+                            }
                         }
                     }
 
@@ -1951,19 +1985,29 @@ namespace jolcode
                             if ((int)total == 0)
                             {
                                 if (CollCriterios[5].Editar == true)
+                                {
                                     Rechazo[5]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[5].Warning == true)
+                                {
                                     Warning[5]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                         else
                         {
                             if (CollCriterios[5].Editar == true)
+                            {
                                 Rechazo[5]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[5].Warning == true)
+                            {
                                 Warning[5]++;
+                                isWarning = true;
+                            }
                         }
 
                     }
@@ -1980,19 +2024,29 @@ namespace jolcode
                             if ((int)total == 0)
                             {
                                 if (CollCriterios[6].Editar == true)
+                                {
                                     Rechazo[6]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[6].Warning == true)
+                                {
                                     Warning[6]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                         else
                         {
                             if (CollCriterios[6].Editar == true)
+                            {
                                 Rechazo[6]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[6].Warning == true)
+                            {
                                 Warning[6]++;
+                                isWarning = true;
+                            }
                         }
 
                     }
@@ -2007,10 +2061,15 @@ namespace jolcode
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
                         {
                             if (CollCriterios[7].Editar == true)
+                            {
                                 Rechazo[7]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[7].Warning == true)
+                            {
                                 Warning[7]++;
+                                isWarning = true;
+                            }
                         }
                         else
                         {
@@ -2019,19 +2078,29 @@ namespace jolcode
                                 if (!MyStatus(status.ToString()))
                                 {
                                     if (CollCriterios[7].Editar == true)
+                                    {
                                         Rechazo[7]++;
-
+                                        isRechazo = true;
+                                    }
                                     if (CollCriterios[7].Warning == true)
+                                    {
                                         Warning[7]++;
+                                        isWarning = true;
+                                    }
                                 }
                             }
                             else
                             {
                                 if (CollCriterios[7].Editar == true)
+                                {
                                     Rechazo[7]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[7].Warning == true)
+                                {
                                     Warning[7]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                     }
@@ -2046,20 +2115,30 @@ namespace jolcode
                         if (MyValidarDatos(string.Concat(sqlstr), out DateOfBirth, myCnnDBCeeMaster) == null)
                         {
                             if (CollCriterios[8].Editar == true)
+                            {
                                 Rechazo[8]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[8].Warning == true)
+                            {
                                 Warning[8]++;
+                                isWarning = true;
+                            }
                         }
                         else
                         {
                             if (DateTimeUtil.DateDiff(DateInterval.Day, (DateTime)DateOfBirth, m_FECHA_N) > 0)
                             {
                                 if (CollCriterios[8].Editar == true)
+                                {
                                     Rechazo[8]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[8].Warning == true)
+                                {
                                     Warning[8]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                     }
@@ -2074,20 +2153,30 @@ namespace jolcode
                         if (MyValidarDatos(string.Concat(sqlstr), out Gender, myCnnDBCeeMaster) == null)
                         {
                             if (CollCriterios[9].Editar == true)
+                            {
                                 Rechazo[9]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[9].Warning == true)
+                            {
                                 Warning[9]++;
+                                isWarning = true;
+                            }
                         }
                         else
                         {
                             if (Gender.ToString() != m_SEXO)
                             {
                                 if (CollCriterios[9].Editar == true)
+                                {
                                     Rechazo[9]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[9].Warning == true)
+                                {
                                     Warning[9]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                     }
@@ -2102,10 +2191,15 @@ namespace jolcode
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
                         {
                             if (CollCriterios[10].Editar == true)
+                            {
                                 Rechazo[10]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[10].Warning == true)
+                            {
                                 Warning[10]++;
+                                isWarning = true;
+                            }
                         }
                         else
                         {
@@ -2114,19 +2208,29 @@ namespace jolcode
                                 if (!MyStatus(status.ToString()))
                                 {
                                     if (CollCriterios[10].Editar == true)
+                                    {
                                         Rechazo[10]++;
-
+                                        isRechazo = true;
+                                    }
                                     if (CollCriterios[10].Warning == true)
+                                    {
                                         Warning[10]++;
+                                        isWarning = true;
+                                    }
                                 }
                             }
                             else
                             {
                                 if (CollCriterios[10].Editar == true)
+                                {
                                     Rechazo[10]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[10].Warning == true)
+                                {
                                     Warning[10]++;
+                                    isWarning = true;
+                                }
                             }
                         }
 
@@ -2145,10 +2249,15 @@ namespace jolcode
                             if (MyValidarDatos(string.Concat(sqlstr), out FirstGeoCode, myCnnDBCeeMaster) == null)
                             {
                                 if (CollCriterios[11].Editar == true)
-                                        Rechazo[11]++;
-
+                                {
+                                    Rechazo[11]++;
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[11].Warning == true)
+                                {
                                     Warning[11]++;
+                                    isWarning = true;
+                                }
                             }
                             else
                             {
@@ -2158,19 +2267,29 @@ namespace jolcode
                                     if (precinto != m_N_PRECINTO)
                                     {
                                         if (CollCriterios[11].Editar == true)
+                                        {
                                             Rechazo[11]++;
-
+                                            isRechazo = true;
+                                        }
                                         if (CollCriterios[11].Warning == true)
+                                        {
                                             Warning[11]++;
+                                            isWarning = true;
+                                        }
                                     }
                                 }
                                 else
                                 {
                                     if (CollCriterios[11].Editar == true)
+                                    {
                                         Rechazo[11]++;
-
+                                        isRechazo = true;
+                                    }
                                     if (CollCriterios[11].Warning == true)
+                                    {
                                         Warning[11]++;
+                                        isWarning = true;
+                                    }
                                 }
                             }
                         }
@@ -2185,11 +2304,15 @@ namespace jolcode
                             if (MyValidarDatos(string.Concat(sqlstr), out NumPrecinto, myCnnRadicacionesCEE) == null)
                             {
                                 if (CollCriterios[12].Editar == true)
+                                {
                                     Rechazo[12]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[12].Warning == true)
+                                {
                                     Warning[12]++;
-
+                                    isWarning = true;
+                                }
                             }
                             else
                             {
@@ -2199,19 +2322,29 @@ namespace jolcode
                                     if (precinto != m_N_PRECINTO)
                                     {
                                         if (CollCriterios[12].Editar == true)
+                                        {
                                             Rechazo[12]++;
-
+                                            isRechazo = true;
+                                        }
                                         if (CollCriterios[12].Warning == true)
+                                        {
                                             Warning[12]++;
+                                            isWarning = true;
+                                        }
                                     }
                                 }
                                 else
                                 {
                                     if (CollCriterios[12].Editar == true)
+                                    {
                                         Rechazo[12]++;
-
+                                        isRechazo = true;
+                                    }
                                     if (CollCriterios[12].Warning == true)
+                                    {
                                         Warning[12]++;
+                                        isWarning = true;
+                                    }
                                 }
                             }
                         }
@@ -2230,10 +2363,15 @@ namespace jolcode
                             if ((int)total > 0)
                             {
                                 if (CollCriterios[13].Editar == true)
+                                {
                                     Rechazo[13]++;
-
+                                    isRechazo = true;
+                                }
                                 if (CollCriterios[13].Warning == true)
+                                {
                                     Warning[13]++;
+                                    isWarning = true;
+                                }
                             }
                         }
                     }
@@ -2256,9 +2394,15 @@ namespace jolcode
                                         if ((int)total > 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2268,9 +2412,15 @@ namespace jolcode
                                         if ((int)total > 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2280,9 +2430,15 @@ namespace jolcode
                                         if ((int)total > 2)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2292,9 +2448,15 @@ namespace jolcode
                                         if ((int)total > 6)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2304,9 +2466,15 @@ namespace jolcode
                                         if ((int)total > 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2316,9 +2484,15 @@ namespace jolcode
                                         if ((int)total > 6)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2328,9 +2502,15 @@ namespace jolcode
                                         if ((int)total > 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2340,9 +2520,15 @@ namespace jolcode
                                         if ((int)total > 3)
                                         {
                                             if (CollCriterios[14].Editar == true)
+                                            {
                                                 Rechazo[14]++;
+                                                isRechazo = true;
+                                            }
                                             if (CollCriterios[14].Warning == true)
+                                            {
                                                 Warning[14]++;
+                                                isWarning = true;
+                                            }
                                         }
                                     }
                                     break;
@@ -2356,10 +2542,15 @@ namespace jolcode
                         if (m_Firma_Pet_Inv == 1)
                         {
                             if (CollCriterios[15].Editar == true)
+                            {
                                 Rechazo[15]++;
-
+                                isRechazo = true;
+                            }
                             if (CollCriterios[15].Warning == true)
+                            {
                                 Warning[15]++;
+                                isWarning = true;
+                            }
                         }
                     }
 
@@ -2368,25 +2559,27 @@ namespace jolcode
                         if (m_Firma_Not_Inv == 1)
                         {
                             if (CollCriterios[16].Editar == true)
+                            {
                                 Rechazo[16]++;
+                                isRechazo = true;
+                            }
                             if (CollCriterios[16].Warning == true)
+                            {
                                 Warning[16]++;
+                                isWarning = true;
+                            }
                         }
-
                     }
-                     
+
+                    bool writeWarning = true;
 
                     //'ACTUALIZA LOS COUNTERS DE LA PANTALLA
                     for (int X = 0; X < CollCriterios.Count; X++) 
                     {
-                        bool writeWarning = true;
 
                         if (Rechazo[X] > 0)
                         {
-                          
                             lblNReasons[X] = Rechazo[X].ToString();
-                            Rechazo[19]++;
-
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
                             WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 0, myCmdDBEndosos);
                             writeWarning = false;
@@ -2394,28 +2587,30 @@ namespace jolcode
                         if (Warning[X] > 0 && writeWarning)
                         {
                             lblNReasons[X] = Warning[X].ToString();
-                            Warning[19]++;
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
                             WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 2, myCmdDBEndosos);
                         }
                     }
 
-                   
+                    writeWarning = true;
 
-                    if (Rechazo[19] > 0 )
+                    if (isRechazo)
                     {
                         int Rechazadas = int.Parse(Resultados[4]);
                         Rechazadas++;
                         Resultados[4] = Rechazadas.ToString();//lblRechazadas            4
+                        writeWarning = false;
                     }
                     else
                     {
                         int Aprobadas = int.Parse(Resultados[3]);
                         Aprobadas++;
-                        Resultados[3] = Aprobadas.ToString();//lblAprobadas             3  
+                        Resultados[3] = Aprobadas.ToString();//lblAprobadas             3
+                        writeWarning = false;
+
                     }
 
-                    if (Warning[19] >0)
+                    if (isWarning && writeWarning)
                     {
                         int Warnings = int.Parse(Resultados[5]);
                         Warnings++;
@@ -2423,7 +2618,6 @@ namespace jolcode
                     }
 
                     //  'ESCRIBE LOS ENDOSOS A LA TABLA LOTSENDO
-
                     string[] mySqlStrLOTSENDO =
                     {
                         "Insert Into LotsEndo",
