@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfEndososCandidatos.View.wpfFixVoid"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="wpfFixVoid" Height="300" Width="300">
+        Title="wpfFixVoid" Height="533.116" Width="638.244">
     <Grid>
         
     </Grid>

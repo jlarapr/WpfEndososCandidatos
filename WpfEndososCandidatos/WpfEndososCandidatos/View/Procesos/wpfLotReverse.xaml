@@ -14,7 +14,11 @@
             <Label Content="Reversar Lote" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="135,118,0,0" VerticalAlignment="Top" Width="75"/>
             <Label x:Name="label" Content="Lote" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
-            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="120"/>
+            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Width="120"
+                       ItemsSource="{Binding cbLots}"
+                        SelectedItem="{Binding cbLots_Item, Mode=TwoWay}"                                     
+                        SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}"
+                      />
             <Button Content="Reversar" Command="{Binding cmdReverse_Click}" HorizontalAlignment="Left" Margin="135,93,0,0" VerticalAlignment="Top" Width="75"/>
 
         </Grid>

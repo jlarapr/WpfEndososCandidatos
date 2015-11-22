@@ -247,7 +247,9 @@
                 using (vmLotReverse frmLotReverse = new vmLotReverse())
                 {
                     frmLotReverse.View.Owner = this.View as Window;
-                    frmLotReverse.OnShow();
+                    frmLotReverse.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotReverse.SysUser = WhatIsUserName;
+                    frmLotReverse.MyOnShow();
                 }
                
             }
