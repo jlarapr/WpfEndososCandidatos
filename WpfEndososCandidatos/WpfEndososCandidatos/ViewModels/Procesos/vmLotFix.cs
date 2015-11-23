@@ -187,10 +187,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             try
             {
-                using (vmFixVoid frmFixVoid = new vmFixVoid(cbLots_Item))
+                using (vmFixVoid frmFixVoid = new vmFixVoid())
                 {
                     frmFixVoid.View.Owner = this.View as Window;
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
+                    frmFixVoid.Lot = cbLots_Item;
                     frmFixVoid.MyOnShow();
                 }
             }

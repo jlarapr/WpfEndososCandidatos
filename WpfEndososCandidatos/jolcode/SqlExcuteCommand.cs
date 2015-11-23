@@ -412,6 +412,68 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public DataTable MyGetLotToFixVoid(string CurrLot)
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //'STATUS LOTE
+                //'0 - LISTO PARA PROCESAR
+                //'1 - SIENDO PROCESADA
+                //'2 - FINALIZADO
+                //'3 - CON ERRORES
+                //'4 - SIENDO REVISADA
+
+                /*
+                  'VERIFICA SI HAY LOTES PARA CORRECCION
+                */
+
+
+                string[] mySqlstr =
+                    {
+                    "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status, LotsEndo.Status, LotsVoid.Rechazo,",
+                    "LotsEndo.Numelec, LotsEndo.Precinto, LotsEndo.FechaNac, LotsEndo.Sexo, LotsEndo.Candidato,",
+                    "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image ",
+                    "FROM (LotsEndo INNER JOIN Lots ON LotsEndo.Lot = Lots.Lot) INNER JOIN LotsVoid ON (LotsEndo.Formulario = LotsVoid.Formulario) AND (LotsEndo.Lot = LotsVoid.Lot) ",
+                    "WHERE Lots.Status = 3 ",
+                    "and Lots.Lot = '" , CurrLot , "' ",
+                    "ORDER BY Lots.Lot, LotsEndo.Formulario; "
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText =string.Concat( mySqlstr )
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetLotToProcess Error");
+            }
+            return myTableReturn;
+        }
+
+
         public DataTable MyGetLotToProcess()
         {
             DataTable myTableReturn = new DataTable();
@@ -2679,14 +2741,14 @@ namespace jolcode
                         {
                             lblNReasons[X] = Rechazo[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 0, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 0, myCmdDBEndosos);
                             isrechazo = true;
                         }
                         else  if (isWarning[X])
                         {
                             lblNReasons[X] = Warning[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X, m_PARTIDO, 2, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 2, myCmdDBEndosos);
                             iswarning = true;
                         }
                     }
@@ -2746,6 +2808,10 @@ namespace jolcode
                        ")"
 
                     };
+                    //'STATUS ENDOSO
+                    //'0 = Sin Errores
+                    //'1 = Con Errores
+                    //'2 = Con Warnings
 
                     myCmdDBEndosos.CommandText = string.Concat(mySqlStrLOTSENDO);
                     myCmdDBEndosos.ExecuteNonQuery();

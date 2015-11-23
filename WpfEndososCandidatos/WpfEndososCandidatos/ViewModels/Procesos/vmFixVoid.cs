@@ -3,11 +3,16 @@ using jolcode.Base;
 using jolcode.MyInterface;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfEndososCandidatos.View;
+using System.Data;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -16,14 +21,36 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _DBEndososCnnStr;
+        private Brush _BorderBrush;
+        private string _Lot;
+        private DataTable _MyLotsTable;
+        private int _TotalRechazada;
 
-        public vmFixVoid(string lot) : base(new wpfFixVoid())
+        public vmFixVoid() :
+            base(new wpfFixVoid())
         {
-            Lot = lot;
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            
         }
 
         #region MyProperty
+        public Brush BorderBrush
+        {
+            get
+            {
+                return _BorderBrush;
+            }
+            set
+            {
+                if (_BorderBrush != value)
+                {
+                    _BorderBrush = value;
+                    this.RaisePropertychanged("BorderBrush");
+                }
 
+            }
+        }
         public string DBEndososCnnStr
         {
             get
@@ -36,18 +63,72 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public string Lot
         {
-            get;private set;
+            get
+            {
+                return _Lot;
+            } set
+            {
+                _Lot = value;
+                this.RaisePropertychanged("Lot");
+            }
         }
+        public int TotalRechazada
+        {
+            get
+            {
+                return _TotalRechazada;
+            }set
+            {
+                _TotalRechazada = value;
+                this.RaisePropertychanged("TotalRechazada");
+            }
 
+        }
         #endregion
 
         #region MyCmd
+        private void MyInitWindow()
+        {
+            try
+            {
+                string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
+                {
+                    Type t = typeof(Brushes);
+                    Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
+                    BorderBrush= b;
+                }
+                else
+                    BorderBrush = Brushes.Black;
+
+                MyRefresh();
+
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         public bool? MyOnShow()
         {
             return this.View.ShowDialog();
         }
+        private void MyCmdSalir_Click()
+        {
+            try
+            {
+                this.View.Close();
+            }
+            catch (Exception ex)
+            {
 
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public RelayCommand initWindow
         {
@@ -64,7 +145,28 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
+        #region MyModule
+        private void MyRefresh()
+        {
+            TotalRechazada = 0;
+            using (SqlExcuteCommand get = new SqlExcuteCommand()
+            {
+                DBCnnStr = DBEndososCnnStr
+            })
+            {
+                _MyLotsTable = get.MyGetLotToFixVoid(Lot);
 
+
+                if (_MyLotsTable.Rows.Count == 0)
+                    MessageBox.Show("No hay rechazadas para procesar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                TotalRechazada = _MyLotsTable.Rows.Count;
+
+
+            }
+        }
+        #endregion
 
 
 
