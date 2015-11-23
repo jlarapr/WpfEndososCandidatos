@@ -427,7 +427,12 @@
         {
             try
             {
-
+                using (vmFixVoid frmFixVoid = new vmFixVoid(Resultados[0]))
+                {
+                    frmFixVoid.View.Owner = this.View as Window;
+                    frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
+                    frmFixVoid.MyOnShow();
+                }
             }
             catch (Exception ex)
             {

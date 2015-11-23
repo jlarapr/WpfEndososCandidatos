@@ -7,6 +7,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
     using jolcode.MyInterface;
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Configuration;
     using System.Linq;
     using System.Reflection;
@@ -16,17 +17,32 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
     using System.Windows;
     using System.Windows.Media;
     using WpfEndososCandidatos.View;
+    using System.Data;
+    using Models;
+
     public class vmLotFix : ViewModelBase<IDialogView>,IDisposable 
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private ObservableCollection<string> _cbLots;
+        private string _cbLots_Item;
+        private int _cbLots_Item_Id;
+        private string _DBEndososCnnStr;
+        private DataTable _MyLotsTable;
+
         public vmLotFix()
            : base(new wpfLotFix())
-       {
-           initWindow = new RelayCommand(param => InitWindow());
-           cmdSalir_Click = new RelayCommand(param => CmdSalir_Click());
-       }
-        public Brush BorderBrush
+        {
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
+            cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
+            cbLots = new ObservableCollection<string>();
+        }
+       
+
+        #region MyProperty
+         public Brush BorderBrush
         {
             get
             {
@@ -42,9 +58,73 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             }
         }
+        public ObservableCollection<string> cbLots
+        {
+            get
+            {
+                return _cbLots;
+            }
+            set
+            {
+                _cbLots = value;
+                this.RaisePropertychanged("cbLots");
+            }
+        }
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
 
-        #region initWindow OnShow
-        private void InitWindow()
+
+        public string cbLots_Item
+        {
+            get
+            {
+                return _cbLots_Item;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _cbLots_Item = value;
+                    this.RaisePropertychanged("cbLots_Item");
+                }
+            }
+        }
+        public int cbLots_Item_Id
+        {
+            get
+            {
+                return _cbLots_Item_Id;
+            }
+            set
+            {
+
+                _cbLots_Item_Id = value;
+                this.RaisePropertychanged("cbLots_Item_Id");
+
+
+            }
+        }
+
+        private bool CanOpen
+        {
+            get
+            {
+                return cbLots_Item_Id > -1 ? true : false;
+            }
+        }
+
+        #endregion
+
+        #region MyCmd
+        private void MyInitWindow()
        {
            try
            {
@@ -59,6 +139,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderBrush = Brushes.Black;
 
+                MyRefresh();
+
             }
            catch (Exception ex)
            {
@@ -67,42 +149,128 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
            }
        }
-       public bool? OnShow()
+
+        public bool? MyOnShow()
        {
            return this.View.ShowDialog();
        }
+
+        private void MyCmdSalir_Click()
+        {
+            try
+            {
+                this.View.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MyCmdRefresh_Click()
+        {
+            try
+            {
+                MyRefresh();
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        
+        }
+
+        private void MyCmdOpen_Click()
+        {
+            try
+            {
+                using (vmFixVoid frmFixVoid = new vmFixVoid(cbLots_Item))
+                {
+                    frmFixVoid.View.Owner = this.View as Window;
+                    frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
+                    frmFixVoid.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
        public RelayCommand initWindow
        {
            get;
            private set;
        }
-       #endregion
-       #region Exit
-       public RelayCommand cmdSalir_Click
+        public RelayCommand cmdSalir_Click
        {
            get;
            private set;
        }
-       public void CmdSalir_Click()
-       {
-           try
-           {
-               this.View.Close();
-           }
-           catch (Exception ex)
-           {
 
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
+        public RelayCommand cmdRefresh_Click
+        {
+            get;private set;
+        }
+        public RelayCommand cmdOpen_Click
+        {
+            get;private set;
+        }
+        #endregion
+
+        #region MyModules
+        private void MyRefresh()
+        {
+            using (SqlExcuteCommand get = new SqlExcuteCommand()
+            {
+                DBCnnStr = DBEndososCnnStr
+            })
+            {
+                _MyLotsTable = get.MyGetLot("2,3,4");
+                cbLots.Clear();
+
+                if (_MyLotsTable.Rows.Count == 0)
+                    MessageBox.Show("No hay lotes para Reversar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                foreach (DataRow row in _MyLotsTable.Rows)
+                {
+                    Lots myLots = new Lots();
+
+                    myLots.Partido = row["Partido"].ToString();
+                    myLots.Lot = row["Lot"].ToString();
+                    myLots.Amount = row["Amount"].ToString();
+                    myLots.Usercode = row["Usercode"].ToString();
+                    myLots.AuthDate = row["AuthDate"].ToString();
+                    myLots.Status = row["Status"].ToString();
+                    myLots.VerDate = row["VerDate"].ToString();
+                    myLots.VerUser = row["VerUser"].ToString();
+                    myLots.FinUser = row["FinUser"].ToString();
+                    myLots.FinDate = row["FinDate"].ToString();
+                    myLots.RevDate = row["RevDate"].ToString();
+                    myLots.RevUser = row["RevUser"].ToString();
+                    myLots.conditions = row["conditions"].ToString();
+                    myLots.ImportDate = row["ImportDate"].ToString();
+
+                    cbLots.Add(myLots.Lot);
+
+                }
+                cbLots_Item_Id = -1;
+
+            }
+
+        }
 
 
 
-       #endregion
-       #region Dispose
-       
-        
+
+        #endregion
+        #region Dispose
+
+
 
         public void Dispose()
         {

@@ -201,7 +201,8 @@
                 using (vmLotFix frmLotFix = new vmLotFix())
                 {
                     frmLotFix.View.Owner = this.View as Window;
-                    frmLotFix.OnShow();
+                    frmLotFix.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotFix.MyOnShow();
                 }
             }
             catch (Exception ex)
