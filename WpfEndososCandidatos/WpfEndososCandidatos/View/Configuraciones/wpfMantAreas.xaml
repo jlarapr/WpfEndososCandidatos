@@ -3,16 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Behaviors ="clr-namespace:MVVM.Client.Infrastructure.Behaviors"
-        Title="wpfMantAreas" Height="542.317" Width="516.317" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Background="Transparent"
+        Title="wpfMantAreas" Height="548.784" Width="537.566" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="10" Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
+
+        <Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+        </Border.Effect>
 
         <Grid Margin="0,0,0,0">
-            <Label Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Mantenimiento - Áreas de Endoso" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="24" Margin="5,5,5,0"/>
             <GroupBox x:Name="Frame1" Header="Frame1" Height="451" Margin="10,65,10,0" VerticalAlignment="Top">
                 <Grid Margin="0,0,5,0">
                     <ListBox x:Name="lsAllPrecints" HorizontalAlignment="Left" Margin="10,101,0,10" Width="145"

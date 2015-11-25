@@ -132,7 +132,7 @@
         {
             get
             {
-                return cbLots_Item_Id >= -1 ? true : false;
+                return cbLots_Item_Id > -1 ? true : false;
             }
         }
         
@@ -272,7 +272,7 @@
                     cbLots.Add(myLots.Lot);
 
                 }
-
+                cbLots_Item_Id = -1;
             }
 
         }

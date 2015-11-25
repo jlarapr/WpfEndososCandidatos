@@ -4,7 +4,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local ="clr-namespace:WpfEndososCandidatos.ViewModels"
         xmlns:PassHelper="clr-namespace:WpfEndososCandidatos.Helper"
-        Title="wpfMantUsers" Height="456.782" Width="379.73" Background="Beige" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
+        Background="Transparent"
+        Title="wpfMantUsers" Height="556.782" Width="479.73"  WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
 
     <!--<Window.DataContext>
         <local:vmMatUsers/>
@@ -16,7 +17,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="10"  Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
+
+        <Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+        </Border.Effect>
         <Grid Margin="-2,-1,2,1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>

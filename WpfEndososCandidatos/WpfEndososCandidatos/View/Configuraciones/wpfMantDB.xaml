@@ -6,8 +6,8 @@
         xmlns:vm="clr-namespace:WpfEndososCandidatos.ViewModels"
         xmlns:local="clr-namespace:WpfEndososCandidatos.ViewModels"
         xmlns:ff="clr-namespace:FunctionalFun.UI"
-        Background="Beige"
-        Title="Mantenimiento - Base de Datos" Height="455.765" Width="861.212" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
+        Background="Transparent"
+        Title="Mantenimiento - Base de Datos" Height="478.765" Width="888.212" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -16,7 +16,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Border  BorderBrush="{Binding BorderBrush}" BorderThickness="5"  Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
+
+        <Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+        </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

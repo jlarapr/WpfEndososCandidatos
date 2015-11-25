@@ -235,7 +235,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
-                    MessageBox.Show("No hay lotes para Reversar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("No hay lotes ", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 foreach (DataRow row in _MyLotsTable.Rows)
                 {

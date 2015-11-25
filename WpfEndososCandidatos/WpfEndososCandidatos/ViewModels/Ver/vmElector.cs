@@ -459,20 +459,20 @@
                     Source_image = bi;
 
                     // 'DESPLIEGA LA Photo DEL ELECTOR
-                    byte[] dataPhoto = (byte[])myTable.Rows[0]["PhotoImage"];
+                    //byte[] dataPhoto = (byte[])myTable.Rows[0]["PhotoImage"];
 
-                    MemoryStream strmPhoto = new MemoryStream();
-                    strmPhoto.Write(dataPhoto, 0, dataPhoto.Length);
-                    strmPhoto.Position = 0;
-                    System.Drawing.Image imgPhoto = System.Drawing.Image.FromStream(strmPhoto);
-                    BitmapImage biPhoto = new BitmapImage();
-                    biPhoto.BeginInit();
-                    MemoryStream msPhoto = new MemoryStream();
-                    imgPhoto.Save(msPhoto, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    msPhoto.Seek(0, SeekOrigin.Begin);
-                    biPhoto.StreamSource = msPhoto;
-                    biPhoto.EndInit();
-                    Source_imagePhoto = biPhoto;
+                    //MemoryStream strmPhoto = new MemoryStream();
+                    //strmPhoto.Write(dataPhoto, 0, dataPhoto.Length);
+                    //strmPhoto.Position = 0;
+                    //System.Drawing.Image imgPhoto = System.Drawing.Image.FromStream(strmPhoto);
+                    //BitmapImage biPhoto = new BitmapImage();
+                    //biPhoto.BeginInit();
+                    //MemoryStream msPhoto = new MemoryStream();
+                    //imgPhoto.Save(msPhoto, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    //msPhoto.Seek(0, SeekOrigin.Begin);
+                    //biPhoto.StreamSource = msPhoto;
+                    //biPhoto.EndInit();
+                    //Source_imagePhoto = biPhoto;
 
                 }
             }

@@ -3,16 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
         xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" x:Class="WpfEndososCandidatos.View.wpfMantPass"  
-        Background="Beige"
-        Title="wpfMantPass" Height="282.456" Width="351.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Background="Transparent"
+        Title="wpfMantPass" Height="382.456" Width="451.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid>
-        <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
+    <Grid Margin="0">
+        <Border BorderBrush="{Binding BorderBrush}" Background="Beige" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="4" BorderThickness="3" Margin="10" CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+            </Border.Effect>
+
             <Grid>
                 <Label Content="Cambiar Password" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="36" Margin="5,5,5,0"/>
                 <Label Content="Password" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="117"/>

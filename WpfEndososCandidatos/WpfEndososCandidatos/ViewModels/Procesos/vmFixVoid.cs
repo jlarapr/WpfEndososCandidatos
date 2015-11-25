@@ -4,7 +4,6 @@ using jolcode.MyInterface;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -13,6 +12,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using WpfEndososCandidatos.View;
 using System.Data;
+using System.Windows.Media;
+using System.Windows.Data;
+using System.Windows.Controls;
+using WpfEndososCandidatos.Models;
+using System.ComponentModel;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -21,10 +25,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _DBEndososCnnStr;
-        private Brush _BorderBrush;
+        private Brush _BorderColor;
         private string _Lot;
         private DataTable _MyLotsTable;
         private int _TotalRechazada;
+        private TextBox _txtRazonRechazo;
+        private string _txtNumElec_Corregir;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -35,18 +41,40 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
 
         #region MyProperty
-        public Brush BorderBrush
+        public TextBox txtRazonRechazo
         {
             get
             {
-                return _BorderBrush;
+                return _txtRazonRechazo;
+            }set
+            {
+                _txtRazonRechazo = value;
+                this.RaisePropertychanged("txtRazonRechazo");
+            }
+        }
+        public string txtNumElec_Corregir
+        {
+            get
+            {
+                return _txtNumElec_Corregir;
+            }set
+            {
+                _txtNumElec_Corregir = value;
+                this.RaisePropertychanged("txtNumElec_Corregir");
+            }
+        }
+        public Brush BorderColor
+        {
+            get
+            {
+                return _BorderColor;
             }
             set
             {
-                if (_BorderBrush != value)
+                if (_BorderColor != value)
                 {
-                    _BorderBrush = value;
-                    this.RaisePropertychanged("BorderBrush");
+                    _BorderColor = value;
+                    this.RaisePropertychanged("BorderColor");
                 }
 
             }
@@ -97,12 +125,60 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 {
                     Type t = typeof(Brushes);
                     Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
-                    BorderBrush= b;
+                    BorderColor = b;
                 }
                 else
-                    BorderBrush = Brushes.Black;
+                    BorderColor = Brushes.Black;
+
+
 
                 MyRefresh();
+
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+
+                    Binding TipoDeRechazo = new Binding();
+                    TipoDeRechazo.Source = _MyLotsTable;
+                    TipoDeRechazo.Path = new PropertyPath("Row[0][TipoDeRechazo]");
+                    TipoDeRechazo.Mode = BindingMode.TwoWay;
+                    TipoDeRechazo.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                    //BindingOperations.SetBinding(txtRazonRechazo, TextBox.TextProperty, TipoDeRechazo);
+
+
+                    txtRazonRechazo.SetBinding(TextBox.TextProperty,TipoDeRechazo);
+                    
+
+                    //txtRazonRechazo = _MyLotsTable.Rows[1]["Numelec"].ToString();
+
+
+            
+
+
+
+
+
+
+
+
+
+                    //txtRazonRechazo = get.MyTipoDeRechazo(te.Text);
+
+
+
+                    //txtNumElec_Corregir = _MyLotsTable.Rows[1]["Numelec"].ToString();
+
+
+                }
+
+              
+
+
+
+
+
 
             }
             catch (Exception ex)
@@ -149,6 +225,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private void MyRefresh()
         {
             TotalRechazada = 0;
+            txtRazonRechazo = new TextBox();
+            txtNumElec_Corregir = string.Empty;
+
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
                 DBCnnStr = DBEndososCnnStr

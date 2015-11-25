@@ -431,7 +431,7 @@ namespace jolcode
 
                 string[] mySqlstr =
                     {
-                    "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status, LotsEndo.Status, LotsVoid.Rechazo,",
+                    "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status as LotRechazado, LotsEndo.Status as FormlularioRechazado,LotsVoid.Status as Rechazo_Or_Warning, LotsVoid.Rechazo as TipoDeRechazo,",
                     "LotsEndo.Numelec, LotsEndo.Precinto, LotsEndo.FechaNac, LotsEndo.Sexo, LotsEndo.Candidato,",
                     "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image ",
                     "FROM (LotsEndo INNER JOIN Lots ON LotsEndo.Lot = Lots.Lot) INNER JOIN LotsVoid ON (LotsEndo.Formulario = LotsVoid.Formulario) AND (LotsEndo.Lot = LotsVoid.Lot) ",
@@ -800,6 +800,41 @@ namespace jolcode
                 throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
             }
             return myTableReturn;
+        }
+
+        public string MyTipoDeRechazo(string param)
+        {
+            string myReturn = string.Empty;
+            try
+            {
+                string mySqlstr = "SELECT [Desc]  FROM [Criterios] where Campo = " + param;
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        myReturn = cmd.ExecuteScalar().ToString();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+            }
+            return myReturn;
+
         }
 
         public bool MyInitLot(string lotNum, Logclass logClass)
@@ -1946,10 +1981,10 @@ namespace jolcode
                     string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                     string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
 
-                    try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { };
-                    try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { };
-                    try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { };
-                    try { int.TryParse(row["Cargo"].ToString().Trim(), out m_Cargo); } catch { }
+                    try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
+                    try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { throw; };
+                    try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { throw; };
+                    try { int.TryParse(row["Funcionario"].ToString().Trim(), out m_Cargo); } catch { throw; }
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
@@ -1958,16 +1993,18 @@ namespace jolcode
 
                     m_PARTIDO = row["Partido"].ToString().Trim();
                     m_BatchNo = row["BatchNo"].ToString().Trim();
-                    m_Batch = row["Suspense_File"].ToString().Trim().Split('\\')[3];
-                    m_Suspense_File = row["Suspense_File"].ToString().Trim().Split('\\')[4];
+                    m_Batch = m_BatchNo;// row["Suspense_File"].ToString().Trim().Split('\\')[3];
+                    m_Suspense_File = row["Nombre_Image"].ToString().Trim();
+
+                  //  m_Suspense_File = System.IO.Path.GetFileName(m_Suspense_File);
 
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
                     m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
                     m_BatchTrack = row["BatchTrack"].ToString().Trim();
                     m_N_ELEC = row["NumElec"].ToString().Trim().PadLeft(7, '0');
 
-                    m_N_NOTARIO = row["Notario"].ToString().Trim().PadLeft(7, '0');
-                    m_N_CANDIDAT = row["N_CANDIDAT"].ToString().PadLeft(3, '0');
+                    m_N_NOTARIO = row["Notario_Funcionario"].ToString().Trim().PadLeft(7, '0');
+                    m_N_CANDIDAT = row["Num_Candidato"].ToString().PadLeft(3, '0');
                     m_N_PRECINTO = row["Precinto"].ToString().PadLeft(3, '0');
 
                     m_SEXO = row["SEXO"].ToString().Trim();
@@ -2082,7 +2119,7 @@ namespace jolcode
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
-                                                " Where [VoterIDNotario] = '", FixNum( m_N_NOTARIO) , "'"};
+                                                " Where [NumElec] = '", FixNum( m_N_NOTARIO) , "'"};
                         object total = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)

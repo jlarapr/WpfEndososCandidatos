@@ -3,16 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" 
-        Title="wpfElector" Height="591.456" Width="463.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Background="Transparent"
+        Title="wpfElector" Height="622.456" Width="492.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Border  BorderBrush="{Binding BorderBrush}"  BorderThickness="5" Margin="-2" CornerRadius="5">
+    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
 
+        <Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+        </Border.Effect>
         <Grid>
-            <Label Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="373,555,0,0" VerticalAlignment="Top" Width="75"/>
             <GroupBox x:Name="groupBox" Header="Información del Elector" Margin="5,65,5,0" VerticalAlignment="Top" Height="485">
                 <Grid>
@@ -132,9 +136,6 @@
 
                         </Grid>
                     </Border>
-                    <Image x:Name="image" HorizontalAlignment="Left" Height="85" Margin="326,10,0,0" VerticalAlignment="Top" Width="100"
-                           Source="{Binding Source_imagePhoto}"
-                           />
 
                 </Grid>
             </GroupBox>
