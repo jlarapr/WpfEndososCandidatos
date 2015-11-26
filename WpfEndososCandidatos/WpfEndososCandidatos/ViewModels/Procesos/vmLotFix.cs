@@ -29,6 +29,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private int _cbLots_Item_Id;
         private string _DBEndososCnnStr;
         private DataTable _MyLotsTable;
+        private string _DBMasterCeeCnnStr;
 
         public vmLotFix()
            : base(new wpfLotFix())
@@ -81,7 +82,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-
+        public string DBMasterCeeCnnStr
+        {
+            get
+            {
+                return _DBMasterCeeCnnStr;
+            }set
+            {
+                _DBMasterCeeCnnStr = value;
+            }
+        }
         public string cbLots_Item
         {
             get
@@ -191,6 +201,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 {
                     frmFixVoid.View.Owner = this.View as Window;
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
+                    frmFixVoid.DBMasterCeeCnnStr = DBMasterCeeCnnStr;
                     frmFixVoid.Lot = cbLots_Item;
                     frmFixVoid.MyOnShow();
                 }

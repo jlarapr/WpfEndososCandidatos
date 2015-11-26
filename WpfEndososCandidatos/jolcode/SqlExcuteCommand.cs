@@ -332,7 +332,7 @@ namespace jolcode
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
-                    ConnectionString = DBCnnStr
+                    ConnectionString = DBCeeMasterCnnStr
                 })
                 {
                     using (SqlCommand cmd = new SqlCommand()

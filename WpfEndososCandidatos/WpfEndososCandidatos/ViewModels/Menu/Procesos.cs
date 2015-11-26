@@ -202,6 +202,7 @@
                 {
                     frmLotFix.View.Owner = this.View as Window;
                     frmLotFix.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotFix.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frmLotFix.MyOnShow();
                 }
             }

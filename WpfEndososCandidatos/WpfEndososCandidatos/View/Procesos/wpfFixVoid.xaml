@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Title="wpfFixVoid" Height="797.622" Width="1128.247" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
+        Title="wpfFixVoid" Height="834.289" Width="1128.247" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -36,7 +36,11 @@
                        Grid.Column="1" 
                        Text="{Binding Path=txtRazonRechazo}"
                        />
-            <StackPanel Margin="10,10,10,0" Grid.Row="2" Height="51" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <StackPanel Margin="10,11,0,10" Grid.Row="2" Height="51" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="606" Orientation="Horizontal">
+                <Button Content="&lt; Anterior" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Próximo &gt;" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Ver Elector" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Guardar" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
             </StackPanel>
             <Label x:Name="label1" Content="Endoso Rechazado" Margin="5,4,15,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
@@ -72,7 +76,7 @@
                                    Background="Yellow"
                                     Text="{Binding txtPrecinto}" Grid.Column="1" Grid.Row="2"
                                    />
-                        <TextBlock x:Name="txtSex" Height="26" Margin="5,2,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                        <TextBlock x:Name="txtSex" Margin="5,2,10,7" TextWrapping="Wrap"
                                    Background="Yellow"
                                    Text="{Binding txtSex}" Grid.Column="1" Grid.Row="3"
                                    />
@@ -85,13 +89,9 @@
                                    Text="{Binding txtNotarioNumElec}" Grid.Row="5" Grid.ColumnSpan="2"
                                    
                                    />
-                        <TextBlock x:Name="txtNotarioFirstName" Height="26" Margin="5,41,5,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                        <TextBlock x:Name="txtNotarioFirstName" Height="26" Margin="5,41,11,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                                     Background="Yellow"
-                                   Text="{Binding txtNotarioFirstName}" Grid.Row="5"
-                                   />
-                        <TextBlock x:Name="txtNotarioLastName1" Height="26" Margin="5,41,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                                    Background="Yellow"
-                                   Text="{Binding txtNotarioLastName1}" Grid.Column="1" Grid.Row="5"
+                                   Text="{Binding txtNotarioFirstName}" Grid.Row="5" Grid.ColumnSpan="2"
                                    />
 
                     </Grid>
@@ -117,7 +117,7 @@
                         <Label x:Name="label2_Copy" Content="Número Electoral:" HorizontalAlignment="Left" Margin="10,0,0,5" Width="105" Height="27" VerticalAlignment="Bottom"/>
                         <TextBox x:Name="txtNumElec_Corregir" Margin="10,0,10,5" TextWrapping="Wrap"
                         	MaxLength="7"
-                        	Text="{Binding Path=MyLotsTable.Rows[0][Numelec], UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
+                        	Text="{Binding Path=txtNumElec_Corregir, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" 
                                      Grid.Column="1" Height="23" VerticalAlignment="Bottom" 
                                      />
                         <Label Height="23"  x:Name="label3_Copy" Content="Precinto:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="1" Width="56"/>

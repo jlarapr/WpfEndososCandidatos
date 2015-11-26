@@ -378,7 +378,7 @@
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
-                    DBCnnStr = DBCeeMasterCnnStr
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr
                 })
                 {
                     DataTable myTable;

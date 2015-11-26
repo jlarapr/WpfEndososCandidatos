@@ -32,6 +32,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtRazonRechazo;
         private string _txtNumElec_Corregir;
         private int _i;
+        private string _DBMasterCeeCnnStr;
+        private string _txtNombre;
+        private DataTable _tblCitizen;
+        private string _txtNumElec;
+        private string _txtPrecinto;
+        private string _txtSex;
+        private string _txtFechaNac;
+        private string _txtNotarioNumElec;
+        private string _txtNotarioFirstName;
+        private string _txtPrecinto_Corregir;
+        private string _txtSex_Corregir;
+        private string _txtCargo_Corregir;
+        private string _txtCandidato_Corregir;
+        private string _txtNotarioElec_Corregir;
+        private string _txtFirmaElec_Corregir;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -75,6 +90,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("txtRazonRechazo");
             }
         }
+        public string txtNombre
+        {
+            get
+            {
+                return _txtNombre;
+            }set
+            {
+                _txtNombre = value;
+                this.RaisePropertychanged("txtNombre");
+            }
+        }
         public string txtNumElec_Corregir
         {
             get
@@ -86,6 +112,141 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("txtNumElec_Corregir");
             }
         }
+        public string txtNumElec
+        {
+            get
+            {
+                return _txtNumElec;
+            }set
+            {
+                _txtNumElec = value;
+                this.RaisePropertychanged("txtNumElec");
+            }
+        }
+        public string txtPrecinto
+        {
+            get
+            {
+                return _txtPrecinto;
+            }set
+            {
+                _txtPrecinto = value;
+                this.RaisePropertychanged("txtPrecinto");
+            }
+        }
+        public string txtSex
+        {
+            get
+            {
+                return _txtSex;
+            }set
+            {
+                _txtSex = value;
+                this.RaisePropertychanged("txtSex");
+            }
+        }
+        public string txtFechaNac
+        {
+            get
+            {
+                return _txtFechaNac;
+            }set
+            {
+                _txtFechaNac = value;
+                this.RaisePropertychanged("txtFechaNac");
+
+            }
+        }
+        public string txtNotarioNumElec
+        {
+            get
+            {
+                return _txtNotarioNumElec;
+            }set
+            {
+                _txtNotarioNumElec = value;
+                this.RaisePropertychanged("txtNotarioNumElec");
+            }
+        }
+        public string txtNotarioFirstName
+        {
+            get
+            {
+                return _txtNotarioFirstName;
+            }set
+            {
+                _txtNotarioFirstName = value;
+                this.RaisePropertychanged("txtNotarioFirstName");
+            }
+        }
+        public string txtPrecinto_Corregir
+        {
+            get
+            {
+                return _txtPrecinto_Corregir;
+            }set
+            {
+                _txtPrecinto_Corregir = value;
+                this.RaisePropertychanged("txtPrecinto_Corregir");
+            }
+        }
+        public string txtSex_Corregir
+        {
+            get
+            {
+                return _txtSex_Corregir;
+            }set
+            {
+                _txtSex_Corregir = value;
+                this.RaisePropertychanged("txtSex_Corregir");
+            }
+        }
+        public string txtCargo_Corregir
+        {
+            get
+            {
+                return _txtCargo_Corregir;
+            }set
+            {
+                _txtCargo_Corregir = value;
+                this.RaisePropertychanged("txtCargo_Corregir");
+            }
+        }
+        public string txtCandidato_Corregir
+        {
+            get
+            {
+                return _txtCandidato_Corregir;
+            }set
+            {
+                _txtCandidato_Corregir = value;
+                this.RaisePropertychanged("txtCandidato_Corregir");
+            }
+        }
+        public string txtNotarioElec_Corregir
+        {
+            get
+            {
+                return _txtNotarioElec_Corregir;
+            }set
+            {
+                _txtNotarioElec_Corregir = value;
+                this.RaisePropertychanged("txtNotarioElec_Corregir");
+            }
+        }
+        public string txtFirmaElec_Corregir
+        {
+            get
+            {
+                return _txtFirmaElec_Corregir;
+            }set
+            {
+                _txtFirmaElec_Corregir = value;
+                this.RaisePropertychanged("txtFirmaElec_Corregir");
+            }
+        }
+
+
         public Brush BorderColor
         {
             get
@@ -112,6 +273,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 _DBEndososCnnStr = value;
             }
         }
+        public string DBMasterCeeCnnStr
+        {
+            get
+            {
+                return _DBMasterCeeCnnStr;
+            }set
+            {
+                _DBMasterCeeCnnStr = value;
+            }
+        }
+
+
         public string Lot
         {
             get
@@ -159,7 +332,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
-                    DBCnnStr = DBEndososCnnStr
+                    DBCnnStr = DBEndososCnnStr,
+                    DBCeeMasterCnnStr = DBMasterCeeCnnStr
+
                 })
                 {
                     TextBlock obTextBlock = new TextBlock();
@@ -185,31 +360,71 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     //obTextBlock.Text = obTextBlock1.Text;
 
 
+                    txtNumElec_Corregir = _MyLotsTable.Rows[0]["Numelec"].ToString();
+                    txtNotarioNumElec = _MyLotsTable.Rows[0]["Notario"].ToString();
 
-
-                    //txtRazonRechazo = _MyLotsTable.Rows[1]["Numelec"].ToString();
-
-
-
-
-
-
-
-
-
-
+                    txtPrecinto_Corregir = _MyLotsTable.Rows[0]["Precinto"].ToString().Trim().PadLeft(3,'0');
+                    txtSex_Corregir = _MyLotsTable.Rows[0]["Sexo"].ToString().Trim();
+                    txtCargo_Corregir = _MyLotsTable.Rows[0]["Cargo"].ToString().Trim();
+                    txtCandidato_Corregir = _MyLotsTable.Rows[0]["Candidato"].ToString().Trim();
+                    txtNotarioElec_Corregir = txtNotarioNumElec;
+                    txtFirmaElec_Corregir = _MyLotsTable.Rows[0]["Candidato"].ToString().Trim();
 
 
                     txtRazonRechazo = get.MyTipoDeRechazo(MyLotsTable.Rows[0]["TipoDeRechazo"].ToString());
 
+                    _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
+                    DataTable notarioInfo = get.MyGetCitizen(txtNotarioNumElec);
+
+                    if (notarioInfo.Rows.Count >0)
+                    {
+                        string[] notario ={
+
+                                        notarioInfo.Rows[0]["FirstName"].ToString()," ",
+                                        notarioInfo.Rows[0]["LastName1"].ToString()," ",
+                                        notarioInfo.Rows[0]["LastName2"].ToString()
+                    };
+
+                        txtNotarioFirstName = string.Concat(notario);
+                    }
+                    else
+                        txtNotarioFirstName = "Error No hay Datos en el Master";
 
 
-                    //txtNumElec_Corregir = _MyLotsTable.Rows[1]["Numelec"].ToString();
+                    if (_tblCitizen.Rows.Count > 0)
+                    {
+                        string[] name = {
+                                        _tblCitizen.Rows[0]["FirstName"].ToString()," ",
+                                        _tblCitizen.Rows[0]["LastName1"].ToString()," ",
+                                        _tblCitizen.Rows[0]["LastName2"].ToString()
+                                    };
+
+                        txtNombre = string.Concat(name);
+                        txtNumElec = txtNumElec_Corregir;
+                        txtPrecinto = _tblCitizen.Rows[0]["FirstGeoCode"].ToString().Trim().PadLeft(3, '0');
+                        txtSex = _tblCitizen.Rows[0]["Gender"].ToString().Trim();
+
+                        txtFechaNac = _tblCitizen.Rows[0]["DateOfBirth"].ToString().Trim();
+                        if (!string.IsNullOrEmpty(txtFechaNac))
+                        {
+                            string Mes = txtFechaNac.Split('/')[0].Trim().PadLeft(2, '0');
+                            string Dia = txtFechaNac.Split('/')[1].Trim().PadLeft(2, '0');
+                            string Ano = txtFechaNac.Split('/')[2].Trim().Substring(0, 4);
+                            txtFechaNac = Mes + "//" + Dia + "//" + Ano;
+                        }
+                    }else
+                    {
+                        txtNombre = "No Hay Datos";
+                        txtPrecinto = "No Hay Datos";
+                        txtSex = "No Hay Datos";
+                        txtFechaNac = "No Hay Datos";
+                    }
+
 
 
                 }
 
-              
+
 
 
 
@@ -262,7 +477,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             TotalRechazada = 0;
             txtRazonRechazo = string.Empty;
+
             txtNumElec_Corregir = string.Empty;
+            txtPrecinto_Corregir = string.Empty;
+            txtSex_Corregir = string.Empty;
+            txtCargo_Corregir = string.Empty;
+            txtCandidato_Corregir = string.Empty;
+            txtNotarioElec_Corregir = string.Empty;
+            txtFirmaElec_Corregir = string.Empty;
+
+
+            txtNumElec = string.Empty;
+            txtNombre = string.Empty;
+            txtPrecinto = string.Empty;
+            txtSex = string.Empty;
+            txtFechaNac = string.Empty;
+            txtNotarioNumElec = string.Empty;
+            txtNotarioFirstName = string.Empty;
             i = 0;
 
             using (SqlExcuteCommand get = new SqlExcuteCommand()
