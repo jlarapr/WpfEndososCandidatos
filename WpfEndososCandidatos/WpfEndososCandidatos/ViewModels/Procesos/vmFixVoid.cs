@@ -29,8 +29,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _Lot;
         private DataTable _MyLotsTable;
         private int _TotalRechazada;
-        private TextBox _txtRazonRechazo;
+        private string _txtRazonRechazo;
         private string _txtNumElec_Corregir;
+        private int _i;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -41,7 +42,29 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
 
         #region MyProperty
-        public TextBox txtRazonRechazo
+        public DataTable MyLotsTable
+        {
+            get
+            {
+                return _MyLotsTable;
+            }set
+            {
+                _MyLotsTable = value;
+                this.RaisePropertychanged("MyLotsTable");
+            }
+        }
+        public int i
+        {
+            get
+            {
+                return _i;
+            }set
+            {
+                _i = value;
+                this.RaisePropertychanged("i");
+            }
+        }
+        public string txtRazonRechazo
         {
             get
             {
@@ -139,22 +162,34 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
+                    TextBlock obTextBlock = new TextBlock();
 
-                    Binding TipoDeRechazo = new Binding();
-                    TipoDeRechazo.Source = _MyLotsTable;
-                    TipoDeRechazo.Path = new PropertyPath("Row[0][TipoDeRechazo]");
-                    TipoDeRechazo.Mode = BindingMode.TwoWay;
-                    TipoDeRechazo.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    //BindingOperations.SetBinding(txtRazonRechazo, TextBox.TextProperty, TipoDeRechazo);
+                    //Binding TipoDeRechazo = new Binding();
+                    //TipoDeRechazo.Source = this;
+                    ////TipoDeRechazo.Path = new PropertyPath("Rows[0][TipoDeRechazo]");
+                    //TipoDeRechazo.Path = new PropertyPath("txtRazonRechazo");
+                    //TipoDeRechazo.Mode = BindingMode.TwoWay;
+                    //TipoDeRechazo.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                    //BindingOperations.SetBinding(obTextBlock, TextBlock.TextProperty, TipoDeRechazo);
 
 
-                    txtRazonRechazo.SetBinding(TextBox.TextProperty,TipoDeRechazo);
-                    
+                    ////   txtRazonRechazo.SetBinding(TextBox.TextProperty,TipoDeRechazo);
+
+                    //TextBlock obTextBlock1 = new TextBlock();
+
+                    //Binding g = new Binding();
+                    //g.Source = _MyLotsTable;
+                    //g.Path = new PropertyPath("Rows[0][TipoDeRechazo]");
+                    //obTextBlock1.SetBinding(TextBlock.TextProperty, g);
+
+                    //obTextBlock.Text = obTextBlock1.Text;
+
+
+
 
                     //txtRazonRechazo = _MyLotsTable.Rows[1]["Numelec"].ToString();
 
 
-            
 
 
 
@@ -164,7 +199,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
-                    //txtRazonRechazo = get.MyTipoDeRechazo(te.Text);
+
+                    txtRazonRechazo = get.MyTipoDeRechazo(MyLotsTable.Rows[0]["TipoDeRechazo"].ToString());
 
 
 
@@ -225,15 +261,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private void MyRefresh()
         {
             TotalRechazada = 0;
-            txtRazonRechazo = new TextBox();
+            txtRazonRechazo = string.Empty;
             txtNumElec_Corregir = string.Empty;
+            i = 0;
 
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLotToFixVoid(Lot);
+                MyLotsTable = get.MyGetLotToFixVoid(Lot);
 
 
                 if (_MyLotsTable.Rows.Count == 0)
