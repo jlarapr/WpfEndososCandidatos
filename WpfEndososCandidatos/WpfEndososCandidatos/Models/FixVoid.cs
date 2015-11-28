@@ -16,21 +16,26 @@ namespace WpfEndososCandidatos.Models
 
         public string Lot { get; set; } //LotsLot
         public string Formulario { get; set; }//LotsEndoFormulario
-        public string LotRechazado { get; set; } //Lots.Status
-
-        public string FormlularioRechazado {get;set;} // LotsEndo.Status 
-        public string  Rechazo_Or_Warning { get; set; }//LotsVoid.Status 
+       
+        
+        
         public string  TipoDeRechazo { get; set; }//LotsVoid.Rechazo 
         public string Numelec { get; set; }//LotsEndoNumelec
+        public string NotarioElec { get; set; }
+
         public string Precinto { get; set; }//LotsEndoPrecinto
-        public string FechaNac { get; set; }//LotsEndoFechaNac
+        public DateTime? FechaNac { get; set; }//LotsEndoFechaNac
         public string Sexo { get; set; }//LotsEndoSexo
         public string Candidato { get; set; }//LotsEndoCandidato
         public string Cargo { get; set; }//LotsEndoCargo
-        public string Notario { get; set; }//LotsEndoNotario
-        public string Conditions { get; set; }//LotsConditions
 
-        public string LotsEndoLot { get; set; }//LotsEndoLot
+        public string FirmaElec { get; set; }
+        public string NotarioFirma { get; set; }
+        public bool Firma_Pet_Inv { get; set; }
+        public bool Firma_Not_Inv { get; set; }
+        public DateTime? FchEndoso { get; set; }
+        public DateTime? Firma_Fecha { get; set; }
+        public DateTime? FchEndosoEntregada { get;set; }
         public string Batch { get; set; }//LotsEndoBatch
         public string image { get; set; }//LotsEndoimage
 
@@ -41,19 +46,21 @@ namespace WpfEndososCandidatos.Models
             {
               Lot,
               Formulario,
-              LotRechazado,
-              FormlularioRechazado,
-              Rechazo_Or_Warning,
               TipoDeRechazo,
               Numelec,
+              NotarioElec,
               Precinto,
-              FechaNac,
+              FechaNac.ToString(),
               Sexo,
               Candidato,
               Cargo,
-              Notario,
-              Conditions,
-              LotsEndoLot,
+              FirmaElec,
+              NotarioFirma,
+              Firma_Pet_Inv.ToString(),
+              Firma_Not_Inv.ToString(),
+              FchEndoso.ToString(),
+              Firma_Fecha.ToString(),
+              FchEndosoEntregada.ToString(),
               Batch,
               image,
             };

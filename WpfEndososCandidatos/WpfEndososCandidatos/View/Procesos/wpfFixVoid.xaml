@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Title="wpfFixVoid" Height="834.289" Width="1128.247" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
+        Title="wpfFixVoid" Height="872.067" Width="1128.247" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -31,16 +31,17 @@
                     <Image x:Name="image" Margin="5"/>
                 </Grid>
             </GroupBox>
-            <Label x:Name="label" Content="Razón del Rechazo" Margin="0,5,209,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
-            <TextBlock x:Name="txtRazonRechazo" Margin="10,41,10,0" TextWrapping="Wrap" Background="Yellow" Height="69" VerticalAlignment="Top"
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
+            <Label x:Name="txtRazonRechazo" Margin="10,41,10,0"  Background="Yellow" Height="69" 
                        Grid.Column="1" 
-                       Text="{Binding Path=txtRazonRechazo}"
+                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
+                       Content="{Binding Path=txtRazonRechazo}"
                        />
             <StackPanel Margin="10,11,0,10" Grid.Row="2" Height="51" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="606" Orientation="Horizontal">
-                <Button Content="&lt; Anterior" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
-                <Button Content="Próximo &gt;" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
-                <Button Content="Ver Elector" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
-                <Button Content="Guardar" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="&lt; Anterior" Command="{Binding cmdAnterior_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
+                <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
             </StackPanel>
             <Label x:Name="label1" Content="Endoso Rechazado" Margin="5,4,15,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
@@ -59,44 +60,44 @@
                             <ColumnDefinition Width="84*"/>
                             <ColumnDefinition Width="97*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="txtNombre" Height="30" Margin="5,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"
-                                   Background="Yellow"
-                                   Text="{Binding txtNombre}" Grid.ColumnSpan="2" 
+                        <Label x:Name="txtNombre" Height="30" Margin="5,10,10,0"  VerticalAlignment="Top"
+                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtNombre}" Grid.ColumnSpan="2" 
                                    />
                         <Label x:Name="label2" Content="Número Electoral:" HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top" Height="26" Width="105" Grid.Row="1"/>
                         <Label x:Name="label3" Content="Precinto:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Row="2"/>
                         <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Row="3"/>
                         <Label x:Name="label5" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Height="26" Width="148" Grid.Row="4"/>
                         <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Height="26" Width="84" Grid.Row="5"/>
-                        <TextBlock x:Name="txtNumElec" Height="26" Margin="5,2,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                                   Background="Yellow"
-                                   Text="{Binding txtNumElec}" Grid.Column="1" Grid.Row="1"
+                        <Label x:Name="txtNumElec" Height="26" Margin="5,2,10,0"   VerticalAlignment="Top"
+                                   Background="Yellow"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtNumElec}" Grid.Column="1" Grid.Row="1"
                                    />
-                        <TextBlock x:Name="txtPrecinto" Height="26" Margin="5,2,11,0" TextWrapping="Wrap" VerticalAlignment="Top"
-                                   Background="Yellow"
-                                    Text="{Binding txtPrecinto}" Grid.Column="1" Grid.Row="2"
+                        <Label x:Name="txtPrecinto" Height="26" Margin="5,2,11,0"  VerticalAlignment="Top"
+                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                    Content="{Binding txtPrecinto}" Grid.Column="1" Grid.Row="2"
                                    />
-                        <TextBlock x:Name="txtSex" Margin="5,2,10,7" TextWrapping="Wrap"
-                                   Background="Yellow"
-                                   Text="{Binding txtSex}" Grid.Column="1" Grid.Row="3"
+                        <Label x:Name="txtSex" Margin="5,2,10,7" 
+                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtSex}" Grid.Column="1" Grid.Row="3"
                                    />
-                        <TextBlock x:Name="txtFechaNac" Height="26" Margin="5,2,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                                   Background="Yellow"
-                                   Text="{Binding txtFechaNac}" Grid.Column="1" Grid.Row="4"
+                        <Label x:Name="txtFechaNac" Height="26" Margin="5,2,10,0"   VerticalAlignment="Top"
+                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtFechaNac}" Grid.Column="1" Grid.Row="4"
                                    />
-                        <TextBlock x:Name="txtNotarioNumElec" Height="26" Margin="94,2,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                                   Background="Yellow"
-                                   Text="{Binding txtNotarioNumElec}" Grid.Row="5" Grid.ColumnSpan="2"
+                        <Label x:Name="txtNotarioNumElec" Height="26" Margin="94,2,10,0"   VerticalAlignment="Top"
+                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtNotarioNumElec}" Grid.Row="5" Grid.ColumnSpan="2"
                                    
                                    />
-                        <TextBlock x:Name="txtNotarioFirstName" Height="26" Margin="5,41,11,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                                    Background="Yellow"
-                                   Text="{Binding txtNotarioFirstName}" Grid.Row="5" Grid.ColumnSpan="2"
+                        <Label x:Name="txtNotarioFirstName" Height="26" Margin="5,41,11,0"  VerticalAlignment="Top"
+                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                   Content="{Binding txtNotarioFirstName}" Grid.Row="5" Grid.ColumnSpan="2"
                                    />
 
                     </Grid>
                 </GroupBox>
-                <GroupBox x:Name="groupBox2" Header="Información a Corregir" Height="391" Margin="10,0">
+                <GroupBox x:Name="groupBox2" Header="Información a Corregir" Height="504" Margin="10,0">
                     <Grid Margin="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="187*"/>
@@ -112,7 +113,9 @@
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
                             <RowDefinition Height="35"/>
-                            <RowDefinition Height="56*"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="57"/>
                         </Grid.RowDefinitions>
                         <Label x:Name="label2_Copy" Content="Número Electoral:" HorizontalAlignment="Left" Margin="10,0,0,5" Width="105" Height="27" VerticalAlignment="Bottom"/>
                         <TextBox x:Name="txtNumElec_Corregir" Margin="10,0,10,5" TextWrapping="Wrap"
@@ -123,70 +126,79 @@
                         <Label Height="23"  x:Name="label3_Copy" Content="Precinto:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="1" Width="56"/>
                         <TextBox x:Name="txtPrecinto_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                         	MaxLength="3"
-                        	Text="{Binding txtPrecinto_Corregir}" 
+                        	Text="{Binding txtPrecinto_Corregir,Mode=TwoWay}" 
                                      Grid.Column="1" Grid.Row="1" 
                                      />
                         <Label Height="23"  x:Name="label4_Copy" Content="Sexo:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.342,0.538" Margin="10,5,0,0" Grid.Row="2" Width="38"/>
                         <TextBox x:Name="txtSex_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                         	MaxLength="1"
-                        	Text="{Binding txtSex_Corregir}" 
+                        	Text="{Binding txtSex_Corregir,Mode=TwoWay}" 
                                      Grid.Column="1" Grid.Row="2" 
                                      />
-                        <Label Height="28"  x:Name="label7" Content="Cargo:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="3" Width="44"/>
+                        <Label Height="28"  x:Name="label7" Content="Cargo:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="4" Width="44"/>
                         <TextBox x:Name="txtCargo_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                                      
-                        	Text="{Binding txtCargo_Corregir}" 
-                                     Grid.Column="1" Grid.Row="3" 
+                        	Text="{Binding txtCargo_Corregir,Mode=TwoWay}" 
+                                     Grid.Column="1" Grid.Row="4" 
                                      />
-                        <Label Height="23"  x:Name="label8" Content="Candidato:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="4" Width="67"/>
+                        <Label Height="23"  x:Name="label8" Content="Candidato:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="5" Width="67"/>
                         <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                         	MaxLength="10"
-                        	Text="{Binding txtCandidato_Corregir}"
-                                     Grid.Column="1" Grid.Row="4"
-                                     />
-                        <Label Height="23"  x:Name="label9" Content="Funcionario" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="5" Width="108"/>
-                        <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                        	MaxLength="7"
-                        	Text="{Binding txtNotarioElec_Corregir}"
+                        	Text="{Binding txtCandidato_Corregir,Mode=TwoWay}"
                                      Grid.Column="1" Grid.Row="5"
                                      />
-                        <Label Height="23"  x:Name="label10" Content="Firma Elector:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="6" Width="81"/>
-                        <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                        	MaxLength="10"
-                        	Text="{Binding txtFirmaElec_Corregir}"
+                        <Label Height="23"  x:Name="label9" Content="Funcionario" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="6" Width="108"/>
+                        <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                        	MaxLength="7"
+                        	Text="{Binding txtNotarioElec_Corregir,Mode=TwoWay}"
                                      Grid.Column="1" Grid.Row="6"
                                      />
-                        <Label Height="23"  x:Name="label11" Content="Firma Notario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="7" Width="86"/>
-                        <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="35,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                        <Label Height="23"  x:Name="label10" Content="Firma Elector:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="7" Width="81"/>
+                        <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                         	MaxLength="10"
-                        	Text="{Binding txtNotarioFirma_Corregir}"
+                        	Text="{Binding txtFirmaElec_Corregir,Mode=TwoWay}"
                                      Grid.Column="1" Grid.Row="7"
                                      />
-                        <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0" Grid.Row="8"/>
-                        <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                        <Label Height="23"  x:Name="label11" Content="Firma Funcionario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="8" Width="86"/>
+                        <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="35,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
                         	MaxLength="10"
-                        	Text="{Binding txtFchEndoso_Corregir}"
+                        	Text="{Binding txtNotarioFirma_Corregir,Mode=TwoWay}"
                                      Grid.Column="1" Grid.Row="8"
                                      />
-                        <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="9"/>
-                        <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,5,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-                        	MaxLength="10"
-                        	Text="{Binding txtFchEndosoEntregada_Corregir}"
+                        <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,6,0,0" Grid.Row="9" Width="108"/>
+                        <DatePicker x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,5,10,0" VerticalAlignment="Top"
+                        	
+                        	Text="{Binding txtFchEndoso_Corregir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                      Grid.Column="1" Grid.Row="9"
                                      />
-                        <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="6" VerticalAlignment="Top" Width="20"
-                                  IsChecked="{Binding ckbFirma_Pet_Inv}"
+                        <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="10" Width="119"/>
+                        <DatePicker x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,5,10,0"   VerticalAlignment="Top"
+                        	
+                        	Text="{Binding txtFchEndosoEntregada_Corregir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                     Grid.Column="1" Grid.Row="10"
+                                     />
+                        <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="7" VerticalAlignment="Top" Width="20"
+                                  IsChecked="{Binding ckbFirma_Pet_Inv,Mode=TwoWay}" Height="15"
                                   />
-                        <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="7" VerticalAlignment="Top" Width="20"
-                                  IsChecked="{Binding ckbFirma_Not_Inv}"
+                        <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="8" VerticalAlignment="Top" Width="20"
+                                  IsChecked="{Binding ckbFirma_Not_Inv,Mode=TwoWay}" Height="15"
                                   />
+                        <Label Height="28"  x:Name="label13_Copy" Content="Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5,0,0" Grid.Row="11" Width="119"/>
+                        <Label x:Name="txtFormulario" Height="26" Margin="10,5,10,0"   VerticalAlignment="Top"
+                        	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        	Content="{Binding txtFormulario}" Grid.Row="11" Grid.Column="1"
+                                   />
+                        <Label x:Name="label5_Copy" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Height="26" Width="148" Grid.Row="3"/>
+                        <DatePicker Text="{Binding FechaNac_Corregir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="3" VerticalAlignment="Top" Width="159" SelectedDateFormat="Short" />
                     </Grid>
                 </GroupBox>
             </StackPanel>
             <Label x:Name="lblLote" Content="{Binding Lot}" Margin="87,54,0,0" VerticalAlignment="Top" Height="26"/>
             <Label x:Name="label14" Content="Lote:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Height="26" Width="36"/>
             <Label x:Name="label14_Copy" Content="Rechazada:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
-            <Label x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="87,85,0,0" VerticalAlignment="Top" Height="26"/>
+            <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="164,85,15,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,85,98,0" VerticalAlignment="Top" Height="26" Width="50" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center"/>
+            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="136,85,0,0" VerticalAlignment="Top"/>
 
         </Grid>
 

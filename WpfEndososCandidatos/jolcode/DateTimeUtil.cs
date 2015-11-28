@@ -17,7 +17,7 @@ namespace jolcode
         Minute,
         Second
     }
-    class DateTimeUtil
+  public  class DateTimeUtil
     {
 
         public static long DateDiff(DateInterval interval, DateTime? date1, DateTime? date2)
@@ -61,7 +61,7 @@ namespace jolcode
             //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
             //myMaskedTextBoxValue.Text = param;
 
-           
+            param = param.Replace("/","");
 
             if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
                 return tempdate;//.ToString("MM/dd/yyyy");

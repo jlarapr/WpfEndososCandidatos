@@ -433,7 +433,7 @@ namespace jolcode
                     {
                     "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status as LotRechazado, LotsEndo.Status as FormlularioRechazado,LotsVoid.Status as Rechazo_Or_Warning, LotsVoid.Rechazo as TipoDeRechazo,",
                     "LotsEndo.Numelec, LotsEndo.Precinto, LotsEndo.FechaNac, LotsEndo.Sexo, LotsEndo.Candidato,",
-                    "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image ",
+                    "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image,LotsEndo.Firma_Peticionario,LotsEndo.Firma_Pet_Inv, LotsEndo.Firma_Notario, LotsEndo.Firma_Not_Inv, LotsEndo.Fecha_Endoso,LotsEndo.Firma_Fecha,LotsEndo.Formulario ",
                     "FROM (LotsEndo INNER JOIN Lots ON LotsEndo.Lot = Lots.Lot) INNER JOIN LotsVoid ON (LotsEndo.Formulario = LotsVoid.Formulario) AND (LotsEndo.Lot = LotsVoid.Lot) ",
                     "WHERE Lots.Status = 3 ",
                     "and Lots.Lot = '" , CurrLot , "' ",
