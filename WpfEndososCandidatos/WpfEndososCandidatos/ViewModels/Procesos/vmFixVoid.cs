@@ -57,6 +57,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtFormulario;
         private DateTime? _FechaNac_Corregir;
         private List<FixVoid> _DataToSave;
+        private bool _CanGuardar;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -66,6 +67,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdProximo_Click = new RelayCommand(param => MyCmdProximo_Click());
             cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click());
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
+            cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
         }
 
         #region MyProperty
@@ -203,7 +205,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             set
             {
                 _txtNumElec_Corregir = value;
-           //     _DataToSave[i].Numelec = value;
                 this.RaisePropertychanged("txtNumElec_Corregir");
             }
         }
@@ -216,7 +217,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtPrecinto_Corregir = value;
-               // _DataToSave[i].Precinto = value;
                 this.RaisePropertychanged("txtPrecinto_Corregir");
             }
         }
@@ -228,7 +228,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtSex_Corregir = value;
-            //    _DataToSave[i].Sexo = value;
                 this.RaisePropertychanged("txtSex_Corregir");
             }
         }
@@ -240,7 +239,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtCargo_Corregir = value;
-             //   _DataToSave[i].Cargo = value;
                 this.RaisePropertychanged("txtCargo_Corregir");
             }
         }
@@ -252,7 +250,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtCandidato_Corregir = value;
-         //       _DataToSave[i].Candidato = value;
                 this.RaisePropertychanged("txtCandidato_Corregir");
             }
         }
@@ -264,7 +261,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtNotarioElec_Corregir = value;
-             //   _DataToSave[i].NotarioElec = value;
                 this.RaisePropertychanged("txtNotarioElec_Corregir");
             }
         }
@@ -276,7 +272,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFirmaElec_Corregir = value;
-            //    _DataToSave[i].FirmaElec = value;
                 this.RaisePropertychanged("txtFirmaElec_Corregir");
             }
         }
@@ -288,7 +283,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtNotarioFirma_Corregir = value;
-      //          _DataToSave[i].NotarioFirma = value;
                 this.RaisePropertychanged("txtNotarioFirma_Corregir");
             }
         }
@@ -300,7 +294,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _ckbFirma_Pet_Inv = value;
-            //    _DataToSave[i].Firma_Pet_Inv = value;
                 this.RaisePropertychanged("ckbFirma_Pet_Inv");
             }
         }
@@ -312,7 +305,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _ckbFirma_Not_Inv = value;
-          //      _DataToSave[i].Firma_Not_Inv = value;
                 this.RaisePropertychanged("ckbFirma_Not_Inv");
             }
         }
@@ -335,7 +327,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFchEndosoEntregada_Corregir = value;
-           //     _DataToSave[i].FchEndosoEntregada = value;
                 this.RaisePropertychanged("txtFchEndosoEntregada_Corregir");
             }
         }
@@ -347,7 +338,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFormulario = value;
-             //   _DataToSave[i].Formulario = value;
                 this.RaisePropertychanged("txtFormulario");
             }
         }
@@ -428,6 +418,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
 
         }
+        
+        private bool CanGuardar
+        {
+            get
+            {
+                return _CanGuardar ;
+            }set
+            {
+                _CanGuardar = value;
+            }
+        }
         #endregion
 
         #region MyCmd
@@ -487,6 +488,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             i_Display = i + 1;
              MyFillField();
+
+            CanGuardar = true;
         }
         private void MyCmdAnterior_Click()
         {
@@ -519,6 +522,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        public void MyCmdGuardar_Click()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         public RelayCommand initWindow
         {
@@ -542,6 +558,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             get;private set;
         }
+        public RelayCommand cmdGuardar_Click
+        {
+            get;private set;
+        }
+
         #endregion
 
         #region MyModule
@@ -557,9 +578,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 })
                 {
-
-
-
 
                     txtNumElec_Corregir = _DataToSave[i].Numelec;
                     txtNotarioNumElec = _DataToSave[i].NotarioElec;
@@ -590,8 +608,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
                     DataTable notarioInfo = get.MyGetCitizen(txtNotarioNumElec);
-
-                   
 
                     if (notarioInfo.Rows.Count > 0)
                     {
@@ -641,7 +657,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
             catch (Exception ex)
             {
-
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -673,7 +688,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtFechaNac = string.Empty;
             txtNotarioNumElec = string.Empty;
             txtNotarioFirstName = string.Empty;
-
+            CanGuardar = false;
 
             if (resetAllData)
             {
