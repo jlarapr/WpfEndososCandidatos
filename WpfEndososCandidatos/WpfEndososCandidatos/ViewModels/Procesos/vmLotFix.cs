@@ -30,6 +30,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _DBEndososCnnStr;
         private DataTable _MyLotsTable;
         private string _DBMasterCeeCnnStr;
+        private string _SysUser;
 
         public vmLotFix()
            : base(new wpfLotFix())
@@ -43,6 +44,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
        
 
         #region MyProperty
+        public string SysUser
+        {
+            get
+            {
+                return _SysUser;
+            }set
+            {
+                _SysUser = value;
+            }
+        }
          public Brush BorderBrush
         {
             get
@@ -202,6 +213,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     frmFixVoid.View.Owner = this.View as Window;
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
                     frmFixVoid.DBMasterCeeCnnStr = DBMasterCeeCnnStr;
+                    frmFixVoid.SysUser = SysUser;
                     frmFixVoid.Lot = cbLots_Item;
                     frmFixVoid.MyOnShow();
                 }

@@ -433,6 +433,7 @@
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
                     frmFixVoid.DBMasterCeeCnnStr = DBCeeMasterCnnStr ;
                     frmFixVoid.Lot = Resultados[0];
+                    frmFixVoid.SysUser = SysUser;
                     frmFixVoid.MyOnShow();
                 }
             }

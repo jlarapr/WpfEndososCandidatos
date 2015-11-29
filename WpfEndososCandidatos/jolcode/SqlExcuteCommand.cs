@@ -411,7 +411,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public DataTable MyGetLotToFixVoid(string CurrLot)
         {
             DataTable myTableReturn = new DataTable();
@@ -472,8 +471,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-
         public DataTable MyGetLotToProcess()
         {
             DataTable myTableReturn = new DataTable();
@@ -520,8 +517,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-
         public DataTable MyGetAreas(bool allColumm)
         {
             DataTable myTableReturn = new DataTable();
@@ -801,7 +796,6 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
         public string MyTipoDeRechazo(string param)
         {
             string myReturn = string.Empty;
@@ -921,7 +915,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyReverseLots(string lotNum, string SysUser)
         {
             bool myBoolReturn = false;
@@ -996,8 +989,6 @@ namespace jolcode
             }
                     return myBoolReturn;
         }
-
-
         public bool MyDeletePartidos(string where)
         {
             bool myBoolReturn = false;
@@ -1670,7 +1661,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area, string cargo, string endoReq, string where)
         {
             bool myBoolReturn = false;
@@ -1745,7 +1735,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios, ObservableCollection<string> lblNReasons, ObservableCollection<int> ProgressBar_Value, ObservableCollection<int> ProgressBar_Maximum, ObservableCollection<string> Resultados)
         {
             /*
@@ -1902,8 +1891,6 @@ namespace jolcode
                     throw new Exception("No encuentro el Lote Seleccionado");
 
 
-
-
                 myCmdDBEndosos.CommandText = string.Concat(mySqlstrTF);
                 myDataAdapter.SelectCommand = myCmdDBEndosos;
                 myDataAdapter.Fill(myDataToProcessTF);
@@ -1929,8 +1916,6 @@ namespace jolcode
 
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrUpdateLots);
                 myCmdDBEndosos.ExecuteNonQuery();
-
-
 
                 transaction.Commit();
 
@@ -2901,7 +2886,6 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-
         private object MyValidarDatos(string sql, SqlConnection cnn)
         {
             object myIntReturn = 0;
@@ -2924,7 +2908,6 @@ namespace jolcode
 
             return myIntReturn;
         }
-
         private object MyValidarDatos(string sql, out object returnValue, SqlConnection cnn)
         {
 
@@ -2946,13 +2929,11 @@ namespace jolcode
 
             return returnValue;
         }
-
         private string Left(string param, int length)
         {
             string result = param.Substring(0, length);
             return result;
         }
-
         private bool MyStatus(string param)
         {
             switch (param.Trim())
@@ -2981,7 +2962,6 @@ namespace jolcode
 
 
         }
-
         private string FixNum(string param)
         {
             int FixNum = 0;
@@ -2996,7 +2976,6 @@ namespace jolcode
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
             new Action(delegate { }));
         }
-
         private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status,SqlCommand dbCmd)
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
@@ -3017,13 +2996,72 @@ namespace jolcode
             dbCmd.ExecuteNonQuery();
 
         }
+        public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
+                                     string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,
+                                     string txtFchEndoso,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
+        {
+            bool myBoolReturn = false;
 
-         private  object iif(bool expression, object truePart, object falsePart)
+            try
+            {
+
+                string[] updatequery =
+                    {
+                    "Update [TF-Partidos] ",
+                    "Set NumElec = '", txtNumElec , "'",
+                    ", Precinto = '" ,txtPrecinto , "'",
+                    ", SEXO = '" , txtSexo , "'",
+                    ", FechaNac_Mes = '" ,txtFechaNac.Substring(0,2), "'",
+                    ", FechaNac_Dia = '" ,txtFechaNac.Substring(4,2), "'",
+                    ", FechaNac_Ano = '" ,txtFechaNac.Substring(6,2), "'",
+                    ", Funcionario = '" , txtCargo , "'",
+                    ", Notario_Funcionario = '" , txtNotario, "'",
+                    ", Num_Candidato = '" , txtCandidato , "'",
+                     ", FirmaElector = '" , txtFirma , "'",
+                     ", FirmaNotario = '" ,txtNotarioFirma,"'",
+                     ", FirmaElec_Inv = " , chkFirmaInv,
+                     ", FirmaNot_Inv = " , chkFirmaNotInv,
+                     ", Fecha_Mes  = '" , txtFchEndoso.Substring(0,2) , "'",
+                     ", Fecha_Dia = '" , txtFchEndoso.Substring( 4, 2) , "'",
+                     ", Fecha_Ano = '" , txtFchEndoso.Substring(6, 2) , "'",
+                     " Where NumElec ='" , CurrElect , "'",
+                    " And BATCHTRACK = '" , Lot, "'"
+                    };
+
+                //    'STATUS DEL RECHAZO
+                //    '0 - SIN CORREJIR
+                //    '1 - CORREJIDO
+
+                //'ACTUALIZA EL STATUS DEL ERROR ACABADO DE CORREJIR
+                string[] sqlstr = { "Update LotsVoid ",
+                         " Set STATUS = 1",
+                         " Where Lot = '" , Lot, "'",
+                         " And Batch = '" , Batch, "'",
+                         " And Formulario = " , Formulario };
+
+                cmd.CommandText = string.Concat(sqlstr);
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = string.Concat(updatequery);
+                cmd.ExecuteNonQuery();
+
+                MyReverseLots(Lot, SysUser);
+                myBoolReturn = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyUpdateTFTable ");
+            }
+            return myBoolReturn;
+        }
+
+        private  object iif(bool expression, object truePart, object falsePart)
         {
            
             return expression ? truePart : falsePart;
         }
 
+        
         #region Dispose
         public void Dispose()
         {

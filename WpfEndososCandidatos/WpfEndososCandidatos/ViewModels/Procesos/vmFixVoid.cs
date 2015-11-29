@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using WpfEndososCandidatos.Models;
 using System.ComponentModel;
 using WpfEndososCandidatos.ViewModels.Ver;
+using System.Data.SqlClient;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -58,16 +59,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private DateTime? _FechaNac_Corregir;
         private List<FixVoid> _DataToSave;
         private bool _CanGuardar;
+        private string _SysUser;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdProximo_Click = new RelayCommand(param => MyCmdProximo_Click());
-            cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click());
+            cmdProximo_Click = new RelayCommand(param => MyCmdProximo_Click(),param=> CanProximo);
+            cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click(),param=> CanAnterior);
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
+            _DataToSave = new List<FixVoid>();
         }
 
         #region MyProperty
@@ -103,6 +106,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 _i_Display = value;
                 this.RaisePropertychanged("i_Display");
+            }
+        }
+        public string SysUser
+        {
+            get
+            {
+                return _SysUser;
+            }set
+            {
+                _SysUser = value;
             }
         }
 
@@ -195,6 +208,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("txtNotarioFirstName");
             }
         }
+        public string txtFormulario
+        {
+            get
+            {
+                return _txtFormulario;
+            }
+            set
+            {
+                _txtFormulario = value;
+
+                this.RaisePropertychanged("txtFormulario");
+            }
+        }
 
         public string txtNumElec_Corregir
         {
@@ -204,8 +230,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
             set
             {
-                _txtNumElec_Corregir = value;
-                this.RaisePropertychanged("txtNumElec_Corregir");
+
+                if (_txtNumElec_Corregir != value)
+                {
+                    _txtNumElec_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+                    this.RaisePropertychanged("txtNumElec_Corregir");
+                }
             }
         }
 
@@ -216,8 +254,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtPrecinto_Corregir;
             }set
             {
-                _txtPrecinto_Corregir = value;
-                this.RaisePropertychanged("txtPrecinto_Corregir");
+                if (_txtPrecinto_Corregir != value)
+                {
+                    _txtPrecinto_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtPrecinto_Corregir");
+                }
             }
         }
         public string txtSex_Corregir
@@ -227,8 +277,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtSex_Corregir;
             }set
             {
-                _txtSex_Corregir = value;
-                this.RaisePropertychanged("txtSex_Corregir");
+                if (_txtSex_Corregir != value)
+                {
+                    _txtSex_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtSex_Corregir");
+                }
             }
         }
         public string txtCargo_Corregir
@@ -238,8 +300,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtCargo_Corregir;
             }set
             {
-                _txtCargo_Corregir = value;
-                this.RaisePropertychanged("txtCargo_Corregir");
+                if (_txtCargo_Corregir != value)
+                {
+                    _txtCargo_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtCargo_Corregir");
+
+                }
             }
         }
         public string txtCandidato_Corregir
@@ -249,8 +324,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtCandidato_Corregir;
             }set
             {
-                _txtCandidato_Corregir = value;
-                this.RaisePropertychanged("txtCandidato_Corregir");
+
+                if (_txtCandidato_Corregir != value)
+                {
+                    _txtCandidato_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtCandidato_Corregir");
+                }
             }
         }
         public string txtNotarioElec_Corregir
@@ -260,8 +348,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtNotarioElec_Corregir;
             }set
             {
-                _txtNotarioElec_Corregir = value;
-                this.RaisePropertychanged("txtNotarioElec_Corregir");
+                if (_txtNotarioElec_Corregir != value)
+                {
+                    _txtNotarioElec_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtNotarioElec_Corregir");
+                }
             }
         }
         public string txtFirmaElec_Corregir
@@ -271,8 +371,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtFirmaElec_Corregir;
             }set
             {
-                _txtFirmaElec_Corregir = value;
-                this.RaisePropertychanged("txtFirmaElec_Corregir");
+
+                if (_txtFirmaElec_Corregir != value)
+                {
+                    _txtFirmaElec_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+                   
+                    this.RaisePropertychanged("txtFirmaElec_Corregir");
+                }
             }
         }
         public string txtNotarioFirma_Corregir
@@ -282,8 +395,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtNotarioFirma_Corregir;
             }set
             {
-                _txtNotarioFirma_Corregir = value;
-                this.RaisePropertychanged("txtNotarioFirma_Corregir");
+                if (_txtNotarioFirma_Corregir != value)
+                {
+                    _txtNotarioFirma_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtNotarioFirma_Corregir");
+                }
             }
         }
         public bool ckbFirma_Pet_Inv
@@ -294,6 +419,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _ckbFirma_Pet_Inv = value;
+
+                if (_DataToSave.Count > 0)
+                {
+                    CanGuardar = true;
+                }
+
                 this.RaisePropertychanged("ckbFirma_Pet_Inv");
             }
         }
@@ -305,6 +436,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _ckbFirma_Not_Inv = value;
+
+                if (_DataToSave.Count > 0)
+                {
+                    CanGuardar = true;
+                }
+
                 this.RaisePropertychanged("ckbFirma_Not_Inv");
             }
         }
@@ -316,6 +453,15 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFchEndoso_Corregir = value;
+
+                if (value != null)
+                {
+                    if (_DataToSave.Count > 0)
+                    {
+                        CanGuardar = true;
+                    }
+                }
+
                 this.RaisePropertychanged("txtFchEndoso_Corregir");
             }
         }
@@ -327,20 +473,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFchEndosoEntregada_Corregir = value;
+
+                if (value !=null)
+                {
+                    if (_DataToSave.Count > 0)
+                    {
+                        CanGuardar = true;
+                    }
+                }
+
                 this.RaisePropertychanged("txtFchEndosoEntregada_Corregir");
             }
         }
-        public string txtFormulario
-        {
-            get
-            {
-                return _txtFormulario;
-            }set
-            {
-                _txtFormulario = value;
-                this.RaisePropertychanged("txtFormulario");
-            }
-        }
+       
         public DateTime? FechaNac_Corregir
         {
             get
@@ -349,6 +494,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _FechaNac_Corregir = value;
+                if (value!=null)
+                {
+                    if (_DataToSave.Count > 0)
+                    {
+                        CanGuardar = true;
+                    }
+                }
                 this.RaisePropertychanged("FechaNac_Corregir");
             }
         }
@@ -429,6 +581,28 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 _CanGuardar = value;
             }
         }
+        private bool CanProximo
+        {
+            get
+            {
+                if (i >= (TotalRechazada)-1)
+                    return false;
+                else
+                    return true;
+            }
+        }
+        
+        private bool CanAnterior
+        {
+            get
+            {
+                if (i > 0)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
         #endregion
 
         #region MyCmd
@@ -436,6 +610,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             try
             {
+                CanGuardar = false;
+
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -480,6 +656,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private void MyCmdProximo_Click ()
         {
             SaveTmp();
+
             i++;
             int TotalRechazada_tmp = TotalRechazada - 1;
 
@@ -524,12 +701,80 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public void MyCmdGuardar_Click()
         {
+            SaveTmp();
+
+            SqlTransaction transaction = null;
+
             try
             {
+                using (SqlExcuteCommand Exe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr,
+                    DBCeeMasterCnnStr = DBMasterCeeCnnStr
 
+                })
+                {
+                    using (SqlConnection cnn = new SqlConnection()
+                    {
+                        ConnectionString = DBEndososCnnStr
+                    })
+                    {
+                        cnn.Open();
+                        using (SqlCommand cmd = new SqlCommand()
+                        {
+                             Connection = cnn,
+                             CommandType = CommandType.Text
+                        })
+                        {
+                            // Start a local transaction.
+                            transaction = cnn.BeginTransaction(IsolationLevel.ReadCommitted);
+                            cmd.Transaction = transaction;
+                            foreach (FixVoid data in _DataToSave)
+                            {
+                                Exe.MyUpdateTFTable(
+                                   data.Numelec,
+                                   data.Precinto,
+                                   data.Sexo,
+                                   data.FechaNac.Value.ToString("MMddyyyy"),
+                                   data.Cargo,
+                                   data.NotarioElec,
+                                   data.Candidato,
+                                   data.FirmaElec,
+                                   data.NotarioFirma,
+                                   data.Firma_Pet_Inv == true ? "1" : "0",
+                                   data.Firma_Not_Inv == true ? "1" : "0",
+                                   data.FchEndoso.Value.ToString("MMddyyyy"),
+                                   data.Lot,
+                                   data.Batch,
+                                   data.Formulario,
+                                   txtNumElec,
+                                   SysUser,
+                                   cmd
+                                    );
+                            }
+                            transaction.Commit();
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                {
+                    try
+                    {
+                        transaction.Rollback();
+                    }
+                    catch
+                    {
+                        if (transaction.Connection != null)
+                        {
+                            Console.WriteLine("An exception of type " + ex.GetType() +
+                                " was encountered while attempting to roll back the transaction.");
+                        }
+                    }
+                }
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -688,14 +933,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtFechaNac = string.Empty;
             txtNotarioNumElec = string.Empty;
             txtNotarioFirstName = string.Empty;
-            CanGuardar = false;
 
             if (resetAllData)
             {
                 i = 0;
                 i_Display = 1;
                 TotalRechazada = 0;
-                _DataToSave = new List<FixVoid>();
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
