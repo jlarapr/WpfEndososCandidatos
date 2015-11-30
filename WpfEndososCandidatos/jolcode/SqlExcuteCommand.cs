@@ -479,16 +479,26 @@ namespace jolcode
                 */
 
 
+                //string[] mySqlstr =
+                //    {
+                //    "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status as LotRechazado, LotsEndo.Status as FormlularioRechazado,LotsVoid.Status as Rechazo_Or_Warning, LotsVoid.Rechazo as TipoDeRechazo,",
+                //    "LotsEndo.Numelec, LotsEndo.Precinto, LotsEndo.FechaNac, LotsEndo.Sexo, LotsEndo.Candidato,",
+                //    "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image,LotsEndo.Firma_Peticionario,LotsEndo.Firma_Pet_Inv, LotsEndo.Firma_Notario, LotsEndo.Firma_Not_Inv, LotsEndo.Fecha_Endoso,LotsEndo.Firma_Fecha,LotsEndo.Formulario ",
+                //    "FROM (LotsEndo INNER JOIN Lots ON LotsEndo.Lot = Lots.Lot) INNER JOIN LotsVoid ON (LotsEndo.Formulario = LotsVoid.Formulario) AND (LotsEndo.Lot = LotsVoid.Lot) ",
+                //    "WHERE Lots.Status = 3 ",
+                //    "and Lots.Lot = '" , CurrLot , "' ",
+                //    "ORDER BY Lots.Lot, LotsEndo.Formulario; "
+                //};
+
                 string[] mySqlstr =
-                    {
-                    "SELECT Lots.Lot, LotsEndo.Formulario, Lots.Status as LotRechazado, LotsEndo.Status as FormlularioRechazado,LotsVoid.Status as Rechazo_Or_Warning, LotsVoid.Rechazo as TipoDeRechazo,",
-                    "LotsEndo.Numelec, LotsEndo.Precinto, LotsEndo.FechaNac, LotsEndo.Sexo, LotsEndo.Candidato,",
-                    "LotsEndo.Cargo, LotsEndo.Notario, Lots.Conditions, LotsEndo.Lot, LotsEndo.Batch, LotsEndo.image,LotsEndo.Firma_Peticionario,LotsEndo.Firma_Pet_Inv, LotsEndo.Firma_Notario, LotsEndo.Firma_Not_Inv, LotsEndo.Fecha_Endoso,LotsEndo.Firma_Fecha,LotsEndo.Formulario ",
-                    "FROM (LotsEndo INNER JOIN Lots ON LotsEndo.Lot = Lots.Lot) INNER JOIN LotsVoid ON (LotsEndo.Formulario = LotsVoid.Formulario) AND (LotsEndo.Lot = LotsVoid.Lot) ",
-                    "WHERE Lots.Status = 3 ",
-                    "and Lots.Lot = '" , CurrLot , "' ",
-                    "ORDER BY Lots.Lot, LotsEndo.Formulario; "
+                {
+                    "SELECT a.Lot,b.*  FROM [dbEndososPartidos].[dbo].[Lots] A ", 
+                    "join [dbo].[TF-Partidos] B on a.Lot = b.BatchTrack  where A.Status = 3 ",
+                    "and A.lot ='",CurrLot,"' ",
+                    "order by [BatchPgNo]"
                 };
+
+ 
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -510,7 +520,7 @@ namespace jolcode
                             SelectCommand = cmd
                         })
                         {
-                            da.Fill(myTableReturn);
+                            da.Fill(myTableReturn);                
                         }
 
                     }
@@ -847,12 +857,15 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public string MyTipoDeRechazo(string param)
+        public string MyTipoDeRechazo(string param,string formulario,string CurrLot)
         {
             string myReturn = string.Empty;
             try
             {
-                string mySqlstr = "SELECT [Desc]  FROM [Criterios] where Campo = " + param;
+
+                string[] tipoDeRechazo = { "Select * from LotsVoid ",
+                                           "where lot='",CurrLot,"' and Formulario=",formulario };
+
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -863,20 +876,47 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = mySqlstr
+                        CommandText = string.Concat(tipoDeRechazo)
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        myReturn = cmd.ExecuteScalar().ToString();
+                       
+
+                        cmd.CommandText = string.Concat(tipoDeRechazo);
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        while (dr.Read())
+                        {
+                            myReturn += dr["Rechazo"].ToString().Trim() + "|";
+                        }
+                        dr.Close();
+                        dr = null;
+
+                        string[] data = myReturn.Trim().Split('|');
+                        myReturn = string.Empty;
+
+                        foreach(string s in data)
+                        {
+                            if (s.Trim().Length > 0)
+                            {
+                                string mySqlstr = "SELECT [Desc]  FROM [Criterios] where Campo = " + s;
+                                cmd.CommandText = mySqlstr;
+                                myReturn += s + "-" + cmd.ExecuteScalar() + "\r\n";
+                            }
+                        }
+
+
+
+
 
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+                throw new Exception(ex.ToString() + "\r\nMyTipoDeRechazo Error");
             }
             return myReturn;
 

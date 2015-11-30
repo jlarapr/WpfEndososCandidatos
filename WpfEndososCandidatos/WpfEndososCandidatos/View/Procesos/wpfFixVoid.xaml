@@ -32,7 +32,7 @@
                 </Grid>
             </GroupBox>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
-            <Label x:Name="txtRazonRechazo" Margin="10,41,10,0"  Background="Yellow" Height="69" 
+            <Label x:Name="txtRazonRechazo" Margin="0,36,0,0"  Background="Yellow" 
                        Grid.Column="1" 
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
                        Content="{Binding Path=txtRazonRechazo}"

@@ -862,11 +862,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtFchEndoso_Corregir = _DataToSave[i].Firma_Fecha;
 
 
-                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo);
+                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario,Lot);
 
+
+                    if (txtNumElec_Corregir.Trim().Length >0)
                     _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
-                    DataTable notarioInfo = get.MyGetCitizen(txtNotarioNumElec);
+                    DataTable notarioInfo = new DataTable();
+
+                    if (txtNotarioNumElec.Trim().Length >0)
+                        notarioInfo = get.MyGetCitizen(txtNotarioNumElec);
 
                     if (notarioInfo.Rows.Count > 0)
                     {
@@ -959,6 +964,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
+                    
+
                     MyLotsTable = get.MyGetLotToFixVoid(Lot);
 
 
@@ -969,27 +976,40 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     TotalRechazada = _MyLotsTable.Rows.Count;
                     foreach (DataRow row in _MyLotsTable.Rows)
                     {
+                        string FechaNac_Mes = row["FechaNac_Mes"].ToString().Trim().PadLeft(2,'0');
+                        string FechaNac_Dia = row["FechaNac_Dia"].ToString().Trim().PadLeft(2,'0');
+                        string FechaNac_Ano = row["FechaNac_Ano"].ToString().Trim().PadLeft(4,'0');
+
+                        string FechaNac= FechaNac_Mes + FechaNac_Dia + FechaNac_Ano;
+
+                        string FechaFirm_Mes = row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0');
+                        string FechaFirm_Dia = row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0');
+                        string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
+
+                        string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
+
+
                         _DataToSave.Add(new FixVoid
                         {
                             Lot = Lot,
-                            Formulario = row["Formulario"].ToString().Trim(),
-                            TipoDeRechazo = row["TipoDeRechazo"].ToString(),
-                            Numelec = row["Numelec"].ToString(),
-                            NotarioElec = row["Notario"].ToString(),
+                            Formulario = row["BatchPgNo"].ToString().Trim(),
+                            TipoDeRechazo = "",
+                            Numelec = row["NumElec"].ToString(),
+                            NotarioElec = row["Notario_Funcionario"].ToString(),
                             Precinto = row["Precinto"].ToString().Trim().PadLeft(3, '0'),
-                            FechaNac = DateTimeUtil.MyValidarFecha(row["FechaNac"].ToString().Trim()),
+                            FechaNac = DateTimeUtil.MyValidarFecha(FechaNac),                            
                             Sexo = row["Sexo"].ToString().Trim(),
-                            Candidato = row["Candidato"].ToString().Trim(),
-                            Cargo = row["Cargo"].ToString().Trim(),
-                            FirmaElec = row["Firma_Peticionario"].ToString().Trim(),
-                            NotarioFirma = row["Firma_Notario"].ToString().Trim(),
-                            Firma_Pet_Inv = row["Firma_Pet_Inv"].ToString().Trim() == "1" ? true : false,
-                            Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
-                            FchEndoso = DateTimeUtil.MyValidarFecha(row["Fecha_Endoso"].ToString().Trim()),
-                            Firma_Fecha = DateTimeUtil.MyValidarFecha(row["Firma_Fecha"].ToString().Trim()),
+                            Candidato = row["Num_Candidato"].ToString().Trim(),
+                            Cargo = row["Funcionario"].ToString().Trim(),
+                            FirmaElec = row["FirmaElector"].ToString().Trim(),
+                            NotarioFirma = row["FirmaNotario"].ToString().Trim(),
+                            Firma_Pet_Inv = row["FirmaElec_Inv"].ToString().Trim() == "1" ? true : false,
+                            Firma_Not_Inv = row["FirmaNot_Inv"].ToString().Trim() == "1" ? true : false,
+                            FchEndoso =null,
+                            Firma_Fecha = DateTimeUtil.MyValidarFecha(Fecha_Endoso),
                             FchEndosoEntregada = null,
-                            Batch =row["Batch"].ToString(),
-                            image = row["image"].ToString(),
+                            Batch = row["BatchNo"].ToString(),
+                            image = row["Nombre_Image"].ToString(),
                         });
 
                     }
@@ -1001,25 +1021,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private void SaveTmp()
         {
 
-           
-
-            _DataToSave[i].Lot = Lot;
-            _DataToSave[i].Formulario = txtFormulario;
-            // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),
-            _DataToSave[i].Numelec = txtNumElec_Corregir;
-            _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
-            _DataToSave[i].Precinto = txtPrecinto_Corregir;
-            _DataToSave[i].FechaNac = FechaNac_Corregir;
-            _DataToSave[i].Sexo = txtSex_Corregir;
-            _DataToSave[i].Candidato = txtCandidato_Corregir;
-            _DataToSave[i].Cargo = txtCargo_Corregir;
-            _DataToSave[i].FirmaElec = txtFirmaElec_Corregir;
-            _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
-            _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
-            _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
-            _DataToSave[i].FchEndoso = txtFchEndoso_Corregir;
-            _DataToSave[i].FchEndosoEntregada = txtFchEndosoEntregada_Corregir;
-                        
+                _DataToSave[i].Lot = Lot;
+                _DataToSave[i].Formulario = txtFormulario;
+                // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),
+                _DataToSave[i].Numelec = txtNumElec_Corregir;
+                _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
+                _DataToSave[i].Precinto = txtPrecinto_Corregir;
+                _DataToSave[i].FechaNac = FechaNac_Corregir;
+                _DataToSave[i].Sexo = txtSex_Corregir;
+                _DataToSave[i].Candidato = txtCandidato_Corregir;
+                _DataToSave[i].Cargo = txtCargo_Corregir;
+                _DataToSave[i].FirmaElec = txtFirmaElec_Corregir;
+                _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
+                _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
+                _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
+                _DataToSave[i].FchEndoso = txtFchEndoso_Corregir;
+                _DataToSave[i].FchEndosoEntregada = txtFchEndosoEntregada_Corregir;
+                      
             // _DataToSave[i].FchEndosoEntregada = null,
             
             //_DataToSave[i].Batch = row["Batch"].ToString(),
