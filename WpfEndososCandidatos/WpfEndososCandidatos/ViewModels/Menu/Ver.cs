@@ -48,6 +48,7 @@
                  {
                     frmElector.View.Owner = this.View as Window;
                     frmElector.DBCeeMasterCnnStr = _DBCeeMasterCnnStr;
+                    frmElector.DBCeeMasterImgCnnStr = _DBImagenesCnnStr;
                     frmElector.MyOnShow();
                  }
              }

@@ -432,6 +432,7 @@
                     frmFixVoid.View.Owner = this.View as Window;
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
                     frmFixVoid.DBMasterCeeCnnStr = DBCeeMasterCnnStr ;
+                    frmFixVoid.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frmFixVoid.Lot = Resultados[0];
                     frmFixVoid.SysUser = SysUser;
                     frmFixVoid.MyOnShow();

@@ -43,6 +43,7 @@
         private BitmapImage _Source_image;
         private BitmapImage _Source_imagePhoto;
         private bool _CanFind;
+        private string _DBCeeMasterImgCnnStr;
 
         public vmElector()
             : base(new wpfElector())
@@ -79,6 +80,17 @@
             }set
             {
                 _DBCeeMasterCnnStr = value;
+            }
+        }
+        public string DBCeeMasterImgCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterImgCnnStr;
+            }set
+            {
+                _DBCeeMasterImgCnnStr = value;
+
             }
         }
         public string TxtElecNum
@@ -333,7 +345,8 @@
        {
            try
            {
-                TxtElecNum = string.Empty;
+              
+
                 string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
                 string Hora = DateTime.Now.ToString("hh:mm:ss tt");
 
@@ -356,6 +369,10 @@
 
                 MyReset();
 
+                if (TxtElecNum.Trim().Length == 7)
+                    MyCmdFind_Click();
+                else
+                    TxtElecNum = string.Empty;
             }
            catch (Exception ex)
            {
@@ -378,10 +395,12 @@
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
-                    DBCeeMasterCnnStr = DBCeeMasterCnnStr
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr,
+                    DBImagenesCnnStr = DBCeeMasterImgCnnStr
                 })
                 {
                     DataTable myTable;
+                    DataTable myTableImg;
 
                     if (TxtElecNum.Trim().Length < 7)
                         TxtElecNum = TxtElecNum.Trim().PadLeft(7, '0');
@@ -389,6 +408,7 @@
                     _CanFind = true;
 
                     myTable = get.MyGetCitizen(TxtElecNum);
+                    myTableImg = get.MyGetCitizenImg(TxtElecNum);
 
                     if (myTable.Rows.Count == 0)
                         throw new Exception("Número electoral invalido.");
@@ -443,8 +463,8 @@
 
                     }
                     // 'DESPLIEGA LA FIRMA DEL ELECTOR
-                    
-                    byte[] dataSignature = (byte[])myTable.Rows[0]["SignatureImage"];
+               
+                    byte[] dataSignature = (byte[])myTableImg.Rows[0]["SignatureImage"];
                     MemoryStream strmSignature = new MemoryStream();
                     strmSignature.Write(dataSignature, 0, dataSignature.Length);
                     strmSignature.Position = 0;
@@ -457,6 +477,7 @@
                     bi.StreamSource = ms;
                     bi.EndInit();
                     Source_image = bi;
+                    
 
                     // 'DESPLIEGA LA Photo DEL ELECTOR
                     //byte[] dataPhoto = (byte[])myTable.Rows[0]["PhotoImage"];

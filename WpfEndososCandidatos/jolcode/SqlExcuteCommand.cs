@@ -318,17 +318,68 @@ namespace jolcode
             }
             return myTableReturn;
         }
+
+        public DataTable MyGetCitizenImg(string CitizenID)
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+
+                string[] mySqlstr = { "Select * From [usercid].[CitizenImages] Where CitizenID =" , CitizenID, "order by [CaptureDate] desc" };
+                //       string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
+                //"FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
+                //"on a.CItizenId = b.CitizenID ",
+                //"where a.CItizenId =@CitizenID" };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBImagenesCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            //cmd.Parameters.Add(new SqlParameter("@CitizenID", SqlDbType.VarChar));
+                            //cmd.Parameters["@CitizenID"].Value = CitizenID;
+
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetAreas Error");
+            }
+            return myTableReturn;
+        }
+
+
         public DataTable MyGetCitizen(string CitizenID)
         {
             DataTable myTableReturn = new DataTable();
             try
             {
 
-                //string mySqlstr = "Select * From [usercid].[Citizen] Where CitizenID =@CitizenID ";
-                string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
-                                       "FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
-                                       "on a.CItizenId = b.CitizenID ",
-                                        "where a.CItizenId =@CitizenID" };
+                string[] mySqlstr = { "Select * From [usercid].[Citizen] Where CitizenID =" , CitizenID };
+        
+                //       string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
+                                       //"FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
+                                       //"on a.CItizenId = b.CitizenID ",
+                                        //"where a.CItizenId =@CitizenID" };
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -350,8 +401,8 @@ namespace jolcode
                             SelectCommand = cmd
                         })
                         {
-                            cmd.Parameters.Add(new SqlParameter("@CitizenID", SqlDbType.VarChar));
-                            cmd.Parameters["@CitizenID"].Value = CitizenID;
+                            //cmd.Parameters.Add(new SqlParameter("@CitizenID", SqlDbType.VarChar));
+                            //cmd.Parameters["@CitizenID"].Value = CitizenID;
 
                             da.Fill(myTableReturn);
                         }
@@ -3021,9 +3072,9 @@ namespace jolcode
                      ", FirmaNotario = '" ,txtNotarioFirma,"'",
                      ", FirmaElec_Inv = " , chkFirmaInv,
                      ", FirmaNot_Inv = " , chkFirmaNotInv,
-                     ", Fecha_Mes  = '" , txtFchEndoso.Substring(0,2) , "'",
-                     ", Fecha_Dia = '" , txtFchEndoso.Substring( 4, 2) , "'",
-                     ", Fecha_Ano = '" , txtFchEndoso.Substring(6, 2) , "'",
+                     ", FechaFirm_Mes  = '" , txtFchEndoso.Substring(0,2) , "'",
+                     ", FechaFirm_Dia = '" , txtFchEndoso.Substring( 4, 2) , "'",
+                     ", FechaFirm_Ano = '" , txtFchEndoso.Substring(6, 2) , "'",
                      " Where NumElec ='" , CurrElect , "'",
                     " And BATCHTRACK = '" , Lot, "'"
                     };

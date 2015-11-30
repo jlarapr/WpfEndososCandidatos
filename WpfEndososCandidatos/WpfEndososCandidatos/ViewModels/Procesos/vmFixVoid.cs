@@ -60,6 +60,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private List<FixVoid> _DataToSave;
         private bool _CanGuardar;
         private string _SysUser;
+        private string _DBCeeMasterImgCnnStr;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -541,7 +542,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 _DBMasterCeeCnnStr = value;
             }
         }
-
+        public string DBCeeMasterImgCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterImgCnnStr;
+            }set
+            {
+                _DBCeeMasterImgCnnStr = value;
+            }
+        }
 
         public string Lot
         {
@@ -689,6 +699,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 {
                     frmElector.View.Owner = this.View as Window;
                     frmElector.DBCeeMasterCnnStr = DBMasterCeeCnnStr;
+                    frmElector.DBCeeMasterImgCnnStr = DBCeeMasterImgCnnStr;
+                    frmElector.TxtElecNum = txtNumElec;
                     frmElector.MyOnShow();
                 }
             }
@@ -729,6 +741,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             // Start a local transaction.
                             transaction = cnn.BeginTransaction(IsolationLevel.ReadCommitted);
                             cmd.Transaction = transaction;
+
                             foreach (FixVoid data in _DataToSave)
                             {
                                 Exe.MyUpdateTFTable(
@@ -752,6 +765,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    cmd
                                     );
                             }
+
                             transaction.Commit();
                         }
                     }
@@ -986,6 +1000,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private void SaveTmp()
         {
+
+           
 
             _DataToSave[i].Lot = Lot;
             _DataToSave[i].Formulario = txtFormulario;
