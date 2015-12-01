@@ -22,14 +22,27 @@
                 <ColumnDefinition Width="439*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="126*"/>
-                <RowDefinition Height="568*"/>
-                <RowDefinition Height="71*"/>
+                <RowDefinition Height="177*"/>
+                <RowDefinition Height="565*"/>
+                <RowDefinition Height="76*"/>
             </Grid.RowDefinitions>
-            <GroupBox x:Name="groupBox" Header="Imagen" Margin="33,0,0,0" Grid.Row="1" Grid.ColumnSpan="2">
-                <Grid Margin="0">
-                    <Image x:Name="image" Margin="5"/>
-                </Grid>
+            <GroupBox x:Name="groupBox" Header="Imagen" Margin="5,0,0,0" Grid.Row="1" Grid.ColumnSpan="2">
+                <ScrollViewer x:Name="scrollViewer"
+                  HorizontalScrollBarVisibility="Auto">
+                    <Canvas Height="200" Name="mainCanvas" Width="400"
+                MouseLeftButtonDown="mainCanvas_MouseLeftButtonDown"
+                MouseLeftButtonUp="mainCanvas_MouseLeftButtonUp"
+                MouseMove="mainCanvas_MouseMove">
+                        <Canvas.Background>
+                            <ImageBrush  x:Name="myimage" ImageSource="{Binding Source_image}"/>
+                        </Canvas.Background>
+                        <Canvas.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform x:Name="scaleTransform"/>
+                            </TransformGroup>
+                        </Canvas.LayoutTransform>
+                    </Canvas>
+                </ScrollViewer>
             </GroupBox>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
             <Label x:Name="txtRazonRechazo" Margin="0,36,0,0"  Background="Yellow" 
@@ -37,7 +50,7 @@
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
                        Content="{Binding Path=txtRazonRechazo}"
                        />
-            <StackPanel Margin="10,11,0,10" Grid.Row="2" Height="51" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="606" Orientation="Horizontal">
+            <StackPanel Margin="10,13,0,12" Grid.Row="2" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="606" Orientation="Horizontal">
                 <Button Content="&lt; Anterior" Command="{Binding cmdAnterior_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
                 <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
                 <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0"/>
@@ -197,8 +210,8 @@
             <Label x:Name="label14" Content="Lote:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Height="26" Width="36"/>
             <Label x:Name="label14_Copy" Content="Rechazada:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
             <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="164,85,15,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
-            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,85,98,0" VerticalAlignment="Top" Height="26" Width="50" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center"/>
-            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="136,85,0,0" VerticalAlignment="Top"/>
+            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,85,97,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center"/>
+            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="136,85,0,0" VerticalAlignment="Top" Height="26" Width="23"/>
 
         </Grid>
 

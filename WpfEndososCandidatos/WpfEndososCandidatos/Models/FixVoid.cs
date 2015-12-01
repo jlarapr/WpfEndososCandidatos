@@ -38,7 +38,7 @@ namespace WpfEndososCandidatos.Models
         public DateTime? FchEndosoEntregada { get;set; }
         public string Batch { get; set; }//LotsEndoBatch
         public string image { get; set; }//LotsEndoimage
-
+        
 
         public override string ToString()
         {

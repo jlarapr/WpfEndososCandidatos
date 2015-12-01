@@ -19,6 +19,8 @@ using WpfEndososCandidatos.Models;
 using System.ComponentModel;
 using WpfEndososCandidatos.ViewModels.Ver;
 using System.Data.SqlClient;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -61,6 +63,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _CanGuardar;
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
+        private BitmapImage _Source_image;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -75,6 +78,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
 
         #region MyProperty
+
+        public BitmapImage Source_image
+        {
+            get
+            {
+                return _Source_image;
+            }
+            set
+            {
+                _Source_image = value;
+                this.RaisePropertychanged("Source_image");
+            }
+        }
         public DataTable MyLotsTable
         {
             get
@@ -841,15 +857,15 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     txtNumElec_Corregir = _DataToSave[i].Numelec;
                     txtNotarioNumElec = _DataToSave[i].NotarioElec;
                     txtPrecinto_Corregir = _DataToSave[i].Precinto;
-                    txtSex_Corregir =_DataToSave[i].Sexo;
-                    txtCargo_Corregir =_DataToSave[i].Cargo ;
-                    txtCandidato_Corregir =_DataToSave[i].Candidato ;
+                    txtSex_Corregir = _DataToSave[i].Sexo;
+                    txtCargo_Corregir = _DataToSave[i].Cargo;
+                    txtCandidato_Corregir = _DataToSave[i].Candidato;
                     txtNotarioElec_Corregir = _DataToSave[i].NotarioElec;
 
-                    txtFirmaElec_Corregir =_DataToSave[i].FirmaElec;
+                    txtFirmaElec_Corregir = _DataToSave[i].FirmaElec;
                     txtNotarioFirma_Corregir = _DataToSave[i].NotarioFirma;
 
-                    ckbFirma_Pet_Inv =_DataToSave[i].Firma_Pet_Inv;
+                    ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
                     ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
 
                     txtFchEndoso_Corregir = _DataToSave[i].FchEndoso;
@@ -861,9 +877,27 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     if (txtFchEndoso_Corregir == null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
                         txtFchEndoso_Corregir = _DataToSave[i].Firma_Fecha;
 
+                    byte[] EndosoImage = null;
 
-                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario,Lot);
+                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,ref EndosoImage);
 
+                    // 'DESPLIEGA la imagen
+                    if (EndosoImage != null)
+                    {
+                        MemoryStream strmEndosoImage = new MemoryStream();
+                        strmEndosoImage.Write(EndosoImage, 0, EndosoImage.Length);
+                        strmEndosoImage.Position = 0;
+                        System.Drawing.Image img = System.Drawing.Image.FromStream(strmEndosoImage);
+                        BitmapImage bi = new BitmapImage();
+                        bi.BeginInit();
+                        MemoryStream ms = new MemoryStream();
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
+                        ms.Seek(0, SeekOrigin.Begin);
+                        bi.StreamSource = ms;
+                        bi.EndInit();
+                        Source_image = bi;
+                    }else
+                        Source_image = null;
 
                     if (txtNumElec_Corregir.Trim().Length >0)
                     _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
@@ -989,6 +1023,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
 
 
+                     
+
                         _DataToSave.Add(new FixVoid
                         {
                             Lot = Lot,
@@ -1010,6 +1046,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             FchEndosoEntregada = null,
                             Batch = row["BatchNo"].ToString(),
                             image = row["Nombre_Image"].ToString(),
+                            
                         });
 
                     }

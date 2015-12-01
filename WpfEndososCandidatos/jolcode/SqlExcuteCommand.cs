@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
+using System.IO;
 
 namespace jolcode
 {
@@ -367,6 +368,18 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public  byte[] GetEndosoImage(string filePath)
+        {
+            FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            BinaryReader reader = new BinaryReader(stream);
+
+            byte[] img= reader.ReadBytes((int)stream.Length);
+
+            reader.Close();
+            stream.Close();
+
+            return img;
+        }
 
         public DataTable MyGetCitizen(string CitizenID)
         {
@@ -857,7 +870,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public string MyTipoDeRechazo(string param,string formulario,string CurrLot)
+        public string MyTipoDeRechazo(string param,string formulario,string CurrLot,ref byte[] EndosoImage)
         {
             string myReturn = string.Empty;
             try
@@ -890,6 +903,7 @@ namespace jolcode
                         while (dr.Read())
                         {
                             myReturn += dr["Rechazo"].ToString().Trim() + "|";
+                            EndosoImage = (byte[])dr["EndosoImage"];
                         }
                         dr.Close();
                         dr = null;
@@ -1887,7 +1901,7 @@ namespace jolcode
             string m_Leer_Inv = string.Empty;
             string m_Alteracion = string.Empty;
             DateTime? m_Firma_Fecha = null;
-
+            string m_EndosoImage = string.Empty;
             try
             {
                 string[] mySqlstrTF = { "Select * ",
@@ -2052,8 +2066,9 @@ namespace jolcode
                     m_Leer_Inv = string.Empty;
                     m_Alteracion = string.Empty;
                     m_Firma_Fecha = null;
+                    m_EndosoImage = string.Empty;
                     //
-                    
+
                     string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                     string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
 
@@ -2072,7 +2087,13 @@ namespace jolcode
                     m_Batch = m_BatchNo;// row["Suspense_File"].ToString().Trim().Split('\\')[3];
                     m_Suspense_File = row["Nombre_Image"].ToString().Trim();
 
-                  //  m_Suspense_File = System.IO.Path.GetFileName(m_Suspense_File);
+                    m_EndosoImage = row["BatchDir"].ToString().Trim();
+
+                    if (!m_EndosoImage.EndsWith("\\"))
+                        m_EndosoImage += "\\";
+
+                    m_EndosoImage += m_Suspense_File.Trim();
+
 
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
                     m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
@@ -2847,6 +2868,11 @@ namespace jolcode
                     bool isrechazo = false;
                     bool iswarning = false;
 
+                    byte[] img = null;
+
+                    if (File.Exists(m_EndosoImage))
+                        img = GetEndosoImage(m_EndosoImage);
+
                     //'ACTUALIZA LOS COUNTERS DE LA PANTALLA
                     for (int X = 0; X < CollCriterios.Count; X++) 
                     {
@@ -2854,14 +2880,14 @@ namespace jolcode
                         {
                             lblNReasons[X] = Rechazo[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 0, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 0, img, myCmdDBEndosos);
                             isrechazo = true;
                         }
                         else  if (isWarning[X])
                         {
                             lblNReasons[X] = Warning[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 2, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 2, img, myCmdDBEndosos);
                             iswarning = true;
                         }
                     }
@@ -2893,7 +2919,7 @@ namespace jolcode
                     {
                         "Insert Into LotsEndo",
                         "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
-                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO] ) ",
+                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage] ) ",
 
                         "Values('" , m_PARTIDO , "'",           //Partido
                         ",'" , m_BatchTrack , "'",              //Lot
@@ -2918,18 +2944,26 @@ namespace jolcode
                         ",'" , MyFechaToSql( m_Firma_Fecha ), "'",  //Firma_Fecha
                         ",'" , m_SEXO , "'",                    //SEXO
                         ",'" , m_N_PRECINTO , "'",              //PRECINTO
-                       ")"
+                        ", @EndosoImage",
+                        ")"
 
                     };
                     //'STATUS ENDOSO
                     //'0 = Sin Errores
                     //'1 = Con Errores
                     //'2 = Con Warnings
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@EndosoImage";
+                    param.SqlDbType = SqlDbType.Image;
+                    param.Size = img.Length;
+                    param.Value = img;
+                    myCmdDBEndosos.Parameters.Add(param);
 
                     myCmdDBEndosos.CommandText = string.Concat(mySqlStrLOTSENDO);
                     myCmdDBEndosos.ExecuteNonQuery();
 
-                 
+                    myCmdDBEndosos.Parameters.Remove(param);
+
 
                     transaction.Commit();
                     DoEvents();
@@ -3067,13 +3101,15 @@ namespace jolcode
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
             new Action(delegate { }));
         }
-        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status,SqlCommand dbCmd)
+        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status,byte[] EndosoImage, SqlCommand dbCmd)
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
             // 'STATUS DEL RECHAZO
             //'0 - SIN CORREJIR
             //'1 - CORREJIDO
             //'2 - WARNING
+
+         
 
             string sqlstr = "Insert Into LotsVoid Values";
             sqlstr = sqlstr + "('" + m_PARTIDO + "'";
@@ -3082,10 +3118,22 @@ namespace jolcode
             sqlstr = sqlstr + "," + Formulario;
             sqlstr = sqlstr + ",'" + Rechazo + "'";
             sqlstr = sqlstr + ",'" + NumElec + "'";
-            sqlstr = sqlstr + ", " + Status + ")";
+            sqlstr = sqlstr + ", " + Status;
+            sqlstr = sqlstr + ", @EndosoImage )";
+
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@EndosoImage";
+            param.SqlDbType = SqlDbType.Image;
+            param.Size = EndosoImage.Length;
+            param.Value = EndosoImage;
+            dbCmd.Parameters.Add(param);
+
+            //dbCmd.Parameters.Add("@EndosoImage", SqlDbType.Image, img.Length).Value = img;
             dbCmd.CommandText = sqlstr;
             dbCmd.ExecuteNonQuery();
 
+            dbCmd.Parameters.Remove(param);
+            
         }
         public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
                                      string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,
