@@ -13,7 +13,8 @@ namespace WpfEndososCandidatos.Models
     class FixVoid : IEquatable<FixVoid>, IComparable
     {
 
-
+        public int i { get; set; }
+        public string CurrElect { get; set; }
         public string Lot { get; set; } //LotsLot
         public string Formulario { get; set; }//LotsEndoFormulario
        
@@ -44,6 +45,8 @@ namespace WpfEndososCandidatos.Models
         {
             List<string> myOut = new List<string>()
             {
+                i.ToString(),
+                CurrElect,
               Lot,
               Formulario,
               TipoDeRechazo,
@@ -78,13 +81,13 @@ namespace WpfEndososCandidatos.Models
         public bool Equals(FixVoid other)
         {
             if (other == null) return false;
-            return (this.Lot.Equals(other.Lot));
+            return (this.i.Equals(other.i));
         }
         public int CompareTo(object obj)
         {
             FixVoid a = this;
             FixVoid b = (FixVoid)obj;
-            return string.Compare(a.Lot, b.Lot);
+            return string.Compare(a.i.ToString(), b.i.ToString());
         }
     }
 }

@@ -63,7 +63,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _CanGuardar;
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
-        private BitmapImage _Source_image;
+        private System.Windows.Media.ImageSource _Source_image;
+        private int _ViewboxWidth;
+        private int _ViewboxHeight;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -74,12 +76,37 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click(),param=> CanAnterior);
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
+            cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
             _DataToSave = new List<FixVoid>();
         }
 
         #region MyProperty
+        public int ViewboxWidth
+        {
+            get
+            {
+                return _ViewboxWidth;
+            }
+            set
+            {
+                _ViewboxWidth = value;
+                this.RaisePropertychanged("ViewboxWidth");
+            }
+        }
+        public int ViewboxHeight
+        {
+            get
+            {
+                return _ViewboxHeight;
+            }
+            set
+            {
+                _ViewboxHeight = value;
+                this.RaisePropertychanged("ViewboxHeight");
+            }
+        }
 
-        public BitmapImage Source_image
+        public System.Windows.Media.ImageSource Source_image
         {
             get
             {
@@ -110,6 +137,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _i = value;
+                this.RaisePropertychanged("i");
                
             }
         }
@@ -187,8 +215,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _txtSex;
             }set
             {
-                _txtSex = value;
-                this.RaisePropertychanged("txtSex");
+                if (!string.IsNullOrEmpty(value))
+                {
+                    int trash = 0;
+                    if (int.TryParse(value, out trash))
+                        _txtSex = "E";
+                    else
+                    _txtSex = value;
+
+                    this.RaisePropertychanged("txtSex");
+                }
             }
         }
         public string txtFechaNac
@@ -760,11 +796,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                             foreach (FixVoid data in _DataToSave)
                             {
+                                string FchEndoso = null;
+                                string FechaNac = null;
+
+                                if (data.FechaNac !=null)
+                                    FechaNac = data.FechaNac.Value.ToString("MMddyyyy");
+
+                                if (data.FchEndoso != null)
+                                    FchEndoso = data.FchEndoso.Value.ToString("MMddyyyy");
+
                                 Exe.MyUpdateTFTable(
                                    data.Numelec,
                                    data.Precinto,
                                    data.Sexo,
-                                   data.FechaNac.Value.ToString("MMddyyyy"),
+                                   FechaNac,
                                    data.Cargo,
                                    data.NotarioElec,
                                    data.Candidato,
@@ -772,17 +817,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.NotarioFirma,
                                    data.Firma_Pet_Inv == true ? "1" : "0",
                                    data.Firma_Not_Inv == true ? "1" : "0",
-                                   data.FchEndoso.Value.ToString("MMddyyyy"),
+                                   FchEndoso,
                                    data.Lot,
                                    data.Batch,
                                    data.Formulario,
-                                   txtNumElec,
+                                   data.CurrElect,
                                    SysUser,
                                    cmd
                                     );
                             }
-
                             transaction.Commit();
+
+                            Exe.MyReverseLots(Lot, SysUser);
+
+                            MessageBox.Show("Este Lote Fue Enviado a Reprocesar", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            MyCmdSalir_Click();
+
                         }
                     }
                 }
@@ -810,7 +861,37 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
+        private bool MyCmdZoomInOut(object param)
+        {
+            switch (param as string)
+            {
+                case "IN":
+                    {
+                        if (ViewboxWidth <= 2000)
+                        {
+                            ViewboxHeight += 100;
+                            ViewboxWidth += 100;
+                        }
+                        break;
+                    }
+                case "OUT":
+                    {
+                        if (ViewboxWidth >= 150)
+                        {
+                            ViewboxHeight -= 100;
+                            ViewboxWidth -= 100;
+                        }
+                        break;
+                    }
+            }
+            return true;
+        }
 
+
+        public RelayCommand cmdZoomInOut
+        {
+            get;private set;
+        }
         public RelayCommand initWindow
         {
             get;
@@ -895,8 +976,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         ms.Seek(0, SeekOrigin.Begin);
                         bi.StreamSource = ms;
                         bi.EndInit();
-                        Source_image = bi;
-                    }else
+
+                        ViewboxHeight =  img.Height;
+                        ViewboxWidth =  img.Width;
+
+                        BitmapSource displayImage = new CroppedBitmap(bi, new Int32Rect(0, 0, img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+
+                        Source_image = displayImage;
+
+                    }
+                    else
                         Source_image = null;
 
                     if (txtNumElec_Corregir.Trim().Length >0)
@@ -946,6 +1036,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
                     else
                     {
+                        txtNumElec = txtNumElec_Corregir;
+
                         txtNombre = "No Hay Datos";
                         txtPrecinto = "No Hay Datos";
                         txtSex = "No Hay Datos";
@@ -1006,7 +1098,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     if (_MyLotsTable.Rows.Count == 0)
                         MessageBox.Show("No hay rechazadas para procesar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
 
-
+                    int k = 0;
                     TotalRechazada = _MyLotsTable.Rows.Count;
                     foreach (DataRow row in _MyLotsTable.Rows)
                     {
@@ -1022,11 +1114,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                         string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
 
-
-                     
-
                         _DataToSave.Add(new FixVoid
                         {
+                            i = k,
+                            CurrElect = row["NumElec"].ToString(),
                             Lot = Lot,
                             Formulario = row["BatchPgNo"].ToString().Trim(),
                             TipoDeRechazo = "",
@@ -1048,7 +1139,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             image = row["Nombre_Image"].ToString(),
                             
                         });
-
+                        k++;
                     }
 
                 }
@@ -1057,7 +1148,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private void SaveTmp()
         {
-
+                _DataToSave[i].i = i;
                 _DataToSave[i].Lot = Lot;
                 _DataToSave[i].Formulario = txtFormulario;
                 // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),

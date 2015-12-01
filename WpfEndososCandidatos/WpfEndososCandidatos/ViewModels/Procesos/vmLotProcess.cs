@@ -436,6 +436,7 @@
                     frmFixVoid.Lot = Resultados[0];
                     frmFixVoid.SysUser = SysUser;
                     frmFixVoid.MyOnShow();
+                    MyRefresh();
                 }
             }
             catch (Exception ex)

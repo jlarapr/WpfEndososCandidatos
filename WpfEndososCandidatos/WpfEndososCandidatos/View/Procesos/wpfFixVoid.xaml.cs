@@ -25,22 +25,5 @@ namespace WpfEndososCandidatos.View
             InitializeComponent();
         }
 
-        private Point startPoint;
-        private Point originalPoint;
-
-        private void mainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            
-        }
-
-        private void mainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void mainCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-
-        }
     }
 }

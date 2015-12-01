@@ -3143,6 +3143,26 @@ namespace jolcode
 
             try
             {
+                string FechaNac_Mes = null;
+                string FechaNac_Dia = null;
+                string FechaNac_Ano = null;
+
+                if (txtFechaNac != null)
+                {
+                    FechaNac_Mes = txtFechaNac.Substring(0, 2);
+                    FechaNac_Dia = txtFechaNac.Substring(2, 2);
+                    FechaNac_Ano = txtFechaNac.Substring(4, 4);
+                }
+                string FechaFirm_Mes = null;
+                string FechaFirm_Dia = null;
+                string FechaFirm_Ano = null;
+
+                if (txtFchEndoso != null)
+                {
+                    FechaFirm_Mes = txtFchEndoso.Substring(0, 2);
+                    FechaFirm_Dia = txtFchEndoso.Substring(2, 2);
+                    FechaFirm_Ano = txtFchEndoso.Substring(4, 4);
+                }
 
                 string[] updatequery =
                     {
@@ -3150,9 +3170,9 @@ namespace jolcode
                     "Set NumElec = '", txtNumElec , "'",
                     ", Precinto = '" ,txtPrecinto , "'",
                     ", SEXO = '" , txtSexo , "'",
-                    ", FechaNac_Mes = '" ,txtFechaNac.Substring(0,2), "'",
-                    ", FechaNac_Dia = '" ,txtFechaNac.Substring(4,2), "'",
-                    ", FechaNac_Ano = '" ,txtFechaNac.Substring(6,2), "'",
+                    ", FechaNac_Mes = '" ,FechaNac_Mes, "'",
+                    ", FechaNac_Dia = '" ,FechaNac_Dia, "'",
+                    ", FechaNac_Ano = '" ,FechaNac_Ano, "'",
                     ", Funcionario = '" , txtCargo , "'",
                     ", Notario_Funcionario = '" , txtNotario, "'",
                     ", Num_Candidato = '" , txtCandidato , "'",
@@ -3160,11 +3180,12 @@ namespace jolcode
                      ", FirmaNotario = '" ,txtNotarioFirma,"'",
                      ", FirmaElec_Inv = " , chkFirmaInv,
                      ", FirmaNot_Inv = " , chkFirmaNotInv,
-                     ", FechaFirm_Mes  = '" , txtFchEndoso.Substring(0,2) , "'",
-                     ", FechaFirm_Dia = '" , txtFchEndoso.Substring( 4, 2) , "'",
-                     ", FechaFirm_Ano = '" , txtFchEndoso.Substring(6, 2) , "'",
+                     ", FechaFirm_Mes  = '" ,FechaFirm_Mes  , "'",
+                     ", FechaFirm_Dia = '" ,FechaFirm_Dia , "'",
+                     ", FechaFirm_Ano = '" ,FechaFirm_Ano  , "'",
                      " Where NumElec ='" , CurrElect , "'",
-                    " And BATCHTRACK = '" , Lot, "'"
+                    " And BATCHTRACK = '" , Lot, "'",
+                    " And BatchPgNo=",Formulario
                     };
 
                 //    'STATUS DEL RECHAZO
@@ -3184,7 +3205,6 @@ namespace jolcode
                 cmd.CommandText = string.Concat(updatequery);
                 cmd.ExecuteNonQuery();
 
-                MyReverseLots(Lot, SysUser);
                 myBoolReturn = true;
             }
             catch (Exception ex)

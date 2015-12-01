@@ -230,6 +230,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     frmFixVoid.SysUser = SysUser;
                     frmFixVoid.Lot = cbLots_Item;
                     frmFixVoid.MyOnShow();
+                    MyRefresh();
                 }
             }
             catch (Exception ex)
