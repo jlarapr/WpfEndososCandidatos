@@ -367,7 +367,13 @@ namespace WpfEndososCandidatos.ViewModels
 
                         _ImgPath = frmMantDB.imgPath;
 
-                    }//End IF
+                        _DBEndososCnnStr = string.Concat("Persist Security Info=False;Data Source=", _SqlServer, ";Initial Catalog=", _Database, ";User ID=", _Username, ";Password=", _Password);
+                        _DBCeeMasterCnnStr = string.Concat("Persist Security Info=False;Data Source=", _MastSvr, ";Initial Catalog=", _MastDB, ";User ID=", _MastUsr, ";Password=", _MastPass);
+                        _DBImagenesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _ImageSvr, ";Initial Catalog=", _ImageDB, ";User ID=", _ImageUsr, ";Password=", _ImagePass);
+                        _DBRadicacionesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _RadicacionesSvr, ";Initial Catalog=", _RadicacionesDB, ";User ID=", _RadicacionesUsr, ";Password=", _RadicacionesPass);
+
+
+                    }
                 }
             }
             catch (Exception ex)

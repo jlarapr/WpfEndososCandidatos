@@ -20,11 +20,11 @@
     using System.Windows.Media;
     using WpfEndososCandidatos.Helper;
     using WpfEndososCandidatos.View;
-    class vmMantDB : ViewModelBase<IDialogView>, IDisposable 
+    class vmMantDB : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private string _dfPathtoPictures_txt;
-        
+
         private RelayCommand _InitWindow;
         private RelayCommand _cmdBrowseImagesPath_Click;
         private RelayCommand _cmdCancel_Click;
@@ -42,20 +42,20 @@
         private string _dfMastUsr_txt;
         private string _dfMastPass_txt;
         private ObservableCollection<string> _cbMastDB;
-        
+
         private string _dfImageSvr_txt;
         private string _dfImageUsr_txt;
         private string _dfImagePass_txt;
         private ObservableCollection<string> _cbImageDB;
-        
+
         private string _cbImageDB_Item;
         private string _cbMastDB_Item;
         private string _cbDatabase_Item;
 
         private int _cbDatabase_Item_Id;
-        private int _cbMastDB_Item_Id;        
+        private int _cbMastDB_Item_Id;
         private int _cbImageDB_Item_Id;
-        
+
         private string _REGPATH;
         private bool _SaveReg;
         private Brush _BorderBrush;
@@ -90,7 +90,7 @@
         public vmMantDB(string regpath)
             : base(new wpfMantDB())
         {
-            _REGPATH = regpath;         
+            _REGPATH = regpath;
         }
 
 
@@ -168,7 +168,7 @@
                 if (dfPassword_txt != value)
                 {
                     _dfPassword_txt = value;
-                    
+
                     this.RaisePropertychanged("dfPassword_txt");
                 }
             }
@@ -182,7 +182,7 @@
             }
             set
             {
-              //  if (_cbDatabase != value)
+                //  if (_cbDatabase != value)
                 {
                     _cbDatabase = value;
                     this.RaisePropertychanged("cbDatabaseEndoso");
@@ -217,7 +217,7 @@
                 _cbDatabase_Item_Id = value;
                 this.RaisePropertychanged("cbDatabase_Item_Id");
             }
-             
+
         }
         public string dfMastSvr_txt
         {
@@ -273,7 +273,7 @@
             }
             set
             {
-               
+
                 _cbMastDB = value;
                 this.RaisePropertychanged("cbMastDB");
             }
@@ -398,7 +398,7 @@
             get
             {
                 return _RadicacionesSvr_txt;
-            }set
+            } set
             {
                 _RadicacionesSvr_txt = value;
                 this.RaisePropertychanged("RadicacionesSvr_txt");
@@ -421,7 +421,7 @@
             get
             {
                 return _RadicacionesUPass_txt;
-            }set
+            } set
             {
                 if (_RadicacionesUPass_txt != value)
                 {
@@ -472,7 +472,7 @@
         }
         #endregion
 
-        #region Button
+        #region MyCmd
 
 
         public RelayCommand cmdBrowseImagesPath_Click
@@ -589,37 +589,37 @@
             try
             {
                 _SaveReg = false;
-                
-                 sqlServer = dfServer_txt.Trim();
-                 userName = dfUsername_txt.Trim();
+
+                sqlServer = dfServer_txt.Trim();
+                userName = dfUsername_txt.Trim();
 
                 // IntPtr passwordBSTR = default(IntPtr);
-              //   string insecurePassword = "";
+                //   string insecurePassword = "";
                 // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
-              //   insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                //   insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 password = dfPassword_txt;// insecurePassword;
-                 database = cbDatabase_Item.Trim();
+                password = dfPassword_txt;// insecurePassword;
+                database = cbDatabase_Item.Trim();
 
-                 mastSvr = dfMastSvr_txt.Trim();
-                 mastUsr = dfMastUsr_txt.Trim();
+                mastSvr = dfMastSvr_txt.Trim();
+                mastUsr = dfMastUsr_txt.Trim();
 
-            //     insecurePassword = "";
-                 //passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
+                //     insecurePassword = "";
+                //passwordBSTR = Marshal.SecureStringToBSTR(dfMastPass_txt);
                 // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 mastPass = dfMastPass_txt;//insecurePassword;
-                 mastDB = cbMastDB_Item.Trim();
+                mastPass = dfMastPass_txt;//insecurePassword;
+                mastDB = cbMastDB_Item.Trim();
 
-                 imageSvr = dfImageSvr_txt.Trim();
-                 imageUsr = dfImageUsr_txt.Trim();
+                imageSvr = dfImageSvr_txt.Trim();
+                imageUsr = dfImageUsr_txt.Trim();
 
-              //   insecurePassword = "";
+                //   insecurePassword = "";
                 // passwordBSTR = Marshal.SecureStringToBSTR(dfImagePass_txt);
                 // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                 imagePass = dfImagePass_txt;//insecurePassword;
-                 imageDB = cbImageDB_Item.Trim();
+                imagePass = dfImagePass_txt;//insecurePassword;
+                imageDB = cbImageDB_Item.Trim();
 
                 RadicacionesSvr = RadicacionesSvr_txt.Trim();
                 RadicacionesUsr = RadicacionesUsr_txt.Trim();
@@ -627,24 +627,24 @@
                 RadicacionesDB = cbRadicacionesDB_Item.Trim();
 
 
-                 string ImagePathNew = dfPathtoPictures_txt.Trim();
+                string ImagePathNew = dfPathtoPictures_txt.Trim();
 
                 if (ImagePathNew.Trim().Length == 0)
                     throw new Exception("Error con los Path");
 
 
-                if ((sqlServer.Trim().Length ==0)   ||
-                    (userName.Trim().Length == 0)   ||
-                    (database.Trim().Length == 0)   ||
-                    (password.Trim().Length == 0)   ||
-                    (mastSvr.Trim().Length == 0)    ||
-                    (mastUsr.Trim().Length == 0)    ||
-                    (mastDB.Trim().Length == 0)     ||
-                    (mastPass.Trim().Length == 0)   ||
-                    (imageSvr.Trim().Length == 0)   ||
-                    (imageUsr.Trim().Length == 0)   ||
-                    (imageDB.Trim().Length == 0)    ||
-                    (imagePass.Trim().Length == 0)  ||
+                if ((sqlServer.Trim().Length == 0) ||
+                    (userName.Trim().Length == 0) ||
+                    (database.Trim().Length == 0) ||
+                    (password.Trim().Length == 0) ||
+                    (mastSvr.Trim().Length == 0) ||
+                    (mastUsr.Trim().Length == 0) ||
+                    (mastDB.Trim().Length == 0) ||
+                    (mastPass.Trim().Length == 0) ||
+                    (imageSvr.Trim().Length == 0) ||
+                    (imageUsr.Trim().Length == 0) ||
+                    (imageDB.Trim().Length == 0) ||
+                    (imagePass.Trim().Length == 0) ||
 
                     (RadicacionesSvr.Trim().Length == 0) ||
                     (RadicacionesUsr.Trim().Length == 0) ||
@@ -659,11 +659,11 @@
 
                     //jolcode.Registry.write(_REGPATH,)
 
-                    
-                    jolcode.Registry.write(_REGPATH, "DBServer",sqlServer);
-                    jolcode.Registry.write(_REGPATH, "DBUser",userName);
-                    jolcode.Registry.write(_REGPATH, "DBPass", PasswordHash.Encrypt1(password)  );
-                    jolcode.Registry.write(_REGPATH, "DBName",database);
+
+                    jolcode.Registry.write(_REGPATH, "DBServer", sqlServer);
+                    jolcode.Registry.write(_REGPATH, "DBUser", userName);
+                    jolcode.Registry.write(_REGPATH, "DBPass", PasswordHash.Encrypt1(password));
+                    jolcode.Registry.write(_REGPATH, "DBName", database);
 
                     jolcode.Registry.write(_REGPATH, "MastSvr", mastSvr);
                     jolcode.Registry.write(_REGPATH, "MastUsr", mastUsr);
@@ -683,7 +683,9 @@
                     jolcode.Registry.write(_REGPATH, "ImagePathNew", ImagePathNew);
 
                     _SaveReg = true;
+
                     MessageBox.Show("Done...", "CmdOk_Click", MessageBoxButton.OK, MessageBoxImage.Information);
+
                     this.View.Close();
                 }
             }
@@ -706,11 +708,11 @@
                     cbImageDB = new ObservableCollection<string>();
                     cbImageDB.Clear();
 
-                   
 
-                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, dfImagePass_txt,cbImageDB);
 
-                    
+                    GetDataBaseName(_dfImageSvr_txt, _dfImageUsr_txt, dfImagePass_txt, cbImageDB);
+
+
 
                     if (cbImageDB.Count > 0)
                     {
@@ -722,7 +724,7 @@
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "CmdReloadImageDBs_Click", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -740,13 +742,13 @@
                     cbMastDB = null;
                     cbMastDB = new ObservableCollection<string>();
                     cbMastDB.Clear();
-                    
+
                     GetDataBaseName(dfMastSvr_txt, dfMastUsr_txt, dfMastPass_txt, cbMastDB);
-                                    
+
 
                     if (cbMastDB.Count > 0)
                     {
-                        cbMastDB_Item_Id  = 0;
+                        cbMastDB_Item_Id = 0;
                     }
                     else
                     {
@@ -766,17 +768,17 @@
 
                 if (dfServer_txt.Trim().Length > 0)
                 {
-                   // IntPtr passwordBSTR = default(IntPtr);
+                    // IntPtr passwordBSTR = default(IntPtr);
                     //string insecurePassword = "";
-                   // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
-                   // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                    // passwordBSTR = Marshal.SecureStringToBSTR(dfPassword_txt);
+                    // insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
                     cbDatabaseEndoso.Clear();
                     cbDatabaseEndoso = null;
                     cbDatabaseEndoso = new ObservableCollection<string>();
 
                     GetDataBaseName(dfServer_txt, dfUsername_txt, dfPassword_txt, cbDatabaseEndoso);
-                                       
+
 
                     if (cbDatabaseEndoso.Count > 0)
                     {
@@ -786,8 +788,8 @@
                     {
                         cbDatabase_Item_Id = -1;
                     }
-                    
-                    
+
+
                 }
                 else
                 {
@@ -835,7 +837,7 @@
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "CmdBrowseImagesPath_Click", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -855,7 +857,9 @@
                 return _InitWindow;
             }
         }
-                
+
+     
+
         private void OnInitWindow()
         {
             try

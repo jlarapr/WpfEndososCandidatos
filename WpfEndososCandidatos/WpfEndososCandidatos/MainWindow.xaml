@@ -13,17 +13,17 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-   
+
     <Grid Background="White">
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="63*"/>
             <RowDefinition Height="102*"/>
-            <RowDefinition Height="227*"/>
-            <RowDefinition Height="446*"/>
+            <RowDefinition Height="342*"/>
+            <RowDefinition Height="331*"/>
         </Grid.RowDefinitions>
 
 

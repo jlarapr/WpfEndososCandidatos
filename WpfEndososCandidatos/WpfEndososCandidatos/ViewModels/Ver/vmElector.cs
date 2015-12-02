@@ -368,11 +368,13 @@
                 _LogClass.MYEventLog.WriteEntry("Var Elector Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
                 MyReset();
-
-                if (TxtElecNum.Trim().Length == 7)
-                    MyCmdFind_Click();
-                else
-                    TxtElecNum = string.Empty;
+                if (!string.IsNullOrEmpty(TxtElecNum))
+                {
+                    if (TxtElecNum.Trim().Length > 0)
+                        MyCmdFind_Click();
+                    else
+                        TxtElecNum = string.Empty;
+                }
             }
            catch (Exception ex)
            {
