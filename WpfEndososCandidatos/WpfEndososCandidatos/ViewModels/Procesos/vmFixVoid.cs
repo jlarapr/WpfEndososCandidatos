@@ -21,6 +21,7 @@ using WpfEndososCandidatos.ViewModels.Ver;
 using System.Data.SqlClient;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Windows.Input;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -66,6 +67,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private System.Windows.Media.ImageSource _Source_image;
         private int _ViewboxWidth;
         private int _ViewboxHeight;
+        private ScrollViewer _sv;
+        private wpfFixVoid _wpfFixVoid;
+        private System.Windows.Shapes.Rectangle _SelectionRectangle;
+        private int _MyX = 0;
+        private int _MyY = 0;
+        private double _MyH = 0;
+        private double _MyW = 0;
+        private BitmapImage _src = new BitmapImage();
+        private System.Drawing.Image _img;
+
+        private RelayCommand _BtnCrop;
+        private RelayCommand _BtnFullImages;
+        private string _lblCordenadas;
+        private string _Nombre_Corregir;
+        private BitmapImage _Source_image_Corregir;
+        private RelayCommand _LostFocus;
+        private RelayCommand _GotFocus;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -78,9 +96,326 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
             cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
             _DataToSave = new List<FixVoid>();
+
+
+
         }
 
+        void View_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            var mousePosition = e.GetPosition(sender as UIElement);
+            Canvas.SetLeft(_SelectionRectangle, mousePosition.X);
+
+            Canvas.SetTop(_SelectionRectangle, mousePosition.Y);
+
+            _SelectionRectangle.Visibility = System.Windows.Visibility.Visible;
+
+            //TituloFrmImg = string.Format("X:{0} Y:{1} H:{2} W:{3}", mousePosition.X.ToString(), mousePosition.Y.ToString(),_SelectionRectangle.Height,_SelectionRectangle.Width );
+
+            //_MyX = (int)mousePosition.X;
+            //_MyY = (int)mousePosition.Y;
+
+        }
+        void View_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                try
+                {
+                    var mousePosition = e.GetPosition(sender as UIElement);
+
+                    _SelectionRectangle.Width = mousePosition.X - Canvas.GetLeft(_SelectionRectangle);
+                    _SelectionRectangle.Height = mousePosition.Y - Canvas.GetTop(_SelectionRectangle);
+
+                    _MyX = (int)Canvas.GetLeft(_SelectionRectangle);
+                    _MyY = (int)Canvas.GetTop(_SelectionRectangle);
+                    _MyH = _SelectionRectangle.Height;
+                    _MyW = _SelectionRectangle.Width;
+
+                      lblCordenadas = string.Format("X = {0}; Y = {1}; H = {2}; W = {3}; V = {4}; Ho = {5};", _MyX, _MyY, _SelectionRectangle.Height, _SelectionRectangle.Width, _sv.VerticalOffset, _sv.HorizontalOffset);
+
+                }
+                catch
+                {
+                    //   MessageBox.Show(ex.ToString());
+                }
+            }
+        }
+
+
+        void BtnCrop_Click()
+        {
+            double factorX, factorY;
+
+            factorX = _src.PixelWidth / _src.Width;
+            factorY = _src.PixelHeight / _src.Height;
+
+            BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(_MyX, _MyY, (int)(_MyW), (int)(_MyH)));  // new CroppedBitmap(original, crop);
+
+            ViewboxWidth = (int)_MyW + 10;
+            ViewboxHeight = (int)_MyH + 10;
+
+            Source_image = displayImage;
+
+            _sv.ScrollToVerticalOffset(0);
+            _sv.ScrollToHorizontalOffset(0);
+
+        }
+        private void BtnFullImages_Click(ref int v, ref int Ho)
+        {
+
+            ViewboxWidth = _img.Width;
+            ViewboxHeight = _img.Height;
+            BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(0, 0, 0, 0));  // new CroppedBitmap(original, crop);
+            Source_image = displayImage;
+
+            _sv.ScrollToVerticalOffset(v);
+            _sv.ScrollToHorizontalOffset(Ho);
+
+            _sv.UpdateLayout();
+
+        }
+        private bool MyLostFocus(object param)
+        {
+            if (param is TextBox)
+            {
+                var txt = param as TextBox;
+
+                txt.Background = Brushes.White;
+            }
+            if (param is Label)
+            {
+                var txt = param as Label;
+                txt.Background = Brushes.White;
+
+            }
+            if (param is DatePicker)
+            {
+                var txt = param as DatePicker;
+                txt.Background = Brushes.White;
+
+            }
+            return true;
+        }
+        public void MyGotFocus(object name)
+        {
+
+            int X = 0;
+            int Y = 0;
+            int H = 0;
+            int W = 0;
+            int V = 0;
+            int Ho = 0;
+
+
+            string contenido = string.Empty;
+         
+
+            if (name is TextBox)
+            {
+                var txt = name as TextBox;
+                contenido = txt.Name;
+
+                //if (CurrentIDX > txt.TabIndex)
+                //{
+                //    _ChangeTap = true;
+                //}
+                //else
+                //{
+                //    _ChangeTap = false;
+                //}
+
+                //CurrentIDX = txt.TabIndex;
+
+                txt.SelectAll();
+
+                txt.Background = Brushes.Red;
+            }
+            if (name is Label)
+            {
+                var txt = name as Label;
+                contenido = txt.Name;
+                txt.Background = Brushes.Red;
+
+            }
+            if (name is DatePicker)
+            {
+                var txt = name as DatePicker;
+                contenido = txt.Name;
+                txt.Background = Brushes.Red;
+
+            }
+
+
+            try
+            {
+                switch (contenido)
+                {
+                    case "txtNumElec_Corregir":
+                        {//X:638 Y:1968 H:148 W:692 V:1919.81300691275 H:528
+                            X = 638;
+                            Y = 1968;
+                            H = 148;
+                            W = 692;
+                            V = 1919;
+                            Ho = 528;
+                            break;
+                        }
+                    case "txtPrecinto_Corregir":
+                        {
+                            X = 1059; Y = 1940; H = 170; W = 845; V = 1848; Ho = 946;
+                            break;
+                        }
+                    case "txtSex_Corregir":
+                        X = 1274; Y = 1652; H = 180; W = 544; V = 1544; Ho = 1127;
+                        break;
+                    case "FechaNac_Corregir":
+                       // X = 1672; Y = 1597; H = 271; W = 833; V = 1515; Ho = 1595;
+                       X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
+
+                        break;
+                    case "txtCargo_Corregir":
+                        X = 429; Y = 2106; H = 151; W = 940; V = 1919; Ho = 409;
+                        break;
+                    case "txtCandidato_Corregir":
+                        X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
+                        break;
+                    case "txtNotarioElec_Corregir":
+                        X = 109; Y = 2639; H = 175; W = 723; V = 2456; Ho = 0;
+                        break;
+                    case "txtFirmaElec_Corregir":
+                        X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
+                        break;
+                    case "txtNotarioFirma_Corregir":
+                        X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
+                        break;
+                    case "txtFchEndoso_Corregir":
+                        X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
+                        break;
+                    case "txtFchEndosoEntregada_Corregir":
+                        X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
+                        break;
+                    case "Nombre_Corregir":
+                        X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
+                        break;
+                   
+
+
+
+
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error");
+            }
+
+            try
+            {
+
+
+                BtnFullImages_Click(ref V, ref Ho);
+
+                //_inMoveUpDw = V;
+                //_inMoveLfRh = Ho;
+                //_sv.ScrollToVerticalOffset(V);
+                //_sv.ScrollToHorizontalOffset(Ho);
+
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Error en el Croop");
+            }
+            finally
+            {
+            }
+        }
+        public RelayCommand BtnFullImages
+        {
+            get
+            {
+                int v = 0;
+                int ho = 0;
+                if (_BtnFullImages == null)
+                {
+                    _BtnFullImages = new RelayCommand(param => BtnFullImages_Click(ref v, ref ho));
+                }
+                return _BtnFullImages;
+            }
+        }
+        public RelayCommand BtnCrop
+        {
+            get
+            {
+                if (_BtnCrop == null)
+                {
+                    _BtnCrop = new RelayCommand(param => BtnCrop_Click());
+                }
+                return _BtnCrop;
+            }
+        }
+        public RelayCommand miLostFocus
+        {
+            get
+            {
+                if (_LostFocus == null)
+                {
+                    _LostFocus = new RelayCommand(param => MyLostFocus(param));
+                }
+                return _LostFocus;
+            }
+        }
+        public RelayCommand miGotFocus
+        {
+            get
+            {
+                if (_GotFocus == null)
+                {
+                    _GotFocus = new RelayCommand(param => MyGotFocus(param));
+                }
+                return _GotFocus;
+            }
+        }
         #region MyProperty
+
+        public string Nombre_Corregir
+        {
+            get
+            {
+                return _Nombre_Corregir;
+            }set
+            {
+                _Nombre_Corregir = value;
+                this.RaisePropertychanged("Nombre_Corregir");
+            }
+        }
+
+        public string lblCordenadas
+        {
+            get
+            {
+                return _lblCordenadas;
+            }set
+            {
+                _lblCordenadas = value;
+                this.RaisePropertychanged("lblCordenadas");
+            }
+        }
+        public ScrollViewer sv
+        {
+            get
+            {
+                return _sv;
+            }
+            set
+            {
+                _sv = value;
+                this.RaisePropertychanged("sv");
+            }
+        }
         public int ViewboxWidth
         {
             get
@@ -118,6 +453,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("Source_image");
             }
         }
+        public BitmapImage Source_image_Corregir
+        {
+            get
+            {
+                return _Source_image_Corregir;
+            }set
+            {
+                _Source_image_Corregir = value;
+                this.RaisePropertychanged("Source_image_Corregir");
+            }
+        }
+
+
         public DataTable MyLotsTable
         {
             get
@@ -690,6 +1038,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 MyFillField();
 
+                MySendTab();
+                TextBox tet = new TextBox();
+                tet.Name = "txtNumElec_Corregir";
+                MyGotFocus(tet);
+                
             }
             catch (Exception ex)
             {
@@ -700,6 +1053,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public bool? MyOnShow()
         {
+            _wpfFixVoid =this.View as wpfFixVoid;
+
+            _wpfFixVoid.miCanvas.MouseMove += View_MouseMove;
+            _wpfFixVoid.miCanvas.MouseLeftButtonDown += View_MouseLeftButtonDown;
+            sv = _wpfFixVoid.scrollViewer;
+            _SelectionRectangle = _wpfFixVoid.selectionRectangle;
+
             return this.View.ShowDialog();
         }
         private void MyCmdSalir_Click()
@@ -930,11 +1290,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr,
-                    DBCeeMasterCnnStr = DBMasterCeeCnnStr
+                    DBCeeMasterCnnStr = DBMasterCeeCnnStr,
+                    DBImagenesCnnStr = DBCeeMasterImgCnnStr
 
                 })
                 {
-
+                    Nombre_Corregir = _DataToSave[i].Nombre;
                     txtNumElec_Corregir = _DataToSave[i].Numelec;
                     txtNotarioNumElec = _DataToSave[i].NotarioElec;
                     txtPrecinto_Corregir = _DataToSave[i].Precinto;
@@ -961,26 +1322,27 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     byte[] EndosoImage = null;
 
                     txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,ref EndosoImage);
-
-                    // 'DESPLIEGA la imagen
+                    _src = new BitmapImage();
+                  
+                        // 'DESPLIEGA la imagen
                     if (EndosoImage != null)
                     {
                         MemoryStream strmEndosoImage = new MemoryStream();
                         strmEndosoImage.Write(EndosoImage, 0, EndosoImage.Length);
                         strmEndosoImage.Position = 0;
-                        System.Drawing.Image img = System.Drawing.Image.FromStream(strmEndosoImage);
-                        BitmapImage bi = new BitmapImage();
-                        bi.BeginInit();
+                        _src.BeginInit();
+                        _img = System.Drawing.Image.FromStream(strmEndosoImage);
+
                         MemoryStream ms = new MemoryStream();
-                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
+                        _img.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
                         ms.Seek(0, SeekOrigin.Begin);
-                        bi.StreamSource = ms;
-                        bi.EndInit();
+                        _src.StreamSource = ms;
+                        _src.EndInit();
 
-                        ViewboxHeight =  img.Height;
-                        ViewboxWidth =  img.Width;
+                        ViewboxHeight =  _img.Height;
+                        ViewboxWidth =  _img.Width;
 
-                        BitmapSource displayImage = new CroppedBitmap(bi, new Int32Rect(0, 0, img.Width, img.Width));  // new CroppedBitmap(original, crop);
+                        BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(0, 0, _img.Width, _img.Width));  // new CroppedBitmap(original, crop);
 
 
                         Source_image = displayImage;
@@ -989,9 +1351,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     else
                         Source_image = null;
 
-                    if (txtNumElec_Corregir.Trim().Length >0)
-                    _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
+
+
+                    DataTable myTableImg = new DataTable();
+
+                    if (txtNumElec_Corregir.Trim().Length > 0)
+                    {
+                        _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
+
+                        myTableImg = get.MyGetCitizenImg(txtNumElec_Corregir);
+                    }
                     DataTable notarioInfo = new DataTable();
 
                     if (txtNotarioNumElec.Trim().Length >0)
@@ -1033,6 +1403,26 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             string Ano = txtFechaNac.Split('/')[2].Trim().Substring(0, 4);
                             txtFechaNac = Mes + "/" + Dia + "/" + Ano;
                         }
+
+                        if (myTableImg.Rows.Count > 0)
+                        {
+                            byte[] dataSignature = (byte[])myTableImg.Rows[0]["SignatureImage"];
+                            MemoryStream strmSignature = new MemoryStream();
+                            strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                            strmSignature.Position = 0;
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                            BitmapImage bi = new BitmapImage();
+                            bi.BeginInit();
+                            MemoryStream ms = new MemoryStream();
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            bi.StreamSource = ms;
+                            bi.EndInit();
+                            Source_image_Corregir = bi;
+                        }
+                        else
+                            Source_image_Corregir = null;
+
                     }
                     else
                     {
@@ -1078,6 +1468,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtFechaNac = string.Empty;
             txtNotarioNumElec = string.Empty;
             txtNotarioFirstName = string.Empty;
+            Nombre_Corregir = string.Empty;
+
 
             if (resetAllData)
             {
@@ -1118,6 +1510,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         {
                             i = k,
                             CurrElect = row["NumElec"].ToString(),
+                            Nombre =  row["Nombre"].ToString().Trim() + " " + row["Paterno"].ToString().Trim() + " " + row["Materno"].ToString(),
                             Lot = Lot,
                             Formulario = row["BatchPgNo"].ToString().Trim(),
                             TipoDeRechazo = "",
@@ -1172,7 +1565,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             
             // _DataToSave[i].image = row["image"].ToString(),
         }
+        public void MySendTab()
+        {
+            try
+            {
+                KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
+                e1.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput(e1);
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
         #endregion
 
 

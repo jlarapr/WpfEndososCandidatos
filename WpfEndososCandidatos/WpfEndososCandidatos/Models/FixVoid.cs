@@ -17,9 +17,9 @@ namespace WpfEndososCandidatos.Models
         public string CurrElect { get; set; }
         public string Lot { get; set; } //LotsLot
         public string Formulario { get; set; }//LotsEndoFormulario
-       
-        
-        
+       public string Nombre { get; set; }
+
+
         public string  TipoDeRechazo { get; set; }//LotsVoid.Rechazo 
         public string Numelec { get; set; }//LotsEndoNumelec
         public string NotarioElec { get; set; }
@@ -47,6 +47,7 @@ namespace WpfEndososCandidatos.Models
             {
                 i.ToString(),
                 CurrElect,
+                Nombre,
               Lot,
               Formulario,
               TipoDeRechazo,
