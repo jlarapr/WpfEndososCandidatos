@@ -405,7 +405,6 @@
 
                 cbLots.Remove(cbLots_Item);
 
-
             }
             catch (Exception ex)
             {

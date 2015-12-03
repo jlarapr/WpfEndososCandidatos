@@ -238,6 +238,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     frmMantNotarios.View.Owner = this.View as Window;
                     frmMantNotarios.DBEndososCnnStr = _DBEndososCnnStr;
+                    frmMantNotarios.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
                     frmMantNotarios.MyOnShow();
                 }
 

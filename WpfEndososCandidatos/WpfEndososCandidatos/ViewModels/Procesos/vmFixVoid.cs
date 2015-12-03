@@ -1015,9 +1015,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     if (_tblCitizen.Rows.Count > 0)
                     {
                         string[] name = {
-                                        _tblCitizen.Rows[0]["FirstName"].ToString()," ",
-                                        _tblCitizen.Rows[0]["LastName1"].ToString()," ",
-                                        _tblCitizen.Rows[0]["LastName2"].ToString()
+                                        _tblCitizen.Rows[0]["FirstName"].ToString().Trim()," ",
+                                        _tblCitizen.Rows[0]["LastName1"].ToString().Trim()," ",
+                                        _tblCitizen.Rows[0]["LastName2"].ToString().Trim()
                                     };
 
                         txtNombre = string.Concat(name);

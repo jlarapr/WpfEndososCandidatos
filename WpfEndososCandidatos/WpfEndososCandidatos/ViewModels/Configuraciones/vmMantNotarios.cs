@@ -20,6 +20,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
     using WpfEndososCandidatos.View;
     using System.Data;
     using System.Diagnostics;
+    using System.Windows.Input;
 
     class vmMantNotarios : ViewModelBase<IDialogView>, IDisposable
     {
@@ -68,6 +69,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsEnabled_cmdSalir;
         private bool _IsInsert;
         private bool _isEdit;
+        private string _DBCeeMasterCnnStr;
+        private bool _CanFind;
 
         public vmMantNotarios() : base(new wpfMantNotarios())
         {
@@ -78,6 +81,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdEdit_Click = new RelayCommand(param => MyCmdEdit_Click());
             cmdSave_Click = new RelayCommand(param => MyCmdSave_Click(),param => CanSave);
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
+            cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
 
             cbPartidos = new ObservableCollection<Partidos>();
             cbNotario = new ObservableCollection<Notarios>();
@@ -85,7 +89,49 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyPrperty
+        public bool CanFind
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(txtNumElec))
+                {
+                    txtNombre = string.Empty;
+                    txtApellido1 = string.Empty;
+                    txtApellido2 = string.Empty;
+                    cbPartidos_Item_Id = -1;
+                    //MySendTab();
 
+                    return false;
+                }
+
+                if (txtNumElec.Trim().Length <= 0)
+                {
+                    txtNombre = string.Empty;
+                    txtApellido1 = string.Empty;
+                    txtApellido2 = string.Empty;
+                    cbPartidos_Item_Id = -1;
+                    //MySendTab();
+
+                    return false;
+                }
+
+                int i;
+                if (!int.TryParse(txtNumElec, out i))
+                {
+                    txtNombre = string.Empty;
+                    txtApellido1 = string.Empty;
+                    txtApellido2 = string.Empty;
+                    cbPartidos_Item_Id = -1;
+                    //MySendTab();
+
+                    return false;
+                }
+
+                //if (_CanFind)
+                //    return false;
+                return true;
+            }
+        }
         public Brush BorderBrush
         {
             get
@@ -331,8 +377,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("IsEnabled_cmdSalir");
             }
         }
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }
+            set
+            {
+                _DBCeeMasterCnnStr = value;
+            }
+        }
 
-      
         public string txtNumElec
         {
             get
@@ -344,25 +400,34 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 {
                     if (value.Trim().Length > 0)
                     {
-                        int myTryParse;
-                        if (int.TryParse(value, out myTryParse))
+                        if(value != _txtNumElec)
                         {
-                            _txtNumElec = string.Format("{0:0000000}", myTryParse);
-                            this.RaisePropertychanged("txtNumElec");
+                            txtApellido1 = string.Empty;
+                            txtApellido2 = string.Empty;
+                            txtNombre = string.Empty;
+                            cbPartidos_Item_Id = -1;
                         }
-                        else
-                        {
-                            this.RaisePropertychanged("txtNumElec");
-                        }
+
+                        _txtNumElec = value;
+
+
+                        this.RaisePropertychanged("txtNumElec");
                     }
                     else
                     {
                         _txtNumElec = string.Empty;
+                        txtApellido1 = string.Empty;
+                        txtApellido2 = string.Empty;
+                        txtNombre = string.Empty;
+                        cbPartidos_Item_Id = -1;
                         this.RaisePropertychanged("txtNumElec");
                     }
                 }
             }
         }
+
+      
+
         public string DBEndososCnnStr
         {
             get
@@ -805,6 +870,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get;
             private set;
         }
+        public RelayCommand cmdFind_Click
+        {
+            get;private set;
+        }
         public RelayCommand cmdAdd_Click
         {
             get;private set;
@@ -832,6 +901,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         private void MyReset()
         {
+            _CanFind = false;
+
             IsReadOnly_txtNumElec = true;
             IsReadOnly_txtApellido1 = true;
             IsReadOnly_txtApellido2 = true;
@@ -922,7 +993,58 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
+        private void MyCmdFind_Click()
+        {
+            try
+            {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr
 
+                })
+                {
+                    _CanFind = true;
+
+                    _txtNumElec = _txtNumElec.PadLeft(7, '0');
+
+                    DataTable myTable = get.MyGetCitizen(_txtNumElec);
+                    if (myTable.Rows.Count == 0)
+                        throw new Exception("Número electoral invalido.");
+
+                    txtNombre = myTable.Rows[0]["FirstName"].ToString();
+                    txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
+                    txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
+
+                    switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                    {
+                        case "A":
+                            break;
+                        case "E":
+                           //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                            throw new Exception("Excluido");
+                            //break;
+                        case "I":
+                            throw new Exception("Inactivo");
+
+                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            //break;
+                        default:
+                            throw new Exception("Inactivo");
+                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            //break;
+                    }
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
+                MyReset();
+            }
+        }
         private int FindByPartido(string partidoKey)
         {
             int myIndex = -1;
@@ -937,6 +1059,20 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MessageBox.Show(ex.ToString());
             }
             return myIndex;
+        }
+        public void MySendTab()
+        {
+            try
+            {
+                KeyEventArgs e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Tab);
+                e1.RoutedEvent = Keyboard.KeyDownEvent;
+                InputManager.Current.ProcessInput(e1);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         #endregion

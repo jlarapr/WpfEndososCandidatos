@@ -1872,7 +1872,7 @@ namespace jolcode
 
             bool myBoolReturn = false;
             bool myBoolErrorNoHayLotes = true;
-            SqlTransaction transaction = null;
+            //SqlTransaction transaction = null;
             DataTable myDataToProcessTF = new DataTable();
             int LotRechazo = 2;
             //'Define memory variables to hold information from access DB
@@ -2009,9 +2009,9 @@ namespace jolcode
                 myBoolErrorNoHayLotes = false;
 
                 // Start a local transaction.
-                transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
+                //transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
 
-                myCmdDBEndosos.Transaction = transaction;
+                //myCmdDBEndosos.Transaction = transaction;
 
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsVoid);
                 myCmdDBEndosos.ExecuteNonQuery();
@@ -2022,7 +2022,7 @@ namespace jolcode
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrUpdateLots);
                 myCmdDBEndosos.ExecuteNonQuery();
 
-                transaction.Commit();
+            //    transaction.Commit();
 
                 int[] Rechazo = new int[20];
                 int[] Warning = new int[20];
@@ -2037,8 +2037,8 @@ namespace jolcode
 
                     Resultados[2] = ProgressBar_Value[0].ToString();//lblProcesadas            2    
 
-                    transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
-                    myCmdDBEndosos.Transaction = transaction;
+                    //transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
+                    //myCmdDBEndosos.Transaction = transaction;
                     
                     isRechazo = new bool[20];
                     isWarning = new bool[20];
@@ -2085,14 +2085,15 @@ namespace jolcode
                     m_PARTIDO = row["Partido"].ToString().Trim();
                     m_BatchNo = row["BatchNo"].ToString().Trim();
                     m_Batch = m_BatchNo;// row["Suspense_File"].ToString().Trim().Split('\\')[3];
-                    m_Suspense_File = row["Nombre_Image"].ToString().Trim();
+
+                    m_Suspense_File = row["Suspense_File"].ToString().Trim();
 
                     m_EndosoImage = row["BatchDir"].ToString().Trim();
 
-                    if (!m_EndosoImage.EndsWith("\\"))
-                        m_EndosoImage += "\\";
+                    //if (!m_EndosoImage.EndsWith("\\"))
+                    //    m_EndosoImage += "\\";
 
-                    m_EndosoImage += m_Suspense_File.Trim();
+                    m_EndosoImage = m_Suspense_File.Trim();
 
 
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
@@ -2154,7 +2155,7 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO
+                    if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO (esta es la de los 20 dias)
                     {
                         string[] sqlstr = { "SELECT Entregado ",
                                                 "From [LotsReceive] ",
@@ -2541,7 +2542,7 @@ namespace jolcode
                             object FirstGeoCode = null;
 
                             if (MyValidarDatos(string.Concat(sqlstr), out FirstGeoCode, myCnnDBCeeMaster) == null)
-                            {
+                            {//Rechazo
                                 if (CollCriterios[11].Editar == true)
                                 {
                                     Rechazo[11]++;
@@ -2556,7 +2557,7 @@ namespace jolcode
                             else
                             {
                                 if (FirstGeoCode != null)
-                                {
+                                {//Falta rutina de REYDI
                                     string precinto = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
                                     if (precinto != m_N_PRECINTO)
                                     {
@@ -2810,7 +2811,7 @@ namespace jolcode
                                     break;
 
                                 case 8: //'Asambleista
-                                    {
+                                    {//Falta tabala 
                                         if ((int)total > 3)
                                         {
                                             if (CollCriterios[14].Editar == true)
@@ -2831,7 +2832,7 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[15].Editar == true || CollCriterios[15].Warning == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
+                    if (CollCriterios[15].Editar == true || CollCriterios[15].Warning == true)//16-'FIRMA DEL ELECTOR ES NULL
                     {
                         if (m_Firma_Pet_Inv == 1)
                         {
@@ -2872,6 +2873,9 @@ namespace jolcode
 
                     if (File.Exists(m_EndosoImage))
                         img = GetEndosoImage(m_EndosoImage);
+                    else
+                        throw new Exception("Problema con la imagen\r\n" + m_EndosoImage);
+
 
                     //'ACTUALIZA LOS COUNTERS DE LA PANTALLA
                     for (int X = 0; X < CollCriterios.Count; X++) 
@@ -2965,7 +2969,7 @@ namespace jolcode
                     myCmdDBEndosos.Parameters.Remove(param);
 
 
-                    transaction.Commit();
+                 //   transaction.Commit();
                     DoEvents();
                 }//end loop
 
@@ -2985,25 +2989,26 @@ namespace jolcode
                 //'3 - CON ERRORES PARA REVISAR
                 //'4 - SIENDO REVISADA
 
-
+                myBoolReturn = true;
             }
             catch (Exception ex)
             {
-                if (transaction != null)
-                {
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch
-                    {
-                        if (transaction.Connection != null)
-                        {
-                            Console.WriteLine("An exception of type " + ex.GetType() +
-                                " was encountered while attempting to roll back the transaction.");
-                        }
-                    }
-                }
+                MyReverseLots(numlot,usercode);
+                //if (transaction != null)
+                //{
+                //    try
+                //    {
+                //        transaction.Rollback();
+                //    }
+                //    catch
+                //    {
+                //        if (transaction.Connection != null)
+                //        {
+                //            Console.WriteLine("An exception of type " + ex.GetType() +
+                //                " was encountered while attempting to roll back the transaction.");
+                //        }
+                //    }
+                //}
                 if (myBoolErrorNoHayLotes)
                     throw new Exception(ex.Message);
                 else
