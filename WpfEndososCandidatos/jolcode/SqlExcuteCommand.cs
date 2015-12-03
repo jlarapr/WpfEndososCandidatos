@@ -505,7 +505,7 @@ namespace jolcode
 
                 string[] mySqlstr =
                 {
-                    "SELECT a.Lot,b.*  FROM [dbEndososPartidos].[dbo].[Lots] A ", 
+                    "SELECT a.Lot,b.*  FROM [dbo].[Lots] A ", 
                     "join [dbo].[TF-Partidos] B on a.Lot = b.BatchTrack  where A.Status = 3 ",
                     "and A.lot ='",CurrLot,"' ",
                     "order by [BatchPgNo]"

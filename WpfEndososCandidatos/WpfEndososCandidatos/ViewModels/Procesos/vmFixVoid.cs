@@ -22,6 +22,7 @@ using System.Data.SqlClient;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Input;
+using System.Globalization;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -55,11 +56,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtNotarioFirma_Corregir;
         private bool _ckbFirma_Pet_Inv;
         private bool _ckbFirma_Not_Inv;
-        private DateTime? _txtFchEndoso_Corregir;
-        private DateTime? _txtFchEndosoEntregada_Corregir;
+        private string _txtFchEndoso_Corregir;
+        private string _txtFchEndosoEntregada_Corregir;
         private int _i_Display;
         private string _txtFormulario;
-        private DateTime? _FechaNac_Corregir;
+        private string _FechaNac_Corregir;
         private List<FixVoid> _DataToSave;
         private bool _CanGuardar;
         private string _SysUser;
@@ -81,9 +82,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private RelayCommand _BtnFullImages;
         private string _lblCordenadas;
         private string _Nombre_Corregir;
-        private BitmapImage _Source_image_Corregir;
+        private System.Windows.Media.ImageSource _Source_image_Corregir;
         private RelayCommand _LostFocus;
         private RelayCommand _GotFocus;
+        private int _ViewboxWidthSing;
+        private int _ViewboxHeightSing;
+        private DataTable _myTableImg;
+        private DataTable _myTableImgNotario;
+        private bool _isFirmaNotario;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -196,6 +202,36 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 txt.Background = Brushes.White;
 
             }
+            if (_isFirmaNotario)
+            {
+                _isFirmaNotario = false;
+                if (_myTableImg.Rows.Count > 0)
+                {
+                    byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
+                    MemoryStream strmSignature = new MemoryStream();
+                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                    strmSignature.Position = 0;
+                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    MemoryStream ms = new MemoryStream();
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    bi.StreamSource = ms;
+                    bi.EndInit();
+
+                    ViewboxHeightSing = img.Height;
+                    ViewboxWidthSing = img.Width;
+
+                    BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                    Source_image_Corregir = displayImage;
+
+                }
+                else
+                    Source_image_Corregir = null;
+            }
+
             return true;
         }
         public void MyGotFocus(object name)
@@ -216,17 +252,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 var txt = name as TextBox;
                 contenido = txt.Name;
-
-                //if (CurrentIDX > txt.TabIndex)
-                //{
-                //    _ChangeTap = true;
-                //}
-                //else
-                //{
-                //    _ChangeTap = false;
-                //}
-
-                //CurrentIDX = txt.TabIndex;
 
                 txt.SelectAll();
 
@@ -250,61 +275,144 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             try
             {
+                /*
+                Nombre : X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
+                ElecNum : X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
+                Precinto : X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
+                Sexo : X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
+                FechaNac : X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
+                Cargo: X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
+                Candidato : X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
+                Funcionario: X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
+                FirmaElec : X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
+                FirmaFuncionario: X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
+                FechaFirma : X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
+                FechaRadi : X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
+                */
                 switch (contenido)
                 {
                     case "txtNumElec_Corregir":
-                        {//X:638 Y:1968 H:148 W:692 V:1919.81300691275 H:528
-                            X = 638;
-                            Y = 1968;
-                            H = 148;
-                            W = 692;
-                            V = 1919;
-                            Ho = 528;
+                        {
+                           // X = 638; Y = 1968;  H = 148;    W = 692;    V = 1919;          Ho = 528;
+                            X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
                             break;
                         }
                     case "txtPrecinto_Corregir":
                         {
-                            X = 1059; Y = 1940; H = 170; W = 845; V = 1848; Ho = 946;
+                            //X = 1059; Y = 1940; H = 170; W = 845; V = 1848; Ho = 946;
+                            X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
                             break;
                         }
                     case "txtSex_Corregir":
-                        X = 1274; Y = 1652; H = 180; W = 544; V = 1544; Ho = 1127;
+                        //X = 1274; Y = 1652; H = 180; W = 544; V = 1544; Ho = 1127;
+                        X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
                         break;
                     case "FechaNac_Corregir":
-                       // X = 1672; Y = 1597; H = 271; W = 833; V = 1515; Ho = 1595;
-                       X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
-
+                      
+                    //   X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
+                        X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
                         break;
                     case "txtCargo_Corregir":
-                        X = 429; Y = 2106; H = 151; W = 940; V = 1919; Ho = 409;
+                        //X = 429; Y = 2106; H = 151; W = 940; V = 1919; Ho = 409;
+                        X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
                         break;
                     case "txtCandidato_Corregir":
-                        X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
+                      //  X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
+                        X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
                         break;
                     case "txtNotarioElec_Corregir":
-                        X = 109; Y = 2639; H = 175; W = 723; V = 2456; Ho = 0;
+                        //X = 109; Y = 2639; H = 175; W = 723; V = 2456; Ho = 0;
+                        X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
                         break;
                     case "txtFirmaElec_Corregir":
-                        X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
+                      //  X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
+                        X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
+                        if (_isFirmaNotario)
+                        {
+                            _isFirmaNotario = false;
+                            if (_myTableImg.Rows.Count > 0)
+                            {
+                                byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
+                                MemoryStream strmSignature = new MemoryStream();
+                                strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                                strmSignature.Position = 0;
+                                System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                BitmapImage bi = new BitmapImage();
+                                bi.BeginInit();
+                                MemoryStream ms = new MemoryStream();
+                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                ms.Seek(0, SeekOrigin.Begin);
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+
+                                ViewboxHeightSing = img.Height;
+                                ViewboxWidthSing = img.Width;
+
+                                BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                                Source_image_Corregir = displayImage;
+
+                            }
+                            else
+                                Source_image_Corregir = null;
+                        }
+
+
                         break;
                     case "txtNotarioFirma_Corregir":
-                        X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
+                      //  X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
+                        X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
+                        if (!_isFirmaNotario)
+                        {
+                            if (_myTableImgNotario.Rows.Count > 0)
+                            {
+                                byte[] dataSignature = (byte[])_myTableImgNotario.Rows[0]["SignatureImage"];
+                                MemoryStream strmSignature = new MemoryStream();
+                                strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                                strmSignature.Position = 0;
+                                System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                BitmapImage bi = new BitmapImage();
+                                bi.BeginInit();
+                                MemoryStream ms = new MemoryStream();
+                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                ms.Seek(0, SeekOrigin.Begin);
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+
+
+                                ViewboxHeightSing = img.Height;
+                                ViewboxWidthSing = img.Width;
+
+                                BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                                Source_image_Corregir = displayImage;
+
+
+                            }
+                            else
+                                Source_image_Corregir = null;
+
+                            _isFirmaNotario = true;
+                        }
+
+
                         break;
                     case "txtFchEndoso_Corregir":
-                        X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
+                       // X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
+                        X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
                         break;
                     case "txtFchEndosoEntregada_Corregir":
-                        X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
+                       // X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
+                        X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
                         break;
                     case "Nombre_Corregir":
-                        X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
+                       // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
+                     X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
                         break;
-                   
-
-
 
 
                 }
+              
             }
             catch
             {
@@ -441,6 +549,34 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
+
+
+        public int ViewboxWidthSing
+        {
+            get
+            {
+                return _ViewboxWidthSing;
+            }
+            set
+            {
+                _ViewboxWidthSing = value;
+                this.RaisePropertychanged("ViewboxWidthSing");
+            }
+        }
+        public int ViewboxHeightSing
+        {
+            get
+            {
+                return _ViewboxHeightSing;
+            }
+            set
+            {
+                _ViewboxHeightSing = value;
+                this.RaisePropertychanged("ViewboxHeightSing");
+            }
+        }
+
+
         public System.Windows.Media.ImageSource Source_image
         {
             get
@@ -453,7 +589,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("Source_image");
             }
         }
-        public BitmapImage Source_image_Corregir
+        public System.Windows.Media.ImageSource Source_image_Corregir
         {
             get
             {
@@ -846,7 +982,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("ckbFirma_Not_Inv");
             }
         }
-        public DateTime? txtFchEndoso_Corregir
+        public string txtFchEndoso_Corregir
         {
             get
             {
@@ -854,19 +990,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }set
             {
                 _txtFchEndoso_Corregir = value;
-
                 if (value != null)
                 {
                     if (_DataToSave.Count > 0)
                     {
                         CanGuardar = true;
                     }
-                }
+                    _txtFchEndoso_Corregir =  jolcode.DateTimeUtil.MyValidarFecha2(value) == null?value: jolcode.DateTimeUtil.MyValidarFecha2(value);
 
+                }
                 this.RaisePropertychanged("txtFchEndoso_Corregir");
+
+
             }
         }
-        public DateTime? txtFchEndosoEntregada_Corregir
+        public string txtFchEndosoEntregada_Corregir
         {
             get
             {
@@ -881,13 +1019,15 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     {
                         CanGuardar = true;
                     }
-                }
+                    _txtFchEndosoEntregada_Corregir = jolcode.DateTimeUtil.MyValidarFecha2(value) == null ? value : jolcode.DateTimeUtil.MyValidarFecha2(value);
 
+                }
                 this.RaisePropertychanged("txtFchEndosoEntregada_Corregir");
+
             }
         }
        
-        public DateTime? FechaNac_Corregir
+        public string FechaNac_Corregir
         {
             get
             {
@@ -901,7 +1041,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     {
                         CanGuardar = true;
                     }
+                    _FechaNac_Corregir = jolcode.DateTimeUtil.MyValidarFecha2(value) == null ? value : jolcode.DateTimeUtil.MyValidarFecha2(value);
                 }
+              
                 this.RaisePropertychanged("FechaNac_Corregir");
             }
         }
@@ -1310,14 +1452,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
                     ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
 
-                    txtFchEndoso_Corregir = _DataToSave[i].FchEndoso;
                     txtFormulario = _DataToSave[i].Formulario;
-                    FechaNac_Corregir = _DataToSave[i].FechaNac;
 
-                    txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada;
+                    if(_DataToSave[i].FchEndoso !=null)
+                    txtFchEndoso_Corregir = _DataToSave[i].FchEndoso.Value.ToString("MM/dd/yyyy");
 
-                    if (txtFchEndoso_Corregir == null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
-                        txtFchEndoso_Corregir = _DataToSave[i].Firma_Fecha;
+
+                    if (_DataToSave[i].FechaNac !=null)
+                    FechaNac_Corregir = _DataToSave[i].FechaNac.Value.ToString("MM/dd/yyyy");
+
+                    if (_DataToSave[i].FchEndosoEntregada !=null)
+                    txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
+
+                    if (txtFchEndoso_Corregir == null && _DataToSave[i].Firma_Fecha !=null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
+                        txtFchEndoso_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("MM/dd/yyyy");
 
                     byte[] EndosoImage = null;
 
@@ -1354,19 +1502,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
-                    DataTable myTableImg = new DataTable();
+                     _myTableImg = new DataTable();
+                     _myTableImgNotario = new DataTable();
+
 
                     if (txtNumElec_Corregir.Trim().Length > 0)
                     {
                         _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
-                        myTableImg = get.MyGetCitizenImg(txtNumElec_Corregir);
+                        _myTableImg = get.MyGetCitizenImg(txtNumElec_Corregir);
                     }
                     DataTable notarioInfo = new DataTable();
 
-                    if (txtNotarioNumElec.Trim().Length >0)
+                    if (txtNotarioNumElec.Trim().Length > 0)
+                    {
                         notarioInfo = get.MyGetCitizen(txtNotarioNumElec);
-
+                        _myTableImgNotario = get.MyGetCitizenImg(txtNotarioNumElec);
+                    }
                     if (notarioInfo.Rows.Count > 0)
                     {
                         string[] notario =
@@ -1404,9 +1556,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             txtFechaNac = Mes + "/" + Dia + "/" + Ano;
                         }
 
-                        if (myTableImg.Rows.Count > 0)
+                        if (_myTableImg.Rows.Count > 0)
                         {
-                            byte[] dataSignature = (byte[])myTableImg.Rows[0]["SignatureImage"];
+                            byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
                             MemoryStream strmSignature = new MemoryStream();
                             strmSignature.Write(dataSignature, 0, dataSignature.Length);
                             strmSignature.Position = 0;
@@ -1418,7 +1570,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             ms.Seek(0, SeekOrigin.Begin);
                             bi.StreamSource = ms;
                             bi.EndInit();
-                            Source_image_Corregir = bi;
+
+
+                            ViewboxHeightSing = img.Height;
+                            ViewboxWidthSing = img.Width;
+
+                            BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                            Source_image_Corregir = displayImage;
+
+
                         }
                         else
                             Source_image_Corregir = null;
@@ -1541,28 +1702,52 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private void SaveTmp()
         {
-                _DataToSave[i].i = i;
-                _DataToSave[i].Lot = Lot;
-                _DataToSave[i].Formulario = txtFormulario;
-                // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),
-                _DataToSave[i].Numelec = txtNumElec_Corregir;
-                _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
-                _DataToSave[i].Precinto = txtPrecinto_Corregir;
-                _DataToSave[i].FechaNac = FechaNac_Corregir;
-                _DataToSave[i].Sexo = txtSex_Corregir;
-                _DataToSave[i].Candidato = txtCandidato_Corregir;
-                _DataToSave[i].Cargo = txtCargo_Corregir;
-                _DataToSave[i].FirmaElec = txtFirmaElec_Corregir;
-                _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
-                _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
-                _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
-                _DataToSave[i].FchEndoso = txtFchEndoso_Corregir;
-                _DataToSave[i].FchEndosoEntregada = txtFchEndosoEntregada_Corregir;
-                      
+
+
+            DateTime dtNac;
+            DateTime? dtNacNull = null;
+            DateTime dtEndosoEntregada;
+            DateTime? dtEndosoEntregadanull=null;
+            DateTime dtEndoso_Corregir;
+            DateTime? dtEndoso_Corregirnull=null;
+
+            if (DateTime.TryParseExact(txtFchEndoso_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndoso_Corregir))
+            {
+                dtEndoso_Corregirnull = dtEndoso_Corregir;
+            }
+
+            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndosoEntregada))
+            {
+                dtEndosoEntregadanull = dtEndosoEntregada;
+            }
+
+            if (DateTime.TryParseExact(FechaNac_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
+            {
+                dtNacNull = dtNac;
+            }
+
+            _DataToSave[i].i = i;
+            _DataToSave[i].Lot = Lot;
+            _DataToSave[i].Formulario = txtFormulario;
+            // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),
+            _DataToSave[i].Numelec = txtNumElec_Corregir;
+            _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
+            _DataToSave[i].Precinto = txtPrecinto_Corregir;
+            _DataToSave[i].FechaNac = dtNacNull;
+            _DataToSave[i].Sexo = txtSex_Corregir;
+            _DataToSave[i].Candidato = txtCandidato_Corregir;
+            _DataToSave[i].Cargo = txtCargo_Corregir;
+            _DataToSave[i].FirmaElec = txtFirmaElec_Corregir;
+            _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
+            _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
+            _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
+            _DataToSave[i].FchEndoso = dtEndoso_Corregirnull;
+            _DataToSave[i].FchEndosoEntregada = dtEndosoEntregadanull;
+
             // _DataToSave[i].FchEndosoEntregada = null,
-            
+
             //_DataToSave[i].Batch = row["Batch"].ToString(),
-            
+
             // _DataToSave[i].image = row["image"].ToString(),
         }
         public void MySendTab()

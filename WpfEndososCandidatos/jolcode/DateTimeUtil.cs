@@ -22,8 +22,12 @@ namespace jolcode
 
         public static long DateDiff(DateInterval interval, DateTime? date1, DateTime? date2)
         {
+            TimeSpan? ts = null;
 
-            TimeSpan? ts = date2 - date1;
+            if (date1 != null && date2 != null)
+                ts = date2 - date1;
+            else
+                return 999999; 
 
             
             switch (interval)
@@ -65,6 +69,30 @@ namespace jolcode
 
             if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
                 return tempdate;//.ToString("MM/dd/yyyy");
+            else
+                return null;
+
+        }
+        public static string MyValidarFecha2(string param)
+        {
+            DateTime tempdate;
+            //Xceed.Wpf.Toolkit.MaskedTextBox myMaskedTextBoxValue = new Xceed.Wpf.Toolkit.MaskedTextBox();
+            //myMaskedTextBoxValue.Value = "00/00/0000";
+            //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
+            //myMaskedTextBoxValue.Text = param;
+
+          param = param.Replace("/","");
+
+            if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
+                return tempdate.ToString("MM/dd/yyyy");
+            else if(DateTime.TryParseExact(param,"MMdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
+                return tempdate.ToString("MM/dd/yyyy");
+            else if (DateTime.TryParseExact(param, "Mdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
+                return tempdate.ToString("MM/dd/yyyy");
+            else if (DateTime.TryParseExact(param, "Mddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
+                return tempdate.ToString("MM/dd/yyyy");
+            else if (DateTime.TryParseExact(param, "Mdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
+                return tempdate.ToString("MM/dd/yyyy");
             else
                 return null;
 
