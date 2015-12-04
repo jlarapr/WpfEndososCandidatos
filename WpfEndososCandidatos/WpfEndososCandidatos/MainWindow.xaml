@@ -49,7 +49,7 @@
             <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones" Margin="5,5,0,0"  >
                 <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
                 <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />
-                <MenuItem Name="mnuCandidatos" Header="_Candidatos" 
+                <MenuItem Name="mnuCandidatos" Header="_Aspirante" 
                           Command="{Binding candidatos_Click}"
                           IsEnabled="{Binding mnuCandidatos_IsEnabled}"
                           />

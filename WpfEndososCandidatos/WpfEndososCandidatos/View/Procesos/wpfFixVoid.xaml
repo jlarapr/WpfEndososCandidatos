@@ -346,7 +346,7 @@
             </GroupBox>
             <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="173,125,10,0" IsTabStop="False" TabIndex="1000000" />
             <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39"  Height="28"  Margin="43,125,0,0" IsTabStop="False" TabIndex="1000000" />
-            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="28" Margin="10,158,15,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"/>
+            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="28" Margin="10,158,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="72"/>
             <Grid Background="Beige" Grid.Column="2" Height="108" Margin="10,45,10,0" Grid.Row="1" VerticalAlignment="Top">
                 <ScrollViewer  Background="Beige"  
                            HorizontalScrollBarVisibility="Auto" 
@@ -380,6 +380,7 @@
 
                 </ScrollViewer>
             </Grid>
+            <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Right" Height="23" Margin="0,163,15,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="82"/>
 
         </Grid>
 

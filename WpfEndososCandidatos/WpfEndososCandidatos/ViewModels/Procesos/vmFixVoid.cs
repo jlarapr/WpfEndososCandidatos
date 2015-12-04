@@ -90,6 +90,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private DataTable _myTableImg;
         private DataTable _myTableImgNotario;
         private bool _isFirmaNotario;
+        private string _batchTF;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -149,7 +150,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-
+        public string batchTF
+        {
+            get
+            {
+                return _batchTF;
+            }set
+            {
+                _batchTF = value;
+                this.RaisePropertychanged("batchTF");
+            }
+        }
         void BtnCrop_Click()
         {
             double factorX, factorY;
@@ -212,6 +223,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     strmSignature.Write(dataSignature, 0, dataSignature.Length);
                     strmSignature.Position = 0;
                     System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                    //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
+
                     BitmapImage bi = new BitmapImage();
                     bi.BeginInit();
                     MemoryStream ms = new MemoryStream();
@@ -336,7 +350,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                 MemoryStream strmSignature = new MemoryStream();
                                 strmSignature.Write(dataSignature, 0, dataSignature.Length);
                                 strmSignature.Position = 0;
-                                System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                //System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
                                 BitmapImage bi = new BitmapImage();
                                 bi.BeginInit();
                                 MemoryStream ms = new MemoryStream();
@@ -371,6 +387,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                 strmSignature.Write(dataSignature, 0, dataSignature.Length);
                                 strmSignature.Position = 0;
                                 System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
                                 BitmapImage bi = new BitmapImage();
                                 bi.BeginInit();
                                 MemoryStream ms = new MemoryStream();
@@ -1454,7 +1472,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     txtFormulario = _DataToSave[i].Formulario;
 
-                    if(_DataToSave[i].FchEndoso !=null)
+                    batchTF = _DataToSave[i].Batch;
+
+
+                    if (_DataToSave[i].FchEndoso !=null)
                     txtFchEndoso_Corregir = _DataToSave[i].FchEndoso.Value.ToString("MM/dd/yyyy");
 
 
@@ -1471,7 +1492,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,ref EndosoImage);
                     _src = new BitmapImage();
-                  
+                   
                         // 'DESPLIEGA la imagen
                     if (EndosoImage != null)
                     {
@@ -1479,7 +1500,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         strmEndosoImage.Write(EndosoImage, 0, EndosoImage.Length);
                         strmEndosoImage.Position = 0;
                         _src.BeginInit();
-                        _img = System.Drawing.Image.FromStream(strmEndosoImage);
+                        //_img = System.Drawing.Image.FromStream(strmEndosoImage);
+                        _img = System.Drawing.Image.FromFile(_DataToSave[i].image);
 
                         MemoryStream ms = new MemoryStream();
                         _img.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
@@ -1498,7 +1520,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
                     else
                         Source_image = null;
-
 
 
 
@@ -1563,6 +1584,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             strmSignature.Write(dataSignature, 0, dataSignature.Length);
                             strmSignature.Position = 0;
                             System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                            //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
                             BitmapImage bi = new BitmapImage();
                             bi.BeginInit();
                             MemoryStream ms = new MemoryStream();
@@ -1630,7 +1653,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtNotarioNumElec = string.Empty;
             txtNotarioFirstName = string.Empty;
             Nombre_Corregir = string.Empty;
-
+            batchTF = string.Empty;
 
             if (resetAllData)
             {
@@ -1690,7 +1713,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Firma_Fecha = DateTimeUtil.MyValidarFecha(Fecha_Endoso),
                             FchEndosoEntregada = null,
                             Batch = row["BatchNo"].ToString(),
-                            image = row["Nombre_Image"].ToString(),
+                            image = row["Suspense_File"].ToString(),
                             
                         });
                         k++;

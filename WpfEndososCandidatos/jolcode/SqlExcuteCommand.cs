@@ -120,6 +120,57 @@ namespace jolcode
             }
             return myTableReturn;
         }
+
+        public int MyGetCatntidadEntregada(string lot)
+        {
+            int returnInt = 0;
+            try
+            {
+                string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot +"'";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            SqlDataReader dr = cmd.ExecuteReader();
+                            
+                            while (dr.Read())
+                            {
+                                int i = 0;
+
+                                int.TryParse(dr["total"].ToString(), out i);
+                                returnInt += i;
+                            } 
+
+
+                          
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetCatntidadEntregada");
+            }
+            return returnInt;
+        }
         public DataTable MyGetLotFromTF()
         {
             DataTable myTableReturn = new DataTable();
@@ -508,7 +559,7 @@ namespace jolcode
                     "SELECT a.Lot,b.*  FROM [dbo].[Lots] A ", 
                     "join [dbo].[TF-Partidos] B on a.Lot = b.BatchTrack  where A.Status = 3 ",
                     "and A.lot ='",CurrLot,"' ",
-                    "order by [BatchPgNo]"
+                    "order by  [BatchNo],[BatchPgNo]"
                 };
 
  
@@ -2088,7 +2139,7 @@ namespace jolcode
 
                     m_Suspense_File = row["Suspense_File"].ToString().Trim();
 
-                    m_EndosoImage = row["BatchDir"].ToString().Trim();
+                   // m_EndosoImage = row["BatchDir"].ToString().Trim();
 
                     //if (!m_EndosoImage.EndsWith("\\"))
                     //    m_EndosoImage += "\\";

@@ -21,7 +21,7 @@
     class vmLotAuth : ViewModelBase<IDialogView>,IDisposable 
     {
         private string _numLote;
-        private string  _cantidad;
+        private int  _cantidad;
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
@@ -31,6 +31,7 @@
         private int _cbLots_Item_Id;
         private string _cbLots_Item;
         private string _lblCount;
+        private int _cantidadEntregada;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
@@ -45,6 +46,18 @@
         }
 
         #region MyProperty
+        public int cantidadEntregada
+        {
+            get
+            {
+                return _cantidadEntregada;
+            }set
+            {
+          
+                    _cantidadEntregada = value;
+                this.RaisePropertychanged("cantidadEntregada");
+            }
+        }
         public string numLote
         {
             get
@@ -55,24 +68,10 @@
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-
-                    long myLongValue = 0;
-
-                    if(long.TryParse(value,out myLongValue))
-                    {
-                        _numLote = value;
-                        this.RaisePropertychanged("numLote");
-                    }else
-                    {
-                        _numLote = "0";
-                        this.RaisePropertychanged("numLote");
-                    }
-                    
-                }else
-                {
-                    _numLote = "0";
+                    _numLote = value;
                     this.RaisePropertychanged("numLote");
                 }
+                    
             }
         }
         public Brush BorderBrush
@@ -91,7 +90,7 @@
 
             }
         }
-        public string cantidad
+        public int cantidad
         {
             get
             {
@@ -99,24 +98,8 @@
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    long myLongValue = 0;
-
-                    if (long.TryParse(value, out myLongValue))
-                    {
-                        _cantidad = value;
-                        this.RaisePropertychanged("cantidad");
-                    }else
-                    {
-                        _cantidad = "0";
-                        this.RaisePropertychanged("cantidad");
-                    }
-                }else
-                {
-                    _cantidad = "0";
+                    _cantidad = value;
                     this.RaisePropertychanged("cantidad");
-                }
             }
             
         }
@@ -179,10 +162,30 @@
             set
             {
                 _cbLots_Item = value;
-             
-                numLote = value.Split('-')[0];
-                cantidad=  value.Split('-')[1];
 
+                if (value != null)
+                {
+
+                    string[] tmp = value.Split('-');
+                    numLote = tmp[0].ToString();
+                    cantidad = 0;
+                    int k = 0;
+
+                    if (int.TryParse(tmp[1].ToString(), out k))
+                        cantidad = k;
+
+
+
+
+                    using (SqlExcuteCommand get = new SqlExcuteCommand()
+                    {
+                        DBCnnStr = DBEndososCnnStr
+                    })
+                    {
+                        cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
+                    }
+
+                }
                 this.RaisePropertychanged("cbLots_Item");
             }
         }
@@ -211,8 +214,10 @@
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
+                    if (cantidad != cantidadEntregada)
+                        throw new Exception("Error en la Cantidad");
 
-                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad), SysUser))
+                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser))
                         throw new Exception("Error en la base de datos.");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -351,7 +356,8 @@
 
                 cbLots_Item_Id = -1;
                 numLote = "0";
-                cantidad = "0";
+                cantidad = 0;
+                cantidadEntregada = 0;
                 lblCount = string.Format("{0:0}", _cbLots.Count);
             }
 

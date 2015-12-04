@@ -465,22 +465,25 @@
 
                     }
                     // 'DESPLIEGA LA FIRMA DEL ELECTOR
-               
-                    byte[] dataSignature = (byte[])myTableImg.Rows[0]["SignatureImage"];
-                    MemoryStream strmSignature = new MemoryStream();
-                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
-                    strmSignature.Position = 0;
-                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                    BitmapImage bi = new BitmapImage();
-                    bi.BeginInit();
-                    MemoryStream ms = new MemoryStream();
-                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    bi.StreamSource = ms;
-                    bi.EndInit();
-                    Source_image = bi;
-                    
 
+                    if (myTableImg.Rows.Count > 0)
+                    {
+                        byte[] dataSignature = (byte[])myTableImg.Rows[0]["SignatureImage"];
+                        MemoryStream strmSignature = new MemoryStream();
+                        strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                        strmSignature.Position = 0;
+                        System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                        BitmapImage bi = new BitmapImage();
+                        bi.BeginInit();
+                        MemoryStream ms = new MemoryStream();
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        ms.Seek(0, SeekOrigin.Begin);
+                        bi.StreamSource = ms;
+                        bi.EndInit();
+                        Source_image = bi;
+                    }
+                    else
+                        Source_image = null;
                     // 'DESPLIEGA LA Photo DEL ELECTOR
                     //byte[] dataPhoto = (byte[])myTable.Rows[0]["PhotoImage"];
 

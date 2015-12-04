@@ -21,11 +21,11 @@
                     <Label Content="Lote (Num Secretaría)" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
 
                     <TextBox HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
-            			Text="{Binding numLote}"
+            			Text="{Binding numLote}" IsReadOnly="True"
                      
                      />
-                    <Label Content="Cantidad" HorizontalAlignment="Left" Margin="15,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5"/>
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    <Label Content="Cantidad Digitalizadas" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5"/>
+                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
             			Text="{Binding cantidad}"
                      />
                     <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="142,36,0,0" VerticalAlignment="Top" Width="141"
@@ -39,7 +39,7 @@
                     
                     />
                     <Button Content="Añadir Todos"  HorizontalAlignment="Left" Margin="307,64,0,0" VerticalAlignment="Top" Width="82" Height="28"
-            			Command="{Binding cmdAddTodoLot_Click}"
+            			Command="{Binding cmdAddTodoLot_Click}" Visibility="Hidden"
                     />
                     <Button Content="Salir"  HorizontalAlignment="Left" Margin="307,99,0,0" VerticalAlignment="Top" Width="82" Height="28"
             			Command="{Binding cmdSalir_Click}"
@@ -48,6 +48,10 @@
             			Content="{Binding lblCount}"
             			Background="Gray" Height="47" Width="273"
                    />
+                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="142,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    	Text="{Binding cantidadEntregada}"
+                     />
+                    <Label Content="Cantidad Entregadas" HorizontalAlignment="Left" Margin="142,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5" Width="120"/>
                 </Grid>
             </GroupBox>
 
