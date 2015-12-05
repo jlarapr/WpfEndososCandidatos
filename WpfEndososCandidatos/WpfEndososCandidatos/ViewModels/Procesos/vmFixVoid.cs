@@ -91,6 +91,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private DataTable _myTableImgNotario;
         private bool _isFirmaNotario;
         private string _batchTF;
+        private string _txtStatusElec;
+        private string _txtStatusNotario;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -248,10 +250,36 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             return true;
         }
+        private string MyGetRegister(string param,string REGPATH)
+        {
+            string strReturn = null;
+            try
+            {
+                string str = jolcode.Registry.read(REGPATH, param);
+                if (string.IsNullOrEmpty(str))
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    strReturn = str;
+                }
+
+            }
+            catch
+            {
+                strReturn = "X = 0;" + "Y = 0;" + "H = 0;"+ "W = 0;" + "V = 0;"+ "Ho = 0;";
+                jolcode.Registry.write(REGPATH, param, "X = 0; Y = 0; H = 0; W = 0; V = 0; Ho = 0;");
+            }
+            return strReturn;
+        }
+
+       
+
         public void MyGotFocus(object name)
         {
-
-            int X = 0;
+              const string REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos";
+             int X = 0;
             int Y = 0;
             int H = 0;
             int W = 0;
@@ -303,43 +331,89 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 FechaFirma : X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
                 FechaRadi : X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
                 */
+                string str;
+                string[] strError = new string[0];
                 switch (contenido)
                 {
+                    case "Nombre_Corregir":
+                        // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
+                        str =  MyGetRegister("NombreXY", REGPATH);
+
+                        FileStream fileStream = new FileStream(ValidateItDynamicCode.ValidateThis("Nombre_Corregir.cs", str, "NewDll\\Nombre_Corregir.dll", ref strError).Location, FileMode.Open, FileAccess.Read);
+                        MemoryStream memoryStream = new MemoryStream(2048);
+                        ValidateItDynamicCode.CopyStream((Stream)fileStream, (Stream)memoryStream, 2048);
+                        fileStream.Close();
+                        memoryStream.Position = 0L;
+                        string  kaka = Encoding.ASCII.GetString( memoryStream.ToArray() );
+
+                        // dataRow["CompiledCode"] = (object) memoryStream.ToArray();
+                        //if (kaka == null)
+                        //    throw new Exception();
+
+                        string[] kaka1 = jolcode.MyClass.DynamicCode().Split('|');
+
+                        X = int.Parse(kaka1[0]);
+                        Y = int.Parse(kaka1[1]);
+                        H = int.Parse(kaka1[2]);
+                        W = int.Parse(kaka1[3]);
+                        V = int.Parse(kaka1[4]);
+                        Ho = int.Parse(kaka1[5]);
+                   //     X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
+
+
+                        break;
                     case "txtNumElec_Corregir":
                         {
-                           // X = 638; Y = 1968;  H = 148;    W = 692;    V = 1919;          Ho = 528;
+                            // X = 638; Y = 1968;  H = 148;    W = 692;    V = 1919;          Ho = 528;
+                            str = MyGetRegister("ElecNumXY", REGPATH);
+
                             X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
                             break;
                         }
                     case "txtPrecinto_Corregir":
                         {
                             //X = 1059; Y = 1940; H = 170; W = 845; V = 1848; Ho = 946;
+                            // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
+                            str = MyGetRegister("PrecintoXY", REGPATH);
+
                             X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
                             break;
                         }
                     case "txtSex_Corregir":
                         //X = 1274; Y = 1652; H = 180; W = 544; V = 1544; Ho = 1127;
+                        str = MyGetRegister("SexoXY", REGPATH);
+
                         X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
                         break;
                     case "FechaNac_Corregir":
-                      
-                    //   X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
+
+                        //   X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
+                        str = MyGetRegister("FechaNacXY", REGPATH);
+
                         X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
                         break;
                     case "txtCargo_Corregir":
                         //X = 429; Y = 2106; H = 151; W = 940; V = 1919; Ho = 409;
+                        str = MyGetRegister("CargoXY", REGPATH);
+
                         X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
                         break;
                     case "txtCandidato_Corregir":
-                      //  X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
+                        //  X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
+                        str = MyGetRegister("CandidatoXY", REGPATH);
+
                         X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
                         break;
                     case "txtNotarioElec_Corregir":
                         //X = 109; Y = 2639; H = 175; W = 723; V = 2456; Ho = 0;
+                        str = MyGetRegister("FuncionarioXY", REGPATH);
+
                         X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
                         break;
                     case "txtFirmaElec_Corregir":
-                      //  X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
+                        //  X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
+                        str = MyGetRegister("FirmaElecXY", REGPATH);
+
                         X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
                         if (_isFirmaNotario)
                         {
@@ -376,7 +450,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                         break;
                     case "txtNotarioFirma_Corregir":
-                      //  X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
+                        //  X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
+                        str = MyGetRegister("FirmaFuncionarioXY", REGPATH);
+
                         X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
                         if (!_isFirmaNotario)
                         {
@@ -416,25 +492,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                         break;
                     case "txtFchEndoso_Corregir":
-                       // X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
+                        // X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
+                        str = MyGetRegister("FechaFirmaXY", REGPATH);
+
                         X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
                         break;
                     case "txtFchEndosoEntregada_Corregir":
-                       // X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
+                        // X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
+                        str = MyGetRegister("FechaRadiXY", REGPATH);
+
                         X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
                         break;
-                    case "Nombre_Corregir":
-                       // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
-                     X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
-                        break;
-
-
                 }
               
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Error ->" + ex.ToString());
             }
 
             try
@@ -566,8 +640,34 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("ViewboxHeight");
             }
         }
-
-
+        public string txtStatusElec
+        {
+            get
+            {
+                return _txtStatusElec;
+            }set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _txtStatusElec = value;
+                    this.RaisePropertychanged("txtStatusElec");
+                }
+            }
+        }
+        public string txtStatusNotario
+        {
+            get
+            {
+                return _txtStatusNotario;
+            }set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    _txtStatusNotario = value;
+                    this.RaisePropertychanged("txtStatusNotario");
+                }
+            }
+        }
 
         public int ViewboxWidthSing
         {
@@ -1550,10 +1650,28 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                 };
 
                         txtNotarioFirstName = string.Concat(notario);
+
+                        switch (notarioInfo.Rows[0]["Status"].ToString().Trim().ToUpper())
+                        {
+                            case "A":
+                                txtStatusNotario = "Activo";
+                                break;
+                            case "E":
+                                txtStatusNotario = "Excluido";
+                                break;
+                            case "I":
+                                txtStatusNotario = "Inactivo";
+                                break;
+                            default:
+                                txtStatusNotario = "?";
+                                break;
+                        }
                     }
                     else
+                    {
                         txtNotarioFirstName = "Error No hay Datos en el Master";
-
+                        txtStatusNotario = "?";
+                    }
 
                     if (_tblCitizen.Rows.Count > 0)
                     {
@@ -1567,6 +1685,24 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtNumElec = txtNumElec_Corregir;
                         txtPrecinto = _tblCitizen.Rows[0]["FirstGeoCode"].ToString().Trim().PadLeft(3, '0');
                         txtSex = _tblCitizen.Rows[0]["Gender"].ToString().Trim();
+                       
+
+                        switch (_tblCitizen.Rows[0]["Status"].ToString().Trim().ToUpper())
+                        {
+                            case "A":
+                                txtStatusElec = "Activo";
+                                break;
+                            case "E":
+                                txtStatusElec = "Excluido";
+                                break;
+                            case "I":
+                                txtStatusElec = "Inactivo";
+                                break;
+                            default:
+                                txtStatusElec = "?";
+                                break;
+                        }
+
 
                         txtFechaNac = _tblCitizen.Rows[0]["DateOfBirth"].ToString().Trim();
                         if (!string.IsNullOrEmpty(txtFechaNac))
@@ -1616,6 +1752,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtPrecinto = "No Hay Datos";
                         txtSex = "No Hay Datos";
                         txtFechaNac = "No Hay Datos";
+                        txtStatusElec = "?";
+
                     }
                 }
             }
@@ -1654,6 +1792,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtNotarioFirstName = string.Empty;
             Nombre_Corregir = string.Empty;
             batchTF = string.Empty;
+            txtStatusElec = string.Empty;
+            txtStatusNotario = string.Empty;
 
             if (resetAllData)
             {

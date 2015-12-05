@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowState="Maximized"
-        Title="wpfFixVoid" Height="872.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
+        Title="wpfFixVoid" Height="906.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -22,11 +22,12 @@
                 <ColumnDefinition Width="373*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="98*"/>
-                <RowDefinition Height="273*"/>
-                <RowDefinition Height="38*"/>
+                <RowDefinition Height="206*"/>
+                <RowDefinition Height="49*"/>
+                <RowDefinition Height="518*"/>
+                <RowDefinition Height="79*"/>
             </Grid.RowDefinitions>
-            <GroupBox  x:Name="groupBox" Header="Imagen" Margin="5,0,0,0" Grid.Row="1" Grid.ColumnSpan="2">
+            <GroupBox  x:Name="groupBox" Header="Imagen" Margin="5,0,0,0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
                 <Grid Background="Black">
 
 
@@ -68,12 +69,12 @@
             </GroupBox>
 
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
-            <Label x:Name="txtRazonRechazo" Margin="0,36,0,0"  Background="Yellow" 
+            <Label x:Name="txtRazonRechazo" Margin="0,36,0,10"  Background="Yellow" 
                        Grid.Column="1" 
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
                        Content="{Binding Path=txtRazonRechazo}"
                        />
-            <StackPanel Margin="10,13,0,12" Grid.Row="2" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="662" Orientation="Horizontal">
+            <StackPanel Margin="10,13,0,12" Grid.Row="3" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="662" Orientation="Horizontal">
                 <Button Content="&lt; Anterior" Command="{Binding cmdAnterior_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
@@ -83,48 +84,58 @@
             </StackPanel>
             <Label x:Name="label1" Content="Endoso Rechazado" Margin="5,4,15,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
 
-            <GroupBox x:Name="groupBox1" Header="Información del Master" Height="226" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Column="2" Grid.RowSpan="2">
+            <GroupBox x:Name="groupBox1" Header="Información del Master" Margin="10" Grid.Column="2" Grid.RowSpan="2">
                 <Grid Margin="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="257"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="84*"/>
-                        <ColumnDefinition Width="97*"/>
+                        <ColumnDefinition Width="177*"/>
+                        <ColumnDefinition Width="164*"/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="txtNombre" Height="26" Margin="5,10,15,0"  VerticalAlignment="Top"
+                    <Label x:Name="txtNombre" Height="26" Margin="5,10,10,0"  VerticalAlignment="Top"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                    Content="{Binding txtNombre}" Grid.ColumnSpan="2" IsTabStop="False" TabIndex="1000000"
                                    />
                     <Label x:Name="label2" Content="Número Electoral:" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" Height="26" Width="105"/>
                     <Label x:Name="label3" Content="Precinto:" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
-                    <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="85,79,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Column="1"/>
+                    <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="35,79,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Column="1"/>
                     <Label x:Name="label5" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Height="26" Width="148"/>
-                    <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
-                    <Label x:Name="txtNumElec" Height="26" Margin="5,42,15,0"   VerticalAlignment="Top"
+                    <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
+                    <Label x:Name="txtNumElec" Height="26" Margin="110,42,139,0"   VerticalAlignment="Top"
                                    Background="Yellow"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNumElec}" Grid.Column="1" IsTabStop="False" TabIndex="1000000"
+                                   Content="{Binding txtNumElec}" IsTabStop="False" TabIndex="1000000" Grid.ColumnSpan="2"
                                    />
-                    <Label x:Name="txtPrecinto" Height="26" Margin="5,79,0,0"  VerticalAlignment="Top"
+                    <Label x:Name="txtPrecinto" Height="26" Margin="110,79,0,0"  VerticalAlignment="Top"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                    Content="{Binding txtPrecinto}" Grid.Column="1" HorizontalAlignment="Left" Width="57" IsTabStop="False" TabIndex="1000000"
+                                    Content="{Binding txtPrecinto}" HorizontalAlignment="Left" Width="57" IsTabStop="False" TabIndex="1000000"
                                    />
-                    <Label x:Name="txtSex" Margin="137,79,0,154" 
+                    <Label x:Name="txtSex" Margin="81,79,0,154" 
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtSex}" Grid.Column="1" HorizontalAlignment="Left" Width="58" IsTabStop="False" TabIndex="1000000"
+                                   Content="{Binding txtSex}" Grid.Column="1" HorizontalAlignment="Left" Width="37" IsTabStop="False" TabIndex="1000000"
                                    />
-                    <Label x:Name="txtFechaNac" Height="26" Margin="0,110,15,0"   VerticalAlignment="Top"
+                    <Label x:Name="txtFechaNac" Height="26" Margin="0,110,10,0"   VerticalAlignment="Top"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsTabStop="False" TabIndex="1000000"
                                    Content="{Binding txtFechaNac}" Grid.Column="1"
                                    />
-                    <Label x:Name="txtNotarioNumElec" Height="26" Margin="94,141,15,0"   VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"
+                    <Label x:Name="txtNotarioNumElec" Height="26" Margin="85,144,155,0"   VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                    Content="{Binding txtNotarioNumElec}" Grid.ColumnSpan="2"
                                    
                                    />
-                    <Label x:Name="txtNotarioFirstName" Height="26" Margin="1,172,15,0"  VerticalAlignment="Top"
+                    <Label x:Name="txtNotarioFirstName" Height="26" Margin="1,175,10,0"  VerticalAlignment="Top"
                                     Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                    Content="{Binding txtNotarioFirstName}" Grid.ColumnSpan="2" IsTabStop="False" TabIndex="1000000"
+                                   />
+                    <Label x:Name="label6_Copy" Content="Status :" HorizontalAlignment="Left" Margin="16,144,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
+                    <Label x:Name="txtStatusNotario" Height="26" Margin="71,144,0,0"  VerticalAlignment="Top"
+                    	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    	Content="{Binding txtStatusNotario}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Left" Width="83"
+                                   />
+                    <Label x:Name="label6_Copy1" Content="Status :" HorizontalAlignment="Left" Margin="31,42,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
+                    <Label x:Name="txtSatatusElec" Height="26" Margin="78,42,0,0"  VerticalAlignment="Top"
+                    	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="76" Grid.Column="1"
                                    />
 
                 </Grid>
@@ -141,7 +152,7 @@
             <Button Content="-" Margin="132,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Height="28"
             	Command="{Binding cmdZoomInOut}"  CommandParameter="OUT" IsTabStop="False" TabIndex="1000000"/>
             <Label x:Name="lblI" Content="{Binding i}" HorizontalAlignment="Left" Margin="9,127,0,0" VerticalAlignment="Top" Height="26" Width="29"/>
-            <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,158,10,10" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2">
+            <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,158,10,33" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2">
                 <Grid Margin="0,0,0,4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="163*"/>
@@ -150,8 +161,8 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="474"/>
                     </Grid.RowDefinitions>
-                    <Label x:Name="label2_Copy" Content="Número Electoral:" HorizontalAlignment="Left" Margin="10,40,0,408" Width="105"/>
-                    <TextBox x:Name="txtNumElec_Corregir" Margin="10,40,10,0" TextWrapping="Wrap"
+                    <Label x:Name="label2_Copy" Content="Número Electoral:" HorizontalAlignment="Left" Margin="10,33,0,415" Width="105"/>
+                    <TextBox x:Name="txtNumElec_Corregir" Margin="10,33,10,0" TextWrapping="Wrap"
             			MaxLength="7"
             			Text="{Binding txtNumElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
             			Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="0" >
@@ -166,8 +177,8 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label3_Copy" Content="Precinto:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,75,0,0" Width="56"/>
-                    <TextBox x:Name="txtPrecinto_Corregir" Height="23" Margin="10,75,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label3_Copy" Content="Precinto:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,60,0,0" Width="56"/>
+                    <TextBox x:Name="txtPrecinto_Corregir" Height="23" Margin="10,60,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="3"
             			Text="{Binding txtPrecinto_Corregir, Mode=TwoWay}" 
             			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="1"
@@ -182,12 +193,12 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label4_Copy" Content="Sexo:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.342,0.538" Margin="90,75,0,0" Width="38" Grid.Column="1"/>
-                    <TextBox x:Name="txtSex_Corregir" Height="23" Margin="133,75,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label4_Copy" Content="Sexo:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.342,0.538" Margin="90,60,0,0" Width="38" Grid.Column="1"/>
+                    <TextBox x:Name="txtSex_Corregir" Height="23" Margin="133,60,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="1"
             			CharacterCasing="Upper"
             			Text="{Binding txtSex_Corregir, Mode=TwoWay}" 
-            			Grid.Column="1" HorizontalAlignment="Left" Width="49" TabIndex="2"
+            			Grid.Column="1" HorizontalAlignment="Left" Width="41" TabIndex="2"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -198,8 +209,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="28"  x:Name="label7" Content="Cargo:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,171,0,0" Width="44"/>
-                    <TextBox MaxLength="1" x:Name="txtCargo_Corregir" Height="23" Margin="10,171,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="4"
+                    <Label Height="28"  x:Name="label7" Content="Cargo:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,115,0,0" Width="44"/>
+                    <TextBox MaxLength="1" x:Name="txtCargo_Corregir" Height="23" Margin="10,115,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="4"
                                      
             			Text="{Binding txtCargo_Corregir, Mode=TwoWay}" 
             			Grid.Column="1" 
@@ -214,8 +225,8 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label8" Content="Candidato:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,206,0,0" Width="67"/>
-                    <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,206,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label8" Content="Candidato:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
+                    <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,144,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtCandidato_Corregir, Mode=TwoWay}" TabIndex="5"
             			Grid.Column="1"
@@ -229,8 +240,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="23"  x:Name="label9" Content="Funcionario" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,241,0,0" Width="108"/>
-                    <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,241,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label9" Content="Funcionario" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,171,0,0" Width="108"/>
+                    <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,171,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="7"
             			Text="{Binding txtNotarioElec_Corregir, Mode=TwoWay}"  TabIndex="6"
             			Grid.Column="1"
@@ -244,8 +255,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="23"  x:Name="label10" Content="Firma Elector/Funcionario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,276,0,0" Width="148"/>
-                    <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,276,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label10" Content="Firma Elector/Funcionario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,199,0,0" Width="148" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtFirmaElec_Corregir, Mode=TwoWay}"
             			Grid.Column="1" HorizontalAlignment="Left" Width="32" TabIndex="7"
@@ -259,7 +270,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="131,276,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="131,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtNotarioFirma_Corregir, Mode=TwoWay}"
             			Grid.Column="1" HorizontalAlignment="Left" Width="43" TabIndex="8"
@@ -274,8 +285,8 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,311,0,0" Width="108"/>
-                    <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,311,10,0" VerticalAlignment="Top"
+                    <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,227,0,0" Width="108"/>
+                    <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,227,10,0" VerticalAlignment="Top"
                         	
             			Text="{Binding txtFchEndoso_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="9"
             			Grid.Column="1" 
@@ -289,8 +300,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,357,0,0" Width="119"/>
-                    <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,357,10,0"   VerticalAlignment="Top"
+                    <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,256,0,0" Width="119"/>
+                    <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,256,10,0"   VerticalAlignment="Top"
                         	
             			Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
             			Grid.Column="1"
@@ -304,20 +315,20 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,281,0,0" VerticalAlignment="Top" Width="20"
+                    <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Width="20"
             			IsChecked="{Binding ckbFirma_Pet_Inv, Mode=TwoWay}" Height="15" IsTabStop="False" TabIndex="1000000"
                                   />
-                    <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="95,281,0,0" VerticalAlignment="Top" Width="20"
+                    <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="95,204,0,0" VerticalAlignment="Top" Width="20"
             			IsChecked="{Binding ckbFirma_Not_Inv, Mode=TwoWay}" Height="15" IsTabStop="False" TabIndex="1000000"
                                   />
-                    <Label Height="28"  x:Name="label13_Copy" Content="Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,398,0,0" Width="119" RenderTransformOrigin="0.504,0.688"/>
-                    <Label x:Name="txtFormulario" Height="28" Margin="10,398,0,0"   VerticalAlignment="Top"
+                    <Label Height="28"  x:Name="label13_Copy" Content="Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,286,0,0" Width="119" RenderTransformOrigin="0.504,0.688"/>
+                    <Label x:Name="txtFormulario" Height="28" Margin="10,286,0,0"   VerticalAlignment="Top"
             			Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Left" Width="153"
+            			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Left" Width="164"
                                    />
-                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" />
+                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
 
-                    <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,133,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="3"
+                    <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="3"
                                 >
 
                         <i:Interaction.Triggers>
@@ -329,7 +340,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="Nombre_Corregir" Grid.ColumnSpan="2" Height="23" Margin="10,10,10,0" TextWrapping="Wrap" Text="{Binding Nombre_Corregir}" IsReadOnly="True" VerticalAlignment="Top"
+                    <TextBox x:Name="Nombre_Corregir" Grid.ColumnSpan="2" Height="23" Margin="10,6,10,0" TextWrapping="Wrap" Text="{Binding Nombre_Corregir}" IsReadOnly="True" VerticalAlignment="Top"
                              TabIndex="-1"
                              >
                         <i:Interaction.Triggers>
@@ -347,7 +358,7 @@
             <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="173,125,10,0" IsTabStop="False" TabIndex="1000000" />
             <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39"  Height="28"  Margin="43,125,0,0" IsTabStop="False" TabIndex="1000000" />
             <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="28" Margin="10,158,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="72"/>
-            <Grid Background="Beige" Grid.Column="2" Height="108" Margin="10,45,10,0" Grid.Row="1" VerticalAlignment="Top">
+            <Grid Background="Beige" Grid.Column="2" Height="143" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top">
                 <ScrollViewer  Background="Beige"  
                            HorizontalScrollBarVisibility="Auto" 
                            VerticalScrollBarVisibility="Auto" 
@@ -380,7 +391,7 @@
 
                 </ScrollViewer>
             </Grid>
-            <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Right" Height="23" Margin="0,163,15,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="82"/>
+            <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Right" Height="23" Margin="0,163,15,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="82" IsEnabled="False"/>
 
         </Grid>
 
