@@ -62,8 +62,6 @@
             ProgressBar_Value = new ObservableCollection<int>();
             ProgressBar_Maximum = new ObservableCollection<int>();
             Resultados = new ObservableCollection<string>();
-
-
             CanView = false;
         }
 

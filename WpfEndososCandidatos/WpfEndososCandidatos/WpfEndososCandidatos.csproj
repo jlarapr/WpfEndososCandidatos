@@ -69,10 +69,6 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Nombre_Corregir, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Nombre_Corregir.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -90,6 +86,43 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="txtCandidato_XY">
+      <HintPath>Dll\txtCandidato_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtCargo_XY">
+      <HintPath>Dll\txtCargo_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFchEndosoEntregada_XY">
+      <HintPath>Dll\txtFchEndosoEntregada_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFchEndoso_XY">
+      <HintPath>Dll\txtFchEndoso_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFechaNac_XY">
+      <HintPath>Dll\txtFechaNac_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFirmaElec_XY">
+      <HintPath>Dll\txtFirmaElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNombre_XY, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\txtNombre_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNotarioElec_XY">
+      <HintPath>Dll\txtNotarioElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNotarioFirma_XY">
+      <HintPath>Dll\txtNotarioFirma_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNumElec_XY">
+      <HintPath>Dll\txtNumElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtPrecinto_XY">
+      <HintPath>Dll\txtPrecinto_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtSex_XY">
+      <HintPath>Dll\txtSex_XY.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -160,6 +193,7 @@
     <Compile Include="ViewModels\Procesos\vmLotProcess.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReceive.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReverse.cs" />
+    <Compile Include="ViewModels\Procesos\vmSetImages.cs" />
     <Compile Include="ViewModels\Ver\vmElector.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
@@ -175,6 +209,9 @@
     </Compile>
     <Compile Include="View\Procesos\wpfLotReceive.xaml.cs">
       <DependentUpon>wpfLotReceive.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfSetImages.xaml.cs">
+      <DependentUpon>wpfSetImages.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ver\wpfElector.xaml.cs">
       <DependentUpon>wpfElector.xaml</DependentUpon>
@@ -254,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Procesos\wpfLotReceive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfSetImages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -374,7 +415,6 @@
     <Resource Include="Images\CEEbrand.gif" />
     <Resource Include="Images\Logo CEE.JPG" />
     <Resource Include="Images\Logo CEE1.JPG" />
-    <Content Include="Dll\Nombre_Corregir.dll" />
     <Content Include="Models\CREATEDATABASE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -420,6 +460,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dll\" />
     <Folder Include="NewDll\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

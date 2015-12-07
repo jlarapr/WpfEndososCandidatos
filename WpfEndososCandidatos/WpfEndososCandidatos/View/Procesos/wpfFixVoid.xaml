@@ -79,6 +79,7 @@
                 <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
+                <Button x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,16" Height="28" Command="{Binding cmdSetImg}"/>
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
 
             </StackPanel>
@@ -102,25 +103,25 @@
                     <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="35,79,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Column="1"/>
                     <Label x:Name="label5" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Height="26" Width="148"/>
                     <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
-                    <Label x:Name="txtNumElec" Height="26" Margin="110,42,139,0"   VerticalAlignment="Top"
+                    <Label x:Name="txtNumElec" Height="26" Margin="110,42,0,0"   VerticalAlignment="Top"
                                    Background="Yellow"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNumElec}" IsTabStop="False" TabIndex="1000000" Grid.ColumnSpan="2"
+                                   Content="{Binding txtNumElec}" IsTabStop="False" TabIndex="1000000" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="92"
                                    />
                     <Label x:Name="txtPrecinto" Height="26" Margin="110,79,0,0"  VerticalAlignment="Top"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                     Content="{Binding txtPrecinto}" HorizontalAlignment="Left" Width="57" IsTabStop="False" TabIndex="1000000"
                                    />
-                    <Label x:Name="txtSex" Margin="81,79,0,154" 
+                    <Label x:Name="txtSex" Margin="0,79,46,154" 
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtSex}" Grid.Column="1" HorizontalAlignment="Left" Width="37" IsTabStop="False" TabIndex="1000000"
+                                   Content="{Binding txtSex}" Grid.Column="1" HorizontalAlignment="Right" Width="37" IsTabStop="False" TabIndex="1000000"
                                    />
                     <Label x:Name="txtFechaNac" Height="26" Margin="0,110,10,0"   VerticalAlignment="Top"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsTabStop="False" TabIndex="1000000"
                                    Content="{Binding txtFechaNac}" Grid.Column="1"
                                    />
-                    <Label x:Name="txtNotarioNumElec" Height="26" Margin="85,144,155,0"   VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"
+                    <Label x:Name="txtNotarioNumElec" Height="26" Margin="85,144,0,0"   VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"
                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNotarioNumElec}" Grid.ColumnSpan="2"
+                                   Content="{Binding txtNotarioNumElec}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="101"
                                    
                                    />
                     <Label x:Name="txtNotarioFirstName" Height="26" Margin="1,175,10,0"  VerticalAlignment="Top"
@@ -128,14 +129,14 @@
                                    Content="{Binding txtNotarioFirstName}" Grid.ColumnSpan="2" IsTabStop="False" TabIndex="1000000"
                                    />
                     <Label x:Name="label6_Copy" Content="Status :" HorizontalAlignment="Left" Margin="16,144,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
-                    <Label x:Name="txtStatusNotario" Height="26" Margin="71,144,0,0"  VerticalAlignment="Top"
+                    <Label x:Name="txtStatusNotario" Height="26" Margin="0,144,10,0"  VerticalAlignment="Top"
                     	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    	Content="{Binding txtStatusNotario}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Left" Width="83"
+                    	Content="{Binding txtStatusNotario}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Right" Width="83"
                                    />
                     <Label x:Name="label6_Copy1" Content="Status :" HorizontalAlignment="Left" Margin="31,42,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
-                    <Label x:Name="txtSatatusElec" Height="26" Margin="78,42,0,0"  VerticalAlignment="Top"
+                    <Label x:Name="txtSatatusElec" Height="26" Margin="0,42,10,0"  VerticalAlignment="Top"
                     	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="76" Grid.Column="1"
+                    	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Right" Width="76"
                                    />
 
                 </Grid>
@@ -165,7 +166,8 @@
                     <TextBox x:Name="txtNumElec_Corregir" Margin="10,33,10,0" TextWrapping="Wrap"
             			MaxLength="7"
             			Text="{Binding txtNumElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-            			Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="0" >
+                             Background="{Binding txtColor[6]}"
+            			Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="1" >
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -181,7 +183,9 @@
                     <TextBox x:Name="txtPrecinto_Corregir" Height="23" Margin="10,60,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="3"
             			Text="{Binding txtPrecinto_Corregir, Mode=TwoWay}" 
-            			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="1"
+                             Background="{Binding txtColor[12]}"
+                             
+            			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="2"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -198,7 +202,9 @@
             			MaxLength="1"
             			CharacterCasing="Upper"
             			Text="{Binding txtSex_Corregir, Mode=TwoWay}" 
-            			Grid.Column="1" HorizontalAlignment="Left" Width="41" TabIndex="2"
+                             Background="{Binding txtColor[10]}"
+                             
+            			Grid.Column="1" HorizontalAlignment="Left" Width="41" TabIndex="3"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -210,7 +216,8 @@
                         </i:Interaction.Triggers>
                     </TextBox>
                     <Label Height="28"  x:Name="label7" Content="Cargo:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,115,0,0" Width="44"/>
-                    <TextBox MaxLength="1" x:Name="txtCargo_Corregir" Height="23" Margin="10,115,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="4"
+                    <TextBox MaxLength="1" x:Name="txtCargo_Corregir" Height="23" Margin="10,115,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="5"
+                             Background="{Binding txtColor[15]}"
                                      
             			Text="{Binding txtCargo_Corregir, Mode=TwoWay}" 
             			Grid.Column="1" 
@@ -225,10 +232,12 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label8" Content="Candidato:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
+                    <Label Height="23"  x:Name="label8" Content="Aspirante:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
                     <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,144,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
-            			Text="{Binding txtCandidato_Corregir, Mode=TwoWay}" TabIndex="5"
+            			Text="{Binding txtCandidato_Corregir, Mode=TwoWay}" TabIndex="6"
+                             Background="{Binding txtColor[7]}"
+                             
             			Grid.Column="1"
                                      >
                         <i:Interaction.Triggers>
@@ -243,7 +252,9 @@
                     <Label Height="23"  x:Name="label9" Content="Funcionario" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,171,0,0" Width="108"/>
                     <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,171,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="7"
-            			Text="{Binding txtNotarioElec_Corregir, Mode=TwoWay}"  TabIndex="6"
+            			Text="{Binding txtNotarioElec_Corregir, Mode=TwoWay}"  TabIndex="7"
+                             Background="{Binding txtColor[4]}"
+                             
             			Grid.Column="1"
                                      >
                         <i:Interaction.Triggers>
@@ -259,7 +270,9 @@
                     <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtFirmaElec_Corregir, Mode=TwoWay}"
-            			Grid.Column="1" HorizontalAlignment="Left" Width="32" TabIndex="7"
+                             Background="{Binding txtColor[1]}"
+                             
+            			Grid.Column="1" HorizontalAlignment="Left" Width="32" TabIndex="8"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -273,7 +286,9 @@
                     <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="131,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtNotarioFirma_Corregir, Mode=TwoWay}"
-            			Grid.Column="1" HorizontalAlignment="Left" Width="43" TabIndex="8"
+                             Background="{Binding txtColor[2]}"
+                             
+            			Grid.Column="1" HorizontalAlignment="Left" Width="43" TabIndex="9"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -287,8 +302,9 @@
                     </TextBox>
                     <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,227,0,0" Width="108"/>
                     <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,227,10,0" VerticalAlignment="Top"
+                             Background="{Binding txtColor[0]}"
                         	
-            			Text="{Binding txtFchEndoso_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="9"
+            			Text="{Binding txtFchEndoso_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
             			Grid.Column="1" 
                                      >
                         <i:Interaction.Triggers>
@@ -302,8 +318,9 @@
                     </TextBox>
                     <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,256,0,0" Width="119"/>
                     <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,256,10,0"   VerticalAlignment="Top"
+                             Background="{Binding txtColor[3]}"
                         	
-            			Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
+            			Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="11"
             			Grid.Column="1"
                                      >
                         <i:Interaction.Triggers>
@@ -317,9 +334,11 @@
                     </TextBox>
                     <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Width="20"
             			IsChecked="{Binding ckbFirma_Pet_Inv, Mode=TwoWay}" Height="15" IsTabStop="False" TabIndex="1000000"
+                              Background="{Binding txtColor[16]}"
                                   />
                     <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="95,204,0,0" VerticalAlignment="Top" Width="20"
             			IsChecked="{Binding ckbFirma_Not_Inv, Mode=TwoWay}" Height="15" IsTabStop="False" TabIndex="1000000"
+                              Background="{Binding txtColor[17]}"
                                   />
                     <Label Height="28"  x:Name="label13_Copy" Content="Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,286,0,0" Width="119" RenderTransformOrigin="0.504,0.688"/>
                     <Label x:Name="txtFormulario" Height="28" Margin="10,286,0,0"   VerticalAlignment="Top"
@@ -328,8 +347,10 @@
                                    />
                     <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
 
-                    <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="3"
-                                >
+                    <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="4"
+                             Background="{Binding txtColor[9]}"
+                                
+                             >
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -341,7 +362,7 @@
                         </i:Interaction.Triggers>
                     </TextBox>
                     <TextBox x:Name="Nombre_Corregir" Grid.ColumnSpan="2" Height="23" Margin="10,6,10,0" TextWrapping="Wrap" Text="{Binding Nombre_Corregir}" IsReadOnly="True" VerticalAlignment="Top"
-                             TabIndex="-1"
+                             TabIndex="0"
                              >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">

@@ -23,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Input;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
@@ -75,8 +76,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private int _MyY = 0;
         private double _MyH = 0;
         private double _MyW = 0;
-        private BitmapImage _src = new BitmapImage();
-        private System.Drawing.Image _img;
+        private BitmapImage _srcEndoso = new BitmapImage();
+        private System.Drawing.Image _imgEndoso;
 
         private RelayCommand _BtnCrop;
         private RelayCommand _BtnFullImages;
@@ -87,12 +88,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private RelayCommand _GotFocus;
         private int _ViewboxWidthSing;
         private int _ViewboxHeightSing;
-        private DataTable _myTableImg;
+        private DataTable _myTableImgFirmaElector;
         private DataTable _myTableImgNotario;
         private bool _isFirmaNotario;
         private string _batchTF;
         private string _txtStatusElec;
         private string _txtStatusNotario;
+        private ObservableCollection<Brush> _txtColor;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -104,51 +106,37 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
             cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
+            cmdSetImg = new RelayCommand(param => MyCmdSetImg());
             _DataToSave = new List<FixVoid>();
 
 
 
         }
 
-        void View_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+
+        /*Property*/
+        #region MyProperty
+
+        public BitmapImage srcEndoso
         {
-
-            var mousePosition = e.GetPosition(sender as UIElement);
-            Canvas.SetLeft(_SelectionRectangle, mousePosition.X);
-
-            Canvas.SetTop(_SelectionRectangle, mousePosition.Y);
-
-            _SelectionRectangle.Visibility = System.Windows.Visibility.Visible;
-
-            //TituloFrmImg = string.Format("X:{0} Y:{1} H:{2} W:{3}", mousePosition.X.ToString(), mousePosition.Y.ToString(),_SelectionRectangle.Height,_SelectionRectangle.Width );
-
-            //_MyX = (int)mousePosition.X;
-            //_MyY = (int)mousePosition.Y;
-
-        }
-        void View_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            get
             {
-                try
-                {
-                    var mousePosition = e.GetPosition(sender as UIElement);
+                return _srcEndoso;
+            }set
+            {
+                _srcEndoso = value;
+            }
+        }
+        public System.Drawing.Image imgEndoso
+        {
+            get
+            {
+                return _imgEndoso;
+            }
+            private set
+            {
+                _imgEndoso = value;
 
-                    _SelectionRectangle.Width = mousePosition.X - Canvas.GetLeft(_SelectionRectangle);
-                    _SelectionRectangle.Height = mousePosition.Y - Canvas.GetTop(_SelectionRectangle);
-
-                    _MyX = (int)Canvas.GetLeft(_SelectionRectangle);
-                    _MyY = (int)Canvas.GetTop(_SelectionRectangle);
-                    _MyH = _SelectionRectangle.Height;
-                    _MyW = _SelectionRectangle.Width;
-
-                      lblCordenadas = string.Format("X = {0}; Y = {1}; H = {2}; W = {3}; V = {4}; Ho = {5};", _MyX, _MyY, _SelectionRectangle.Height, _SelectionRectangle.Width, _sv.VerticalOffset, _sv.HorizontalOffset);
-
-                }
-                catch
-                {
-                    //   MessageBox.Show(ex.ToString());
-                }
             }
         }
 
@@ -157,430 +145,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _batchTF;
-            }set
+            }
+            set
             {
                 _batchTF = value;
                 this.RaisePropertychanged("batchTF");
             }
         }
-        void BtnCrop_Click()
-        {
-            double factorX, factorY;
-
-            factorX = _src.PixelWidth / _src.Width;
-            factorY = _src.PixelHeight / _src.Height;
-
-            BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(_MyX, _MyY, (int)(_MyW), (int)(_MyH)));  // new CroppedBitmap(original, crop);
-
-            ViewboxWidth = (int)_MyW + 10;
-            ViewboxHeight = (int)_MyH + 10;
-
-            Source_image = displayImage;
-
-            _sv.ScrollToVerticalOffset(0);
-            _sv.ScrollToHorizontalOffset(0);
-
-        }
-        private void BtnFullImages_Click(ref int v, ref int Ho)
-        {
-
-            ViewboxWidth = _img.Width;
-            ViewboxHeight = _img.Height;
-            BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(0, 0, 0, 0));  // new CroppedBitmap(original, crop);
-            Source_image = displayImage;
-
-            _sv.ScrollToVerticalOffset(v);
-            _sv.ScrollToHorizontalOffset(Ho);
-
-            _sv.UpdateLayout();
-
-        }
-        private bool MyLostFocus(object param)
-        {
-            if (param is TextBox)
-            {
-                var txt = param as TextBox;
-
-                txt.Background = Brushes.White;
-            }
-            if (param is Label)
-            {
-                var txt = param as Label;
-                txt.Background = Brushes.White;
-
-            }
-            if (param is DatePicker)
-            {
-                var txt = param as DatePicker;
-                txt.Background = Brushes.White;
-
-            }
-            if (_isFirmaNotario)
-            {
-                _isFirmaNotario = false;
-                if (_myTableImg.Rows.Count > 0)
-                {
-                    byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
-                    MemoryStream strmSignature = new MemoryStream();
-                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
-                    strmSignature.Position = 0;
-                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                    //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
-
-
-                    BitmapImage bi = new BitmapImage();
-                    bi.BeginInit();
-                    MemoryStream ms = new MemoryStream();
-                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    ms.Seek(0, SeekOrigin.Begin);
-                    bi.StreamSource = ms;
-                    bi.EndInit();
-
-                    ViewboxHeightSing = img.Height;
-                    ViewboxWidthSing = img.Width;
-
-                    BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
-
-                    Source_image_Corregir = displayImage;
-
-                }
-                else
-                    Source_image_Corregir = null;
-            }
-
-            return true;
-        }
-        private string MyGetRegister(string param,string REGPATH)
-        {
-            string strReturn = null;
-            try
-            {
-                string str = jolcode.Registry.read(REGPATH, param);
-                if (string.IsNullOrEmpty(str))
-                {
-                    throw new Exception();
-                }
-                else
-                {
-                    strReturn = str;
-                }
-
-            }
-            catch
-            {
-                strReturn = "X = 0;" + "Y = 0;" + "H = 0;"+ "W = 0;" + "V = 0;"+ "Ho = 0;";
-                jolcode.Registry.write(REGPATH, param, "X = 0; Y = 0; H = 0; W = 0; V = 0; Ho = 0;");
-            }
-            return strReturn;
-        }
-
-       
-
-        public void MyGotFocus(object name)
-        {
-              const string REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos";
-             int X = 0;
-            int Y = 0;
-            int H = 0;
-            int W = 0;
-            int V = 0;
-            int Ho = 0;
-
-
-            string contenido = string.Empty;
-         
-
-            if (name is TextBox)
-            {
-                var txt = name as TextBox;
-                contenido = txt.Name;
-
-                txt.SelectAll();
-
-                txt.Background = Brushes.Red;
-            }
-            if (name is Label)
-            {
-                var txt = name as Label;
-                contenido = txt.Name;
-                txt.Background = Brushes.Red;
-
-            }
-            if (name is DatePicker)
-            {
-                var txt = name as DatePicker;
-                contenido = txt.Name;
-                txt.Background = Brushes.Red;
-
-            }
-
-
-            try
-            {
-                /*
-                Nombre : X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
-                ElecNum : X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
-                Precinto : X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
-                Sexo : X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
-                FechaNac : X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
-                Cargo: X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
-                Candidato : X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
-                Funcionario: X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
-                FirmaElec : X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
-                FirmaFuncionario: X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
-                FechaFirma : X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
-                FechaRadi : X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
-                */
-                string str;
-                string[] strError = new string[0];
-                switch (contenido)
-                {
-                    case "Nombre_Corregir":
-                        // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
-                        str =  MyGetRegister("NombreXY", REGPATH);
-
-                        FileStream fileStream = new FileStream(ValidateItDynamicCode.ValidateThis("Nombre_Corregir.cs", str, "NewDll\\Nombre_Corregir.dll", ref strError).Location, FileMode.Open, FileAccess.Read);
-                        MemoryStream memoryStream = new MemoryStream(2048);
-                        ValidateItDynamicCode.CopyStream((Stream)fileStream, (Stream)memoryStream, 2048);
-                        fileStream.Close();
-                        memoryStream.Position = 0L;
-                        string  kaka = Encoding.ASCII.GetString( memoryStream.ToArray() );
-
-                        // dataRow["CompiledCode"] = (object) memoryStream.ToArray();
-                        //if (kaka == null)
-                        //    throw new Exception();
-
-                        string[] kaka1 = jolcode.MyClass.DynamicCode().Split('|');
-
-                        X = int.Parse(kaka1[0]);
-                        Y = int.Parse(kaka1[1]);
-                        H = int.Parse(kaka1[2]);
-                        W = int.Parse(kaka1[3]);
-                        V = int.Parse(kaka1[4]);
-                        Ho = int.Parse(kaka1[5]);
-                   //     X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
-
-
-                        break;
-                    case "txtNumElec_Corregir":
-                        {
-                            // X = 638; Y = 1968;  H = 148;    W = 692;    V = 1919;          Ho = 528;
-                            str = MyGetRegister("ElecNumXY", REGPATH);
-
-                            X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
-                            break;
-                        }
-                    case "txtPrecinto_Corregir":
-                        {
-                            //X = 1059; Y = 1940; H = 170; W = 845; V = 1848; Ho = 946;
-                            // X = 75; Y = 483; H = 307; W = 877; V = 446; Ho = 0;
-                            str = MyGetRegister("PrecintoXY", REGPATH);
-
-                            X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
-                            break;
-                        }
-                    case "txtSex_Corregir":
-                        //X = 1274; Y = 1652; H = 180; W = 544; V = 1544; Ho = 1127;
-                        str = MyGetRegister("SexoXY", REGPATH);
-
-                        X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
-                        break;
-                    case "FechaNac_Corregir":
-
-                        //   X = 1697; Y = 1660; H = 194; W = 771; V = 1434; Ho = 1508;
-                        str = MyGetRegister("FechaNacXY", REGPATH);
-
-                        X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
-                        break;
-                    case "txtCargo_Corregir":
-                        //X = 429; Y = 2106; H = 151; W = 940; V = 1919; Ho = 409;
-                        str = MyGetRegister("CargoXY", REGPATH);
-
-                        X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
-                        break;
-                    case "txtCandidato_Corregir":
-                        //  X = 28; Y = 1946; H = 204; W = 870; V = 1836; Ho = 0;
-                        str = MyGetRegister("CandidatoXY", REGPATH);
-
-                        X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
-                        break;
-                    case "txtNotarioElec_Corregir":
-                        //X = 109; Y = 2639; H = 175; W = 723; V = 2456; Ho = 0;
-                        str = MyGetRegister("FuncionarioXY", REGPATH);
-
-                        X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
-                        break;
-                    case "txtFirmaElec_Corregir":
-                        //  X = 1259; Y = 1180; H = 174; W = 940; V = 1022; Ho = 1249;
-                        str = MyGetRegister("FirmaElecXY", REGPATH);
-
-                        X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
-                        if (_isFirmaNotario)
-                        {
-                            _isFirmaNotario = false;
-                            if (_myTableImg.Rows.Count > 0)
-                            {
-                                byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
-                                MemoryStream strmSignature = new MemoryStream();
-                                strmSignature.Write(dataSignature, 0, dataSignature.Length);
-                                strmSignature.Position = 0;
-                                //System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                                System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
-
-                                BitmapImage bi = new BitmapImage();
-                                bi.BeginInit();
-                                MemoryStream ms = new MemoryStream();
-                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                                ms.Seek(0, SeekOrigin.Begin);
-                                bi.StreamSource = ms;
-                                bi.EndInit();
-
-                                ViewboxHeightSing = img.Height;
-                                ViewboxWidthSing = img.Width;
-
-                                BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
-
-                                Source_image_Corregir = displayImage;
-
-                            }
-                            else
-                                Source_image_Corregir = null;
-                        }
-
-
-                        break;
-                    case "txtNotarioFirma_Corregir":
-                        //  X = 1145; Y = 2638; H = 180; W = 898; V = 2400; Ho = 1106;
-                        str = MyGetRegister("FirmaFuncionarioXY", REGPATH);
-
-                        X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
-                        if (!_isFirmaNotario)
-                        {
-                            if (_myTableImgNotario.Rows.Count > 0)
-                            {
-                                byte[] dataSignature = (byte[])_myTableImgNotario.Rows[0]["SignatureImage"];
-                                MemoryStream strmSignature = new MemoryStream();
-                                strmSignature.Write(dataSignature, 0, dataSignature.Length);
-                                strmSignature.Position = 0;
-                                System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                                //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
-
-                                BitmapImage bi = new BitmapImage();
-                                bi.BeginInit();
-                                MemoryStream ms = new MemoryStream();
-                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                                ms.Seek(0, SeekOrigin.Begin);
-                                bi.StreamSource = ms;
-                                bi.EndInit();
-
-
-                                ViewboxHeightSing = img.Height;
-                                ViewboxWidthSing = img.Width;
-
-                                BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
-
-                                Source_image_Corregir = displayImage;
-
-
-                            }
-                            else
-                                Source_image_Corregir = null;
-
-                            _isFirmaNotario = true;
-                        }
-
-
-                        break;
-                    case "txtFchEndoso_Corregir":
-                        // X = 577; Y = 2462; H = 154; W = 797; V = 2407; Ho = 470;
-                        str = MyGetRegister("FechaFirmaXY", REGPATH);
-
-                        X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
-                        break;
-                    case "txtFchEndosoEntregada_Corregir":
-                        // X = 2143; Y = 2303; H = 477; W = 360; V = 2276; Ho = 1595;
-                        str = MyGetRegister("FechaRadiXY", REGPATH);
-
-                        X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
-                        break;
-                }
-              
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Error ->" + ex.ToString());
-            }
-
-            try
-            {
-
-
-                BtnFullImages_Click(ref V, ref Ho);
-
-                //_inMoveUpDw = V;
-                //_inMoveLfRh = Ho;
-                //_sv.ScrollToVerticalOffset(V);
-                //_sv.ScrollToHorizontalOffset(Ho);
-
-
-
-            }
-            catch
-            {
-                MessageBox.Show("Error en el Croop");
-            }
-            finally
-            {
-            }
-        }
-        public RelayCommand BtnFullImages
-        {
-            get
-            {
-                int v = 0;
-                int ho = 0;
-                if (_BtnFullImages == null)
-                {
-                    _BtnFullImages = new RelayCommand(param => BtnFullImages_Click(ref v, ref ho));
-                }
-                return _BtnFullImages;
-            }
-        }
-        public RelayCommand BtnCrop
-        {
-            get
-            {
-                if (_BtnCrop == null)
-                {
-                    _BtnCrop = new RelayCommand(param => BtnCrop_Click());
-                }
-                return _BtnCrop;
-            }
-        }
-        public RelayCommand miLostFocus
-        {
-            get
-            {
-                if (_LostFocus == null)
-                {
-                    _LostFocus = new RelayCommand(param => MyLostFocus(param));
-                }
-                return _LostFocus;
-            }
-        }
-        public RelayCommand miGotFocus
-        {
-            get
-            {
-                if (_GotFocus == null)
-                {
-                    _GotFocus = new RelayCommand(param => MyGotFocus(param));
-                }
-                return _GotFocus;
-            }
-        }
-        #region MyProperty
-
         public string Nombre_Corregir
         {
             get
@@ -1166,6 +737,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
+                             
+        public ObservableCollection<Brush>  txtColor
+        {
+            get
+            {
+                return _txtColor;
+            }set
+            {
+                _txtColor = value;
+                this.RaisePropertychanged("txtColor");
+            }
+        }
         public Brush BorderColor
         {
             get
@@ -1275,6 +858,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         #endregion
 
+        
+        
+        /*Command*/
         #region MyCmd
         private void MyInitWindow()
         {
@@ -1298,11 +884,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 MyFillField();
 
-                MySendTab();
+              
                 TextBox tet = new TextBox();
-                tet.Name = "txtNumElec_Corregir";
+                tet.Name = "Nombre_Corregir";
                 MyGotFocus(tet);
-                
+
+                 //MySendTab();
+
             }
             catch (Exception ex)
             {
@@ -1506,8 +1094,530 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
             return true;
         }
+        private void MyCmdSetImg()
+        {
+            try
+            {
+                using (vmSetImages frmSetImg = new vmSetImages())
+                {
+                    frmSetImg.View.Owner = this.View as Window;
+                    frmSetImg.Source_image = Source_image;
+                    frmSetImg.ViewboxHeight = ViewboxHeight;
+                    frmSetImg.ViewboxWidth = ViewboxWidth;
+                    frmSetImg.imgEndoso = imgEndoso;
+                    frmSetImg.srcEndoso = srcEndoso;
+                    frmSetImg.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        void View_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            var mousePosition = e.GetPosition(sender as UIElement);
+            Canvas.SetLeft(_SelectionRectangle, mousePosition.X);
+
+            Canvas.SetTop(_SelectionRectangle, mousePosition.Y);
+
+            _SelectionRectangle.Visibility = System.Windows.Visibility.Visible;
+
+            //TituloFrmImg = string.Format("X:{0} Y:{1} H:{2} W:{3}", mousePosition.X.ToString(), mousePosition.Y.ToString(),_SelectionRectangle.Height,_SelectionRectangle.Width );
+
+            //_MyX = (int)mousePosition.X;
+            //_MyY = (int)mousePosition.Y;
+
+        }
+        void View_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                try
+                {
+                    var mousePosition = e.GetPosition(sender as UIElement);
+
+                    _SelectionRectangle.Width = mousePosition.X - Canvas.GetLeft(_SelectionRectangle);
+                    _SelectionRectangle.Height = mousePosition.Y - Canvas.GetTop(_SelectionRectangle);
+
+                    _MyX = (int)Canvas.GetLeft(_SelectionRectangle);
+                    _MyY = (int)Canvas.GetTop(_SelectionRectangle);
+                    _MyH = _SelectionRectangle.Height;
+                    _MyW = _SelectionRectangle.Width;
+                    lblCordenadas = string.Format("int X = {0};int Y = {1};int H = {2};int W = {3};int V = {4};int Ho = {5};string fieldContents  = X.ToString() + \"|\" + Y.ToString() + \"|\" + H.ToString() + \"|\" + W.ToString()+ \"|\" + V.ToString()+\"|\" + Ho.ToString() ;return fieldContents;", _MyX, _MyY, _SelectionRectangle.Height, _SelectionRectangle.Width, _sv.VerticalOffset, _sv.HorizontalOffset);
+
+                }
+                catch
+                {
+                    //   MessageBox.Show(ex.ToString());
+                }
+            }
+        }
+
+      
+        void BtnCrop_Click()
+        {
+            double factorX, factorY;
+
+            factorX = srcEndoso.PixelWidth / srcEndoso.Width;
+            factorY = srcEndoso.PixelHeight / srcEndoso.Height;
+
+            BitmapSource displayImage = new CroppedBitmap(srcEndoso, new Int32Rect(_MyX, _MyY, (int)(_MyW), (int)(_MyH)));  // new CroppedBitmap(original, crop);
+
+            ViewboxWidth = (int)_MyW + 10;
+            ViewboxHeight = (int)_MyH + 10;
+
+            Source_image = displayImage;
+
+            _sv.ScrollToVerticalOffset(0);
+            _sv.ScrollToHorizontalOffset(0);
+
+        }
+        private void BtnFullImages_Click(ref int v, ref int Ho)
+        {
+
+            ViewboxWidth = imgEndoso.Width;
+            ViewboxHeight = imgEndoso.Height;
+            BitmapSource displayImage = new CroppedBitmap(srcEndoso, new Int32Rect(0, 0, 0, 0));  // new CroppedBitmap(original, crop);
+            Source_image = displayImage;
+
+            _sv.ScrollToVerticalOffset(v);
+            _sv.ScrollToHorizontalOffset(Ho);
+
+            _sv.UpdateLayout();
+
+        }
+        private bool MyLostFocus(object param)
+        {
+            if (param is TextBox)
+            {
+                var txt = param as TextBox;
+
+                txt.Background = Brushes.White;
+            }
+            if (param is Label)
+            {
+                var txt = param as Label;
+                txt.Background = Brushes.White;
+
+            }
+            if (param is DatePicker)
+            {
+                var txt = param as DatePicker;
+                txt.Background = Brushes.White;
+
+            }
+            if (_isFirmaNotario)
+            {
+                _isFirmaNotario = false;
+                if (_myTableImgFirmaElector.Rows.Count > 0)
+                {
+                    byte[] dataSignature = (byte[])_myTableImgFirmaElector.Rows[0]["SignatureImage"];
+                    MemoryStream strmSignature = new MemoryStream();
+                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                    strmSignature.Position = 0;
+                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                    //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
 
 
+                    BitmapImage bi = new BitmapImage();
+                    bi.BeginInit();
+                    MemoryStream ms = new MemoryStream();
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    bi.StreamSource = ms;
+                    bi.EndInit();
+
+                    ViewboxHeightSing = img.Height;
+                    ViewboxWidthSing = img.Width;
+
+                    BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                    Source_image_Corregir = displayImage;
+
+                }
+                else
+                    Source_image_Corregir = null;
+            }
+
+            return true;
+        }
+        private string MyGetRegister(string param, string REGPATH)
+        {
+            string strReturn = null;
+            try
+            {
+                string str = jolcode.Registry.read(REGPATH, param);
+                if (string.IsNullOrEmpty(str))
+                {
+                    throw new Exception();
+                }
+                else
+                {
+                    strReturn = str;
+                }
+
+            }
+            catch
+            {
+                strReturn = "int X = 0;int Y = 0;int H = 0;int W = 0;int V = 0;int Ho = 0;string fieldContents  = X.ToString() + \"|\" + Y.ToString() + \"|\" + H.ToString() + \"|\" + W.ToString()+ \"|\" + V.ToString()+\"|\" + Ho.ToString() ;return fieldContents;";
+                jolcode.Registry.write(REGPATH, param, strReturn);
+            }
+            return strReturn;
+        }
+        public void MyGotFocus(object name)
+        {
+            const string REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos";
+            int X = 0;
+            int Y = 0;
+            int H = 0;
+            int W = 0;
+            int V = 0;
+            int Ho = 0;
+
+
+            string contenido = string.Empty;
+
+
+            if (name is TextBox)
+            {
+                var txt = name as TextBox;
+                contenido = txt.Name;
+
+                txt.SelectAll();
+
+                txt.Background = Brushes.Red;
+            }
+            if (name is Label)
+            {
+                var txt = name as Label;
+                contenido = txt.Name;
+                txt.Background = Brushes.Red;
+
+            }
+            if (name is DatePicker)
+            {
+                var txt = name as DatePicker;
+                contenido = txt.Name;
+                txt.Background = Brushes.Red;
+
+            }
+
+
+            try
+            {
+                /*
+                Nombre : X = 6; Y = 321; H = 218; W = 1096; V = 183; Ho = 0;
+                ElecNum : X = 344; Y = 1270; H = 184; W = 752; V = 1218; Ho = 241;
+                Precinto : X = 598; Y = 1256; H = 162; W = 842; V = 1167; Ho = 385;
+                Sexo : X = 723; Y = 1044; H = 239; W = 901; V = 923; Ho = 554;
+                FechaNac : X = 1052; Y = 1052; H = 204; W = 642; V = 860; Ho = 554;
+                Cargo: X = 49; Y = 1340; H = 176; W = 1103; V = 1097; Ho = 6;
+                Candidato : X = 48; Y = 1273; H = 226; W = 1028; V = 1137; Ho = 0;
+                Funcionario: X = 60; Y = 1667; H = 243; W = 804; V = 1305; Ho = 0;
+                FirmaElec : X = 742; Y = 734; H = 179; W = 921; V = 507; Ho = 554;
+                FirmaFuncionario: X = 581; Y = 1714; H = 280; W = 979; V = 1557; Ho = 554;
+                FechaFirma : X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
+                FechaRadi : X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
+                */
+                string str;
+                string[] strError = new string[0];
+                switch (contenido)
+                {
+                    case "Nombre_Corregir":
+                        {
+                            string[] xy = jolcode.MyNombreXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+
+                        break;
+                    case "txtNumElec_Corregir":
+                        {
+                            string[] xy = jolcode.MyNumElecXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                            break;
+                        
+                    case "txtPrecinto_Corregir":
+                        {
+                            string[] xy = jolcode.MyPrecintoXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                            break;
+                        
+                    case "txtSex_Corregir":
+                        {
+                            string[] xy = jolcode.MySexoXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "FechaNac_Corregir":
+
+                        {
+                            string[] xy = jolcode.MyFechaNacXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "txtCargo_Corregir":
+                        {
+                            string[] xy = jolcode.MyCargoXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "txtCandidato_Corregir":
+                        {
+                            string[] xy = jolcode.MyCandidatoXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "txtNotarioElec_Corregir":
+                        {
+                            string[] xy = jolcode.MyNotarioElecXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "txtFirmaElec_Corregir":
+
+                        {
+                            string[] xy = jolcode.MyFirmaElecXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+
+
+
+                            if (_isFirmaNotario)
+                            {
+                                _isFirmaNotario = false;
+                                if (_myTableImgFirmaElector.Rows.Count > 0)
+                                {
+                                    byte[] dataSignature = (byte[])_myTableImgFirmaElector.Rows[0]["SignatureImage"];
+                                    MemoryStream strmSignature = new MemoryStream();
+                                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                                    strmSignature.Position = 0;
+                                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                   // System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
+                                    BitmapImage bi = new BitmapImage();
+                                    bi.BeginInit();
+                                    MemoryStream ms = new MemoryStream();
+                                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                    ms.Seek(0, SeekOrigin.Begin);
+                                    bi.StreamSource = ms;
+                                    bi.EndInit();
+
+                                    ViewboxHeightSing = img.Height;
+                                    ViewboxWidthSing = img.Width;
+
+                                    BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                                    Source_image_Corregir = displayImage;
+
+                                }
+                                else
+                                    Source_image_Corregir = null;
+                            }
+                        }
+
+                        break;
+                    case "txtNotarioFirma_Corregir":
+                        {
+                            string[] xy = jolcode.MyNotarioFirmaXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+
+                            if (!_isFirmaNotario)
+                            {
+                                if (_myTableImgNotario.Rows.Count > 0)
+                                {
+                                    byte[] dataSignature = (byte[])_myTableImgNotario.Rows[0]["SignatureImage"];
+                                    MemoryStream strmSignature = new MemoryStream();
+                                    strmSignature.Write(dataSignature, 0, dataSignature.Length);
+                                    strmSignature.Position = 0;
+                                    System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
+                                    //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+
+                                    BitmapImage bi = new BitmapImage();
+                                    bi.BeginInit();
+                                    MemoryStream ms = new MemoryStream();
+                                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                                    ms.Seek(0, SeekOrigin.Begin);
+                                    bi.StreamSource = ms;
+                                    bi.EndInit();
+
+
+                                    ViewboxHeightSing = img.Height;
+                                    ViewboxWidthSing = img.Width;
+
+                                    BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
+
+                                    Source_image_Corregir = displayImage;
+
+
+                                }
+                                else
+                                    Source_image_Corregir = null;
+
+                                _isFirmaNotario = true;
+                            }
+                        }
+
+                        break;
+                    case "txtFchEndoso_Corregir":
+                        {
+                            string[] xy = jolcode.MyFchEndosoXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                    case "txtFchEndosoEntregada_Corregir":
+                        {
+                            string[] xy = jolcode.MyFchEndosoEntregadaXY.DynamicCode().Split('|');
+
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
+
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                        }
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ->" + ex.ToString());
+            }
+
+            try
+            {
+
+
+                BtnFullImages_Click(ref V, ref Ho);
+
+                //_inMoveUpDw = V;
+                //_inMoveLfRh = Ho;
+                //_sv.ScrollToVerticalOffset(V);
+                //_sv.ScrollToHorizontalOffset(Ho);
+
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Error en el Croop");
+            }
+            finally
+            {
+            }
+        }
+
+        public RelayCommand cmdSetImg
+        {
+            get;private set;
+        }
         public RelayCommand cmdZoomInOut
         {
             get;private set;
@@ -1538,9 +1648,56 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             get;private set;
         }
-
+        public RelayCommand BtnFullImages
+        {
+            get
+            {
+                int v = 0;
+                int ho = 0;
+                if (_BtnFullImages == null)
+                {
+                    _BtnFullImages = new RelayCommand(param => BtnFullImages_Click(ref v, ref ho));
+                }
+                return _BtnFullImages;
+            }
+        }
+        public RelayCommand BtnCrop
+        {
+            get
+            {
+                if (_BtnCrop == null)
+                {
+                    _BtnCrop = new RelayCommand(param => BtnCrop_Click());
+                }
+                return _BtnCrop;
+            }
+        }
+        public RelayCommand miLostFocus
+        {
+            get
+            {
+                if (_LostFocus == null)
+                {
+                    _LostFocus = new RelayCommand(param => MyLostFocus(param));
+                }
+                return _LostFocus;
+            }
+        }
+        public RelayCommand miGotFocus
+        {
+            get
+            {
+                if (_GotFocus == null)
+                {
+                    _GotFocus = new RelayCommand(param => MyGotFocus(param));
+                }
+                return _GotFocus;
+            }
+        }
         #endregion
 
+
+        /*Modulos*/
         #region MyModule
         private void MyFillField()
         {
@@ -1590,29 +1747,33 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     byte[] EndosoImage = null;
 
-                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,ref EndosoImage);
-                    _src = new BitmapImage();
+                    string rechazoNum = string.Empty;
+                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,_DataToSave[i].Batch,ref EndosoImage,ref rechazoNum);
+
+                    SetColor(rechazoNum);
+
+                    srcEndoso = new BitmapImage();
                    
-                        // 'DESPLIEGA la imagen
+                        // 'DESPLIEGA la imagen del Endoso
                     if (EndosoImage != null)
                     {
                         MemoryStream strmEndosoImage = new MemoryStream();
                         strmEndosoImage.Write(EndosoImage, 0, EndosoImage.Length);
                         strmEndosoImage.Position = 0;
-                        _src.BeginInit();
-                        //_img = System.Drawing.Image.FromStream(strmEndosoImage);
-                        _img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+                        srcEndoso.BeginInit();
+                        imgEndoso = System.Drawing.Image.FromStream(strmEndosoImage);
+                      //  imgEndoso = System.Drawing.Image.FromFile(_DataToSave[i].image);
 
                         MemoryStream ms = new MemoryStream();
-                        _img.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
+                        imgEndoso.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
                         ms.Seek(0, SeekOrigin.Begin);
-                        _src.StreamSource = ms;
-                        _src.EndInit();
+                        srcEndoso.StreamSource = ms;
+                        srcEndoso.EndInit();
 
-                        ViewboxHeight =  _img.Height;
-                        ViewboxWidth =  _img.Width;
+                        ViewboxHeight =  imgEndoso.Height;
+                        ViewboxWidth =  imgEndoso.Width;
 
-                        BitmapSource displayImage = new CroppedBitmap(_src, new Int32Rect(0, 0, _img.Width, _img.Width));  // new CroppedBitmap(original, crop);
+                        BitmapSource displayImage = new CroppedBitmap(srcEndoso, new Int32Rect(0, 0, imgEndoso.Width, imgEndoso.Width));  // new CroppedBitmap(original, crop);
 
 
                         Source_image = displayImage;
@@ -1623,7 +1784,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
-                     _myTableImg = new DataTable();
+                    _myTableImgFirmaElector = new DataTable();
                      _myTableImgNotario = new DataTable();
 
 
@@ -1631,7 +1792,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     {
                         _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
-                        _myTableImg = get.MyGetCitizenImg(txtNumElec_Corregir);
+                        _myTableImgFirmaElector = get.MyGetCitizenImg(txtNumElec_Corregir);
                     }
                     DataTable notarioInfo = new DataTable();
 
@@ -1713,14 +1874,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             txtFechaNac = Mes + "/" + Dia + "/" + Ano;
                         }
 
-                        if (_myTableImg.Rows.Count > 0)
-                        {
-                            byte[] dataSignature = (byte[])_myTableImg.Rows[0]["SignatureImage"];
+                        if (_myTableImgFirmaElector.Rows.Count > 0)
+                        {//Del Master de la CEE
+                            byte[] dataSignature = (byte[])_myTableImgFirmaElector.Rows[0]["SignatureImage"];
                             MemoryStream strmSignature = new MemoryStream();
                             strmSignature.Write(dataSignature, 0, dataSignature.Length);
                             strmSignature.Position = 0;
                             System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                            //System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
 
                             BitmapImage bi = new BitmapImage();
                             bi.BeginInit();
@@ -1763,7 +1923,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void SetColor(string param)
+        {
+            param = param.Substring(0, param.Length - 1);
+            string[] cargos = param.Split('|');
 
+            foreach(string s in cargos)
+            {
+                int idx = int.Parse(s);
+
+                txtColor[idx] = Brushes.Green;
+
+                if (idx == 11)
+                    txtColor[6] = Brushes.Green;
+
+            }
+
+        }
         private void MyRefresh(bool resetAllData)
         {
             txtRazonRechazo = string.Empty;
@@ -1794,6 +1970,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             batchTF = string.Empty;
             txtStatusElec = string.Empty;
             txtStatusNotario = string.Empty;
+
+            txtColor = new ObservableCollection<Brush>();
+
+            for (int idx =0;idx <=18;idx++)
+            {
+                txtColor.Add(Brushes.White);
+            }
 
             if (resetAllData)
             {
@@ -1931,7 +2114,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
-
+        /*Dispose*/
         #region Dispose
 
 
