@@ -1,26 +1,24 @@
-﻿
+﻿using jolcode;
+using jolcode.Base;
+using jolcode.MyInterface;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using WpfEndososCandidatos.Models;
+using WpfEndososCandidatos.View.Procesos;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
-    using jolcode;
-    using jolcode.Base;
-    using jolcode.MyInterface;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Configuration;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Media;
-    using WpfEndososCandidatos.View;
-    using System.Data;
-    using Models;
-
-    public class vmLotFix : ViewModelBase<IDialogView>,IDisposable 
+    class vmVerendosos : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
@@ -32,9 +30,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _DBMasterCeeCnnStr;
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
-
-        public vmLotFix()
-           : base(new wpfLotFix())
+        public vmVerendosos()
+           : base(new wpfVerEndosos())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
@@ -42,20 +39,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
             cbLots = new ObservableCollection<string>();
         }
-       
-
+        //Property
         #region MyProperty
         public string SysUser
         {
             get
             {
                 return _SysUser;
-            }set
+            }
+            set
             {
                 _SysUser = value;
             }
         }
-         public Brush BorderBrush
+        public Brush BorderBrush
         {
             get
             {
@@ -88,7 +85,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -99,7 +97,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBMasterCeeCnnStr;
-            }set
+            }
+            set
             {
                 _DBMasterCeeCnnStr = value;
             }
@@ -110,7 +109,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBCeeMasterImgCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterImgCnnStr = value;
             }
@@ -157,11 +157,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         #endregion
 
+        //CMD
         #region MyCmd
         private void MyInitWindow()
-       {
-           try
-           {
+        {
+            try
+            {
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -176,18 +177,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MyRefresh();
 
             }
-           catch (Exception ex)
-           {
+            catch (Exception ex)
+            {
 
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public bool? MyOnShow()
-       {
-           return this.View.ShowDialog();
-       }
+        {
+            return this.View.ShowDialog();
+        }
 
         private void MyCmdSalir_Click()
         {
@@ -214,7 +215,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        
+
         }
 
         private void MyCmdOpen_Click()
@@ -240,27 +241,27 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-       public RelayCommand initWindow
-       {
-           get;
-           private set;
-       }
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
+        }
         public RelayCommand cmdSalir_Click
-       {
-           get;
-           private set;
-       }
+        {
+            get;
+            private set;
+        }
 
         public RelayCommand cmdRefresh_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdOpen_Click
         {
-            get;private set;
+            get; private set;
         }
         #endregion
-
+        //Modules
         #region MyModules
         private void MyRefresh()
         {
@@ -269,7 +270,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("2,3,4");
+                _MyLotsTable = get.MyGetLot("1,2,3,4");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
@@ -307,7 +308,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
         #endregion
-
+        //Dispose
         #region Dispose
 
 
@@ -318,7 +319,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             GC.SuppressFinalize(this);
         }
 
-        ~vmLotFix()
+        ~vmVerendosos()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);
@@ -342,7 +343,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
-    }//end
-}//end
+    }
+}

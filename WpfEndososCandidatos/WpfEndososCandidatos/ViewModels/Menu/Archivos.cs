@@ -86,7 +86,9 @@
                             case 'C':// ProcesarLotes
                                 mnuRecibirLotes_IsEnabled = true;
                                 mnuProcesarLotes_IsEnabled = true;
-
+                                mnuVerEndosos_IsEnabled = true;
+                                mnuInformeEndosos_IsEnabled = true;
+                                mnuReydi_IsEnabled = true;
                                 break;
                             case 'D':// VerElector
                                 mnuVerElector_IsEnabled = true;
@@ -173,6 +175,9 @@
                 mnuBaseDeDatos_IsEnabled = false;
                 mnuInicializarLotes_IsEnabled = false;
                 mnuCandidatos_IsEnabled = false;
+                mnuVerEndosos_IsEnabled = false;
+                mnuInformeEndosos_IsEnabled = false;
+                mnuReydi_IsEnabled = false;
                 Login_Click();
             }
             catch (Exception ex)

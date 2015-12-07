@@ -17,8 +17,11 @@
         private bool _mnuProcesarLotes_IsEnabled;
         private bool _mnuCorregirEndosos_IsEnabled;
         private bool _mnuRevLote_IsEnabled;
-        
-       
+        private bool _mnuVerEndosos_IsEnabled;
+        private bool _mnuInformeEndosos_IsEnabled;
+        private bool _mnuReydi_IsEnabled;
+        private RelayCommand _verEndosos_Click;
+
         public bool mnuRecibirLotes_IsEnabled
         {
             get
@@ -181,7 +184,87 @@
                     this.RaisePropertychanged("mnuCorregirEndosos_IsEnabled");
                 }
             }
-        }               
+        }
+
+        public bool mnuVerEndosos_IsEnabled
+        {
+            get
+            {
+                return _mnuVerEndosos_IsEnabled;
+            }
+            set
+            {
+                if (_mnuVerEndosos_IsEnabled != value)
+                {
+                    _mnuVerEndosos_IsEnabled = value;
+                    this.RaisePropertychanged("mnuVerEndosos_IsEnabled");
+                }
+            }
+        }
+        public bool mnuInformeEndosos_IsEnabled
+        {
+            get
+            {
+                return _mnuInformeEndosos_IsEnabled;
+            }
+            set
+            {
+                if (_mnuInformeEndosos_IsEnabled != value)
+                {
+                    _mnuInformeEndosos_IsEnabled = value;
+                    this.RaisePropertychanged("mnuInformeEndosos_IsEnabled");
+                }
+            }
+        }
+        public bool mnuReydi_IsEnabled
+        {
+            get
+            {
+                return _mnuReydi_IsEnabled;
+            }
+            set
+            {
+                if (_mnuReydi_IsEnabled != value)
+                {
+                    _mnuReydi_IsEnabled = value;
+                    this.RaisePropertychanged("mnuReydi_IsEnabled");
+                }
+            }
+        }
+        public RelayCommand verEndosos_Click
+        {
+            get
+            {
+                if (_verEndosos_Click == null)
+                {
+                    _verEndosos_Click = new RelayCommand(param => MyverEndosos_Click());
+                }
+                return _verEndosos_Click;
+            }
+        }
+
+        private void MyverEndosos_Click()
+        {
+            try
+            {
+                using ( vmVerendosos frm = new vmVerendosos())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.SysUser = WhatIsUserName;
+                    frm.MyOnShow();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
+        }
+
         public RelayCommand  corregirEndosos_Click
         {
             get
@@ -215,6 +298,8 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
 
         public bool mnuRevLote_IsEnabled

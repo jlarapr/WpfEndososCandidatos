@@ -188,12 +188,14 @@
     <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantDB.cs" />
     <Compile Include="ViewModels\Procesos\vmFixVoid.cs" />
+    <Compile Include="ViewModels\Procesos\vmInforme.cs" />
     <Compile Include="ViewModels\Procesos\vmLotAuth.cs" />
     <Compile Include="ViewModels\Procesos\vmLotFix.cs" />
     <Compile Include="ViewModels\Procesos\vmLotProcess.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReceive.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReverse.cs" />
     <Compile Include="ViewModels\Procesos\vmSetImages.cs" />
+    <Compile Include="ViewModels\Procesos\vmVerendosos.cs" />
     <Compile Include="ViewModels\Ver\vmElector.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
@@ -204,6 +206,9 @@
     <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Procesos\wpfInforme.xaml.cs">
+      <DependentUpon>wpfInforme.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Procesos\wpfLotProcess.xaml.cs">
       <DependentUpon>wpfLotProcess.xaml</DependentUpon>
     </Compile>
@@ -212,6 +217,9 @@
     </Compile>
     <Compile Include="View\Procesos\wpfSetImages.xaml.cs">
       <DependentUpon>wpfSetImages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfVerEndosos.xaml.cs">
+      <DependentUpon>wpfVerEndosos.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ver\wpfElector.xaml.cs">
       <DependentUpon>wpfElector.xaml</DependentUpon>
@@ -286,6 +294,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Procesos\wpfInforme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Procesos\wpfLotProcess.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Procesos\wpfSetImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfVerEndosos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
