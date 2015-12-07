@@ -95,6 +95,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtStatusElec;
         private string _txtStatusNotario;
         private ObservableCollection<Brush> _txtColor;
+        Brush tmpBrushes;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -108,7 +109,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
             cmdSetImg = new RelayCommand(param => MyCmdSetImg());
             _DataToSave = new List<FixVoid>();
-
+            txtColor = new ObservableCollection<Brush>();
 
 
         }
@@ -879,6 +880,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
+                for (int idx = 0; idx <= 18; idx++)
+                {
+                    txtColor.Add(Brushes.White);
+                }
 
                 MyRefresh(true);
 
@@ -1196,18 +1201,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 var txt = param as TextBox;
 
-                txt.Background = Brushes.White;
+                txt.Background = tmpBrushes;
             }
             if (param is Label)
             {
                 var txt = param as Label;
-                txt.Background = Brushes.White;
+                txt.Background = tmpBrushes;
 
             }
             if (param is DatePicker)
             {
                 var txt = param as DatePicker;
-                txt.Background = Brushes.White;
+                txt.Background = tmpBrushes;
 
             }
             if (_isFirmaNotario)
@@ -1288,6 +1293,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 contenido = txt.Name;
 
                 txt.SelectAll();
+                tmpBrushes = txt.Background;
 
                 txt.Background = Brushes.Red;
             }
@@ -1724,8 +1730,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     txtFirmaElec_Corregir = _DataToSave[i].FirmaElec;
                     txtNotarioFirma_Corregir = _DataToSave[i].NotarioFirma;
 
-                    ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
-                    ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
+                    ckbFirma_Pet_Inv = false;//_DataToSave[i].Firma_Pet_Inv;
+                    ckbFirma_Not_Inv = false;// _DataToSave[i].Firma_Not_Inv;
 
                     txtFormulario = _DataToSave[i].Formulario;
 
@@ -1830,7 +1836,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
                     else
                     {
-                        txtNotarioFirstName = "Error No hay Datos en el Master";
+                        txtNotarioFirstName = "No hay Datos en el Master";
                         txtStatusNotario = "?";
                     }
 
@@ -1971,12 +1977,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtStatusElec = string.Empty;
             txtStatusNotario = string.Empty;
 
-            txtColor = new ObservableCollection<Brush>();
-
+           
             for (int idx =0;idx <=18;idx++)
             {
-                txtColor.Add(Brushes.White);
+                txtColor[idx] = Brushes.YellowGreen;
             }
+       
 
             if (resetAllData)
             {

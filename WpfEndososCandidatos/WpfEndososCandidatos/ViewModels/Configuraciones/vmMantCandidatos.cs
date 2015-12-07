@@ -147,25 +147,27 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    long myLongValue = 0;
+                _txtNumCandidato = value.Trim();
+                this.RaisePropertychanged("txtNumCandidato");
+                //if (!string.IsNullOrEmpty(value))
+                //{
+                //    long myLongValue = 0;
 
-                    if (long.TryParse(value, out myLongValue))
-                    {
-                        _txtNumCandidato = value.Trim();
-                        this.RaisePropertychanged("txtNumCandidato");
-                    }else
-                    {
-                        _txtNumCandidato = string.Empty;
-                        this.RaisePropertychanged("txtNumCandidato");
-                    }
-                }
-                else
-                {
-                    _txtNumCandidato = string.Empty;
-                    this.RaisePropertychanged("txtNumCandidato");
-                }
+                //    if (long.TryParse(value, out myLongValue))
+                //    {
+                //        _txtNumCandidato = value.Trim();
+                //        this.RaisePropertychanged("txtNumCandidato");
+                //    }else
+                //    {
+                //        _txtNumCandidato = string.Empty;
+                //        this.RaisePropertychanged("txtNumCandidato");
+                //    }
+                //}
+                //else
+                //{
+                //    _txtNumCandidato = string.Empty;
+                //    this.RaisePropertychanged("txtNumCandidato");
+                //}
             }
         }
         public string txtEndoReq
@@ -397,6 +399,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     int i;
                     if (int.TryParse(myData[4].ToString(), out i)) 
                         IsChecked_rbCargos[i] = true;
+
                     _cbNombre_Item = value;
                     txtNombre = myData[2].ToString();
                     IsEnabled_cmdEdit = true;
@@ -835,7 +838,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private void MyReset()
         {
             IsChecked_rbCargos.Clear();
-            for (int i = 0; i<8; i++)
+            for (int i = 0; i<9; i++)
                 IsChecked_rbCargos.Add(false);
 
             IsEnabled_cmdAdd = true;

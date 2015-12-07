@@ -2565,17 +2565,17 @@ namespace jolcode
 
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
                         {
-                            if (CollCriterios[10].Editar == true)
-                            {
-                                Rechazo[10]++;
-                                strRechazos += "11|";
-                                isRechazo[10] = true;
-                            }
-                            if (CollCriterios[10].Warning == true)
-                            {
-                                Warning[10]++;
-                                isWarning[10] = true;
-                            }
+                            //if (CollCriterios[10].Editar == true)
+                            //{
+                            //    Rechazo[10]++;
+                            //    strRechazos += "11|";
+                            //    isRechazo[10] = true;
+                            //}
+                            //if (CollCriterios[10].Warning == true)
+                            //{
+                            //    Warning[10]++;
+                            //    isWarning[10] = true;
+                            //}
                         }
                         else
                         {
@@ -3171,12 +3171,12 @@ namespace jolcode
             switch (param.Trim())
             {
                 case "A":
-                    return true;
                 case "I":
+                    return true;
                 case "E":
                     return false;
                 default:
-                    return false;
+                    return true;
 
 
             }
