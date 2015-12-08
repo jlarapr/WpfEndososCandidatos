@@ -1215,6 +1215,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 txt.Background = tmpBrushes;
 
             }
+            tmpBrushes = Brushes.White;
+
             if (_isFirmaNotario)
             {
                 _isFirmaNotario = false;
@@ -1292,6 +1294,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 contenido = txt.Name;
 
                 txt.SelectAll();
+
                 tmpBrushes = txt.Background;
 
                 txt.Background = Brushes.Red;
@@ -1300,6 +1303,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 var txt = name as Label;
                 contenido = txt.Name;
+                tmpBrushes = txt.Background;
                 txt.Background = Brushes.Red;
 
             }
@@ -1307,6 +1311,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 var txt = name as DatePicker;
                 contenido = txt.Name;
+                tmpBrushes = txt.Background;
                 txt.Background = Brushes.Red;
 
             }
@@ -1978,7 +1983,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
            
             for (int idx =0;idx <=18;idx++)
             {
-                txtColor[idx] = Brushes.YellowGreen;
+                txtColor[idx] = Brushes.White;
             }
        
 

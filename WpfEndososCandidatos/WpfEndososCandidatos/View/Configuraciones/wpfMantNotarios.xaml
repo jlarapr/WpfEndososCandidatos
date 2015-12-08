@@ -9,6 +9,9 @@
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding cmdFind_Click}"  CommandParameter="{Binding ElementName=txtPassword}" />
+    </Window.InputBindings>
     <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
 
         <Border.Effect>

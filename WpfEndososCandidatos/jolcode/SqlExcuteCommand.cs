@@ -891,7 +891,7 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select * from Candidatos order by cargo,NumCand";
+                string mySqlstr = "Select * from Candidatos order by Nombre";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -2288,7 +2288,10 @@ namespace jolcode
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
-                                                " Where [NumElec] = '", FixNum( m_N_NOTARIO) , "'"};
+                                                " Where ([NumElec] = '", FixNum( m_N_NOTARIO) , "') and ",
+                                                "([Status] ='A') and ",
+                                                " ([NumCand]='", FixNum( m_N_CANDIDAT ) , "'"};
+
                         object total = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
@@ -2386,12 +2389,13 @@ namespace jolcode
                     if (CollCriterios[6].Editar == true || CollCriterios[6].Warning == true)// '7-ASPIRANTE NO EXISTE
                     {
                         string[] sqlstr = { "SELECT count(*) ",
-                                                "From [Aspirantes]  ",
-                                                " Where [NumCandidato] = '", FixNum( m_N_CANDIDAT ), "'"};
+                                                "From [Candidatos]  ",
+                                                " Where [NumCand] = '", FixNum( m_N_CANDIDAT ), "'"};
                         object total = null;
-
-                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
-                        {
+                        //myCnnDBEndososValidarDatos
+                       // if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
+                            {
                             if ((int)total == 0)
                             {
                                 if (CollCriterios[6].Editar == true)
@@ -2432,7 +2436,7 @@ namespace jolcode
                         object status = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
-                        {
+                        {//No Exite
                             if (CollCriterios[7].Editar == true)
                             {
                                 Rechazo[7]++;
@@ -2465,7 +2469,7 @@ namespace jolcode
                                 }
                             }
                             else
-                            {
+                            {//Estatus es Null
                                 if (CollCriterios[7].Editar == true)
                                 {
                                     Rechazo[7]++;
@@ -2571,7 +2575,7 @@ namespace jolcode
                         object status = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out status, myCnnDBCeeMaster) == null)
-                        {
+                        {// No Exite
                             //if (CollCriterios[10].Editar == true)
                             //{
                             //    Rechazo[10]++;
@@ -2604,7 +2608,7 @@ namespace jolcode
                                 }
                             }
                             else
-                            {
+                            {//Estatus es Null
                                 if (CollCriterios[10].Editar == true)
                                 {
                                     Rechazo[10]++;
@@ -2621,51 +2625,33 @@ namespace jolcode
 
                     }
 
-                    // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
-                    if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
-                    {
-                        if (CollCriterios[11].Editar == true || CollCriterios[11].Warning == true)// 12-'PRECINTO NO CONCUERDA
-                        {
-                            string[] sqlstr = { "SELECT FirstGeoCode ",
+
+                    object FirstGeoCode = null;
+
+                    string[] sqlstrPrecinto = { "SELECT FirstGeoCode ",
                                                 "From [usercid].[Citizen] ",
                                                 " Where [CitizenID] = '", FixNum( m_N_ELEC) , "'"};
-                            object FirstGeoCode = null;
 
-                            if (MyValidarDatos(string.Concat(sqlstr), out FirstGeoCode, myCnnDBCeeMaster) == null)
-                            {//Rechazo
-                                if (CollCriterios[11].Editar == true)
-                                {
-                                    Rechazo[11]++;
-                                strRechazos += "12|";
-                                    isRechazo[11] = true;
-                                }
-                                if (CollCriterios[11].Warning == true)
-                                {
-                                    Warning[11]++;
-                                    isWarning[11] = true;
-                                }
-                            }
-                            else
+                    if (MyValidarDatos(string.Concat(sqlstrPrecinto), out FirstGeoCode, myCnnDBCeeMaster) == null)
+                    {
+                        // No Exite
+                    }
+
+                    // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
+
+                    if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
+                    {
+                      
+
+                        if (CollCriterios[11].Editar == true || CollCriterios[11].Warning == true)// 12-'PRECINTO NO CONCUERDA
+                        {
+
+                            if (FirstGeoCode != null)
                             {
-                                if (FirstGeoCode != null)
-                                {//Falta rutina de REYDI
-                                    string precinto = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
-                                    if (precinto != m_N_PRECINTO)
-                                    {
-                                        if (CollCriterios[11].Editar == true)
-                                        {
-                                            Rechazo[11]++;
-                                            strRechazos += "12|";
-                                            isRechazo[11] = true;
-                                        }
-                                        if (CollCriterios[11].Warning == true)
-                                        {
-                                            Warning[11]++;
-                                            isWarning[11] = true;
-                                        }
-                                    }
-                                }
-                                else
+                                string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
+
+
+                                if (precintoMasterCee != m_N_PRECINTO)
                                 {
                                     if (CollCriterios[11].Editar == true)
                                     {
@@ -2680,56 +2666,45 @@ namespace jolcode
                                     }
                                 }
                             }
+                            else
+                            {
+                                if (CollCriterios[11].Editar == true)
+                                {
+                                    Rechazo[11]++;
+                                    strRechazos += "12|";
+                                    isRechazo[11] = true;
+                                }
+                                if (CollCriterios[11].Warning == true)
+                                {
+                                    Warning[11]++;
+                                    isWarning[11] = true;
+                                }
+                            }
                         }
+                        
 
                         if (CollCriterios[12].Editar == true || CollCriterios[12].Warning ==true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
                         {
-                            string[] sqlstr = { "SELECT [NumPrecinto] ",
-                                                "From Aspirantes ",
-                                                " Where [NumCandidato] = '", FixNum(m_N_CANDIDAT) , "'"};
-                            object NumPrecinto = null;
+                            string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
 
-                            if (MyValidarDatos(string.Concat(sqlstr), out NumPrecinto, myCnnRadicacionesCEE) == null)
-                            {
-                                if (CollCriterios[12].Editar == true)
-                                {
-                                    Rechazo[12]++;
-                                    strRechazos += "13|";
-                                    isRechazo[12] = true;
-                                }
-                                if (CollCriterios[12].Warning == true)
-                                {
-                                    Warning[12]++;
-                                    isWarning[12] = true;
-                                }
+                            object CodigoArea = null;
+                            string[] sqlstr2 = { "SELECT [Precintos] ",
+                                                "From [dbo].[Areas] ",
+                                                "where Area in (select Area from [dbo].[Candidatos] where [NumCand]=" + FixNum( m_N_CANDIDAT )};
+
+                            if (MyValidarDatos(string.Concat(sqlstr2), out CodigoArea, myCnnDBEndososValidarDatos) == null)
+                            {//No Exite
+
                             }
-                            else
+                            if (CodigoArea != null)
                             {
-                                if (NumPrecinto != null)
-                                {
-                                    string precinto = NumPrecinto.ToString().Trim().PadLeft(3, '0');
-                                    if (precinto != m_N_PRECINTO)
-                                    {
-                                        if (CollCriterios[12].Editar == true)
-                                        {
-                                            Rechazo[12]++;
-                                            strRechazos += "13|";
-                                            isRechazo[12] = true;
-                                        }
-                                        if (CollCriterios[12].Warning == true)
-                                        {
-                                            Warning[12]++;
-                                            isWarning[12] = true;
-                                        }
-                                    }
-                                }
-                                else
+                                if (!CodigoArea.ToString().Contains(precintoMasterCee))
                                 {
                                     if (CollCriterios[12].Editar == true)
                                     {
                                         Rechazo[12]++;
                                         strRechazos += "13|";
-                                        isRechazo[12]= true;
+                                        isRechazo[12] = true;
                                     }
                                     if (CollCriterios[12].Warning == true)
                                     {
@@ -2739,7 +2714,7 @@ namespace jolcode
                                 }
                             }
                         }
-                    }
+                    }//End if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8) 
 
                     if (CollCriterios[13].Editar == true || CollCriterios[13].Warning == true)// 14-'MULTIPLES ENDOSOS PARA EL MISMO CANDIDATO
                     {
@@ -2766,7 +2741,7 @@ namespace jolcode
                                 }
                             }
                         }
-                    }
+                    }//end if 14-
 
                     if (CollCriterios[14].Editar == true || CollCriterios[14].Warning == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
                     {
@@ -2914,9 +2889,19 @@ namespace jolcode
                                     }
                                     break;
 
-                                case 8: //'Asambleista
+                                case 8: //'Legislador Municipales
                                     {//Falta tabala 
-                                        if ((int)total > 3)
+                                        object totalPermitidos = null;
+                                        string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
+
+                                        string[] sql = {
+                                            "Select [Postulados] from [dbo].[tblLegisladoresMunicipalesPostulados] ",
+                                            "where [Precinto] like '%",precintoMasterCee,"%'"
+                                        };
+
+                                        MyValidarDatos(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos);
+
+                                        if ((int)total > (int)totalPermitidos)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -2924,6 +2909,7 @@ namespace jolcode
                                                 strRechazos += "15|";
                                                 isRechazo[14] = true;
                                             }
+
                                             if (CollCriterios[14].Warning == true)
                                             {
                                                 Warning[14]++;
@@ -2932,7 +2918,6 @@ namespace jolcode
                                         }
                                     }
                                     break;
-
                             }
                         }
                     }
