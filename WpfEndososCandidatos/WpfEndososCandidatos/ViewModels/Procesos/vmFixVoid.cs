@@ -1275,7 +1275,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public void MyGotFocus(object name)
         {
-            const string REGPATH = "SOFTWARE\\CEE\\Endosos\\Partidos";
             int X = 0;
             int Y = 0;
             int H = 0;
@@ -1329,7 +1328,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 FechaFirma : X = 230; Y = 1586; H = 244; W = 970; V = 1557; Ho = 110;
                 FechaRadi : X = 1021; Y = 1454; H = 580; W = 630; V = 1404; Ho = 554;
                 */
-                string str;
                 string[] strError = new string[0];
                 switch (contenido)
                 {

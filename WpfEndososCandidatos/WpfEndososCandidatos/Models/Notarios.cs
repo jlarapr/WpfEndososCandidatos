@@ -9,10 +9,11 @@ namespace WpfEndososCandidatos.Models
     class Notarios: IEquatable<Notarios>, IComparable
     {
         public string NumElec { get; set; }
-        public string Partido { get; set; }
+        public string NumCand { get; set; }
         public string Nombre { get; set; }
         public string Apellido1 { get; set; }
         public string Apellido2 { get; set; }
+        public string Status { get; set; }
 
         public bool AllColumn { get; set; }
         public override string ToString()
@@ -25,10 +26,11 @@ namespace WpfEndososCandidatos.Models
                 myOut = new List<string>()
                 {
                     NumElec.Trim(),
-                    Partido.Trim(),
+                    NumCand.Trim(),
                     Nombre.Trim().ToUpper(),
                     Apellido1.Trim().ToUpper(),
-                    Apellido2.Trim().ToUpper()
+                    Apellido2.Trim().ToUpper(),
+                    Status.Trim().ToUpper()
                 };
                 myJoined = string.Join("-", myOut);
             }
@@ -40,7 +42,8 @@ namespace WpfEndososCandidatos.Models
                     Nombre.Trim().ToUpper(),
                     Apellido1.Trim().ToUpper(),
                     Apellido2.Trim().ToUpper(),
-                    Partido.Trim()
+                    NumCand.Trim(),
+                    Status
                 };
                 myJoined = string.Join(" - ", myOut);
             }

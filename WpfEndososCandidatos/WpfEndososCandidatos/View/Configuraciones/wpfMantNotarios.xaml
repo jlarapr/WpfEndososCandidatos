@@ -54,7 +54,7 @@
                              CharacterCasing="Upper"
                              
                              />
-                    <Label x:Name="lblPartido" Content="Partido" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lblAspirante" Content="Aspirante" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="10,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="304"
                              Text="{Binding txtNombre}"
                              Background="{Binding Background_txtNombre}"
@@ -63,21 +63,21 @@
                              IsReadOnly="{Binding IsReadOnly_txtNombre}"
                              
                              />
-                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top" Width="326"
-                    	ItemsSource="{Binding cbPartidos}"
-                    	SelectedItem="{Binding cbPartidos_Item, Mode=TwoWay}"                                     
-                    	SelectedIndex="{Binding cbPartidos_Item_Id, Mode=TwoWay}"
-                    	Visibility="{Binding Visibility_cbPartidos}" Height="23"
-                              IsEnabled="{Binding IsEnabled_cbPartidos}"
+                    <ComboBox x:Name="cbAspirante" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top" Width="326"
+                    	ItemsSource="{Binding cbAspirante}"
+                    	SelectedItem="{Binding cbAspirante_Item, Mode=TwoWay}"                                     
+                    	SelectedIndex="{Binding cbAspirante_Item_Id, Mode=TwoWay}"
+                    	Visibility="{Binding Visibility_cbAspirante}" Height="23"
+                              IsEnabled="{Binding IsEnabled_cbAspirante}"
                               />
-                    <TextBox x:Name="txtNombrePartido" HorizontalAlignment="Left" Height="23" Margin="10,273,0,0"  VerticalAlignment="Top" Width="304"
+                    <TextBox x:Name="txtNombreAspirante" HorizontalAlignment="Left" Height="23" Margin="10,273,0,0"  VerticalAlignment="Top" Width="304"
                     	TextWrapping="NoWrap"
-                    	Text="{Binding txtNombrePartido}"
-                    	Visibility="{Binding Visibility_txtNombrePartido}"
+                    	Text="{Binding txtNombreAspirante}"
+                    	Visibility="{Binding Visibility_txtNombreAspirante}"
                     	CharacterCasing ="Upper"
-                             Background="{Binding Background_txtNombrePartido}"
-                             IsReadOnly="{Binding IsReadOnly_txtNombrePartido }"
-                             IsEnabled="{Binding IsEnabled_txtNombrePartido}"
+                             Background="{Binding Background_txtNombreAspirante}"
+                             IsReadOnly="{Binding IsReadOnly_txtNombreAspirante}"
+                             IsEnabled="{Binding IsEnabled_txtNombreAspirante}"
                              />
                     <Button Content="Salir"  HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="75" Height="29"
                     	Command="{Binding cmdSalir_Click}"
@@ -107,6 +107,11 @@
                     <Button x:Name="cmdFind" Content="Buscar..." HorizontalAlignment="Left" Margin="102,41,0,0" VerticalAlignment="Top" Width="59"
                     	Command="{Binding cmdFind_Click}" Height="23"
                             />
+                    <Label x:Name="label6_Copy1" Content="Status :" HorizontalAlignment="Left" Margin="194,43,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
+                    <Label x:Name="txtSatatusElec" Height="26" Margin="0,43,15,0"  VerticalAlignment="Top"
+                    	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Right" Width="76"
+                                   />
                 </Grid>
             </GroupBox>
 

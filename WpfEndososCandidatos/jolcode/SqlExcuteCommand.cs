@@ -843,6 +843,10 @@ namespace jolcode
             }
             return myTableReturn;
         }
+
+    
+
+
         public DataTable MyGetNotarios()
         {
             DataTable myTableReturn = new DataTable();
@@ -887,7 +891,7 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select * from Candidatos order by NumCand";
+                string mySqlstr = "Select * from Candidatos order by cargo,NumCand";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1464,7 +1468,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeNotario(bool isInsert, string NumElec, string Partido, string Nombre, string Apellido1, string Apellido2, string where)
+        public bool MyChangeNotario(bool isInsert, string NumElec, string NumCand, string Nombre, string Apellido1, string Apellido2,string Status , string where)
         {
             bool myBoolReturn = false;
             try
@@ -1473,18 +1477,19 @@ namespace jolcode
 
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[Nombre],[Apellido1],[Apellido2]) ",
-                            "VALUES (@NumElec,@Partido,@Nombre,@Apellido1,@Apellido2)"
+                            "INSERT INTO [dbo].[Notarios] ([NumElec],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status]) ",
+                            "VALUES (@NumElec,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status)"
                         };
 
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Notarios] ",
                             "SET [NumElec] = @NumElec,",
-                            "[Partido] = @Partido,",
+                            "[NumCand] = @NumCand,",
                             "[Nombre] = @Nombre,",
                             "[Apellido1] = @Apellido1,",
-                            "[Apellido2] = @Apellido2 ",
+                            "[Apellido2] = @Apellido2,",
+                            "[Status] = @Status ",
                             "WHERE NumElec=@where"
                 };
 
@@ -1504,19 +1509,21 @@ namespace jolcode
                             cnn.Open();
 
                         cmd.Parameters.Add(new SqlParameter("@NumElec", SqlDbType.Int));
-                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@NumCand", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Apellido1", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Apellido2", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Status", SqlDbType.VarChar));//[Status]
 
                         if (!isInsert)
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
 
-                        cmd.Parameters["@NumElec"].Value = NumElec;
-                        cmd.Parameters["@Partido"].Value = Partido;
-                        cmd.Parameters["@Nombre"].Value = Nombre;
-                        cmd.Parameters["@Apellido1"].Value = Apellido1;
-                        cmd.Parameters["@Apellido2"].Value = Apellido2;
+                        cmd.Parameters["@NumElec"].Value = NumElec.Trim();
+                        cmd.Parameters["@NumCand"].Value = NumCand.Trim();
+                        cmd.Parameters["@Nombre"].Value = Nombre.Trim();
+                        cmd.Parameters["@Apellido1"].Value = Apellido1.Trim();
+                        cmd.Parameters["@Apellido2"].Value = Apellido2.Trim();
+                        cmd.Parameters["@Status"].Value = Status.Trim();
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -1533,7 +1540,7 @@ namespace jolcode
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString() + "\r\nMyInsertArea Error");
+                throw new Exception(ex.ToString() + "\r\n Notario Error");
             }
             return myBoolReturn;
         }

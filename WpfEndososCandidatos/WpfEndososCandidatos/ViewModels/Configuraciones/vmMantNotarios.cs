@@ -39,17 +39,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsReadOnly_txtNumElec;
         private bool _IsReadOnly_txtApellido1;
         private bool _IsReadOnly_txtApellido2;
-        private bool _IsReadOnly_txtNombrePartido;
-        private Brush _Background_txtNombrePartido;
-        private ObservableCollection<Partidos> _cbPartidos;
-        private string _cbPartidos_Item;
-        private int _cbPartidos_Item_Id;
-        private DataTable _MyPartidosTable;
+        private bool _IsReadOnly_txtNombreAspirante;
+        private Brush _Background_txtNombreAspirante;
+        private ObservableCollection<Candidatos> _cbAspirante;
+        private string _cbAspirante_Item;
+        private int _cbAspirante_Item_Id;
+        private DataTable _MyAspiranteTable;
         private DataTable _MyNotarioTable;
-        private string _txtNombrePartido;
-        private Visibility _Visibility_txtNombrePartido;
-        private bool _IsEnabled_txtNombrePartido;
-        private bool _IsEnabled_cbPartidos;
+        private string _txtNombreAspirante;
+        private Visibility _Visibility_txtNombreAspirante;
+        private bool _IsEnabled_txtNombreAspirante;
+        private bool _IsEnabled_cbAspirante;
         private ObservableCollection<Notarios> _cbNotario;
         private string _cbNotario_Item;
         private int _cbNotario_Item_Id;
@@ -58,7 +58,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         private string _txtApellido1;
         private string _txtApellido2;
-        private Visibility _Visibility_cbPartidos;
+        private Visibility _Visibility_cbAspirante;
         private Visibility _Visibility_cbNotario;
         private bool _IsReadOnly_txtNombre;
         private bool _IsEnabled_cmdAdd;
@@ -70,7 +70,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsInsert;
         private bool _isEdit;
         private string _DBCeeMasterCnnStr;
-        private bool _CanFind;
+       // private bool _CanFind;
+        private string _txtStatusElec;
 
         public vmMantNotarios() : base(new wpfMantNotarios())
         {
@@ -83,12 +84,23 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
 
-            cbPartidos = new ObservableCollection<Partidos>();
+            cbAspirante = new ObservableCollection<Candidatos>();
             cbNotario = new ObservableCollection<Notarios>();
             _LogClass = new Logclass();
         }
 
         #region MyPrperty
+        public string txtStatusElec
+        {
+            get
+            {
+                return _txtStatusElec;
+            }set
+            {
+                _txtStatusElec = value;
+                this.RaisePropertychanged("txtStatusElec");
+            }
+        }
         public bool CanFind
         {
             get
@@ -98,7 +110,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbPartidos_Item_Id = -1;
+                    cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -109,7 +121,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbPartidos_Item_Id = -1;
+                    cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -121,7 +133,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbPartidos_Item_Id = -1;
+                    cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -193,15 +205,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("Background_txtNumElec");
             }
         }
-        public Brush Background_txtNombrePartido
+        public Brush Background_txtNombreAspirante
         {
             get
             {
-                return _Background_txtNombrePartido;
+                return _Background_txtNombreAspirante;
             }set
             {
-                _Background_txtNombrePartido = value;
-                this.RaisePropertychanged("Background_txtNombrePartido");
+                _Background_txtNombreAspirante = value;
+                this.RaisePropertychanged("Background_txtNombreAspirante");
             }
         }
 
@@ -217,10 +229,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get
             {
-                if ( (txtNumElec ==null) || (txtNombre ==null) || (txtApellido1 ==null) || (_isEdit == false) || (txtNombrePartido ==null))
+                if ( (txtNumElec ==null) || (txtNombre ==null) || (txtApellido1 ==null) || (_isEdit == false) || (txtNombreAspirante ==null))
                     return false;
 
-                if ((txtNumElec.Trim().Length != 7) || (txtNombre.Trim().Length == 0) || (txtApellido1.Trim().Length ==0 )|| (txtNombrePartido.Trim().Length ==0) )
+                if ((txtNumElec.Trim().Length != 7) || (txtNombre.Trim().Length == 0) || (txtApellido1.Trim().Length ==0 )|| (txtNombreAspirante.Trim().Length ==0) )
                     return false;
 
                 if (int.Parse(txtNumElec) == 0)
@@ -276,38 +288,38 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("IsReadOnly_txtNombre");
             }
         }
-        public bool IsReadOnly_txtNombrePartido
+        public bool IsReadOnly_txtNombreAspirante
         {
             get
             {
-                return _IsReadOnly_txtNombrePartido;
+                return _IsReadOnly_txtNombreAspirante;
             }set
             {
-                _IsReadOnly_txtNombrePartido = value;
-                this.RaisePropertychanged("IsReadOnly_txtNombrePartido");
+                _IsReadOnly_txtNombreAspirante = value;
+                this.RaisePropertychanged("IsReadOnly_txtNombreAspirante");
             }
                  
         }
-        public bool IsEnabled_txtNombrePartido
+        public bool IsEnabled_txtNombreAspirante
         {
             get
             {
-                return _IsEnabled_txtNombrePartido;
+                return _IsEnabled_txtNombreAspirante;
             }set
             {
-                _IsEnabled_txtNombrePartido = value;
-                this.RaisePropertychanged("IsEnabled_txtNombrePartido");
+                _IsEnabled_txtNombreAspirante = value;
+                this.RaisePropertychanged("IsEnabled_txtNombreAspirante");
             }
         }
-        public bool IsEnabled_cbPartidos
+        public bool IsEnabled_cbAspirante
         {
             get
             {
-                return _IsEnabled_cbPartidos;
+                return _IsEnabled_cbAspirante;
             }set
             {
-                _IsEnabled_cbPartidos = value;
-                this.RaisePropertychanged("IsEnabled_cbPartidos");
+                _IsEnabled_cbAspirante = value;
+                this.RaisePropertychanged("IsEnabled_cbAspirante");
             }
         }
         public bool IsEnabled_cmdAdd
@@ -405,7 +417,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                             txtApellido1 = string.Empty;
                             txtApellido2 = string.Empty;
                             txtNombre = string.Empty;
-                            cbPartidos_Item_Id = -1;
+                            cbAspirante_Item_Id = -1;
                         }
 
                         _txtNumElec = value;
@@ -419,7 +431,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         txtApellido1 = string.Empty;
                         txtApellido2 = string.Empty;
                         txtNombre = string.Empty;
-                        cbPartidos_Item_Id = -1;
+                        cbAspirante_Item_Id = -1;
                         this.RaisePropertychanged("txtNumElec");
                     }
                 }
@@ -439,15 +451,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBEndososCnnStr = value;
             }
         }
-        public string txtNombrePartido
+        public string txtNombreAspirante
         {
             get
             {
-                return _txtNombrePartido;
+                return _txtNombreAspirante;
             }set
             {
-                _txtNombrePartido = value;
-                this.RaisePropertychanged("txtNombrePartido");
+                _txtNombreAspirante = value;
+                this.RaisePropertychanged("txtNombreAspirante");
             }
         }
         public string txtNombre
@@ -485,15 +497,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
-        public Visibility Visibility_txtNombrePartido
+        public Visibility Visibility_txtNombreAspirante
         {
             get
             {
-                return _Visibility_txtNombrePartido;
+                return _Visibility_txtNombreAspirante;
             }set
             {
-                _Visibility_txtNombrePartido = value;
-                this.RaisePropertychanged("Visibility_txtNombrePartido");
+                _Visibility_txtNombreAspirante = value;
+                this.RaisePropertychanged("Visibility_txtNombreAspirante");
             }
         }
         public Visibility Visibility_txtNombre
@@ -507,15 +519,15 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("Visibility_txtNombre");
             }
         }
-        public Visibility Visibility_cbPartidos
+        public Visibility Visibility_cbAspirante
         {
             get
             {
-                return _Visibility_cbPartidos;
+                return _Visibility_cbAspirante;
             }set
             {
-                _Visibility_cbPartidos = value;
-                this.RaisePropertychanged("Visibility_cbPartidos");
+                _Visibility_cbAspirante = value;
+                this.RaisePropertychanged("Visibility_cbAspirante");
             }
         }
         public Visibility Visibility_cbNotario
@@ -530,46 +542,46 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
-        public ObservableCollection<Partidos> cbPartidos
+        public ObservableCollection<Candidatos> cbAspirante
         {
             get
             {
-                return _cbPartidos;
+                return _cbAspirante;
             }
             set
             {
-                _cbPartidos = value;
-                this.RaisePropertychanged("cbPartidos");
+                _cbAspirante = value;
+                this.RaisePropertychanged("cbAspirante");
             }
         }
-        public string cbPartidos_Item
+        public string cbAspirante_Item
         {
             get
             {
-                return _cbPartidos_Item;
+                return _cbAspirante_Item;
             }
             set
             {
                 if (value != null)
                 {
-                    _cbPartidos_Item = value;
-                    txtNombrePartido = value;
+                    _cbAspirante_Item = value;
+                    txtNombreAspirante = value;
 
-                    this.RaisePropertychanged("cbPartidos_Item");
+                    this.RaisePropertychanged("cbAspirante_Item");
                 }
             }
         }
-        public int cbPartidos_Item_Id
+        public int cbAspirante_Item_Id
         {
             get
             {
-                return _cbPartidos_Item_Id;
+                return _cbAspirante_Item_Id;
             }
             set
             {
-                _cbPartidos_Item_Id = value;
+                _cbAspirante_Item_Id = value;
                
-                this.RaisePropertychanged("cbPartidos_Item_Id");
+                this.RaisePropertychanged("cbAspirante_Item_Id");
             }
         }
 
@@ -603,8 +615,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtApellido1 = myData[2].Trim();
                     txtApellido2 = myData[3].Trim();
 
-                    cbPartidos_Item_Id = FindByPartido(myData[4].Trim());
-                    txtNombrePartido = cbPartidos_Item;
+                    cbAspirante_Item_Id = FindByAspirante(myData[4].Trim());
+                    txtNombreAspirante = cbAspirante_Item;
+                    txtStatusElec = myData[5].Trim();
 
                     IsEnabled_cmdDelete = true;
                     IsEnabled_cmdEdit = true;
@@ -697,10 +710,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 Visibility_txtNombre = Visibility.Visible;
                 Visibility_cbNotario = Visibility.Hidden;
-                Visibility_cbPartidos = Visibility.Visible;
-                Visibility_txtNombrePartido = Visibility.Hidden;
+                Visibility_cbAspirante = Visibility.Visible;
+                Visibility_txtNombreAspirante = Visibility.Hidden;
 
-                IsEnabled_cbPartidos = true;
+                IsEnabled_cbAspirante = true;
                 IsReadOnly_txtApellido1 = false;
                 IsReadOnly_txtApellido2 = false;
                 IsReadOnly_txtNumElec = false;
@@ -749,7 +762,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombrePartido.Split('-')[0], txtNombre, txtApellido1, txtApellido2, myWhere);
+                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombreAspirante.Split('-')[1], txtNombre, txtApellido1, txtApellido2,txtStatusElec, myWhere);
                 }
 
                 if (!myUpDate)
@@ -778,7 +791,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
-                var response = MessageBox.Show("!!!Do you really want to Delete this Partido?\r\n" , "Deleting...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                var response = MessageBox.Show("!!!Do you really want to Delete this ?\r\n" , "Deleting...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 
                 if (response == MessageBoxResult.No)
                     return;
@@ -786,7 +799,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 string myWhere = string.Empty;
                 string myWhere2 = string.Empty;
                 myWhere = txtNumElec.Trim();
-                myWhere2 = cbPartidos_Item.Split('-')[0];
+                myWhere2 = cbAspirante_Item.Split('-')[0];
                 bool myDelete = false;
 
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
@@ -823,12 +836,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
+                MyReset();
+
                 Visibility_txtNombre = Visibility.Visible;
                 Visibility_cbNotario = Visibility.Hidden;
-                Visibility_cbPartidos = Visibility.Visible;
-                Visibility_txtNombrePartido = Visibility.Hidden;
+                Visibility_cbAspirante = Visibility.Visible;
+                Visibility_txtNombreAspirante = Visibility.Hidden;
 
-                IsEnabled_cbPartidos = true;
+                IsEnabled_cbAspirante = true;
                 IsReadOnly_txtApellido1 = false;
                 IsReadOnly_txtApellido2 = false;
                 IsReadOnly_txtNumElec = false;
@@ -901,16 +916,16 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         private void MyReset()
         {
-            _CanFind = false;
+            //_CanFind = false;
 
             IsReadOnly_txtNumElec = true;
             IsReadOnly_txtApellido1 = true;
             IsReadOnly_txtApellido2 = true;
-            IsReadOnly_txtNombrePartido = true;
+            IsReadOnly_txtNombreAspirante = true;
             IsReadOnly_txtNombre = true;
 
-            IsEnabled_txtNombrePartido = true;
-            IsEnabled_cbPartidos = false;
+            IsEnabled_txtNombreAspirante = true;
+            IsEnabled_cbAspirante = false;
 
             IsEnabled_cmdAdd = true;
             IsEnabled_cmdDelete = false;
@@ -919,27 +934,28 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             IsEnabled_CmdCancel = false;
             IsEnabled_cmdSalir = true;
 
-            txtNombrePartido = string.Empty;
+            txtNombreAspirante = string.Empty;
             txtNombre = string.Empty;
             txtNumElec = string.Empty;
             txtNombre = string.Empty;
             txtApellido1 = string.Empty;
             txtApellido2 = string.Empty;
-           
+            txtStatusElec = string.Empty;
+
             Background_txtNombre = Brushes.Yellow;
             Background_txtApellido2 = Brushes.Yellow;
             Background_txtApellido1 = Brushes.Yellow;
             Background_txtNumElec = Brushes.Yellow;
-            Background_txtNombrePartido = Brushes.Yellow;
+            Background_txtNombreAspirante = Brushes.Yellow;
 
-            Visibility_txtNombrePartido = Visibility.Visible;
+            Visibility_txtNombreAspirante = Visibility.Visible;
             Visibility_txtNombre = Visibility.Hidden;
-            Visibility_cbPartidos = Visibility.Hidden;
+            Visibility_cbAspirante = Visibility.Hidden;
             Visibility_cbNotario = Visibility.Visible;
 
             _IsInsert = false;
             _isEdit = false;
-            cbPartidos_Item_Id = -1;
+            cbAspirante_Item_Id = -1;
             cbNotario_Item_Id = -1;
         }
 
@@ -954,18 +970,20 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 {
                     _MyNotarioTable = get.MyGetNotarios();
 
-                    _MyPartidosTable = get.MyGetPartidos();
+                    _MyAspiranteTable = get.MyGetCandidatos();
 
-                    cbPartidos.Clear();
+                    cbAspirante.Clear();
 
-                    foreach (DataRow row in _MyPartidosTable.Rows)
+                    foreach (DataRow row in _MyAspiranteTable.Rows)
                     {
-                        Partidos mypartido = new Partidos();
-                        mypartido.PartidoKey = row["Partido"].ToString();
-                        mypartido.Desc = row["Desc"].ToString();
-                        mypartido.EndoReq = (int)row["EndoReq"];
-                        mypartido.Area = row["Area"].ToString();
-                        cbPartidos.Add(mypartido);
+                        Candidatos myCand = new Candidatos();
+                        myCand.Partido = row["Partido"].ToString();
+                        myCand.NumCand = row["NumCand"].ToString();
+                        myCand.Nombre = row["Nombre"].ToString();
+                        myCand.Area = row["Area"].ToString();
+                        myCand.Cargo = row["Cargo"].ToString();
+                        myCand.EndoReq = row["EndoReq"].ToString();
+                        cbAspirante.Add(myCand);
                     }
 
                     cbNotario.Clear();
@@ -975,10 +993,11 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         Notarios myNotario = new Notarios();
 
                         myNotario.NumElec = row["NumElec"].ToString();
-                        myNotario.Partido = row["Partido"].ToString();
+                        myNotario.NumCand = row["NumCand"].ToString();
                         myNotario.Nombre = row["Nombre"].ToString();
                         myNotario.Apellido1 = row["Apellido1"].ToString();
                         myNotario.Apellido2 = row["Apellido2"].ToString();
+                        myNotario.Status = row["Status"].ToString();
                         myNotario.AllColumn = false;
                         cbNotario.Add(myNotario);
                     }
@@ -1003,7 +1022,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                 })
                 {
-                    _CanFind = true;
+                   // _CanFind = true;
 
                     _txtNumElec = _txtNumElec.PadLeft(7, '0');
 
@@ -1018,20 +1037,19 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
                     {
                         case "A":
+                            txtStatusElec = "A";
                             break;
                         case "E":
-                           //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                            throw new Exception("Excluido");
-                            //break;
+                            //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                            txtStatusElec = "E";
+                            break;
                         case "I":
-                            throw new Exception("Inactivo");
-
+                            txtStatusElec = "I";
                             //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            //break;
+                            break;
                         default:
-                            throw new Exception("Inactivo");
-                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            //break;
+                            txtStatusElec = "?";
+                            break;
                     }
 
 
@@ -1045,14 +1063,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MyReset();
             }
         }
-        private int FindByPartido(string partidoKey)
+        private int FindByAspirante(string AspiranteKey)
         {
             int myIndex = -1;
             try
             {
 
-                Partidos myInfoPAartido = cbPartidos.Where(x => x.PartidoKey == partidoKey).Single<Partidos>();
-                myIndex = cbPartidos.IndexOf(myInfoPAartido);
+                Candidatos myInfoAspirante = cbAspirante.Where(x => x.NumCand == AspiranteKey).Single<Candidatos>();
+                myIndex = cbAspirante.IndexOf(myInfoAspirante);
             }
             catch (Exception ex)
             {

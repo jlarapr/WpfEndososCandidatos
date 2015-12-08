@@ -14,6 +14,7 @@ namespace WpfEndososCandidatos.Models
         public string Area { get; set; }
         public string Cargo { get; set; }
         public string EndoReq { get; set; }
+       
 
         public override string ToString()
         {
