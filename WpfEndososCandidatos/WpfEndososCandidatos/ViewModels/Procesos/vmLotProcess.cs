@@ -54,6 +54,7 @@
             cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click(),param => CanCmdRefresh);
             cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
             cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
+            SendTab = new RelayCommand(param => MySendTab());
 
             CollCriterios = new ObservableCollection<Criterios>();
             cbLots = new ObservableCollection<string>();
@@ -465,10 +466,13 @@
         {
             get;private set;
         }
-
+        public RelayCommand SendTab
+        {
+            get;private set;
+        }
         #endregion
 
-        
+
         #region MyMetodos
 
 

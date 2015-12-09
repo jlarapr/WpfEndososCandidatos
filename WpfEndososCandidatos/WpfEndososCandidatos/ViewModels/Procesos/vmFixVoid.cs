@@ -96,6 +96,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtStatusNotario;
         private ObservableCollection<Brush> _txtColor;
         Brush tmpBrushes;
+        private bool _isAll;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -108,6 +109,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
             cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
             cmdSetImg = new RelayCommand(param => MyCmdSetImg());
+            SendTab = new RelayCommand(param => MySendTab());
             _DataToSave = new List<FixVoid>();
             txtColor = new ObservableCollection<Brush>();
 
@@ -118,6 +120,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         /*Property*/
         #region MyProperty
 
+            public bool isAll
+        {
+            get
+            {
+                return _isAll;
+            }set
+            {
+                _isAll = value;
+            }
+        }
         public BitmapImage srcEndoso
         {
             get
@@ -1703,6 +1715,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 return _GotFocus;
             }
         }
+        public RelayCommand SendTab { get; private set; }
         #endregion
 
 
@@ -1759,8 +1772,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     string rechazoNum = string.Empty;
                     txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,_DataToSave[i].Batch,ref EndosoImage,ref rechazoNum);
 
-                    SetColor(rechazoNum);
-
+                    if (!string.IsNullOrEmpty(rechazoNum))
+                    {
+                        SetColor(rechazoNum);
+                    }else
+                    {
+                        EndosoImage = _DataToSave[i].EndosoImage;
+                    }
                     srcEndoso = new BitmapImage();
                    
                         // 'DESPLIEGA la imagen del Endoso
@@ -1998,10 +2016,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    
 
-                    MyLotsTable = get.MyGetLotToFixVoid(Lot);
-
+                    MyLotsTable = get.MyGetLotToFixVoid(Lot,isAll);
 
                     if (_MyLotsTable.Rows.Count == 0)
                         MessageBox.Show("No hay rechazadas para procesar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -2009,18 +2025,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     int k = 0;
                     TotalRechazada = _MyLotsTable.Rows.Count;
                     foreach (DataRow row in _MyLotsTable.Rows)
-                    {
-                        string FechaNac_Mes = row["FechaNac_Mes"].ToString().Trim().PadLeft(2,'0');
-                        string FechaNac_Dia = row["FechaNac_Dia"].ToString().Trim().PadLeft(2,'0');
-                        string FechaNac_Ano = row["FechaNac_Ano"].ToString().Trim().PadLeft(4,'0');
+                    {//12/01/0015
+                     //string FechaNac_Mes = row["FechaNac_Mes"].ToString().Trim().PadLeft(2,'0');
+                     //string FechaNac_Dia = row["FechaNac_Dia"].ToString().Trim().PadLeft(2,'0');
+                     //string FechaNac_Ano = row["FechaNac_Ano"].ToString().Trim().PadLeft(4,'0');
+                     //[FechaNac]
+                     // string FechaNac = FechaNac_Mes + FechaNac_Dia + FechaNac_Ano;
+                        string FechaNac = row["FechaNac"].ToString().Trim();
 
-                        string FechaNac= FechaNac_Mes + FechaNac_Dia + FechaNac_Ano;
+                        //string FechaFirm_Mes = row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0');
+                        //string FechaFirm_Dia = row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0');
+                        //string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
 
-                        string FechaFirm_Mes = row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0');
-                        string FechaFirm_Dia = row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0');
-                        string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
-
-                        string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
+                      //  string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
+                        string Fecha_Endoso = row["Firma_Fecha"].ToString().Trim(); 
 
                         _DataToSave.Add(new FixVoid
                         {
@@ -2028,24 +2046,25 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             CurrElect = row["NumElec"].ToString(),
                             Nombre =  row["Nombre"].ToString().Trim() + " " + row["Paterno"].ToString().Trim() + " " + row["Materno"].ToString(),
                             Lot = Lot,
-                            Formulario = row["BatchPgNo"].ToString().Trim(),
+                            Formulario = row["Formulario"].ToString().Trim(),
                             TipoDeRechazo = "",
                             Numelec = row["NumElec"].ToString(),
-                            NotarioElec = row["Notario_Funcionario"].ToString(),
+                            NotarioElec = row["Notario"].ToString(),
                             Precinto = row["Precinto"].ToString().Trim().PadLeft(3, '0'),
                             FechaNac = DateTimeUtil.MyValidarFecha(FechaNac),                            
                             Sexo = row["Sexo"].ToString().Trim(),
-                            Candidato = row["Num_Candidato"].ToString().Trim(),
-                            Cargo = row["Funcionario"].ToString().Trim(),
-                            FirmaElec = row["FirmaElector"].ToString().Trim(),
-                            NotarioFirma = row["FirmaNotario"].ToString().Trim(),
-                            Firma_Pet_Inv = row["FirmaElec_Inv"].ToString().Trim() == "1" ? true : false,
-                            Firma_Not_Inv = row["FirmaNot_Inv"].ToString().Trim() == "1" ? true : false,
+                            Candidato = row["Candidato"].ToString().Trim(),
+                            Cargo = row["Cargo"].ToString().Trim(),
+                            FirmaElec = row["Firma_Peticionario"].ToString().Trim(),
+                            NotarioFirma = row["Firma_Notario"].ToString().Trim(),
+                            Firma_Pet_Inv = row["Firma_Pet_Inv"].ToString().Trim() == "1" ? true : false,
+                            Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
                             FchEndoso =null,
                             Firma_Fecha = DateTimeUtil.MyValidarFecha(Fecha_Endoso),
                             FchEndosoEntregada = null,
-                            Batch = row["BatchNo"].ToString(),
-                            image = row["Suspense_File"].ToString(),
+                            Batch = row["Batch"].ToString(),
+                            image = row["Image"].ToString(),
+                            EndosoImage = (byte[])row["EndosoImage"]
                             
                         });
                         k++;

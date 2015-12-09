@@ -11,6 +11,9 @@
         </i:EventTrigger>
 
     </i:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding SendTab}"   />
+    </Window.InputBindings>
     <Border  BorderBrush="{Binding BorderColor}"  Background="Silver" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
         <Border.Effect>
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
@@ -79,7 +82,7 @@
                 <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,16" Height="28" Command="{Binding cmdSetImg}"/>
+                <Button IsTabStop="False" TabIndex="999999" x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,16" Height="28" Command="{Binding cmdSetImg}"/>
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
 
             </StackPanel>

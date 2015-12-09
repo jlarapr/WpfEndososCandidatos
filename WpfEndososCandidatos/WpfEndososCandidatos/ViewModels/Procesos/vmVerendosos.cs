@@ -230,6 +230,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     frmFixVoid.DBCeeMasterImgCnnStr = DBCeeMasterImgCnnStr;
                     frmFixVoid.SysUser = SysUser;
                     frmFixVoid.Lot = cbLots_Item;
+                    frmFixVoid.isAll = true;
                     frmFixVoid.MyOnShow();
                     MyRefresh();
                 }

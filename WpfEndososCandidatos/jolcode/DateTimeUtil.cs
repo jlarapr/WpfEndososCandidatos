@@ -73,6 +73,24 @@ namespace jolcode
                 return null;
 
         }
+
+        public static DateTime? MyValidarFechaMMddyy(string param)
+        {
+            DateTime tempdate;
+            //Xceed.Wpf.Toolkit.MaskedTextBox myMaskedTextBoxValue = new Xceed.Wpf.Toolkit.MaskedTextBox();
+            //myMaskedTextBoxValue.Value = "00/00/0000";
+            //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
+            //myMaskedTextBoxValue.Text = param;
+
+            param = param.Replace("/", "");
+
+            if (DateTime.TryParseExact(param, "MMddyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
+                return tempdate;//.ToString("MM/dd/yyyy");
+            else
+                return null;
+
+        }
+
         public static string MyValidarFecha2(string param)
         {
             DateTime tempdate;

@@ -126,7 +126,7 @@ namespace jolcode
             int returnInt = 0;
             try
             {
-                string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot +"'";
+                string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -149,17 +149,17 @@ namespace jolcode
                         })
                         {
                             SqlDataReader dr = cmd.ExecuteReader();
-                            
+
                             while (dr.Read())
                             {
                                 int i = 0;
 
                                 int.TryParse(dr["total"].ToString(), out i);
                                 returnInt += i;
-                            } 
+                            }
 
 
-                          
+
                         }
 
                     }
@@ -377,7 +377,7 @@ namespace jolcode
             try
             {
 
-                string[] mySqlstr = { "Select * From [usercid].[CitizenImages] Where CitizenID =" , CitizenID, "order by [CaptureDate] desc" };
+                string[] mySqlstr = { "Select * From [usercid].[CitizenImages] Where CitizenID =", CitizenID, "order by [CaptureDate] desc" };
                 //       string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
                 //"FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
                 //"on a.CItizenId = b.CitizenID ",
@@ -419,12 +419,12 @@ namespace jolcode
             return myTableReturn;
         }
 
-        public  byte[] GetEndosoImage(string filePath)
+        public byte[] GetEndosoImage(string filePath)
         {
             FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             BinaryReader reader = new BinaryReader(stream);
 
-            byte[] img= reader.ReadBytes((int)stream.Length);
+            byte[] img = reader.ReadBytes((int)stream.Length);
 
             reader.Close();
             stream.Close();
@@ -438,12 +438,12 @@ namespace jolcode
             try
             {
 
-                string[] mySqlstr = { "Select * From [usercid].[Citizen] Where CitizenID =" , CitizenID };
-        
+                string[] mySqlstr = { "Select * From [usercid].[Citizen] Where CitizenID =", CitizenID };
+
                 //       string[] mySqlstr = { "SELECT A.*,B.SignatureImage,B.PhotoImage ",
-                                       //"FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
-                                       //"on a.CItizenId = b.CitizenID ",
-                                        //"where a.CItizenId =@CitizenID" };
+                //"FROM [usercid].[Citizen] A join [usercid].[CitizenImages] B ",
+                //"on a.CItizenId = b.CitizenID ",
+                //"where a.CItizenId =@CitizenID" };
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -480,7 +480,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLot(string Status= "0,1,2,3,4")
+        public DataTable MyGetLot(string Status = "0,1,2,3,4")
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -526,7 +526,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLotToFixVoid(string CurrLot)
+        public DataTable MyGetLotToFixVoid(string CurrLot,bool isAll=false)
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -554,15 +554,32 @@ namespace jolcode
                 //    "ORDER BY Lots.Lot, LotsEndo.Formulario; "
                 //};
 
-                string[] mySqlstr =
-                {
-                    "SELECT a.Lot,b.*  FROM [dbo].[Lots] A ", 
-                    "join [dbo].[TF-Partidos] B on a.Lot = b.BatchTrack  where A.Status = 3 ",
-                    "and A.lot ='",CurrLot,"' ",
-                    "order by  [BatchNo],[BatchPgNo]"
-                };
+                //string[] mySqlstr =
+                //{
+                //    "SELECT a.Lot,b.*  FROM [dbo].[Lots] A ", 
+                //    "join [dbo].[TF-Partidos] B on a.Lot = b.BatchTrack  where A.Status = 3 ",
+                //    "and A.lot ='",CurrLot,"' ",
+                //    "order by  [BatchNo],[BatchPgNo]"
+                //};
+                string[] mySqlstr;
+                if (!isAll)
+                    mySqlstr = new string[]
+                    {
+                   "SELECT a.Lot,b.* FROM [dbo].[Lots] A ",
+                   "join [dbo].[LotsEndo] B ",
+                   "on a.Lot = b.Lot where A.Status = 3 ",
+                   "and A.lot ='", CurrLot,"' AND b.Status = 1 ",
+                   "order by  [Batch], [Formulario]"
+                    };
+                else
+                    mySqlstr = new string[]
+                    {
+                   "SELECT * ",
+                   "from [dbo].[LotsEndo] ",
+                   "where lot ='", CurrLot,"' ",
+                   "order by  [Batch], [Formulario]"
+                  };
 
- 
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1940,6 +1957,11 @@ namespace jolcode
             String m_BatchNo = string.Empty;
             int m_BatchPgNo = 0;
             String m_N_ELEC = string.Empty;
+
+            string m_Nombre = string.Empty;
+            string m_Paterno = string.Empty;
+            string m_Materno = string.Empty;
+
             String m_N_PRECINTO = string.Empty;
             DateTime? m_FECHA_N = null;
             String m_FECHA_N2 = string.Empty;
@@ -2108,6 +2130,11 @@ namespace jolcode
                     m_Firma_Notario = "0";
                     m_BatchTrack = string.Empty;
                     m_N_ELEC = string.Empty;
+
+                    m_Nombre = string.Empty;
+                    m_Materno = string.Empty;
+                    m_Paterno = string.Empty; 
+
                     m_N_NOTARIO = string.Empty;
                     m_N_CANDIDAT = string.Empty;
                     m_Cargo = -1;
@@ -2131,7 +2158,7 @@ namespace jolcode
                     //
 
                     string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
-                    string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
 
@@ -2142,6 +2169,10 @@ namespace jolcode
 
                     m_Firma_Pet_Inv = 0; // se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
                     m_Firma_Not_Inv = 0;// se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
+
+                    m_Nombre = row["Nombre"].ToString().Trim();
+                    m_Materno = row["Materno"].ToString().Trim();
+                    m_Paterno = row["Paterno"].ToString().Trim();
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
@@ -2182,7 +2213,7 @@ namespace jolcode
 
                     if (tmpmFirma_Fecha.Trim().Length > 0)
                     {
-                        m_Firma_Fecha = DateTimeUtil.MyValidarFecha(tmpmFirma_Fecha);
+                        m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
                     }
 
                     if (tmpFecha_Endo.Length < 8)
@@ -2290,7 +2321,7 @@ namespace jolcode
                                                 "From [Notarios] ",
                                                 " Where ([NumElec] = '", FixNum( m_N_NOTARIO) , "') and ",
                                                 "([Status] ='A') and ",
-                                                " ([NumCand]='", FixNum( m_N_CANDIDAT ) , "'"};
+                                                " ([NumCand]='", FixNum( m_N_CANDIDAT ) , "')"};
 
                         object total = null;
 
@@ -2722,7 +2753,8 @@ namespace jolcode
                                                 "From [LotsEndo]  ",
                                                 "Where [Cargo] = '",  m_Cargo.ToString() , "' ",
                                                 "and ",
-                                                "Candidato='",m_N_CANDIDAT,"' And Status = 0"};
+                                                "Candidato='",m_N_CANDIDAT,"' And Status = 0 ",
+                                                "and NumElec='", FixNum( m_N_ELEC ), "'" };
                         object total = null;
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)//>0
                         {
@@ -2745,6 +2777,8 @@ namespace jolcode
 
                     if (CollCriterios[14].Editar == true || CollCriterios[14].Warning == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
                     {
+
+                     
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [LotsEndo]  ",
                                                 "Where [NumElec] = '", FixNum(m_N_ELEC) , "' ",
@@ -3015,7 +3049,7 @@ namespace jolcode
                     string[] mySqlStrLOTSENDO =
                     {
                         "Insert Into LotsEndo",
-                        "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
+                        "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Nombre],[Paterno],[Materno],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
                            ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores] ) ",
 
                         "Values('" , m_PARTIDO , "'",           //Partido
@@ -3025,6 +3059,9 @@ namespace jolcode
                         ",'" , m_N_CANDIDAT , "'",              //Candidato
                         "," , m_Cargo.ToString(),               //Cargo
                         ",'" , m_N_ELEC , "'",                  //NumElec
+                        ",'" , m_Nombre , "'",                    //Nombre
+                        ",'" , m_Paterno , "'",                   //Paterno
+                        ",'" , m_Materno , "'",                   //Materno
                         ",'" ,m_Padre , "'",                    //Padre
                         ",'" ,m_Madre , "'",                    //Madre
                         ",'" , MyFechaToSql( m_FECHA_N ),  "'",      //FechaNac
