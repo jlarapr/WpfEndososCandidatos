@@ -42,7 +42,6 @@
                 <Separator></Separator>
                 <MenuItem Name="mnuCorregirEndosos" IsEnabled="{Binding mnuCorregirEndosos_IsEnabled}" Header="_Corregir Endosos" Command="{Binding corregirEndosos_Click}" />
                 <MenuItem Name="mnuVerEndosos" IsEnabled="{Binding mnuVerEndosos_IsEnabled}" Header="_Ver Endosos" Command="{Binding verEndosos_Click}" />
-                <MenuItem Name="mnuInformeEndosos" IsEnabled="{Binding mnuInformeEndosos_IsEnabled}" Header="_Informes" Command="{Binding Informes_Click}" />
                 <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
                 <Separator></Separator>
                 <MenuItem Name="mnuReydi" IsEnabled="{Binding mnuReydi_IsEnabled}" Header="_Reydi" Command="{Binding reydi_Click}" />
@@ -51,6 +50,11 @@
             <MenuItem Name="mnuMainVer" Header="_Ver" Margin="5,5,0,0"  >
                 <MenuItem Name="mnuVerElector" IsEnabled="{Binding mnuVerElector_IsEnabled}" Header="_Ver Elector" Command="{Binding verElector_click}" />
             </MenuItem>
+            <MenuItem Name="mnuInformeEndosos"  Margin="5,5,0,0"  IsEnabled="{Binding mnuInformeEndosos_IsEnabled}" Header="_Informes"  >
+                <MenuItem Name="mnuRechazo"  Header="_Rechazos" Command="{Binding mnuRechazo_click}" />
+
+            </MenuItem>
+
             <MenuItem Name="mnuMainConfiguraciones" Header="_Configuraciones" Margin="5,5,0,0"  >
                 <MenuItem Name="mnuAreas" IsEnabled="{Binding mnuAreas_IsEnabled}" Header="_Areas" Command="{Binding areas_Click}" />
                 <MenuItem Name="mnuPartidos" IsEnabled="{Binding mnuPartidos_IsEnabled}" Header="_Partidos" Command="{Binding partidos_Click}" />

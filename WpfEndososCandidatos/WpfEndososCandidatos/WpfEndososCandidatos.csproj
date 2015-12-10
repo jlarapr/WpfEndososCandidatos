@@ -63,6 +63,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -170,6 +173,26 @@
     <Compile Include="Models\Precintos.cs" />
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>EndososPartidos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MyDataSet.cs">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MyDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="rpt\Informe rechazos luis 2011.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Informe rechazos luis 2011.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpt\ReporteRechazadas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReporteRechazadas.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
     <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
@@ -393,6 +416,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="rpt\Informe rechazos luis 2011.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Informe rechazos luis 2011.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpt\ReporteRechazadas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteRechazadas.cs</LastGenOutput>
+    </EmbeddedResource>
     <EntityDeploy Include="Models\EndososPartidos.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
@@ -410,6 +441,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
       <LastGenOutput>EndososPartidos.cs</LastGenOutput>
+    </None>
+    <None Include="MyDataSet.xsc">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="MyDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MyDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="MyDataSet.xss">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -438,6 +480,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\bersirc.png" />

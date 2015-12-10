@@ -57,7 +57,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtNotarioFirma_Corregir;
         private bool _ckbFirma_Pet_Inv;
         private bool _ckbFirma_Not_Inv;
-        private string _txtFchEndoso_Corregir;
+        private string _txtFchJuramento_Corregir;
         private string _txtFchEndosoEntregada_Corregir;
         private int _i_Display;
         private string _txtFormulario;
@@ -684,25 +684,31 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("ckbFirma_Not_Inv");
             }
         }
-        public string txtFchEndoso_Corregir
+        public string txtFchJuramento_Corregir
         {
             get
             {
-                return _txtFchEndoso_Corregir;
+                return _txtFchJuramento_Corregir;
             }set
             {
-                _txtFchEndoso_Corregir = value;
-                if (value != null)
+                    _txtFchJuramento_Corregir = value;
+
+                if (value !=null)
                 {
                     if (_DataToSave.Count > 0)
                     {
                         CanGuardar = true;
                     }
-                    _txtFchEndoso_Corregir =  jolcode.DateTimeUtil.MyValidarFecha2(value) == null?value: jolcode.DateTimeUtil.MyValidarFecha2(value);
+                    _txtFchJuramento_Corregir =  jolcode.DateTimeUtil.MyValidarFecha2(value) == null?value: jolcode.DateTimeUtil.MyValidarFecha2(value);
 
+                    if (_txtFchJuramento_Corregir == null)
+                    {
+                        ;
+                    }
+                    
                 }
-                this.RaisePropertychanged("txtFchEndoso_Corregir");
 
+                this.RaisePropertychanged("txtFchJuramento_Corregir");
 
             }
         }
@@ -1021,14 +1027,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                             foreach (FixVoid data in _DataToSave)
                             {
-                                string FchEndoso = null;
+                                string FchEndosoJuramento = null;
                                 string FechaNac = null;
 
                                 if (data.FechaNac !=null)
                                     FechaNac = data.FechaNac.Value.ToString("MMddyyyy");
 
-                                if (data.FchEndoso != null)
-                                    FchEndoso = data.FchEndoso.Value.ToString("MMddyyyy");
+                                if (data.Firma_Fecha != null)
+                                    FchEndosoJuramento = data.Firma_Fecha.Value.ToString("MM/dd/yy");
 
                                 Exe.MyUpdateTFTable(
                                    data.Numelec,
@@ -1042,7 +1048,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.NotarioFirma,
                                    data.Firma_Pet_Inv == true ? "1" : "0",
                                    data.Firma_Not_Inv == true ? "1" : "0",
-                                   FchEndoso,
+                                   FchEndosoJuramento,
                                    data.Lot,
                                    data.Batch,
                                    data.Formulario,
@@ -1746,26 +1752,30 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     txtFirmaElec_Corregir = _DataToSave[i].FirmaElec;
                     txtNotarioFirma_Corregir = _DataToSave[i].NotarioFirma;
 
-                    ckbFirma_Pet_Inv = false;//_DataToSave[i].Firma_Pet_Inv;
-                    ckbFirma_Not_Inv = false;// _DataToSave[i].Firma_Not_Inv;
+                    ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
+                    ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
 
                     txtFormulario = _DataToSave[i].Formulario;
 
                     batchTF = _DataToSave[i].Batch;
 
 
-                    if (_DataToSave[i].FchEndoso !=null)
-                    txtFchEndoso_Corregir = _DataToSave[i].FchEndoso.Value.ToString("MM/dd/yyyy");
 
 
                     if (_DataToSave[i].FechaNac !=null)
                     FechaNac_Corregir = _DataToSave[i].FechaNac.Value.ToString("MM/dd/yyyy");
 
+
+                    
+
                     if (_DataToSave[i].FchEndosoEntregada !=null)
                     txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
 
-                    if (txtFchEndoso_Corregir == null && _DataToSave[i].Firma_Fecha !=null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
-                        txtFchEndoso_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("MM/dd/yyyy");
+                    //if (_DataToSave[i].FchEndoso != null)
+                    //    txtFchJuramento_Corregir = _DataToSave[i].FchEndoso.Value.ToString("MM/dd/yyyy");
+                        
+                    if (_DataToSave[i].Firma_Fecha !=null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
+                        txtFchJuramento_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("MM/dd/yyyy");
 
                     byte[] EndosoImage = null;
 
@@ -1981,7 +1991,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtNotarioFirma_Corregir = string.Empty;
             ckbFirma_Pet_Inv = false;
             ckbFirma_Not_Inv = false;
-            txtFchEndoso_Corregir = null;
+            txtFchJuramento_Corregir = null;
             txtFchEndosoEntregada_Corregir = null;
             FechaNac_Corregir = null;
 
@@ -2038,7 +2048,15 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         //string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
 
                       //  string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
-                        string Fecha_Endoso = row["Firma_Fecha"].ToString().Trim(); 
+                        string Fecha_Endoso = row["Firma_Fecha"].ToString().Trim();
+                        DateTime? juramento = DateTimeUtil.MyValidarFecha(Fecha_Endoso);
+
+                        if (juramento == null)
+                            juramento= DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso);
+
+
+                    
+
 
                         _DataToSave.Add(new FixVoid
                         {
@@ -2059,8 +2077,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             NotarioFirma = row["Firma_Notario"].ToString().Trim(),
                             Firma_Pet_Inv = row["Firma_Pet_Inv"].ToString().Trim() == "1" ? true : false,
                             Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
-                            FchEndoso =null,
-                            Firma_Fecha = DateTimeUtil.MyValidarFecha(Fecha_Endoso),
+                            Firma_Fecha = juramento,
                             FchEndosoEntregada = null,
                             Batch = row["Batch"].ToString(),
                             image = row["Image"].ToString(),
@@ -2082,12 +2099,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             DateTime? dtNacNull = null;
             DateTime dtEndosoEntregada;
             DateTime? dtEndosoEntregadanull=null;
-            DateTime dtEndoso_Corregir;
-            DateTime? dtEndoso_Corregirnull=null;
+            DateTime dtFechaJuramento_Corregir;
+            DateTime? dtFechaJuramento_Corregirnull = null;
 
-            if (DateTime.TryParseExact(txtFchEndoso_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndoso_Corregir))
+            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFechaJuramento_Corregir))
             {
-                dtEndoso_Corregirnull = dtEndoso_Corregir;
+                dtFechaJuramento_Corregirnull = dtFechaJuramento_Corregir;
             }
 
             if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndosoEntregada))
@@ -2100,6 +2117,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 dtNacNull = dtNac;
             }
 
+           
             _DataToSave[i].i = i;
             _DataToSave[i].Lot = Lot;
             _DataToSave[i].Formulario = txtFormulario;
@@ -2115,7 +2133,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
             _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
             _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
-            _DataToSave[i].FchEndoso = dtEndoso_Corregirnull;
+            _DataToSave[i].Firma_Fecha = dtFechaJuramento_Corregirnull;
             _DataToSave[i].FchEndosoEntregada = dtEndosoEntregadanull;
 
             // _DataToSave[i].FchEndosoEntregada = null,

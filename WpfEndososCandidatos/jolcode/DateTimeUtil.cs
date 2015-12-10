@@ -86,6 +86,8 @@ namespace jolcode
 
             if (DateTime.TryParseExact(param, "MMddyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
                 return tempdate;//.ToString("MM/dd/yyyy");
+            if (DateTime.TryParseExact(param, "MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
+                return tempdate;//.ToString("MM/dd/yyyy");
             else
                 return null;
 

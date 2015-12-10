@@ -87,14 +87,13 @@
                                 mnuRecibirLotes_IsEnabled = true;
                                 mnuProcesarLotes_IsEnabled = true;
                                 mnuVerEndosos_IsEnabled = true;
-                                mnuInformeEndosos_IsEnabled = true;
                                 mnuReydi_IsEnabled = true;
                                 break;
                             case 'D':// VerElector
                                 mnuVerElector_IsEnabled = true;
                                 break;
                             case 'E'://Reportes
-
+                                mnuInformeEndosos_IsEnabled = true;
                                 break;
                             case 'F'://ReversarLote
                                 mnuRevLote_IsEnabled = true;

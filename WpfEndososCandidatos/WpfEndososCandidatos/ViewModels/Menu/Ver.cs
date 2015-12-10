@@ -11,7 +11,7 @@
          private bool _mnuVerElector_IsEnabled;
 
 
-
+       
          public bool mnuVerElector_IsEnabled
          {
              get

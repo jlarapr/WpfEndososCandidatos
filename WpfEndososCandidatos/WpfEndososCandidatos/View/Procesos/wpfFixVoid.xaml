@@ -307,7 +307,7 @@
                     <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,227,10,0" VerticalAlignment="Top"
                              Background="{Binding txtColor[0]}"
                         	
-            			Text="{Binding txtFchEndoso_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
+            			Text="{Binding txtFchJuramento_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
             			Grid.Column="1" 
                                      >
                         <i:Interaction.Triggers>

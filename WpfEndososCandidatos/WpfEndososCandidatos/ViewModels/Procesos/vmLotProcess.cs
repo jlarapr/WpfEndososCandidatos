@@ -500,8 +500,10 @@
                 Resultados.Add("0");//lblWarnings              5
 
 
+                lblNReasons.Clear();
 
-               
+                for (int i = 0; i <= CollCriterios.Count; i++)//17
+                    lblNReasons.Add("0");
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
@@ -542,9 +544,12 @@
                             Foreground_Desc.Add(Brushes.Black);
                         }
                     }
+                    lblNReasons.Clear();
 
-                    for (int i = 0; i < CollCriterios.Count; i++)//17
+                    for (int i = 0; i <= CollCriterios.Count; i++)//17
                         lblNReasons.Add("0");
+
+                  
 
                     _MyLotsTable = get.MyGetLotToProcess();
 

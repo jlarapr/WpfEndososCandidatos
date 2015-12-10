@@ -1644,7 +1644,9 @@ namespace jolcode
                 string[] myUpdate_Imported1 =
                     {
                             "Update [TF-Partidos] ",
-                            "SET [Imported] = 1 ",
+                            "SET [Imported] = 1, ",
+                            "FirmaNot_Inv = 0,",
+                            "FirmaElec_Inv = 0 ",
                             "WHERE BatchTrack=@where ",
                             "And Imported = 0"
                     };
@@ -2162,13 +2164,13 @@ namespace jolcode
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
 
-                    //try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { throw; };
-                    //try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { throw; };
+                    try { int.TryParse(row["FirmaElec_Inv"].ToString().Trim(), out m_Firma_Pet_Inv); } catch { throw; };
+                    try { int.TryParse(row["FirmaNot_Inv"].ToString().Trim(), out m_Firma_Not_Inv); } catch { throw; };
 
                     try { int.TryParse(row["Funcionario"].ToString().Trim(), out m_Cargo); } catch { throw; }
 
-                    m_Firma_Pet_Inv = 0; // se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
-                    m_Firma_Not_Inv = 0;// se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
+                  //  m_Firma_Pet_Inv = 0; // se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
+                   // m_Firma_Not_Inv = 0;// se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
 
                     m_Nombre = row["Nombre"].ToString().Trim();
                     m_Materno = row["Materno"].ToString().Trim();
@@ -2196,7 +2198,7 @@ namespace jolcode
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
                     m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
                     m_BatchTrack = row["BatchTrack"].ToString().Trim();
-                    m_N_ELEC = row["NumElec"].ToString().Trim().PadLeft(7, '0');
+                    m_N_ELEC = row["NumElec"].ToString().Trim();
 
                     m_N_NOTARIO = row["Notario_Funcionario"].ToString().Trim().PadLeft(7, '0');
                     m_N_CANDIDAT = row["Num_Candidato"].ToString().PadLeft(3, '0');
@@ -2214,6 +2216,8 @@ namespace jolcode
                     if (tmpmFirma_Fecha.Trim().Length > 0)
                     {
                         m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
+
+                      
                     }
 
                     if (tmpFecha_Endo.Length < 8)
@@ -2665,7 +2669,7 @@ namespace jolcode
 
                     if (MyValidarDatos(string.Concat(sqlstrPrecinto), out FirstGeoCode, myCnnDBCeeMaster) == null)
                     {
-                        // No Exite
+                        FirstGeoCode = "000";
                     }
 
                     // 'SOLO PARA SENADOR DISTRITO, REPRESENTANTE DISTRITO, ALCALDE, ASMBLEISTA MUNICIPAL
@@ -2716,12 +2720,13 @@ namespace jolcode
 
                         if (CollCriterios[12].Editar == true || CollCriterios[12].Warning ==true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
                         {
+                    
                             string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
 
                             object CodigoArea = null;
                             string[] sqlstr2 = { "SELECT [Precintos] ",
                                                 "From [dbo].[Areas] ",
-                                                "where Area in (select Area from [dbo].[Candidatos] where [NumCand]=" + FixNum( m_N_CANDIDAT )};
+                                                "where Area in (select Area from [dbo].[Candidatos] where [NumCand]=" + FixNum( m_N_CANDIDAT ),")"};
 
                             if (MyValidarDatos(string.Concat(sqlstr2), out CodigoArea, myCnnDBEndososValidarDatos) == null)
                             {//No Exite
@@ -3010,14 +3015,14 @@ namespace jolcode
                         {
                             lblNReasons[X] = Rechazo[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 0, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X+1, m_PARTIDO, 0, img, myCmdDBEndosos);
                             isrechazo = true;
                         }
                         else  if (isWarning[X])
                         {
                             lblNReasons[X] = Warning[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, m_N_ELEC, X+1, m_PARTIDO, 2, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X+1, m_PARTIDO, 2, img, myCmdDBEndosos);
                             iswarning = true;
                         }
                     }
@@ -3058,7 +3063,7 @@ namespace jolcode
                         "," , m_BatchPgNo.ToString(),           //Formulario
                         ",'" , m_N_CANDIDAT , "'",              //Candidato
                         "," , m_Cargo.ToString(),               //Cargo
-                        ",'" , m_N_ELEC , "'",                  //NumElec
+                        ",'" , row["NumElec"].ToString().Trim() , "'",                  //NumElec
                         ",'" , m_Nombre , "'",                    //Nombre
                         ",'" , m_Paterno , "'",                   //Paterno
                         ",'" , m_Materno , "'",                   //Materno
@@ -3273,7 +3278,7 @@ namespace jolcode
         }
         public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
                                      string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,
-                                     string txtFchEndoso,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
+                                     string txtFchJuramento,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
         {
             bool myBoolReturn = false;
 
@@ -3293,11 +3298,12 @@ namespace jolcode
                 string FechaFirm_Dia = null;
                 string FechaFirm_Ano = null;
 
-                if (txtFchEndoso != null)
+                if (txtFchJuramento != null)
                 {
-                    FechaFirm_Mes = txtFchEndoso.Substring(0, 2);
-                    FechaFirm_Dia = txtFchEndoso.Substring(2, 2);
-                    FechaFirm_Ano = txtFchEndoso.Substring(4, 4);
+                    string[] fecha = txtFchJuramento.Split('/');
+                    FechaFirm_Mes = fecha[0];
+                    FechaFirm_Dia = fecha[1];
+                    FechaFirm_Ano = fecha[2];//
                 }
 
                 string[] updatequery =

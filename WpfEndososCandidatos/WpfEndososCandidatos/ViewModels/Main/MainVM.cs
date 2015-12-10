@@ -420,6 +420,7 @@ namespace WpfEndososCandidatos.ViewModels
                     mnuLogout_IsEnabled = false;
                     mnuLogin_IsEnabled = true;
                     mnuVerElector_IsEnabled = false;
+                    mnuInformeEndosos_IsEnabled = false;
                     mnuRecibirLotes_IsEnabled = false;
                     mnuAutoRizarLotes_IsEnabled = false;
                     mnuProcesarLotes_IsEnabled = false;
