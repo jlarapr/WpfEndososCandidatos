@@ -71,7 +71,7 @@ namespace jolcode
         }
 
 
-        public DataTable MyGeRechazadasToInforme()
+        public DataTable MyGeRechazadasToInforme(string lot)
         {
            
             DataTable myTableReturn = new DataTable();
@@ -80,7 +80,7 @@ namespace jolcode
             {
                 string[] mySqlstr = { "SELECT * ",
                                       "FROM [dbo].[LotsEndo] ",
-                                      "where [Status] = 1" };
+                                      "where [Status] = 1 and lot='",lot,"'" };
 
                 using (SqlConnection cnn = new SqlConnection()
                 {

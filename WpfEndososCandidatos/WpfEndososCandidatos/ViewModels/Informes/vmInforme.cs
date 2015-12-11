@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -251,7 +252,6 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         {
             try
             {
-                MyDataSet ds = new MyDataSet();
                 rpt.ReporteRechazadas objRp = new WpfEndososCandidatos.rpt.ReporteRechazadas();
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand
@@ -261,28 +261,38 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 })
                 {
 
-                    DataTable T = get.MyGeRechazadasToInforme();
-                   
+                    DataTable T = get.MyGeRechazadasToInforme(cbLots_Item);
+                    int count = 0;
+
                     foreach (DataRow R in T.Rows)
                     {
+                        MyDataSet ds = new MyDataSet();
                         DataRow RR = ds.Tables[0].NewRow();
 
-                        RR["Lot"] = R["Lot"];
-                        RR["NumeroElec"] = R["NumElec"];
+                        string lot = R["Lot"].ToString().Trim();
+                        string NumElec = R["NumElec"].ToString().Trim();
+
+                        RR["Lot"] = lot;
+                        RR["NumeroElec"] = NumElec;
                         RR["Nombre"] = R["Nombre"];
                         RR["Razon"] = R["Errores"];
                         //RR["Img"] = R["EndosoImage"];
                         ds.Rechazadas.Rows.Add(RR);
-                    }
 
-                    int count = 0;
-                    //foreach (DataRow r in T.Rows)
-                    {
-                       
+                        string strPath = PDFPath + RR["Lot"];
+
+                        if (!Directory.Exists(strPath))
+                            Directory.CreateDirectory(strPath);
+                        if (!strPath.EndsWith("\\"))
+                            strPath += "\\";
+
+                        string pdfName = strPath + count.ToString().PadLeft(2, '0') +"_"+ RR["lot"] + "_Rechazadas.pdf";
+                        objRp.SetDataSource(ds);
+
                         ExportOptions CrExportOptions;
                         DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
                         PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-                        CrDiskFileDestinationOptions.DiskFileName = PDFPath + count.ToString().PadLeft(2,'0') + r["lot"] + "_Rechazadas.pdf";
+                        CrDiskFileDestinationOptions.DiskFileName = pdfName;
                         CrExportOptions = objRp.ExportOptions;
                         {
                             CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
@@ -291,7 +301,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             CrExportOptions.FormatOptions = CrFormatTypeOptions;
                         }
                         objRp.Export(); // Export PDF //      
-                        count++;    
+                        count++;
                     }
                 }
             }
