@@ -229,6 +229,9 @@
     <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Informes\wpfInformes.xaml.cs">
+      <DependentUpon>wpfInformes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Procesos\wpfInforme.xaml.cs">
       <DependentUpon>wpfInforme.xaml</DependentUpon>
     </Compile>
@@ -314,6 +317,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Configuraciones\wpfMantCriterios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfInformes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -521,6 +528,7 @@
   <ItemGroup>
     <Folder Include="Dll\" />
     <Folder Include="NewDll\" />
+    <Folder Include="ViewModels\Informes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
