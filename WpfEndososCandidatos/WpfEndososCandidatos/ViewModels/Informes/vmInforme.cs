@@ -16,7 +16,7 @@ using System.Windows.Media;
 using WpfEndososCandidatos.Models;
 using WpfEndososCandidatos.View.Procesos;
 
-namespace WpfEndososCandidatos.ViewModels.Procesos
+namespace WpfEndososCandidatos.ViewModels.Informes
 {
     class vmInforme : ViewModelBase<IDialogView>, IDisposable
     {

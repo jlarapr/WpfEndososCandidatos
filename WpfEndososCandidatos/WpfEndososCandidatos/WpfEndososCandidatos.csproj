@@ -211,7 +211,7 @@
     <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantDB.cs" />
     <Compile Include="ViewModels\Procesos\vmFixVoid.cs" />
-    <Compile Include="ViewModels\Procesos\vmInforme.cs" />
+    <Compile Include="ViewModels\Informes\vmInforme.cs" />
     <Compile Include="ViewModels\Procesos\vmLotAuth.cs" />
     <Compile Include="ViewModels\Procesos\vmLotFix.cs" />
     <Compile Include="ViewModels\Procesos\vmLotProcess.cs" />
@@ -528,7 +528,6 @@
   <ItemGroup>
     <Folder Include="Dll\" />
     <Folder Include="NewDll\" />
-    <Folder Include="ViewModels\Informes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

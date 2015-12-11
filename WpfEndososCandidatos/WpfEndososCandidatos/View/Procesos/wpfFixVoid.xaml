@@ -237,7 +237,7 @@
                     </TextBox>
                     <Label Height="23"  x:Name="label8" Content="Aspirante:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
                     <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,144,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="10"
+            			MaxLength="7"
             			Text="{Binding txtCandidato_Corregir, Mode=TwoWay}" TabIndex="6"
                              Background="{Binding txtColor[7]}"
                              
@@ -306,7 +306,7 @@
                     <Label Height="23"  x:Name="label12" Content="Feccha Juramento:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,227,0,0" Width="108"/>
                     <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,227,10,0" VerticalAlignment="Top"
                              Background="{Binding txtColor[0]}"
-                        	
+                        	MaxLength="10"
             			Text="{Binding txtFchJuramento_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
             			Grid.Column="1" 
                                      >
@@ -322,7 +322,7 @@
                     <Label Height="28"  x:Name="label13" Content="Fecha Entrega a CEE:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,256,0,0" Width="119"/>
                     <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,256,10,0"   VerticalAlignment="Top"
                              Background="{Binding txtColor[3]}"
-                        	
+                        	MaxLength="10"
             			Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="11"
             			Grid.Column="1"
                                      >
@@ -347,12 +347,13 @@
                     <Label x:Name="txtFormulario" Height="28" Margin="10,286,0,0"   VerticalAlignment="Top"
             			Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
             			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Left" Width="164"
+                           
                                    />
                     <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
 
                     <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="4"
                              Background="{Binding txtColor[9]}"
-                                
+                                MaxLength="10"
                              >
 
                         <i:Interaction.Triggers>
