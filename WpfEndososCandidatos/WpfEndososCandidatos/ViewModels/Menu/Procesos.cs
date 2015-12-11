@@ -4,6 +4,7 @@
     using System;
     using System.Reflection;
     using System.Windows;
+    using View.Informes;
     using WpfEndososCandidatos.ViewModels.Procesos;
     partial class MainVM
     {
@@ -242,6 +243,9 @@
                 return _verEndosos_Click;
             }
         }
+
+       
+     
 
         private void MyverEndosos_Click()
         {

@@ -627,9 +627,9 @@
                 RadicacionesDB = cbRadicacionesDB_Item.Trim();
 
 
-                string ImagePathNew = dfPathtoPictures_txt.Trim();
+                string PDFPath = dfPathtoPictures_txt.Trim();
 
-                if (ImagePathNew.Trim().Length == 0)
+                if (PDFPath.Trim().Length == 0)
                     throw new Exception("Error con los Path");
 
 
@@ -680,7 +680,7 @@
                     jolcode.Registry.write(_REGPATH, "RadicacionesPass", PasswordHash.Encrypt1(RadicacionesPass));
                     jolcode.Registry.write(_REGPATH, "RadicacionesDB", RadicacionesDB);
 
-                    jolcode.Registry.write(_REGPATH, "ImagePathNew", ImagePathNew);
+                    jolcode.Registry.write(_REGPATH, "ImagePathNew", PDFPath);
 
                     _SaveReg = true;
 

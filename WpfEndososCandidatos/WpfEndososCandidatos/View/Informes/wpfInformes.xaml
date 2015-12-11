@@ -7,7 +7,7 @@
         mc:Ignorable="d"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfLotFix" Height="263.243" Width="353.516" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfLotFix" Height="263.243" Width="361.719" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -21,7 +21,7 @@
         <Grid>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Informe Rechazados" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="235,187,0,0" VerticalAlignment="Top" Width="75"/>
-            <Label x:Name="label" Content="Lote" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label" Content="Lote:" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Width="44"/>
             <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="220"
                       ItemsSource="{Binding cbLots}"
                         SelectedItem="{Binding cbLots_Item, Mode=TwoWay}"                                     
@@ -29,6 +29,10 @@
                       />
             <Button Content="Abrir" Command="{Binding cmdOpen_Click}" HorizontalAlignment="Left" Margin="235,105,0,0" VerticalAlignment="Top" Width="75"/>
             <Button Content="Refrescar" Command="{Binding cmdRefresh_Click}" HorizontalAlignment="Left" Margin="235,144,0,0" VerticalAlignment="Top" Width="75"/>
+            <TextBox x:Name="txtPdfPath" HorizontalAlignment="Left" Height="23" Margin="10,184,0,0" TextWrapping="Wrap" 
+                     Text="{Binding txtPDFPath}" VerticalAlignment="Top" Width="220"
+                     IsEnabled="False"  />
+            <Label x:Name="label1" Content="Path:" HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top"/>
 
         </Grid>
     </Border>

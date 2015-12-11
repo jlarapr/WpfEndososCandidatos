@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
     <Compile Include="ViewModels\Menu\Configuraciones.cs" />
+    <Compile Include="ViewModels\Menu\Informes.cs" />
     <Compile Include="ViewModels\Menu\Procesos.cs" />
     <Compile Include="ViewModels\Menu\Ver.cs" />
     <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
@@ -231,9 +232,6 @@
     </Compile>
     <Compile Include="View\Informes\wpfInformes.xaml.cs">
       <DependentUpon>wpfInformes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Procesos\wpfInforme.xaml.cs">
-      <DependentUpon>wpfInforme.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Procesos\wpfLotProcess.xaml.cs">
       <DependentUpon>wpfLotProcess.xaml</DependentUpon>
@@ -321,10 +319,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Informes\wpfInformes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Procesos\wpfInforme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

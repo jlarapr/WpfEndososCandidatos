@@ -1,4 +1,5 @@
-﻿using System;
+﻿using jolcode.MyInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,11 @@ namespace WpfEndososCandidatos.View.Informes
     /// <summary>
     /// Interaction logic for wpfInformes.xaml
     /// </summary>
-    public partial class wpfInformes : Window
+    public partial class wpfInformes : Window, IDialogView
     {
         public wpfInformes()
         {
-            InitializeComponent();
+            InitializeComponent ();
         }
     }
 }

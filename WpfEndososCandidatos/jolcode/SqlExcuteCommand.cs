@@ -71,6 +71,50 @@ namespace jolcode
         }
 
 
+        public DataTable MyGeRechazadasToInforme()
+        {
+           
+            DataTable myTableReturn = new DataTable();
+            
+            try
+            {
+                string[] mySqlstr = { "SELECT * ",
+                                      "FROM [dbo].[LotsEndo] ",
+                                      "where [Status] = 1" };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGeRechazadasToInforme Error");
+            }
+            return myTableReturn;
+        }
+
         public DataTable MyGetLotFix()
         {
             /*
@@ -869,7 +913,7 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select * from notarios order by NumElec";
+                string mySqlstr = "Select * from notarios order by Nombre";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {

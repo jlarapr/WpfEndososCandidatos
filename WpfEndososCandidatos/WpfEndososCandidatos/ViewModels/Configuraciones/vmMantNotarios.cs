@@ -229,10 +229,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get
             {
-                if ( (txtNumElec ==null) || (txtNombre ==null) || (txtApellido1 ==null) || (_isEdit == false) || (txtNombreAspirante ==null))
+                if ( (txtNumElec ==null) || (txtNombre ==null) ||  (_isEdit == false) || (txtNombreAspirante ==null))
                     return false;
 
-                if ((txtNumElec.Trim().Length != 7) || (txtNombre.Trim().Length == 0) || (txtApellido1.Trim().Length ==0 )|| (txtNombreAspirante.Trim().Length ==0) )
+                if ((txtNumElec.Trim().Length != 7) || (txtNombre.Trim().Length == 0) ||  (txtNombreAspirante.Trim().Length ==0) )
                     return false;
 
                 if (int.Parse(txtNumElec) == 0)

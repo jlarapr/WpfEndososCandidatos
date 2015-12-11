@@ -82,7 +82,7 @@
                 <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
                 <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button IsTabStop="False" TabIndex="999999" x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,16" Height="28" Command="{Binding cmdSetImg}"/>
+                <Button IsTabStop="False" TabIndex="999999" x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,0" Height="28" Command="{Binding cmdSetImg}" VerticalAlignment="Top"/>
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
 
             </StackPanel>
@@ -235,7 +235,7 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label8" Content="Aspirante:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
+                    <Label Height="27"  x:Name="label8" Content="Aspirante:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,144,0,0" Width="67"/>
                     <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,144,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="7"
             			Text="{Binding txtCandidato_Corregir, Mode=TwoWay}" TabIndex="6"

@@ -33,6 +33,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
 
+
         public vmLotFix()
            : base(new wpfLotFix())
         {
@@ -146,6 +147,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             }
         }
+
+      
+             
 
         private bool CanOpen
         {

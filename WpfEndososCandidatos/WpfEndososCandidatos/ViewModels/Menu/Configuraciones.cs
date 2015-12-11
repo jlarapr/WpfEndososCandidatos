@@ -314,7 +314,7 @@ namespace WpfEndososCandidatos.ViewModels
                     _RadicacionesPass = jolcode.Registry.read(_REGPATH, "RadicacionesPass");
                     _RadicacionesDB = jolcode.Registry.read(_REGPATH, "RadicacionesDB");
 
-                    _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
+                    _PDFPath = jolcode.Registry.read(_REGPATH, "ImagePathNew");
                 }
 
 
@@ -341,7 +341,7 @@ namespace WpfEndososCandidatos.ViewModels
                         frmMantDB.RadicacionesPass = _RadicacionesPass;
                         frmMantDB.RadicacionesDB = _RadicacionesDB;
 
-                        frmMantDB.imgPath = _ImgPath;
+                        frmMantDB.imgPath = _PDFPath;
 
                         frmMantDB.View.Owner = this.View as Window;
                         frmMantDB.OnShow();
@@ -366,7 +366,7 @@ namespace WpfEndososCandidatos.ViewModels
                         _RadicacionesPass = frmMantDB.RadicacionesPass;
                         _RadicacionesDB = frmMantDB.RadicacionesDB;
 
-                        _ImgPath = frmMantDB.imgPath;
+                        _PDFPath = frmMantDB.imgPath;
 
                         _DBEndososCnnStr = string.Concat("Persist Security Info=False;Data Source=", _SqlServer, ";Initial Catalog=", _Database, ";User ID=", _Username, ";Password=", _Password);
                         _DBCeeMasterCnnStr = string.Concat("Persist Security Info=False;Data Source=", _MastSvr, ";Initial Catalog=", _MastDB, ";User ID=", _MastUsr, ";Password=", _MastPass);

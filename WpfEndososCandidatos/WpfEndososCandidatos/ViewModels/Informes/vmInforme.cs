@@ -1,4 +1,5 @@
-﻿using jolcode;
+﻿using CrystalDecisions.Shared;
+using jolcode;
 using jolcode.Base;
 using jolcode.MyInterface;
 using System;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WpfEndososCandidatos.Models;
-using WpfEndososCandidatos.View.Procesos;
+using WpfEndososCandidatos.View.Informes;
 
 namespace WpfEndososCandidatos.ViewModels.Informes
 {
@@ -30,9 +31,11 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _DBMasterCeeCnnStr;
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
+        private string _PDFPath;
+        private string _txtPDFPath;
 
         public vmInforme()
-           : base(new wpfInforme())
+           : base(new wpfInformes())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
@@ -139,11 +142,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
             set
             {
-
                 _cbLots_Item_Id = value;
                 this.RaisePropertychanged("cbLots_Item_Id");
-
-
             }
         }
 
@@ -154,7 +154,37 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 return cbLots_Item_Id > -1 ? true : false;
             }
         }
-
+        public string txtPDFPath
+        {
+            get
+            {
+                return _txtPDFPath;
+            }
+            set
+            {
+                _txtPDFPath = value;
+                this.RaisePropertychanged("txtPDFPath");
+            }
+        }
+        public string PDFPath
+        {
+            get
+            {
+                return _PDFPath;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (_PDFPath != value)
+                    {
+                        _PDFPath = value;
+                        if (!_PDFPath.EndsWith("\\"))
+                            _PDFPath += "\\";
+                    }
+                }
+            }
+        }
         #endregion
 
         #region MyCmd
@@ -221,7 +251,49 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         {
             try
             {
-               
+                MyDataSet ds = new MyDataSet();
+                rpt.ReporteRechazadas objRp = new WpfEndososCandidatos.rpt.ReporteRechazadas();
+
+                using (SqlExcuteCommand get = new SqlExcuteCommand
+                {
+                    DBCeeMasterCnnStr = DBMasterCeeCnnStr,
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+
+                    DataTable T = get.MyGeRechazadasToInforme();
+                   
+                    foreach (DataRow R in T.Rows)
+                    {
+                        DataRow RR = ds.Tables[0].NewRow();
+
+                        RR["Lot"] = R["Lot"];
+                        RR["NumeroElec"] = R["NumElec"];
+                        RR["Nombre"] = R["Nombre"];
+                        RR["Razon"] = R["Errores"];
+                        //RR["Img"] = R["EndosoImage"];
+                        ds.Rechazadas.Rows.Add(RR);
+                    }
+
+                    int count = 0;
+                    //foreach (DataRow r in T.Rows)
+                    {
+                       
+                        ExportOptions CrExportOptions;
+                        DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+                        PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+                        CrDiskFileDestinationOptions.DiskFileName = PDFPath + count.ToString().PadLeft(2,'0') + r["lot"] + "_Rechazadas.pdf";
+                        CrExportOptions = objRp.ExportOptions;
+                        {
+                            CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                            CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                            CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                            CrExportOptions.FormatOptions = CrFormatTypeOptions;
+                        }
+                        objRp.Export(); // Export PDF //      
+                        count++;    
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -254,6 +326,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         #region MyModules
         private void MyRefresh()
         {
+            txtPDFPath = string.Empty;
+            txtPDFPath = PDFPath;
+
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
                 DBCnnStr = DBEndososCnnStr
@@ -292,16 +367,11 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
 
         }
-
-
-
-
+        
         #endregion
 
         #region Dispose
-
-
-
+        
         public void Dispose()
         {
             Dispose(true);

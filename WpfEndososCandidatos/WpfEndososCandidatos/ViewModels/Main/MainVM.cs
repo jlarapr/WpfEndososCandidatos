@@ -43,7 +43,7 @@ namespace WpfEndososCandidatos.ViewModels
         private string _RadicacionesPass = string.Empty;
         private string _RadicacionesDB = string.Empty;
 
-        private string _ImgPath = string.Empty;
+        private string _PDFPath = string.Empty;
         private string _Hora;
         private string _Dia;
         private Cursor _MiCursor;
@@ -335,10 +335,10 @@ namespace WpfEndososCandidatos.ViewModels
                         jolcode.Registry.write(_REGPATH, "RadicacionesDB", string.Empty);
                     }
 
-                    try { _ImgPath = jolcode.Registry.read(_REGPATH, "ImagePathNew"); }
+                    try { _PDFPath = jolcode.Registry.read(_REGPATH, "ImagePathNew"); }
                     catch
                     {
-                        _ImgPath = string.Empty;
+                        _PDFPath = string.Empty;
                         jolcode.Registry.write(_REGPATH, "ImagePathNew",string.Empty);
                     }
                 }
@@ -359,7 +359,7 @@ namespace WpfEndososCandidatos.ViewModels
                        (_ImageUsr.Trim().Length == 0) ||
                        (_ImageDB.Trim().Length == 0) ||
                        (_ImagePass.Trim().Length == 0) ||
-                       (_ImgPath.Trim().Length == 0) ||
+                       (_PDFPath.Trim().Length == 0) ||
                        (_RadicacionesSvr.Trim().Length == 0) ||
                        (_RadicacionesUsr.Trim().Length == 0) ||
                        (_RadicacionesDB.Trim().Length == 0) ||
@@ -387,7 +387,7 @@ namespace WpfEndososCandidatos.ViewModels
                         frmMantDB.RadicacionesPass = _RadicacionesPass;
                         frmMantDB.RadicacionesDB = _RadicacionesDB;
 
-                        frmMantDB.imgPath = _ImgPath;
+                        frmMantDB.imgPath = _PDFPath;
 
                         frmMantDB.View.Owner = this.View as Window;
 
@@ -413,7 +413,7 @@ namespace WpfEndososCandidatos.ViewModels
                         _RadicacionesPass = PasswordHash.Encrypt1(frmMantDB.RadicacionesPass);
                         _RadicacionesDB = frmMantDB.RadicacionesDB;
 
-                        _ImgPath = frmMantDB.imgPath;
+                        _PDFPath = frmMantDB.imgPath;
                     }// end using
                 }//End IF
                     mnuChangePassword_IsEnabled = false;
