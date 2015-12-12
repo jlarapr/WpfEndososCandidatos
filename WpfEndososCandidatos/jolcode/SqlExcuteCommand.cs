@@ -986,6 +986,172 @@ namespace jolcode
             }
             return myTableReturn;
         }
+        public string MyDecRechazoToInforme(string param)
+        {
+            string myReturn = string.Empty;
+
+            string[] rechazos = param.Split('|');
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                     
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        foreach (string Campo in rechazos)
+                        {
+                            if (Campo.Trim().Length > 0)
+                            {
+                                string mySqlstr = "SELECT [Desc]  FROM [Criterios] where Campo = " + Campo;
+                                cmd.CommandText = mySqlstr;
+                                myReturn += Campo + "-" + cmd.ExecuteScalar().ToString().Trim() + "\r\n ";
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyDecRechazoToInforme Error");
+            }
+
+            return myReturn;
+        }
+
+        public string MyCEENameToInforme(string CItizenId)
+        {
+            object myReturn = null;
+
+
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCeeMasterCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT [LastName1] + ' ' + [LastName2] +' '+ [FirstName] as Nombre FROM [usercid].[Citizen] where[CItizenId] = '" + CItizenId + "'";
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar();
+                        if (myReturn == null)
+                            myReturn = "???";
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+            }
+
+            return myReturn.ToString();
+        }
+
+        public string MyCandidatoNameToInforme(string NumCand)
+        {
+            object myReturn = null;
+
+
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT [Nombre] FROM [Candidatos] where [NumCand] = '" + NumCand + "'";
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar();
+                        if (myReturn ==null )
+                            myReturn = "???";
+                       
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+            }
+
+            return myReturn.ToString();
+        }
+        public string MyDecCargoToInforme(string Cargo)
+        {
+            object myReturn = null;
+
+         
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT [Desc]  FROM [tblCargos] where [Cargo] = " + Cargo;
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar().ToString().Trim();
+                        if (myReturn == null)
+                            myReturn = "???";
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyDecCargoToInforme Error");
+            }
+
+            return myReturn.ToString();
+        }
+
         public string MyTipoDeRechazo(string param,string formulario,string CurrLot,string batch,ref byte[] EndosoImage,ref string rechazoNum)
         {
             string myReturn = string.Empty;

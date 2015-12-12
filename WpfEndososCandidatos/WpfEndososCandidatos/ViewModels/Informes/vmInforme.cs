@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using WpfEndososCandidatos.Models;
 using WpfEndososCandidatos.View.Informes;
 
@@ -262,7 +263,20 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 {
 
                     DataTable T = get.MyGeRechazadasToInforme(cbLots_Item);
-                    int count = 0;
+                    int totalDePaginas = T.Rows.Count;
+
+                    int Pagina = 1;
+                    string strPath = PDFPath + cbLots_Item;
+
+                    if (Directory.Exists(strPath))
+                        Directory.Delete(strPath,true);
+
+                    Directory.CreateDirectory(strPath);
+
+
+
+                    if (!strPath.EndsWith("\\"))
+                        strPath += "\\";
 
                     foreach (DataRow R in T.Rows)
                     {
@@ -273,20 +287,32 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         string NumElec = R["NumElec"].ToString().Trim();
 
                         RR["Lot"] = lot;
-                        RR["NumeroElec"] = NumElec;
-                        RR["Nombre"] = R["Nombre"];
-                        RR["Razon"] = R["Errores"];
-                        //RR["Img"] = R["EndosoImage"];
+                        RR["Precinto"] = R["Precinto"];
+                        RR["NumeroElec"] =      "Número Electoral / Precinto : "  +  NumElec ;
+                        RR["Nombre"] =          "Nombre del Endosante (TF)   : " + string.Concat(R["Nombre"].ToString().Trim()," ", R["Paterno"].ToString().Trim()," ", R["Materno"].ToString().Trim()).Trim();
+                        RR["NombreCee"] =       "Nombre del Endosante (CEE)  : " + get.MyCEENameToInforme(NumElec);
+                        RR["FuncionarioElec"] = "Funcionario                 : " + R["notario"];
+                        RR["CandidatoElec"] =   "Número Candidato            : " + R["Candidato"];
+                        RR["CandidatoName"] =   "Nombre Candidato            : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
+                        RR["Batch"] =           "Batch                       : " + R["Batch"];
+                        RR["Formulario"] =      "Formulario                  : " + R["Formulario"];
+                        RR["Cargo"] =           "Cargo                       : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
+                        
+                        RR["Razon"] = get.MyDecRechazoToInforme(  R["Errores"].ToString());
+                        RR["totalDePaginas"] = string.Format("{0:#,#}", totalDePaginas);
+                        RR["Pagina"] =string.Format("{0:#,#}", Pagina);
+
+                        {// Para la Imagen
+                            byte[] EndosoImage = (byte[])R["EndosoImage"];
+                            RR["Img"] = EndosoImage;
+                        }
+
                         ds.Rechazadas.Rows.Add(RR);
 
-                        string strPath = PDFPath + RR["Lot"];
-
                         if (!Directory.Exists(strPath))
-                            Directory.CreateDirectory(strPath);
-                        if (!strPath.EndsWith("\\"))
-                            strPath += "\\";
+                             Directory.CreateDirectory(strPath);
 
-                        string pdfName = strPath + count.ToString().PadLeft(2, '0') +"_"+ RR["lot"] + "_Rechazadas.pdf";
+                        string pdfName = strPath + Pagina.ToString().PadLeft(2, '0') +"_"+ RR["lot"] + "_Rechazadas.pdf";
                         objRp.SetDataSource(ds);
 
                         ExportOptions CrExportOptions;
@@ -301,8 +327,36 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             CrExportOptions.FormatOptions = CrFormatTypeOptions;
                         }
                         objRp.Export(); // Export PDF //      
-                        count++;
+                        Pagina++;
                     }
+                    //Merge PDFs
+                    {
+                        MergeEx myMerge = new MergeEx();
+                        myMerge.DestinationFile = strPath;
+                        myMerge.setFileName = cbLots_Item + "_Informe de Rechazos"; //pdf name
+                        myMerge.setSplit = 1000;
+                        String[] FileList = Directory.GetFiles(strPath, "*.pdf"); //_pdfPathOut
+
+                        foreach (string fileName in FileList)
+                        {
+                            myMerge.AddFile(fileName);
+                        }
+                        myMerge.Execute();
+
+                        foreach (string fileName in FileList)
+                        {
+                            System.IO.File.Delete(fileName);
+                        }
+
+                        //open pdf
+                        String fileNamepdf = strPath + myMerge.setFileName + "_1.pdf";
+                        System.Diagnostics.Process process = new System.Diagnostics.Process();
+                        process.StartInfo.FileName = fileNamepdf;
+                        process.Start();
+                        process.WaitForExit();
+
+                    }
+
                 }
             }
             catch (Exception ex)

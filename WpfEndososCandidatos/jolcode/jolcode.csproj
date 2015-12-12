@@ -36,11 +36,17 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=5.0.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +65,7 @@
     <Compile Include="ExcuteScript.cs" />
     <Compile Include="GetRegistry.cs" />
     <Compile Include="Logclass.cs" />
+    <Compile Include="MergeEx.cs" />
     <Compile Include="MyInterface\ICustomButton.cs" />
     <Compile Include="MyInterface\IDialogView.cs" />
     <Compile Include="MyInterface\IDialogViewAreas.cs" />
@@ -68,6 +75,9 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="SqlExcuteCommand.cs" />
     <Compile Include="ValidateItDynamicCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dll\itextsharp.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

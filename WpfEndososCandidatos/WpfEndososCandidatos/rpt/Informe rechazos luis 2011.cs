@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WpfEndososCandidatos.View {
+namespace WpfEndososCandidatos.rpt {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -41,7 +41,7 @@ namespace WpfEndososCandidatos.View {
         
         public override string FullResourceName {
             get {
-                return "WpfEndososCandidatos.View.Informe rechazos luis 2011.rpt";
+                return "WpfEndososCandidatos.rpt.Informe rechazos luis 2011.rpt";
             }
             set {
                 // Do nothing

@@ -182,7 +182,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="View\Informe rechazos luis 2011.cs">
+    <Compile Include="rpt\Informe rechazos luis 2011.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Informe rechazos luis 2011.rpt</DependentUpon>
@@ -417,7 +417,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Informe rechazos luis 2011.rpt">
+    <EmbeddedResource Include="rpt\Informe rechazos luis 2011.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Informe rechazos luis 2011.cs</LastGenOutput>
     </EmbeddedResource>
