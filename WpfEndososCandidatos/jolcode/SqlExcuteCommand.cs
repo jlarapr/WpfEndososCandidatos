@@ -1030,11 +1030,11 @@ namespace jolcode
             return myReturn;
         }
 
-        public string MyCEENameToInforme(string CItizenId)
+        public string MyCEEStatusToInforme(string CItizenId)
         {
             object myReturn = null;
 
-
+           
 
             try
             {
@@ -1053,7 +1053,89 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        string mySqlstr = "SELECT [LastName1] + ' ' + [LastName2] +' '+ [FirstName] as Nombre FROM [usercid].[Citizen] where[CItizenId] = '" + CItizenId + "'";
+                        string mySqlstr = "SELECT Status FROM [usercid].[Citizen] where[CItizenId] = '" + CItizenId + "'";
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar();
+                        if (myReturn == null)
+                            myReturn = "???";
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+            }
+
+            return myReturn.ToString();
+        }
+
+        public string MyCEEPrecintoToInforme(string CItizenId)
+        {
+            object myReturn = null;
+
+            //FirstGeoCode
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCeeMasterCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT FirstGeoCode FROM [usercid].[Citizen] where[CItizenId] = '" + CItizenId + "'";
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar();
+                        if (myReturn == null)
+                            myReturn = "???";
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+            }
+
+            return myReturn.ToString();
+        }
+
+        public string MyCEENameToInforme(string CItizenId)
+        {
+            object myReturn = null;
+
+            //FirstGeoCode
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCeeMasterCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT ltrim(rtrim([FirstName])) + ' ' + ltrim(rtrim([LastName1])) + ' ' + ltrim(rtrim([LastName2]))  as Nombre FROM [usercid].[Citizen] where[CItizenId] = '" + CItizenId + "'";
                         cmd.CommandText = mySqlstr;
                         myReturn = cmd.ExecuteScalar();
                         if (myReturn == null)

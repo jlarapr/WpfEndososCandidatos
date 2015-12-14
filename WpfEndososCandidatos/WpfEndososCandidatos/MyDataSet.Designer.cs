@@ -309,6 +309,10 @@ namespace WpfEndososCandidatos {
             
             private global::System.Data.DataColumn columnPrecinto;
             
+            private global::System.Data.DataColumn columnPrecintoCEE;
+            
+            private global::System.Data.DataColumn columnStatusCEE;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public RechazadasDataTable() {
@@ -464,6 +468,22 @@ namespace WpfEndososCandidatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PrecintoCEEColumn {
+                get {
+                    return this.columnPrecintoCEE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn StatusCEEColumn {
+                get {
+                    return this.columnStatusCEE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -499,7 +519,24 @@ namespace WpfEndososCandidatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public RechazadasRow AddRechazadasRow(string Lot, string NumeroElec, string Nombre, string Razon, byte[] Img, string totalDePaginas, string Pagina, string CandidatoElec, string CandidatoName, string FuncionarioElec, string Cargo, string NombreCee, string Batch, string Formulario, string Precinto) {
+            public RechazadasRow AddRechazadasRow(
+                        string Lot, 
+                        string NumeroElec, 
+                        string Nombre, 
+                        string Razon, 
+                        byte[] Img, 
+                        string totalDePaginas, 
+                        string Pagina, 
+                        string CandidatoElec, 
+                        string CandidatoName, 
+                        string FuncionarioElec, 
+                        string Cargo, 
+                        string NombreCee, 
+                        string Batch, 
+                        string Formulario, 
+                        string Precinto, 
+                        string PrecintoCEE, 
+                        string StatusCEE) {
                 RechazadasRow rowRechazadasRow = ((RechazadasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Lot,
@@ -516,7 +553,9 @@ namespace WpfEndososCandidatos {
                         NombreCee,
                         Batch,
                         Formulario,
-                        Precinto};
+                        Precinto,
+                        PrecintoCEE,
+                        StatusCEE};
                 rowRechazadasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowRechazadasRow);
                 return rowRechazadasRow;
@@ -554,6 +593,8 @@ namespace WpfEndososCandidatos {
                 this.columnBatch = base.Columns["Batch"];
                 this.columnFormulario = base.Columns["Formulario"];
                 this.columnPrecinto = base.Columns["Precinto"];
+                this.columnPrecintoCEE = base.Columns["PrecintoCEE"];
+                this.columnStatusCEE = base.Columns["StatusCEE"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -589,6 +630,10 @@ namespace WpfEndososCandidatos {
                 base.Columns.Add(this.columnFormulario);
                 this.columnPrecinto = new global::System.Data.DataColumn("Precinto", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrecinto);
+                this.columnPrecintoCEE = new global::System.Data.DataColumn("PrecintoCEE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPrecintoCEE);
+                this.columnStatusCEE = new global::System.Data.DataColumn("StatusCEE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStatusCEE);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -971,6 +1016,38 @@ namespace WpfEndososCandidatos {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PrecintoCEE {
+                get {
+                    try {
+                        return ((string)(this[this.tableRechazadas.PrecintoCEEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrecintoCEE\' in table \'Rechazadas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRechazadas.PrecintoCEEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string StatusCEE {
+                get {
+                    try {
+                        return ((string)(this[this.tableRechazadas.StatusCEEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StatusCEE\' in table \'Rechazadas\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableRechazadas.StatusCEEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsLotNull() {
                 return this.IsNull(this.tableRechazadas.LotColumn);
             }
@@ -1147,6 +1224,30 @@ namespace WpfEndososCandidatos {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPrecintoNull() {
                 this[this.tableRechazadas.PrecintoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPrecintoCEENull() {
+                return this.IsNull(this.tableRechazadas.PrecintoCEEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPrecintoCEENull() {
+                this[this.tableRechazadas.PrecintoCEEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsStatusCEENull() {
+                return this.IsNull(this.tableRechazadas.StatusCEEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetStatusCEENull() {
+                this[this.tableRechazadas.StatusCEEColumn] = global::System.Convert.DBNull;
             }
         }
         

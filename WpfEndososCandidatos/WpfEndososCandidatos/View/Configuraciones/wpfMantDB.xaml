@@ -26,7 +26,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Path para la imágenes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Grid.Column="1" Height="26"/>
+            <Label Content="Path para los PDF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="134" Grid.Column="1" Height="26"/>
             <TextBox x:Name="dfPathtoPictures" HorizontalAlignment="Left" Height="23" Margin="144,13,0,0" TextWrapping="Wrap" Text="{Binding dfPathtoPictures_txt}" VerticalAlignment="Top" Width="626" Grid.Column="1"/>
             <Button x:Name="cmdBrowseImagesPath" Content="Buscar..." HorizontalAlignment="Left" Margin="775,12,0,0" VerticalAlignment="Top" Width="53" Command="{Binding cmdBrowseImagesPath_Click}" Grid.Column="1" Height="22" />
 

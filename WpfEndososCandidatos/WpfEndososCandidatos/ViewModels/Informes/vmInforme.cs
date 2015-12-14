@@ -291,6 +291,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         RR["NumeroElec"] =      "Número Electoral / Precinto : "  +  NumElec ;
                         RR["Nombre"] =          "Nombre del Endosante (TF)   : " + string.Concat(R["Nombre"].ToString().Trim()," ", R["Paterno"].ToString().Trim()," ", R["Materno"].ToString().Trim()).Trim();
                         RR["NombreCee"] =       "Nombre del Endosante (CEE)  : " + get.MyCEENameToInforme(NumElec);
+                        RR["PrecintoCEE"] =     "Precinto (CEE)              : " + get.MyCEEPrecintoToInforme(NumElec);
+                        RR["StatusCEE"] =       "Status (CEE)                : " + get.MyCEEStatusToInforme(NumElec);
                         RR["FuncionarioElec"] = "Funcionario                 : " + R["notario"];
                         RR["CandidatoElec"] =   "Número Candidato            : " + R["Candidato"];
                         RR["CandidatoName"] =   "Nombre Candidato            : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
@@ -354,6 +356,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         process.StartInfo.FileName = fileNamepdf;
                         process.Start();
                         process.WaitForExit();
+                        cbLots_Item_Id = -1;
 
                     }
 
@@ -398,7 +401,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0,1,2,3,4");
+                _MyLotsTable = get.MyGetLot("3");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)

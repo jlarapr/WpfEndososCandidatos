@@ -30,6 +30,8 @@
               <xs:element name="Batch" msprop:Generator_ColumnVarNameInTable="columnBatch" msprop:Generator_ColumnPropNameInRow="Batch" msprop:Generator_ColumnPropNameInTable="BatchColumn" msprop:Generator_UserColumnName="Batch" type="xs:string" minOccurs="0" />
               <xs:element name="Formulario" msprop:Generator_ColumnVarNameInTable="columnFormulario" msprop:Generator_ColumnPropNameInRow="Formulario" msprop:Generator_ColumnPropNameInTable="FormularioColumn" msprop:Generator_UserColumnName="Formulario" type="xs:string" minOccurs="0" />
               <xs:element name="Precinto" msprop:Generator_ColumnVarNameInTable="columnPrecinto" msprop:Generator_ColumnPropNameInRow="Precinto" msprop:Generator_ColumnPropNameInTable="PrecintoColumn" msprop:Generator_UserColumnName="Precinto" type="xs:string" minOccurs="0" />
+              <xs:element name="PrecintoCEE" msprop:Generator_ColumnVarNameInTable="columnPrecintoCEE" msprop:Generator_ColumnPropNameInRow="PrecintoCEE" msprop:Generator_ColumnPropNameInTable="PrecintoCEEColumn" msprop:Generator_UserColumnName="PrecintoCEE" type="xs:string" minOccurs="0" />
+              <xs:element name="StatusCEE" msprop:Generator_ColumnVarNameInTable="columnStatusCEE" msprop:Generator_ColumnPropNameInRow="StatusCEE" msprop:Generator_ColumnPropNameInTable="StatusCEEColumn" msprop:Generator_UserColumnName="StatusCEE" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
