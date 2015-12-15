@@ -6,12 +6,15 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:local="clr-namespace:WpfEndososCandidatos.View.Configuraciones"
         mc:Ignorable="d" Background="Transparent"
-        Title="wpfMantCadidatos" Height="439.336" Width="607.569" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" >
+        Title="wpfMantCadidatos" Height="514.19" Width="605.074" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding InitWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding cmdFind_Click}"  CommandParameter="{Binding ElementName=txtPassword}" />
+    </Window.InputBindings>
     <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
 
         <Border.Effect>
@@ -19,28 +22,28 @@
         </Border.Effect>
         <Grid>
             <Label x:Name="lblNumPartido" Content="Num. Candidato" HorizontalAlignment="Left" Margin="11,80,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lblNombre" Content="Nombre" HorizontalAlignment="Left" Margin="113,80,0,0" VerticalAlignment="Top" Width="149"/>
+            <Label x:Name="lblNombre" Content="Nombre" HorizontalAlignment="Left" Margin="11,139,0,0" VerticalAlignment="Top" Width="149"/>
             <TextBox x:Name="dfNumPartido" HorizontalAlignment="Left" Height="23" Margin="11,111,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="97"
-            	Text="{Binding txtNumCandidato}"
-            	IsReadOnly="{Binding IsReadOnly_txtNumCandidato}" 
+            	Text="{Binding txtNumCandidato, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     IsReadOnly="{Binding IsReadOnly_txtNumCandidato}" 
             	Background="{Binding Background_txtNumCandidato}"
             	MaxLength="20"
             	CharacterCasing ="Upper"
                              />
-            <ComboBox x:Name="cbNombre" HorizontalAlignment="Left" Margin="113,111,0,0" VerticalAlignment="Top" Width="283"
+            <ComboBox x:Name="cbNombre" HorizontalAlignment="Left" Margin="11,170,0,0" VerticalAlignment="Top" Width="283"
             	ItemsSource="{Binding cbNombre}"
             	SelectedItem="{Binding cbNombre_Item, Mode=TwoWay}"                                     
             	SelectedIndex="{Binding cbNombre_Item_Id, Mode=TwoWay}"
             	Visibility="{Binding Visibility_cbNombre}" Height="23"
                               />
-            <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="113,111,0,0"  VerticalAlignment="Top" Width="263"
+            <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="11,170,0,0"  VerticalAlignment="Top" Width="263"
             	TextWrapping="NoWrap"
             	Text="{Binding txtNombre}"
             	Visibility="{Binding Visibility_txtNombre}"
                 Background="{Binding Background_txtNumCandidato}"
             	CharacterCasing ="Upper"
                              />
-            <GroupBox x:Name="gbCargo" Header="Cargo" HorizontalAlignment="Left" Height="197" Margin="5,196,0,0" VerticalAlignment="Top" Width="478"
+            <GroupBox x:Name="gbCargo" Header="Cargo" HorizontalAlignment="Left" Height="197" Margin="3,272,0,0" VerticalAlignment="Top" Width="453"
                       IsEnabled="{Binding IsEnabled_gbCargo}"
                       >
                 <Grid Margin="0">
@@ -53,7 +56,7 @@
                     <RadioButton x:Name="rbSenadorDistrito" Content="Senador Distrito" HorizontalAlignment="Left" Margin="35,50,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[3]}"
                                  />
-                   
+
                     <RadioButton x:Name="rbSenadorPorAcumulacion" Content="Senador por Acumulación" HorizontalAlignment="Left" Margin="35,72,0,0" VerticalAlignment="Top"
                                  IsChecked="{Binding IsChecked_rbCargos[4]}"
                                  />
@@ -71,7 +74,7 @@
                                  />
                 </Grid>
             </GroupBox>
-            <StackPanel Height="239" Width="88" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="486,110,0,0"
+            <StackPanel Height="299" Width="88" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="479,170,0,0"
                         Background="Beige"
                         >
                 <Button x:Name="cmdAdd" Content="Añadir"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="29"
@@ -105,7 +108,7 @@
             		IsEnabled="{Binding IsEnabled_cmdSalir}"
                     />
             </StackPanel>
-            <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="11,168,0,0" VerticalAlignment="Top" Width="279"
+            <ComboBox x:Name="cbArea" HorizontalAlignment="Left" Margin="11,241,0,0" VerticalAlignment="Top" Width="279"
             	ItemsSource="{Binding cbArea}"
             	SelectedItem="{Binding cbArea_Item, Mode=TwoWay}"                                     
             	SelectedIndex="{Binding cbArea_Item_Id, Mode=TwoWay}"
@@ -113,24 +116,32 @@
             	IsEditable="{Binding IsEditable_cbArea}"
             	Visibility="{Binding Visibility_cbArea}" Height="23"
                               />
-            <Label x:Name="lblArea" Content="Área" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,142,0,0"/>
-            <Label x:Name="lblEndoReq" Content="Endosos Req." HorizontalAlignment="Left" Margin="401,85,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="txtEndoReq" HorizontalAlignment="Left" Height="23" Margin="401,111,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="80"
-            	Text="{Binding txtEndoReq}"
+            <Label x:Name="lblArea" Content="Área" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,210,0,0"/>
+            <Label x:Name="lblEndoReq" Content="Endosos Req." HorizontalAlignment="Left" Margin="307,139,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtEndoReq" HorizontalAlignment="Left" Height="23" Margin="307,170,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149"
+            	Text="{Binding txtEndoReq,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
             	IsReadOnly="{Binding IsReadOnly_txtEndoReq}"
             	Background="{Binding Background_txtEndoReq}"
             	CharacterCasing ="Upper"
                              />
-            <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" VerticalAlignment="Top" Width="186"
+            <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" VerticalAlignment="Top" Width="149"
             	ItemsSource="{Binding cbPartidos}"
             	SelectedItem="{Binding cbPartidos_Item, Mode=TwoWay}"                                     
             	SelectedIndex="{Binding cbPartidos_Item_Id, Mode=TwoWay}"
             	Visibility="{Binding Visibility_cbPartidos}" Height="23"
                       IsEnabled="{Binding IsEnabled_cbPartidos}"
-                              Margin="295,168,0,0"
+                              Margin="307,241,0,0"
                               />
-            <Label x:Name="lblArea_Copy" Content="Partido" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="295,142,0,0"/>
+            <Label x:Name="lblArea_Copy" Content="Partido" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="307,210,0,0"/>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Aspirante" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,21,0"/>
+            <Button x:Name="cmdFind" Content="Buscar..." HorizontalAlignment="Left" Margin="113,112,0,0" VerticalAlignment="Top" Width="59"
+            	Command="{Binding cmdFind_Click}" Height="23"
+                            />
+            <Label x:Name="label6_Copy1" Content="Status :" HorizontalAlignment="Left" Margin="184,80,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
+            <Label x:Name="txtSatatusElec" Height="26" Margin="0,108,281,0"  VerticalAlignment="Top"
+            	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+            	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Right" Width="106"
+                                   />
 
         </Grid>
     </Border>

@@ -56,6 +56,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _txtEndoReq;
         private DataTable _MyCandidatosTable;
         private bool _IsInsert;
+        private string _DBCeeMasterCnnStr;
+        private string _txtStatusElec;
 
         public vmMantCandidatos() 
             : base (new wpfMantCadidatos() )
@@ -67,6 +69,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdSave_Click = new RelayCommand(param => MyCmdSave_Click(), param => MyCanSave);
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdAdd_Click = new RelayCommand(param => MyCmdAdd_Click());
+            cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
 
             cbNombre = new ObservableCollection<string>();
             IsChecked_rbCargos = new ObservableCollection<bool>();
@@ -76,6 +79,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
+
         public Brush BorderBrush
         {
             get
@@ -115,7 +119,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("Background_txtEndoReq");
             }
         }
-
+        public string DBCeeMasterCnnStr
+        {
+            get
+            {
+                return _DBCeeMasterCnnStr;
+            }
+            set
+            {
+                _DBCeeMasterCnnStr = value;
+            }
+        }
         public string DBEndososCnnStr
         {
             get
@@ -343,7 +357,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
 
         }
-
+        public string txtStatusElec
+        {
+            get
+            {
+                return _txtStatusElec;
+            }
+            set
+            {
+                _txtStatusElec = value;
+                this.RaisePropertychanged("txtStatusElec");
+            }
+        }
 
         public Visibility Visibility_txtNombre
         {
@@ -504,7 +529,37 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("cbArea_Item_Id");
             }
         }
+        public bool CanFind
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(txtNumCandidato))
+                {
+                    txtNombre = string.Empty;
+                    txtStatusElec = string.Empty;
+                    return false;
+                }
 
+                if (txtNumCandidato.Trim().Length <= 0)
+                {
+                    txtNombre = string.Empty;
+                    txtStatusElec = string.Empty;
+                    return false;
+                }
+
+                int i;
+                if (!int.TryParse(txtNumCandidato, out i))
+                {
+                    txtNombre = string.Empty;
+                    txtStatusElec = string.Empty;
+                    return false;
+                }
+
+                //if (_CanFind)
+                //    return false;
+                return true;
+            }
+        }
         #endregion
 
         #region MyCmd
@@ -785,6 +840,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _IsEdit = true;
 
                 _IsInsert = true;
+                cbPartidos_Item_Id = 0;
 
             }
             catch (Exception ex)
@@ -798,7 +854,57 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
+        private void MyCmdFind_Click()
+        {
+            try
+            {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr
 
+                })
+                {
+                    // _CanFind = true;
+
+                    txtNumCandidato = txtNumCandidato.PadLeft(7, '0');
+
+                    DataTable myTable = get.MyGetCitizen(txtNumCandidato);
+                    if (myTable.Rows.Count == 0)
+                        throw new Exception("Número electoral invalido.");
+
+                    txtNombre = myTable.Rows[0]["FirstName"].ToString() + " " + myTable.Rows[0]["LastName1"].ToString()+" "+ myTable.Rows[0]["LastName2"].ToString();
+                    //txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
+                    //txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
+
+                    switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                    {
+                        case "A":
+                            txtStatusElec = "A";
+                            break;
+                        case "E":
+                            //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                            txtStatusElec = "E";
+                            break;
+                        case "I":
+                            txtStatusElec = "I";
+                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            break;
+                        default:
+                            txtStatusElec = "?";
+                            break;
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+               // _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
+                MyReset();
+            }
+        }
 
 
         public RelayCommand InitWindow
@@ -830,7 +936,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get; private set;
         }
-
+        public RelayCommand cmdFind_Click
+        {
+            get; private set;
+        }
 
         #endregion
 
@@ -863,6 +972,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             txtNombre = string.Empty;
             txtNumCandidato = string.Empty;
             txtEndoReq = string.Empty;
+            txtStatusElec = string.Empty;
 
             cbArea_Item_Id = -1;
             cbPartidos_Item_Id = -1;
