@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfLotAuth" Height="252.456" Width="460.89" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfLotAuth" Height="236.457" Width="637.556" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -16,42 +16,42 @@
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
         </Border.Effect>
         <Grid Margin="5">
-            <GroupBox x:Name="groupBox" Header="Lote Digitalizado">
+            <GroupBox x:Name="groupBox" Header="Lote Digitalizado" Margin="0,0,10,0">
                 <Grid Margin="5">
                     <Label Content="Lote (Num Secretaría)" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
 
-                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    <TextBox HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="273"
             			Text="{Binding numLote}" IsReadOnly="True"
                      
                      />
-                    <Label Content="Cantidad Digitalizadas" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5"/>
-                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    <Label Content="Cantidad Digitalizadas" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5"/>
+                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
             			Text="{Binding cantidad}"
                      />
-                    <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="142,36,0,0" VerticalAlignment="Top" Width="141"
+                    <ComboBox x:Name="cbLot" Margin="288,36,0,0" VerticalAlignment="Top"
             			ItemsSource="{Binding cbLots}"
             			SelectedItem="{Binding cbLots_Item, Mode=TwoWay}"                                     
-            			SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}" Height="23"
+            			SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Width="270"
                    
                 />
-                    <Button Content="Añadir Lote"  HorizontalAlignment="Left" Margin="307,31,0,0" VerticalAlignment="Top" Width="82" Height="28"
+                    <Button Content="Añadir Lote"  HorizontalAlignment="Left" Margin="389,125,0,0" VerticalAlignment="Top" Width="82" Height="28"
             			Command="{Binding cmdAddLot_Click}"
                     
                     />
                     <Button Content="Añadir Todos"  HorizontalAlignment="Left" Margin="307,64,0,0" VerticalAlignment="Top" Width="82" Height="28"
             			Command="{Binding cmdAddTodoLot_Click}" Visibility="Hidden"
                     />
-                    <Button Content="Salir"  HorizontalAlignment="Left" Margin="307,99,0,0" VerticalAlignment="Top" Width="82" Height="28"
+                    <Button Content="Salir"  HorizontalAlignment="Left" Margin="476,125,0,0" VerticalAlignment="Top" Width="82" Height="28"
             			Command="{Binding cmdSalir_Click}"
                     />
-                    <Label x:Name="lblCount"  HorizontalAlignment="Left" Margin="10,133,0,0" VerticalAlignment="Top"
+                    <Label x:Name="lblCount" Margin="288,67,0,0" VerticalAlignment="Top"
             			Content="{Binding lblCount}"
-            			Background="Gray" Height="47" Width="273"
+            			Background="Gray" Height="53" HorizontalAlignment="Left" Width="270"
                    />
-                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="142,95,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="142,97,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
                     	Text="{Binding cantidadEntregada}"
                      />
-                    <Label Content="Cantidad Entregadas" HorizontalAlignment="Left" Margin="142,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5" Width="120"/>
+                    <Label Content="Cantidad Entregadas" HorizontalAlignment="Left" Margin="142,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5" Width="120"/>
                 </Grid>
             </GroupBox>
 

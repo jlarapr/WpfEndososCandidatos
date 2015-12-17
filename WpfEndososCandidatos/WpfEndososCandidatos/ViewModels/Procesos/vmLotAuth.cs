@@ -137,7 +137,7 @@
                 return _lblCount;
             }set
             {
-                _lblCount = "Total de Lotes: " + value;
+                _lblCount = "Total de Lotes Disponibles: " + value;
                 this.RaisePropertychanged("lblCount");
             }
         }
@@ -166,13 +166,14 @@
                 if (value != null)
                 {
 
-                    string[] tmp = value.Split('-');
-                    numLote = tmp[0].ToString();
-                    cantidad = 0;
-                    int k = 0;
+                   // string[] tmp = value.Split('-');
+                    //numLote = tmp[0].ToString();
+                    numLote = value.Trim();
+                    //cantidad = 0;
+                    //int k = 0;
 
-                    if (int.TryParse(tmp[1].ToString(), out k))
-                        cantidad = k;
+                    //if (int.TryParse(tmp[1].ToString(), out k))
+                    //    cantidad = k;
 
 
 
@@ -183,6 +184,7 @@
                     })
                     {
                         cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
+                        cantidad = get.MyGetCatntidadDigitalizada(numLote);
                     }
 
                 }
@@ -351,7 +353,8 @@
 
                 foreach (DataRow row in myLotsTable.Rows)
                 {
-                    cbLots.Add(row["BatchTrack"].ToString() + "-" + row["Amount"].ToString() + "-" + row["Partido"].ToString());
+                    cbLots.Add(row["BatchTrack"].ToString());
+                    //cbLots.Add(row["BatchTrack"].ToString() + "-" + row["Amount"].ToString() + "-" + row["Partido"].ToString());
                 }
 
                 cbLots_Item_Id = -1;

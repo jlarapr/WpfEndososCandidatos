@@ -165,6 +165,39 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public int MyGetCatntidadDigitalizada(string lot)
+        {
+            int returnInt = 0;
+            try
+            {
+                string mySqlstr = "Select  count(*) as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        returnInt =(int) cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyGetCatntidadDigitalizada");
+            }
+            return returnInt;
+        }
+
         public int MyGetCatntidadEntregada(string lot)
         {
             int returnInt = 0;
@@ -266,9 +299,9 @@ namespace jolcode
             bool myBoolError = true;
             try
             {
-                int myIntCanridad = 0;
+                int myIntCantidad = 0;
 
-                if (!int.TryParse(cantidad, out myIntCanridad))
+                if (!int.TryParse(cantidad, out myIntCantidad))
                     throw new Exception("Error en la Cantidad");
 
                 string[] mySqlstrCount =
@@ -340,10 +373,8 @@ namespace jolcode
                                 throw new Exception("Lote no Existe");
 
                             cmd.CommandText = string.Concat(mySqlstrCountVerificar);
-                            if ((int)cmd.ExecuteScalar() != myIntCanridad)
+                            if ((int)cmd.ExecuteScalar() != myIntCantidad)
                                 throw new Exception("La cantidad de Endosos no concuerda");
-
-
 
                             myBoolError = false;
 
@@ -1594,13 +1625,13 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyDeleteNotario(string where, string where2)
+        public bool MyDeleteNotario(string where, string where2,string NumCand)
         {
             bool myBoolReturn = false;
             string[] myDelete =
                        {
                             "Delete from [dbo].[Notarios] ",
-                            " WHERE NumElec=@Where and partido=@where2"
+                            " WHERE NumElec=@Where and partido=@where2 and NumCand=@NumCand"
                         };
             try
             {
@@ -1621,8 +1652,11 @@ namespace jolcode
 
                         cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Where2", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@NumCand", SqlDbType.VarChar));
                         cmd.Parameters["@Where"].Value = where;
                         cmd.Parameters["@Where2"].Value = where2;
+                        cmd.Parameters["@NumCand"].Value = NumCand.Trim();
+
 
                         int myReturn = cmd.ExecuteNonQuery();
 

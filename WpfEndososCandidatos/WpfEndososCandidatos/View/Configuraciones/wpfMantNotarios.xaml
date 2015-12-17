@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfMantNotarios" Height="461.029" Width="501.28" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantNotarios" Height="478.029" Width="501.28" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -19,7 +19,7 @@
         </Border.Effect>
         <Grid>
             <Label HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Content="Mantenimiento - Funcionario" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
-            <GroupBox x:Name="groupBox" Header="Notarios" Height="357" Margin="5,60,10,0" VerticalAlignment="Top">
+            <GroupBox x:Name="groupBox" Header="Notarios" Margin="5,60,10,10">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="70*"/>
@@ -57,7 +57,7 @@
                              CharacterCasing="Upper"
                              
                              />
-                    <Label x:Name="lblAspirante" Content="Aspirante" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lblAspirante" Content="Aspirante" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="10,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="304"
                              Text="{Binding txtNombre}"
                              Background="{Binding Background_txtNombre}"
@@ -66,22 +66,23 @@
                              IsReadOnly="{Binding IsReadOnly_txtNombre}"
                              
                              />
-                    <ComboBox x:Name="cbAspirante" HorizontalAlignment="Left" Margin="10,272,0,0" VerticalAlignment="Top" Width="326"
+                    <ComboBox x:Name="cbAspirante" HorizontalAlignment="Left" Margin="10,324,0,0" VerticalAlignment="Top" Width="326"
                     	ItemsSource="{Binding cbAspirante}"
                     	SelectedItem="{Binding cbAspirante_Item, Mode=TwoWay}"                                     
                     	SelectedIndex="{Binding cbAspirante_Item_Id, Mode=TwoWay}"
                     	Visibility="{Binding Visibility_cbAspirante}" Height="23"
                               IsEnabled="{Binding IsEnabled_cbAspirante}"
                               />
-                    <TextBox x:Name="txtNombreAspirante" HorizontalAlignment="Left" Height="23" Margin="10,273,0,0"  VerticalAlignment="Top" Width="304"
+                    <TextBox x:Name="txtNombreAspirante" HorizontalAlignment="Left" Height="23" Margin="10,265,0,0"  VerticalAlignment="Top" Width="326"
                     	TextWrapping="NoWrap"
-                    	Text="{Binding txtNombreAspirante}"
-                    	Visibility="{Binding Visibility_txtNombreAspirante}"
+                    	Text="{Binding txtNombreAspirante,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     	CharacterCasing ="Upper"
                              Background="{Binding Background_txtNombreAspirante}"
                              IsReadOnly="{Binding IsReadOnly_txtNombreAspirante}"
                              IsEnabled="{Binding IsEnabled_txtNombreAspirante}"
                              />
+                    <!--Visibility="{Binding Visibility_txtNombreAspirante}"-->
+
                     <Button Content="Salir"  HorizontalAlignment="Left" Margin="10,200,0,0" VerticalAlignment="Top" Width="75" Height="29"
                     	Command="{Binding cmdSalir_Click}"
                     	IsEnabled="{Binding IsEnabled_cmdSalir}" Grid.Column="1"
@@ -115,6 +116,17 @@
                     	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                     	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Right" Width="76"
                                    />
+                    <TextBox x:Name="txtNumElecAspirante" HorizontalAlignment="Left" Height="23" Margin="10,293,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="87"
+                    	MaxLength="7"
+                    	Text="{Binding txtNumElecAspirante, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    	Background="{Binding Background_txtNumElec}"
+                    	IsReadOnly="{Binding IsReadOnly_txtNumElec}"
+                    	CharacterCasing="Upper"
+                             
+                             />
+                    <Button x:Name="cmdFind_Copy" Content="Buscar..." HorizontalAlignment="Left" Margin="102,293,0,0" VerticalAlignment="Top" Width="59"
+                    	Command="{Binding cmdFindAspirante_Click}" Height="23"
+                            />
                 </Grid>
             </GroupBox>
 

@@ -72,6 +72,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _DBCeeMasterCnnStr;
        // private bool _CanFind;
         private string _txtStatusElec;
+        private string _txtNumElecAspirante;
 
         public vmMantNotarios() : base(new wpfMantNotarios())
         {
@@ -83,6 +84,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdSave_Click = new RelayCommand(param => MyCmdSave_Click(),param => CanSave);
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
+
+            cmdFindAspirante_Click = new RelayCommand(param => MyCmdFindAspirante_Click(),param=> CanFindAspirante);
 
             cbAspirante = new ObservableCollection<Candidatos>();
             cbNotario = new ObservableCollection<Notarios>();
@@ -110,7 +113,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbAspirante_Item_Id = -1;
+                    //txtNombreAspirante = string.Empty;
+                    //cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -121,7 +125,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbAspirante_Item_Id = -1;
+                    //txtNombreAspirante = string.Empty;
+
+                    //cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -133,7 +139,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombre = string.Empty;
                     txtApellido1 = string.Empty;
                     txtApellido2 = string.Empty;
-                    cbAspirante_Item_Id = -1;
+                    //txtNombreAspirante = string.Empty;
+                    //cbAspirante_Item_Id = -1;
                     //MySendTab();
 
                     return false;
@@ -242,7 +249,29 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
+        public bool CanFindAspirante
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(txtNumElecAspirante))
+                {
+                    return false;
+                }
 
+                if (txtNumElecAspirante.Trim().Length <= 0)
+                {
+                    return false;
+                }
+
+                int i;
+                if (!int.TryParse(txtNumElecAspirante, out i))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
         public bool IsReadOnly_txtNumElec
         {
             get
@@ -401,6 +430,26 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
+        public string txtNumElecAspirante
+        {
+            get
+            {
+                return _txtNumElecAspirante;
+            }set
+            {
+                
+                if (_txtNumElecAspirante != value)
+                {
+                    cbAspirante_Item_Id = -1;
+                    txtNombreAspirante = string.Empty;
+
+
+                    _txtNumElecAspirante = value;
+                    this.RaisePropertychanged("txtNumElecAspirante");
+                }
+            }
+        }
+
         public string txtNumElec
         {
             get
@@ -418,11 +467,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                             txtApellido2 = string.Empty;
                             txtNombre = string.Empty;
                             cbAspirante_Item_Id = -1;
+                              txtNombreAspirante = string.Empty;
                         }
-
                         _txtNumElec = value;
-
-
                         this.RaisePropertychanged("txtNumElec");
                     }
                     else
@@ -432,6 +479,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         txtApellido2 = string.Empty;
                         txtNombre = string.Empty;
                         cbAspirante_Item_Id = -1;
+                         txtNombreAspirante = string.Empty;
                         this.RaisePropertychanged("txtNumElec");
                     }
                 }
@@ -564,8 +612,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 if (value != null)
                 {
+                    //txtNumElecAspirante = value.Split('-')[1];
                     _cbAspirante_Item = value;
                     txtNombreAspirante = value;
+
 
                     this.RaisePropertychanged("cbAspirante_Item");
                 }
@@ -579,9 +629,11 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
-                _cbAspirante_Item_Id = value;
-               
-                this.RaisePropertychanged("cbAspirante_Item_Id");
+                if (_cbAspirante_Item_Id != value)
+                {
+                    _cbAspirante_Item_Id = value;
+                    this.RaisePropertychanged("cbAspirante_Item_Id");
+                }
             }
         }
 
@@ -798,8 +850,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                 string myWhere = string.Empty;
                 string myWhere2 = string.Empty;
+                string NumCand = string.Empty;
+
                 myWhere = txtNumElec.Trim();
                 myWhere2 = cbAspirante_Item.Split('-')[0];
+                NumCand = cbAspirante_Item.Split('-')[1];
+                
                 bool myDelete = false;
 
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
@@ -807,7 +863,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myDelete = mySqlExe.MyDeleteNotario(myWhere,myWhere2);
+                    myDelete = mySqlExe.MyDeleteNotario(myWhere,myWhere2, NumCand);
 
 
                 }
@@ -861,6 +917,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                 _IsInsert = true;
                 _isEdit = true;
+                cbAspirante_Item_Id = -1;
 
             }
             catch (Exception ex)
@@ -872,6 +929,20 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             finally
             {
 
+            }
+        }
+
+        private void MyCmdFindAspirante_Click()
+        {
+            try
+            {
+                cbAspirante_Item_Id =  FindByAspirante(txtNumElecAspirante);
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
             }
         }
 
@@ -909,7 +980,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get; private set;
         }
-
+        public RelayCommand cmdFindAspirante_Click
+        {
+            get;private set;
+        }
         #endregion
 
         #region MyMetodos
@@ -941,6 +1015,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             txtApellido1 = string.Empty;
             txtApellido2 = string.Empty;
             txtStatusElec = string.Empty;
+            txtNumElecAspirante = string.Empty;
 
             Background_txtNombre = Brushes.Yellow;
             Background_txtApellido2 = Brushes.Yellow;
@@ -1089,7 +1164,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             catch (Exception)
             {
 
-                throw;
+               // throw;
             }
         }
 
