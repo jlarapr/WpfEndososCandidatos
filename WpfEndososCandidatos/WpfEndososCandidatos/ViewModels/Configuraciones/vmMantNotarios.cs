@@ -631,6 +631,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 if (_cbAspirante_Item_Id != value)
                 {
+                    if (!string.IsNullOrEmpty(txtNumElecAspirante))
+                        txtNumElecAspirante = string.Empty;
+
                     _cbAspirante_Item_Id = value;
                     this.RaisePropertychanged("cbAspirante_Item_Id");
                 }
@@ -1147,9 +1150,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 Candidatos myInfoAspirante = cbAspirante.Where(x => x.NumCand == AspiranteKey).Single<Candidatos>();
                 myIndex = cbAspirante.IndexOf(myInfoAspirante);
             }
+            catch (System.InvalidOperationException exInOp)
+            {
+                MethodBase site = exInOp.TargetSite;
+
+                if (exInOp.Message == "Sequence contains no elements")
+                MessageBox.Show("Aspirante No Exite en la Tabla!!!!", site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return myIndex;
         }

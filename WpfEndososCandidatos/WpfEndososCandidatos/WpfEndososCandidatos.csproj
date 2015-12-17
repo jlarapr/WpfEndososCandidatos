@@ -211,6 +211,7 @@
     <Compile Include="ViewModels\Menu\Ver.cs" />
     <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantDB.cs" />
+    <Compile Include="ViewModels\Procesos\vmFixLot.cs" />
     <Compile Include="ViewModels\Procesos\vmFixVoid.cs" />
     <Compile Include="ViewModels\Informes\vmInforme.cs" />
     <Compile Include="ViewModels\Procesos\vmLotAuth.cs" />
@@ -232,6 +233,9 @@
     </Compile>
     <Compile Include="View\Informes\wpfInformes.xaml.cs">
       <DependentUpon>wpfInformes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfFixLot.xaml.cs">
+      <DependentUpon>wpfFixLot.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Procesos\wpfLotProcess.xaml.cs">
       <DependentUpon>wpfLotProcess.xaml</DependentUpon>
@@ -319,6 +323,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Informes\wpfInformes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfFixLot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

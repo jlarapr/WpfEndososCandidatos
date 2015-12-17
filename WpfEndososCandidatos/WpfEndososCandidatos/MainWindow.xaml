@@ -45,6 +45,8 @@
                 <MenuItem Name="mnuRevLote" IsEnabled="{Binding mnuRevLote_IsEnabled}" Header="_Reversar Lote" Command="{Binding reversarLote_Click}" />
                 <Separator></Separator>
                 <MenuItem Name="mnuReydi" IsEnabled="{Binding mnuReydi_IsEnabled}" Header="_Reydi" Command="{Binding reydi_Click}" />
+                <Separator></Separator>
+                <MenuItem Name="mnuFixLot" IsEnabled="{Binding mnuReydi_IsEnabled}" Header="_Fix Lot" Command="{Binding FixLot_Click}" />
 
             </MenuItem>
             <MenuItem Name="mnuMainVer" Header="_Ver" Margin="5,5,0,0"  >

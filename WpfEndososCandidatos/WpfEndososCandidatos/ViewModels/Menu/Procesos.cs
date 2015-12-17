@@ -22,6 +22,7 @@
         private bool _mnuInformeEndosos_IsEnabled;
         private bool _mnuReydi_IsEnabled;
         private RelayCommand _verEndosos_Click;
+        private RelayCommand _FixLot_Click;
 
         public bool mnuRecibirLotes_IsEnabled
         {
@@ -244,8 +245,34 @@
             }
         }
 
-       
-     
+       public RelayCommand FixLot_Click
+        {
+            get
+            {
+                if (_FixLot_Click ==null)
+                {
+                    _FixLot_Click = new RelayCommand(param => MyFixLot_Click());
+                }
+                return _FixLot_Click;
+            }
+        }
+        private void MyFixLot_Click()
+        {
+            try
+            {
+                using (vmFixLot frm = new vmFixLot())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.MyOnShow();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void MyverEndosos_Click()
         {
