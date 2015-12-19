@@ -1094,43 +1094,46 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
-                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                cbNotario_Item_Id = FindByNotario(txtNumElec);
+
+                if (cbNotario_Item_Id <0)
+                { using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCeeMasterCnnStr = DBCeeMasterCnnStr
 
                 })
-                {
-                   // _CanFind = true;
-
-                    _txtNumElec = _txtNumElec.PadLeft(7, '0');
-
-                    DataTable myTable = get.MyGetCitizen(_txtNumElec);
-                    if (myTable.Rows.Count == 0)
-                        throw new Exception("Número electoral invalido.");
-
-                    txtNombre = myTable.Rows[0]["FirstName"].ToString();
-                    txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
-                    txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
-
-                    switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
                     {
-                        case "A":
-                            txtStatusElec = "A";
-                            break;
-                        case "E":
-                            //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                            txtStatusElec = "E";
-                            break;
-                        case "I":
-                            txtStatusElec = "I";
-                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            break;
-                        default:
-                            txtStatusElec = "?";
-                            break;
+                        // _CanFind = true;
+
+                        txtNumElec = txtNumElec.PadLeft(7, '0');
+
+                        DataTable myTable = get.MyGetCitizen(_txtNumElec);
+                        if (myTable.Rows.Count == 0)
+                            throw new Exception("Número electoral invalido.");
+
+                        txtNombre = myTable.Rows[0]["FirstName"].ToString();
+                        txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
+                        txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
+
+                        switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                        {
+                            case "A":
+                                txtStatusElec = "A";
+                                break;
+                            case "E":
+                                //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                                txtStatusElec = "E";
+                                break;
+                            case "I":
+                                txtStatusElec = "I";
+                                //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                break;
+                            default:
+                                txtStatusElec = "?";
+                                break;
+                        }
+
                     }
-
-
                 }
             }
             catch(Exception ex)
@@ -1141,6 +1144,31 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MyReset();
             }
         }
+        private int FindByNotario(string NotarioKey)
+        {
+            int myIndex = -1;
+            try
+            {
+
+                Notarios myInfoNotario = cbNotario.Where(x => x.NumElec == NotarioKey).Single<Notarios>();
+                myIndex = cbNotario.IndexOf(myInfoNotario);
+            }
+            catch (System.InvalidOperationException exInOp)
+            {
+                MethodBase site = exInOp.TargetSite;
+
+                if (exInOp.Message == "Sequence contains no elements")
+                    MessageBox.Show("No Exite en la Tabla!!!!", site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch 
+            {
+                //MethodBase site = ex.TargetSite;
+                //MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return myIndex;
+        }
+
+
         private int FindByAspirante(string AspiranteKey)
         {
             int myIndex = -1;

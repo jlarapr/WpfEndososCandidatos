@@ -567,7 +567,7 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status In (" + Status + ") order by Lot";
+                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi = 0 order by Lot";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1100,6 +1100,47 @@ namespace jolcode
             }
 
             return myReturn.ToString();
+        }
+
+
+        public object MyReydiEndososDate(string lot)
+        {
+            object myReturn = null;
+
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBRadicacionesCEECnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        string mySqlstr = "SELECT [BatchFilingDate] FROM [dbo].[FilingEndorsements] where [BatchNumber] = '" + lot + "'";
+                        cmd.CommandText = mySqlstr;
+                        myReturn = cmd.ExecuteScalar();
+                        if (myReturn == null)
+                            myReturn = "???";
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+            }
+
+            return myReturn;
         }
 
         public string MyCEEPrecintoToInforme(string CItizenId)
@@ -1943,7 +1984,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots, string usercode)
+        public bool MyChangeTF(DataTable tableLots, string usercode,object fechaEndosos)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -1967,12 +2008,32 @@ namespace jolcode
                             ");"
                         };
 
+                string FechaEndo_Mes = string.Empty;
+                string FechaEndo_Dia = string.Empty;
+                string FechaEndo_Ano = string.Empty;
+
+                try
+                {
+                    FechaEndo_Mes = ((DateTime)fechaEndosos).Month.ToString();
+                    FechaEndo_Dia = ((DateTime)fechaEndosos).Day.ToString();
+                    FechaEndo_Ano = ((DateTime)fechaEndosos).Year.ToString();
+                }
+                catch
+                {
+                    FechaEndo_Mes = string.Empty;
+                    FechaEndo_Dia = string.Empty;
+                    FechaEndo_Ano = string.Empty;
+                }
+
                 string[] myUpdate_Imported1 =
                     {
                             "Update [TF-Partidos] ",
                             "SET [Imported] = 1, ",
                             "FirmaNot_Inv = 0,",
-                            "FirmaElec_Inv = 0 ",
+                            "FirmaElec_Inv = 0,",
+                            "FechaEndo_Mes= @FechaEndo_Mes,",
+                            "FechaEndo_Dia=@FechaEndo_Dia,",
+                            "FechaEndo_Ano=@FechaEndo_Ano ",
                             "WHERE BatchTrack=@where ",
                             "And Imported = 0"
                     };
@@ -2061,8 +2122,21 @@ namespace jolcode
                         importDateParam.ParameterName = "@ImportDate";
                         importDateParam.SqlDbType = SqlDbType.VarChar;
 
-                        cmd.Parameters.Add(whereParam);
+                        SqlParameter FechaEndo_MesParam = new SqlParameter();
+                        FechaEndo_MesParam.ParameterName = "@FechaEndo_Mes";
+                        FechaEndo_MesParam.SqlDbType = SqlDbType.VarChar;
 
+                        SqlParameter FechaEndo_DiaParam = new SqlParameter();
+                        FechaEndo_DiaParam.ParameterName = "@FechaEndo_Dia";
+                        FechaEndo_DiaParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter FechaEndo_AnoParam = new SqlParameter();
+                        FechaEndo_AnoParam.ParameterName = "@FechaEndo_Ano";
+                        FechaEndo_AnoParam.SqlDbType = SqlDbType.VarChar;
+
+
+                        cmd.Parameters.Add(whereParam);
+                       
                         foreach (DataRow row in tableLots.Rows)
                         {
                             // Start a local transaction.
@@ -2075,12 +2149,24 @@ namespace jolcode
 
                             int myReturn = 0;
 
+                            cmd.Parameters.Add(FechaEndo_MesParam);
+                            cmd.Parameters.Add(FechaEndo_DiaParam);
+                            cmd.Parameters.Add(FechaEndo_AnoParam);
+
+                            FechaEndo_MesParam.Value = FechaEndo_Mes;
+                            FechaEndo_DiaParam.Value = FechaEndo_Dia;
+                            FechaEndo_AnoParam.Value = FechaEndo_Ano;
+
+
                             cmd.CommandText = string.Concat(myUpdate_Imported1);
                             myReturn = cmd.ExecuteNonQuery();
 
                             if (cmd.Parameters.Contains(whereParam))
                                 cmd.Parameters.Remove(whereParam);
 
+                            cmd.Parameters.Remove(FechaEndo_MesParam);
+                            cmd.Parameters.Remove(FechaEndo_DiaParam);
+                            cmd.Parameters.Remove(FechaEndo_AnoParam);
 
                             cmd.Parameters.Add(partidoParam);
                             cmd.Parameters.Add(lotParam);
@@ -2440,6 +2526,8 @@ namespace jolcode
                 bool[] isWarning = new bool[20];
                 Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
                 string strRechazos = string.Empty;
+                int ValidatedEndorsements = 0;
+                int RejectedEndorsements = 0;
 
                 foreach (DataRow row in myDataToProcessTF.Rows)//processing
                 {
@@ -2584,15 +2672,27 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO (esta es la de los 20 dias)
+                    if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO (esta es la de los 7 dias)
                     {
-                        string[] sqlstr = { "SELECT Entregado ",
-                                                "From [LotsReceive] ",
-                                                " Where [Lot] = '",  m_BatchTrack , "'"};
+                        if (m_Fecha_Endo != null)
+                        {
+                            if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
+                            {
+                                if (CollCriterios[2].Editar == true)
+                                {
+                                    Rechazo[2]++;
+                                    strRechazos += "3|";
+                                    isRechazo[2] = true;
+                                }
 
-                        object fechaEntregaEndosos = null;
-
-                        if (MyValidarDatos(string.Concat(sqlstr), out fechaEntregaEndosos, myCnnDBEndososValidarDatos) == null)
+                                if (CollCriterios[2].Warning == true)
+                                {
+                                    Warning[2]++;
+                                    isWarning[2] = true;
+                                }
+                            }
+                        }
+                        else
                         {
                             if (CollCriterios[2].Editar == true)
                             {
@@ -2606,52 +2706,15 @@ namespace jolcode
                                 isWarning[2] = true;
                             }
                         }
-                        else
-                        {
-                            if (m_Fecha_Endo != null)
-                            {
-                                if (DateTimeUtil.DateDiff(DateInterval.Day, (DateTime)fechaEntregaEndosos, m_Fecha_Endo) > 7)
-                                {
-                                    if (CollCriterios[2].Editar == true)
-                                    {
-                                        Rechazo[2]++;
-                                        strRechazos += "3|";
-                                        isRechazo[2] = true;
-                                    }
-
-                                    if (CollCriterios[2].Warning == true)
-                                    {
-                                        Warning[2]++;
-                                        isWarning[2] = true;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (CollCriterios[2].Editar == true)
-                                {
-                                    Rechazo[2]++;
-                                    strRechazos += "3|";
-                                    isRechazo[2] = true;
-                                }
-                                if (CollCriterios[2].Warning == true)
-                                {
-                                    Warning[2]++;
-                                    isWarning[2] = true;
-                                }
-                            }
-
-                        }
-
                     }
 
                     if (CollCriterios[3].Editar == true || CollCriterios[3].Warning == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
                     {
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
-                                                " Where ([NumElec] = '", FixNum( m_N_NOTARIO) , "') and ",
+                                                " Where ([NumElec] = ", FixNum( m_N_NOTARIO) , ") and ",
                                                 "([Status] ='A') and ",
-                                                " ([NumCand]='", FixNum( m_N_CANDIDAT ) , "')"};
+                                                " ([NumCand]=", FixNum( m_N_CANDIDAT ) , ")"};
 
                         object total = null;
 
@@ -3355,13 +3418,14 @@ namespace jolcode
 
                     if (!isrechazo)
                     {
+                         ValidatedEndorsements++;
                         int Aprobadas = int.Parse(Resultados[3]);
                         Aprobadas++;
                         Resultados[3] = Aprobadas.ToString();//lblAprobadas             3
                     }
                     else
                     {
-                        
+                        RejectedEndorsements++;
                         LotRechazo = 3;
                         int Rechazadas = int.Parse(Resultados[4]);
                         Rechazadas++;
@@ -3434,10 +3498,12 @@ namespace jolcode
                  //   transaction.Commit();
                     DoEvents();
                 }//end loop
-
+                //[]
                 //'ACTUALIZA EL STATUS DEL LOTE
                 string mySqlqlstrUpdate = "Update Lots";
-                mySqlqlstrUpdate = mySqlqlstrUpdate + " Set Status = " + LotRechazo.ToString() + ", verdate = getdate(), veruser = '" + usercode + "'";
+                mySqlqlstrUpdate = mySqlqlstrUpdate + " Set Status = " + LotRechazo.ToString() + ", verdate = getdate(), veruser = '" + usercode + "',"; 
+                mySqlqlstrUpdate = mySqlqlstrUpdate + "ValidatedEndorsements=" + ValidatedEndorsements.ToString() + ",RejectedEndorsements=" + RejectedEndorsements.ToString();
+                mySqlqlstrUpdate = mySqlqlstrUpdate + ",StatusReydi=0";
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " Where Lot='" + m_BatchTrack + "'";
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " And Status = 1";
 
@@ -3604,7 +3670,7 @@ namespace jolcode
         }
         public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
                                      string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,
-                                     string txtFchJuramento,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
+                                     string txtFchJuramento,string txtFechaEndosos,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
         {
             bool myBoolReturn = false;
 
@@ -3632,7 +3698,20 @@ namespace jolcode
                     FechaFirm_Ano = fecha[2];//
                 }
 
-                string[] updatequery =
+                string FechaEndo_Mes = string.Empty;
+                string FechaEndo_Dia = string.Empty;
+                string FechaEndo_Ano = string.Empty;
+
+                if (!string.IsNullOrEmpty(txtFechaEndosos))
+                {
+                    string[] fechaendosos = txtFechaEndosos.Split('/');
+                    FechaEndo_Mes = fechaendosos[0];
+                    FechaEndo_Dia = fechaendosos[1];
+                    FechaEndo_Ano = fechaendosos[2];
+
+                }
+
+        string[] updatequery =
                     {
                     "Update [TF-Partidos] ",
                     "Set NumElec = '", txtNumElec , "'",
@@ -3651,6 +3730,9 @@ namespace jolcode
                      ", FechaFirm_Mes  = '" ,FechaFirm_Mes  , "'",
                      ", FechaFirm_Dia = '" ,FechaFirm_Dia , "'",
                      ", FechaFirm_Ano = '" ,FechaFirm_Ano  , "'",
+                     ",FechaEndo_Mes ='",FechaEndo_Mes,"'",
+                     ",FechaEndo_Dia='",FechaEndo_Dia,"'",
+                     ", FechaEndo_Ano='",FechaEndo_Ano,"'",
                      " Where NumElec ='" , CurrElect , "'",
                     " And BATCHTRACK = '" , Lot, "'",
                     " And BatchPgNo=",Formulario,

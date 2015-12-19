@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfLotFix" Height="215.651" Width="256.632" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfLotFix" Height="231.651" Width="356.632" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -16,15 +16,15 @@
         </Border.Effect>
         <Grid>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Correjir Lote" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="135,155,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="238,156,0,0" VerticalAlignment="Top" Width="75"/>
             <Label x:Name="label" Content="Lote" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top"/>
-            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="120"
+            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="223"
                       ItemsSource="{Binding cbLots}"
                         SelectedItem="{Binding cbLots_Item, Mode=TwoWay}"                                     
                         SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}"
                       />
-            <Button Content="Abrir" Command="{Binding cmdOpen_Click}" HorizontalAlignment="Left" Margin="135,105,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button Content="Refrescar" Command="{Binding cmdRefresh_Click}" HorizontalAlignment="Left" Margin="135,130,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Abrir" Command="{Binding cmdOpen_Click}" HorizontalAlignment="Left" Margin="238,105,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Refrescar" Command="{Binding cmdRefresh_Click}" HorizontalAlignment="Left" Margin="238,131,0,0" VerticalAlignment="Top" Width="75"/>
 
         </Grid>
     </Border>

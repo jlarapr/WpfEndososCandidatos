@@ -32,6 +32,7 @@
         private string _cbLots_Item;
         private string _lblCount;
         private int _cantidadEntregada;
+        private string _DBRadicacionesCEECnnStr;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
@@ -40,7 +41,7 @@
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
             cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click(),param=>CanAddLot);
             cmdAddTodoLot_Click = new RelayCommand(param => MyCmdAddTodoLot_Click());
-
+            cmdRefresh_Click = new RelayCommand(param => MycmdRefresh_Click());
             _LogClass = new Logclass();
             cbLots = new ObservableCollection<string>();
         }
@@ -111,6 +112,16 @@
             }set
             {
                 _DBEndososCnnStr = value;
+            }
+        }
+        public string DBRadicacionesCEECnnStr
+        {
+            get
+            {
+                return _DBRadicacionesCEECnnStr;
+            }set
+            {
+                _DBRadicacionesCEECnnStr = value;
             }
         }
         public string SysUser
@@ -213,13 +224,20 @@
             {
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
-                    DBCnnStr = DBEndososCnnStr
+                    DBCnnStr = DBEndososCnnStr,
+                    DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
+
                 })
                 {
                     if (cantidad != cantidadEntregada)
                         throw new Exception("Error en la Cantidad");
 
-                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser))
+                    object EndososDate = get.MyReydiEndososDate(numLote);
+
+                    if (EndososDate.ToString() == "???")
+                        throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
+
+                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser,EndososDate))
                         throw new Exception("Error en la base de datos.");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -243,7 +261,7 @@
                 })
                 {
                     
-                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser))
+                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser,""))
                         throw new Exception("Error en la base de datos.");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -313,6 +331,11 @@
             return this.View.ShowDialog();
         }
 
+        private void MycmdRefresh_Click()
+        {
+            MyReset();
+        }
+
         public RelayCommand cmdAddTodoLot_Click
         {
             get;
@@ -334,7 +357,10 @@
             get;
             private set;
         }
-
+        public RelayCommand cmdRefresh_Click
+        {
+            get;private set;
+        }
         #endregion
 
         #region MyMetodos

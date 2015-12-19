@@ -349,7 +349,7 @@
             			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Left" Width="164"
                            
                                    />
-                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
+                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (dd/mm/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
 
                     <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="4"
                              Background="{Binding txtColor[9]}"

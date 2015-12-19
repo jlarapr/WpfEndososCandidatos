@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
          Cursor="{Binding MiCursor}"
         Background="Transparent"
-        Title="wpfLotProcess" Height="796.456" Width="842.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfLotProcess" Height="796.456" Width="901.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -22,7 +22,7 @@
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Proceso de Lote" VerticalAlignment="Top" Height="49" FontWeight="Bold" FontSize="26.667" Margin="10,5,588,0"/>
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="14,454,0,0" VerticalAlignment="Top" Width="112" Height="31"/>
             <Label x:Name="label" Content="Lotes:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top"/>
-            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="185"
+            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="293"
                        ItemsSource="{Binding cbLots}"
                         SelectedItem="{Binding cbLots_Item, Mode=TwoWay}"                                     
                         SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}"
@@ -30,39 +30,44 @@
                       />
             <Button x:Name="cmdProcess" Command="{Binding cmdProcess_Click}"  Content="Procesar Lote" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="90" Height="35"/>
             <Button x:Name="cmdRefresh" Command="{Binding cmdRefresh_Click}" Content="Refrescar" HorizontalAlignment="Left" Margin="105,129,0,0" VerticalAlignment="Top" Width="90" Height="35"/>
-            <GroupBox x:Name="groupBox" Header="Resultados" HorizontalAlignment="Left" Margin="14,189,0,0" VerticalAlignment="Top" Height="236" Width="247">
-                <Grid Margin="0,6,-2,-6" Background="Gray">
+            <GroupBox x:Name="groupBox" Header="Resultados" HorizontalAlignment="Left" Margin="14,189,0,0" VerticalAlignment="Top" Height="236" Width="289">
+                <Grid Margin="5,5,3,5" Background="Gray">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="107*"/>
-                        <ColumnDefinition Width="116*"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="label1" Content="Lote:" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65"/>
-                    <Label x:Name="label1_Copy" Content="Total:" Margin="10,41,32,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1_Copy1" Content="Procesadas:" Margin="10,72,32,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1_Copy2" Content="Aprobadas:" Margin="10,103,32,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1_Copy3" Content="Rechazadas:" Margin="10,134,32,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1_Copy4" Content="Warnings:" Margin="10,165,32,0" VerticalAlignment="Top"/>
-                    <Label x:Name="lblLote"  Margin="10,10,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding Resultados[0]}"
+                    <Label x:Name="label1" Content="Lote:" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="65" Height="26"/>
+                    <Label x:Name="label1_Copy" Content="Total:" Margin="10,41,194,0" VerticalAlignment="Top" Height="26"/>
+                    <Label x:Name="label1_Copy1" Content="Procesadas:" Margin="10,72,174,0" VerticalAlignment="Top" Height="26"/>
+                    <Label x:Name="label1_Copy2" Content="Aprobadas:" Margin="10,103,174,0" VerticalAlignment="Top" Height="26"/>
+                    <Label x:Name="label1_Copy3" Content="Rechazadas:" Margin="10,134,174,0" VerticalAlignment="Top" Height="26"/>
+                    <Label x:Name="label1_Copy4" Content="Warnings:" Margin="10,165,174,0" VerticalAlignment="Top" Height="26"/>
+                    <TextBox x:Name="lblLote"  Margin="110,10,10,0" VerticalAlignment="Top"
+                            Text="{Binding Resultados[0]}" Height="26"
+                           IsReadOnly="True"
+                             />
+                    <TextBox x:Name="lblTota" Margin="110,41,10,0" VerticalAlignment="Top"
+                           Text="{Binding Resultados[1]}" Height="26"
+                           IsReadOnly="True"
                            />
-                    <Label x:Name="lblTota" Margin="10,41,10,0" VerticalAlignment="Top" Grid.Column="1"
-                           Content="{Binding Resultados[1]}"
+                    <TextBox x:Name="lblProcesadas"  Margin="110,72,10,0" VerticalAlignment="Top"
+                            Text="{Binding Resultados[2]}" Height="26"
+                           IsReadOnly="True"
                            />
-                    <Label x:Name="lblProcesadas"  Margin="10,72,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding Resultados[2]}"
+                    <TextBox x:Name="lblAprobadas" Margin="110,103,10,0" VerticalAlignment="Top"
+                            Text="{Binding Resultados[3]}" Height="26"
+                           IsReadOnly="True"
                            />
-                    <Label x:Name="lblAprobadas" Margin="10,103,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding Resultados[3]}"
+                    <TextBox x:Name="lblRechazadas"  Margin="110,134,10,0" VerticalAlignment="Top"
+                            Text="{Binding Resultados[4]}" Height="26"
+                           IsReadOnly="True"
                            />
-                    <Label x:Name="lblRechazadas"  Margin="10,134,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding Resultados[4]}"
-                           />
-                    <Label x:Name="lblWarnings" Margin="10,165,10,0" VerticalAlignment="Top" Grid.Column="1"
-                            Content="{Binding Resultados[5]}"
+                    <TextBox x:Name="lblWarnings" Margin="110,165,10,0" VerticalAlignment="Top"
+                            Text="{Binding Resultados[5]}" Height="26"
+                           IsReadOnly="True"
                            />
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="groupBox1" Header="Razones de Rechazo" Margin="266,0,10,10">
+            <GroupBox x:Name="groupBox1" Header="Razones de Rechazo" Margin="308,0,10,10">
                 <Grid Margin="0,0,0,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
@@ -109,12 +114,12 @@
                     </StackPanel>
                 </Grid>
             </GroupBox>
-            <ProgressBar HorizontalAlignment="Left" Height="19" Margin="14,430,0,0" VerticalAlignment="Top" Width="247"
+            <ProgressBar HorizontalAlignment="Left" Height="19" Margin="14,430,0,0" VerticalAlignment="Top" Width="289"
                          Value="{Binding ProgressBar_Value[0]}" 
                          Maximum="{Binding ProgressBar_Maximum[0]}"
                          />
             <Button x:Name="cmdView" Command="{Binding cmdView_Click}" Content="Ver Rechazadas" HorizontalAlignment="Left" Margin="149,454,0,0" VerticalAlignment="Top" Width="112" Height="31"/>
-            <StackPanel Background="Gray" HorizontalAlignment="Left" Height="242" Margin="10,490,0,0" VerticalAlignment="Top" Width="251">
+            <StackPanel Background="Gray" HorizontalAlignment="Left" Height="242" Margin="10,490,0,0" VerticalAlignment="Top" Width="293">
                 <Label Foreground="Black" x:Name="label2" Content="* Enable" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,10,0"/>
                 <Label Foreground="Red" x:Name="label2_Copy1" Content="* Warning" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,10,0"/>
                 <Label Foreground="Yellow" x:Name="label2_Copy" Content="* Disable" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,10,0"/>

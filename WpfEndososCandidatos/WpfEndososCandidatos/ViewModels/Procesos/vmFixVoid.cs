@@ -1029,12 +1029,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             {
                                 string FchEndosoJuramento = null;
                                 string FechaNac = null;
+                                string FechaEndosos = null;
 
                                 if (data.FechaNac !=null)
                                     FechaNac = data.FechaNac.Value.ToString("MMddyyyy");
 
                                 if (data.Firma_Fecha != null)
                                     FchEndosoJuramento = data.Firma_Fecha.Value.ToString("MM/dd/yy");
+
+                                if (data.FchEndosoEntregada != null)
+                                    FechaEndosos = data.FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
 
                                 Exe.MyUpdateTFTable(
                                    data.Numelec,
@@ -1049,6 +1053,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.Firma_Pet_Inv == true ? "1" : "0",
                                    data.Firma_Not_Inv == true ? "1" : "0",
                                    FchEndosoJuramento,
+                                   FechaEndosos,
                                    data.Lot,
                                    data.Batch,
                                    data.Formulario,
@@ -1763,19 +1768,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
                     if (_DataToSave[i].FechaNac !=null)
-                    FechaNac_Corregir = _DataToSave[i].FechaNac.Value.ToString("MM/dd/yyyy");
+                    FechaNac_Corregir = _DataToSave[i].FechaNac.Value.ToString("dd/MM/yyyy");
 
 
                     
 
-                    if (_DataToSave[i].FchEndosoEntregada !=null)
-                    txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
-
-                    //if (_DataToSave[i].FchEndoso != null)
-                    //    txtFchJuramento_Corregir = _DataToSave[i].FchEndoso.Value.ToString("MM/dd/yyyy");
-                        
-                    if (_DataToSave[i].Firma_Fecha !=null) // Nota : Hay que preguntar cual es la diferencia de la Fecha_Endoso y Firma_Fecha
-                        txtFchJuramento_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("MM/dd/yyyy");
+                    if (_DataToSave[i].FchEndosoEntregada !=null) // Fecha del endosos entregado en la CEE
+                    txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
+                    
+                    if (_DataToSave[i].Firma_Fecha !=null) // Nota : firma del endosos 
+                        txtFchJuramento_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("dd/MM/yyyy");
 
                     byte[] EndosoImage = null;
 
@@ -2048,14 +2050,21 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         //string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
 
                       //  string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
-                        string Fecha_Endoso = row["Firma_Fecha"].ToString().Trim();
-                        DateTime? juramento = DateTimeUtil.MyValidarFecha(Fecha_Endoso);
+                        
+                        string Fecha_Endoso = row["Fecha_Endoso"].ToString().Trim();
+                        string Firma_Fecha = row["Firma_Fecha"].ToString().Trim();
+
+                        DateTime? juramento = DateTimeUtil.MyValidarFecha(Firma_Fecha);
+                        DateTime? FechaEndoso = DateTimeUtil.MyValidarFecha(Fecha_Endoso);
 
                         if (juramento == null)
-                            juramento= DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso);
+                            juramento= DateTimeUtil.MyValidarFechaMMddyy(Firma_Fecha);
+
+                        if (FechaEndoso == null)
+                            FechaEndoso = DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso);
 
 
-                    
+
 
 
                         _DataToSave.Add(new FixVoid
@@ -2078,7 +2087,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Firma_Pet_Inv = row["Firma_Pet_Inv"].ToString().Trim() == "1" ? true : false,
                             Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
                             Firma_Fecha = juramento,
-                            FchEndosoEntregada = null,
+                            FchEndosoEntregada = FechaEndoso,
                             Batch = row["Batch"].ToString(),
                             image = row["Image"].ToString(),
                             EndosoImage = (byte[])row["EndosoImage"]
@@ -2102,17 +2111,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             DateTime dtFechaJuramento_Corregir;
             DateTime? dtFechaJuramento_Corregirnull = null;
 
-            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFechaJuramento_Corregir))
+            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFechaJuramento_Corregir))
             {
                 dtFechaJuramento_Corregirnull = dtFechaJuramento_Corregir;
             }
 
-            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndosoEntregada))
+            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndosoEntregada))
             {
                 dtEndosoEntregadanull = dtEndosoEntregada;
             }
 
-            if (DateTime.TryParseExact(FechaNac_Corregir, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
+            if (DateTime.TryParseExact(FechaNac_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
             {
                 dtNacNull = dtNac;
             }

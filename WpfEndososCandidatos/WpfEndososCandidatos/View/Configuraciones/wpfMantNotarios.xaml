@@ -31,10 +31,11 @@
                              MaxLength="7"
                              Text="{Binding txtNumElec, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                              Background="{Binding Background_txtNumElec}"
-                             IsReadOnly="{Binding IsReadOnly_txtNumElec}"
+                            
                              CharacterCasing="Upper"
                              
                              />
+                    <!--IsReadOnly="{Binding IsReadOnly_txtNumElec}"-->
                     <ComboBox x:Name="cbNotario" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="326" Height="23"
                               ItemsSource="{Binding cbNotario}"
                     	      SelectedItem="{Binding cbNotario_Item, Mode=TwoWay}"                                     
