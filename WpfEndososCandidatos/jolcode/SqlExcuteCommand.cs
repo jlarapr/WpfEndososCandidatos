@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Threading;
 using System.IO;
+using System.Reflection;
 
 namespace jolcode
 {
@@ -324,12 +325,12 @@ namespace jolcode
 
                 string[] mySqlstrAll =
                 {
-                    "Select Partido,BatchTrack, count(*) as Amount ",
+                    "Select Partido,BatchTrack,[Num_Candidato], count(*) as Amount ",
                     "From [dbo].[TF-Partidos] ",
                     "Where BatchTrack =@lot ",
                     "And Imported = 0 ",
-                    "Group By Partido,BatchTrack ",
-                    "Order By Partido,BatchTrack;"
+                    "Group By Partido,BatchTrack,[Num_Candidato] ",
+                    "Order By Partido,BatchTrack,[Num_Candidato];"
                 };
 
                 string[] mySqlstrCountVerificar =
@@ -1102,7 +1103,114 @@ namespace jolcode
             return myReturn.ToString();
         }
 
+        public bool MySendToReydi(ObservableCollection<LotsToReydi> listaDeLotes,string sysUser,string partido)
+        {
+            bool myReturn = false;
+            string lot = string.Empty;
+            string Num_Candidato = string.Empty;
 
+            try
+            {
+                string tableReydi = string.Empty;
+                
+                switch (partido)
+                {
+                    case "PNP":
+                        tableReydi = "EndososPNP";
+                        break;
+                    case "PPD":
+                        tableReydi = "EndososPPD";
+                        break;
+                    case "EndososCEE":
+                        tableReydi = "EndososCEE";
+                        break;
+                    default:
+                        throw new Exception("Error con el Partido");
+                }
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                      
+                        using (SqlConnection cnnReydi = new SqlConnection()
+                        {
+                            ConnectionString = DBRadicacionesCEECnnStr
+                        })
+                        {
+                            if (cnnReydi.State == ConnectionState.Closed)
+                                cnnReydi.Open();
+
+                            using (SqlCommand cmdReydi = new SqlCommand()
+                            {
+                                Connection = cnnReydi,
+                                CommandType = CommandType.Text
+
+                            })
+                            {
+                                foreach (LotsToReydi item in listaDeLotes)
+                                {
+                                    lot = item.Lot;
+                                    Num_Candidato = item.Num_Candidato;
+                                    //insert reydi log
+                                    string insertReydiLog = "INSERT INTO [dbo].[tblLog]";
+                                    insertReydiLog += " ([EndorsementGroupCode],[SysDate],[SysUser],[ElectoralNumber]) VALUES('";
+                                    insertReydiLog += item.Lot + "',getdate(),'" + sysUser + "'," + item.Num_Candidato +");";
+                                    cmdReydi.CommandText = insertReydiLog;
+                                    cmdReydi.ExecuteNonQuery();
+
+                                    //update
+                                    string queryUpdateLot = "update [Lots] set [StatusReydi]=1,[FinDate]=getdate(),[FinUser]='" + sysUser + "' ";
+                                    queryUpdateLot += "where lot='" + item.Lot.Trim() + "'";
+                                    cmd.CommandText = queryUpdateLot;
+                                    cmd.ExecuteNonQuery();
+
+                                    // insert into reydi
+                                    string insertReydi = "INSERT INTO " + tableReydi;
+                                    insertReydi += "(EndorsementGroupCode,ValidatedEndorsements,RejectedEndorsements,EndorsementValidationDate) VALUES('";
+                                    insertReydi += item.Lot + "'," + item.ValidatedEndorsements.ToString() + "," + item.RejectedEndorsements.ToString() + ",'" + item.EndorsementValidationDate + "');";
+                                    cmdReydi.CommandText = insertReydi;
+                                    cmdReydi.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                    }
+                }
+                myReturn = true;
+            }
+            catch (SqlException sqlEX)
+            {
+                if (sqlEX.Message.Contains("FOREIGN KEY constraint"))
+                {
+                 throw new Exception("Numero de Radicacion " + lot + " es invalido en el Sistema de Reydi o el nuemero del candidato es incorrecto " + Num_Candidato +" \r\n MySendToReydi Error");
+                }
+                else
+                {
+                    MethodBase site = sqlEX.TargetSite;
+                    throw new Exception (sqlEX.Message + "\r\n" + site.Name);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                throw new Exception(ex.Message + "\r\n" + site.Name);
+
+            }
+            return myReturn;
+        }
         public object MyReydiEndososDate(string lot)
         {
             object myReturn = null;
@@ -1137,7 +1245,7 @@ namespace jolcode
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
+                throw new Exception(ex.Message + "\r\n MyCandidatoNameToInforme Error");
             }
 
             return myReturn;
@@ -2000,11 +2108,11 @@ namespace jolcode
 
                 myBoolErrorNoHayLotes = false;
 
-                string[] myInsert =
+                string[] myInsertLot =
                         {
-                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate])  ",
+                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate],[Num_Candidato])  ",
                             "VALUES (",
-                             "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate",
+                             "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate,@Num_Candidato",
                             ");"
                         };
 
@@ -2073,6 +2181,10 @@ namespace jolcode
                         SqlParameter lotParam = new SqlParameter();
                         lotParam.ParameterName = "@Lot";
                         lotParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter Num_CandidatoParam = new SqlParameter();
+                        Num_CandidatoParam.ParameterName = "@Num_Candidato";
+                        Num_CandidatoParam.SqlDbType = SqlDbType.Int;
 
                         SqlParameter amountParam = new SqlParameter();
                         amountParam.ParameterName = "@Amount";
@@ -2170,6 +2282,7 @@ namespace jolcode
 
                             cmd.Parameters.Add(partidoParam);
                             cmd.Parameters.Add(lotParam);
+                            cmd.Parameters.Add(Num_CandidatoParam);
                             cmd.Parameters.Add(amountParam);
                             cmd.Parameters.Add(usercodeParam);
                             cmd.Parameters.Add(authDateParam);
@@ -2185,6 +2298,7 @@ namespace jolcode
 
                             partidoParam.Value = row["Partido"].ToString();
                             lotParam.Value = row["BatchTrack"].ToString();
+                            Num_CandidatoParam.Value =int.Parse (row["Num_Candidato"].ToString());
                             amountParam.Value = int.Parse(row["Amount"].ToString());
                             usercodeParam.Value = usercode;
                             authDateParam.Value = DateTime.Now.ToString(); ;
@@ -2198,11 +2312,12 @@ namespace jolcode
                             //conditionsParam.Value = conditions;
                             importDateParam.Value = DateTime.Now.ToString();
 
-                            cmd.CommandText = string.Concat(myInsert);
+                            cmd.CommandText = string.Concat(myInsertLot);
                             myReturn = cmd.ExecuteNonQuery();
 
                             cmd.Parameters.Remove(partidoParam);
                             cmd.Parameters.Remove(lotParam);
+                            cmd.Parameters.Remove(Num_CandidatoParam);
                             cmd.Parameters.Remove(amountParam);
                             cmd.Parameters.Remove(usercodeParam);
                             cmd.Parameters.Remove(authDateParam);

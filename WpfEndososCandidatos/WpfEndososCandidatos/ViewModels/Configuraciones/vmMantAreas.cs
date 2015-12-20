@@ -24,7 +24,7 @@
     using MVVM.Client.Infrastructure;
     using System.Collections.Specialized;
 
-    class vmMantAreas : ViewModelBase<IDialogViewAreas>, IDisposable 
+    class vmMantAreas : ViewModelBase<IDialogViewListBox>, IDisposable 
     {
 
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
@@ -624,8 +624,8 @@
 
                     _MyPrecintosTable = get.MyGetPrecintos();
 
-                    this.View.lsAllPrecints.ItemsSource = lsAllPrecints;
-                    this.View.lsValidPrecints.ItemsSource = lsValidPrecints;
+                    this.View.lsAll.ItemsSource = lsAllPrecints;
+                    this.View.lsValid.ItemsSource = lsValidPrecints;
 
                     MySetAllPrecinto(_MyPrecintosTable);
 
@@ -786,7 +786,7 @@
         {
             try
             {
-                while (this.View.lsValidPrecints.SelectedItems.Count > 0)
+                while (this.View.lsValid.SelectedItems.Count > 0)
                 {
                     lsAllPrecints.Add(lsValidPrecints_Item);
                     lsValidPrecints.Remove(lsValidPrecints_Item);
@@ -841,9 +841,9 @@
         {
             try
             {
-                if (this.View.lsAllPrecints != null)
+                if (this.View.lsAll != null)
                 {
-                    while (this.View.lsAllPrecints.SelectedItems.Count > 0)
+                    while (this.View.lsAll.SelectedItems.Count > 0)
                     {
                         this.lsValidPrecints.Add(lsAllPrecints_Item);
                         this.lsAllPrecints.Remove(lsAllPrecints_Item);

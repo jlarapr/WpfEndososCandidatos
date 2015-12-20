@@ -23,6 +23,7 @@
         private bool _mnuReydi_IsEnabled;
         private RelayCommand _verEndosos_Click;
         private RelayCommand _FixLot_Click;
+        private RelayCommand _reydi_Click;
 
         public bool mnuRecibirLotes_IsEnabled
         {
@@ -325,14 +326,46 @@
             }
             catch (Exception ex)
             {
-                
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
+        public RelayCommand reydi_Click
+        {
+            get
+            {
+                if (_reydi_Click==null)
+                {
+                    _reydi_Click = new RelayCommand(param => Myreydi_Click());
+                }
+                return _reydi_Click;
+            }
+        }
+        private void Myreydi_Click()
+        {
+            try
+            {
+                using (vmToReydi frm = new vmToReydi())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBCeeMasterCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
+                    frm.SysUser = WhatIsUserName;
+                    frm.OnShow();
 
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public bool mnuRevLote_IsEnabled
         {

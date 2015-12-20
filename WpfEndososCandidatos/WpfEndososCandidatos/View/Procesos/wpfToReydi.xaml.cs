@@ -13,29 +13,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfEndososCandidatos.View
+namespace WpfEndososCandidatos.View.Procesos
 {
     /// <summary>
-    /// Interaction logic for wpfMantAreas.xaml
+    /// Interaction logic for wpfToReydi.xaml
     /// </summary>
-    public partial class wpfMantAreas : Window, IDialogViewListBox
+    public partial class wpfToReydi : Window, IDialogViewListBox
     {
-        public wpfMantAreas()
+        public wpfToReydi()
         {
             InitializeComponent();
-          
         }
 
         ListBox IDialogViewListBox.lsAll
         {
             get
             {
-                return lsAllPrecints;
+                return lsAllLots;
             }
 
             set
             {
-                lsAllPrecints = value;
+                lsAllLots = value;
             }
         }
 
@@ -43,12 +42,12 @@ namespace WpfEndososCandidatos.View
         {
             get
             {
-                return lsValidPrecints;
+                return lsValidLots;
             }
 
             set
             {
-                lsValidPrecints = value;
+                lsValidLots = value;
             }
         }
     }

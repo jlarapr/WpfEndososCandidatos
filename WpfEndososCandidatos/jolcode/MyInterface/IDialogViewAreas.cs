@@ -9,14 +9,14 @@ using System.Windows.Threading;
 
 namespace jolcode.MyInterface
 {
-  public  interface IDialogViewAreas: IView
+  public  interface IDialogViewListBox : IView
     {
         bool? ShowDialog();
         bool? DialogResult { get; set; }
         System.Windows.Window Owner { get; set; }
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         Dispatcher Dispatcher { get; }
-        ListBox lsAllPrecints { get; set; }
-        ListBox lsValidPrecints { get; set; }
+        ListBox lsAll { get; set; }
+        ListBox lsValid { get; set; }
     }
 }

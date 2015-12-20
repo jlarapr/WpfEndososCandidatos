@@ -65,6 +65,7 @@
     <Compile Include="ExcuteScript.cs" />
     <Compile Include="GetRegistry.cs" />
     <Compile Include="Logclass.cs" />
+    <Compile Include="LotsToReydi.cs" />
     <Compile Include="MergeEx.cs" />
     <Compile Include="MyInterface\ICustomButton.cs" />
     <Compile Include="MyInterface\IDialogView.cs" />
