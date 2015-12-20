@@ -1462,7 +1462,7 @@ namespace jolcode
             bool myBoolReturn = false;
             SqlTransaction transaction=null;
 
-            string[] sqlstr = { "Update Lots Set Status = 0, Revdate = getdate(), Revuser = @SysUser",
+            string[] sqlstr = { "Update Lots Set Status = 0,[RejectedEndorsements]=0,[ValidatedEndorsements]=0, Revdate = getdate(), Revuser = @SysUser",
                                   " Where Lot = @lot "};
 
             string sqlstrDeleteLotEndo = "Delete from LotsEndo Where lot=@lot";

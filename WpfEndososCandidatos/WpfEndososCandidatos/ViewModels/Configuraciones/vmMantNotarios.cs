@@ -1153,13 +1153,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 Notarios myInfoNotario = cbNotario.Where(x => x.NumElec == NotarioKey).Single<Notarios>();
                 myIndex = cbNotario.IndexOf(myInfoNotario);
             }
-            catch (System.InvalidOperationException exInOp)
-            {
-                MethodBase site = exInOp.TargetSite;
+            //catch (System.InvalidOperationException exInOp)
+            //{
+            //    //MethodBase site = exInOp.TargetSite;
 
-                if (exInOp.Message == "Sequence contains no elements")
-                    MessageBox.Show("No Exite en la Tabla!!!!", site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //    //if (exInOp.Message == "Sequence contains no elements")
+            //    //    MessageBox.Show("No Exite en la Tabla!!!!", site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
             catch 
             {
                 //MethodBase site = ex.TargetSite;
