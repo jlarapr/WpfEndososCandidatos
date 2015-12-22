@@ -204,11 +204,12 @@ namespace jolcode
             int returnInt = 0;
             try
             {
-                string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
+               // string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
+                string mySqlstr = "Select Endorsements from [dbo].[FilingEndorsements] Where [BatchNumber]='" + lot + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
-                    ConnectionString = DBCnnStr
+                    ConnectionString = DBRadicacionesCEECnnStr
                 })
                 {
                     using (SqlCommand cmd = new SqlCommand()
@@ -598,7 +599,7 @@ namespace jolcode
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString() + "\r\nMyGetLot Error");
+                throw new Exception(ex.ToString() + "\r\n MyGetLot Error");
             }
             return myTableReturn;
         }
@@ -3358,7 +3359,14 @@ namespace jolcode
 
                                 case 4://'Senador Acumulación
                                     {
-                                        if ((int)total > 6)
+                                        int permitidos = 11;
+                                        if (m_PARTIDO == "PNP")
+                                            permitidos = 6;
+
+                                        if (m_PARTIDO == "PPD")
+                                            permitidos = 6;
+
+                                        if ((int)total > permitidos)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3396,7 +3404,15 @@ namespace jolcode
 
                                 case 6: //'Representante Acumulación
                                     {
-                                        if ((int)total > 6)
+                                        int permitidos = 11;
+                                        if (m_PARTIDO == "PNP")
+                                            permitidos = 6;
+
+                                        if (m_PARTIDO == "PPD")
+                                            permitidos = 6;
+
+
+                                        if ((int)total > permitidos)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {

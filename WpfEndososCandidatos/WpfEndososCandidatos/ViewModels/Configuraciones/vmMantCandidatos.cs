@@ -725,7 +725,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     string myEndoReq= txtEndoReq.Trim();
 
 
-                    for (int rb =0; rb <8;rb++)
+                    for (int rb =0; rb <9;rb++)
                         if (IsChecked_rbCargos[rb] == true)
                         {
                             myCargo =rb;

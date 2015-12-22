@@ -191,7 +191,8 @@
 
                     using (SqlExcuteCommand get = new SqlExcuteCommand()
                     {
-                        DBCnnStr = DBEndososCnnStr
+                        DBCnnStr = DBEndososCnnStr,
+                        DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
                     })
                     {
                         cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
