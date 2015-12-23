@@ -188,15 +188,21 @@
 
 
 
-
-                    using (SqlExcuteCommand get = new SqlExcuteCommand()
+                    try {
+                        using (SqlExcuteCommand get = new SqlExcuteCommand()
+                        {
+                            DBCnnStr = DBEndososCnnStr,
+                            DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
+                        })
+                        {
+                            cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
+                            cantidad = get.MyGetCatntidadDigitalizada(numLote);
+                        }
+                    }catch(Exception ex)
                     {
-                        DBCnnStr = DBEndososCnnStr,
-                        DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
-                    })
-                    {
-                        cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
-                        cantidad = get.MyGetCatntidadDigitalizada(numLote);
+                        MessageBox.Show(ex.ToString());
+                        MyReset();
+                       
                     }
 
                 }

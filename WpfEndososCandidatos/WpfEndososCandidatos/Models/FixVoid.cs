@@ -34,6 +34,8 @@ namespace WpfEndososCandidatos.Models
         public string NotarioFirma { get; set; }
         public bool Firma_Pet_Inv { get; set; }
         public bool Firma_Not_Inv { get; set; }
+        public bool chkOtraRazonDeRechazo { get; set; }
+        public string txtOtraRazonDeRechazo { get; set; }
       //  public DateTime? FchEndoso { get; set; }
         public DateTime? Firma_Fecha { get; set; }
         public DateTime? FchEndosoEntregada { get;set; }
@@ -62,6 +64,8 @@ namespace WpfEndososCandidatos.Models
               NotarioFirma,
               Firma_Pet_Inv.ToString(),
               Firma_Not_Inv.ToString(),
+              chkOtraRazonDeRechazo.ToString(),
+              txtOtraRazonDeRechazo,
               Firma_Fecha.ToString(),
               FchEndosoEntregada.ToString(),
               Batch,

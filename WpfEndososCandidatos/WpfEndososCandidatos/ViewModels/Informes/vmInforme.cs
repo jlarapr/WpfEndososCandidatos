@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using WpfEndososCandidatos.Models;
 using WpfEndososCandidatos.View.Informes;
 
@@ -35,6 +36,13 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _DBCeeMasterImgCnnStr;
         private string _PDFPath;
         private string _txtPDFPath;
+        private int _Progress;
+        private int _MaximumProgressBar;
+        private int _ValueProgressBar;
+        private ObservableCollection<string> _LogBox;
+        private int _TotalDePuntos;
+        private string _LblTotal;
+        private bool _run;
 
         public vmInforme()
            : base(new wpfInformes())
@@ -44,8 +52,61 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
             cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
             cbLots = new ObservableCollection<string>();
+
+            LogBox = new ObservableCollection<string>();
+            MaximumProgressBar = 1;
+            ValueProgressBar = 0;
+            LblTotal = "0";
         }
         #region MyProperty
+        public string LblTotal
+        {
+            get
+            {
+                return _LblTotal;
+            }
+            set
+            {
+                _LblTotal = value;
+                this.RaisePropertychanged("LblTotal");
+            }
+        }
+        public int MaximumProgressBar
+        {
+            get
+            {
+                return _MaximumProgressBar;
+            }
+            set
+            {
+                _MaximumProgressBar = value;
+                this.RaisePropertychanged("MaximumProgressBar");
+            }
+        }
+        public int ValueProgressBar
+        {
+            get
+            {
+                return _ValueProgressBar;
+            }
+            set
+            {
+                _ValueProgressBar = value;
+                this.RaisePropertychanged("ValueProgressBar");
+            }
+        }
+        public ObservableCollection<string> LogBox
+        {
+            get
+            {
+                return _LogBox;
+            }
+            set
+            {
+                _LogBox = value;
+                this.RaisePropertychanged("LogBox");
+            }
+        }
         public string SysUser
         {
             get
@@ -144,6 +205,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
             set
             {
+                
                 _cbLots_Item_Id = value;
                 this.RaisePropertychanged("cbLots_Item_Id");
             }
@@ -153,6 +215,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         {
             get
             {
+                if (_run)
+                    return false;
+
                 return cbLots_Item_Id > -1 ? true : false;
             }
         }
@@ -249,125 +314,169 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
         }
 
-        private void MyCmdOpen_Click()
+        private  Task<bool> run ()
         {
-            try
+            bool returnBoll = false;
+            return Task.Run(() =>
             {
-                rpt.ReporteRechazadas objRp = new WpfEndososCandidatos.rpt.ReporteRechazadas();
-
-                using (SqlExcuteCommand get = new SqlExcuteCommand
+                try
                 {
-                    DBCeeMasterCnnStr = DBMasterCeeCnnStr,
-                    DBCnnStr = DBEndososCnnStr
-                })
-                {
+                    _run = true;
+                    rpt.ReporteRechazadas objRp = new WpfEndososCandidatos.rpt.ReporteRechazadas();
 
-                    DataTable T = get.MyGeRechazadasToInforme(cbLots_Item);
-                    int totalDePaginas = T.Rows.Count;
-
-                    int Pagina = 1;
-                    string strPath = PDFPath + cbLots_Item;
-
-                    if (Directory.Exists(strPath))
-                        Directory.Delete(strPath,true);
-
-                    Directory.CreateDirectory(strPath);
-
-
-
-                    if (!strPath.EndsWith("\\"))
-                        strPath += "\\";
-
-                    foreach (DataRow R in T.Rows)
+                    using (SqlExcuteCommand get = new SqlExcuteCommand
                     {
-                        MyDataSet ds = new MyDataSet();
-                        DataRow RR = ds.Tables[0].NewRow();
-
-                        string lot = R["Lot"].ToString().Trim();
-                        string NumElec = R["NumElec"].ToString().Trim();
-                        RR["PrecintoCEE"] = get.MyCEEPrecintoToInforme(NumElec);
-
-
-                        RR["Lot"] = lot;
-                        RR["NumeroElec"] =      "Número Electoral               : "  +  NumElec ;
-                        RR["Nombre"] =          "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim()," ", R["Paterno"].ToString().Trim()," ", R["Materno"].ToString().Trim()).Trim();
-                        RR["NombreCee"] =       "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
-                        RR["Precinto"] =        "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
-                        RR["StatusCEE"] =       "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
-                        RR["FuncionarioElec"] = "Funcionario                    : " + R["notario"];
-                        RR["CandidatoElec"] =   "Número Candidato               : " + R["Candidato"];
-                        RR["CandidatoName"] =   "Nombre Candidato               : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
-                        RR["Batch"] =           "Batch                          : " + R["Batch"];
-                        RR["Formulario"] =      "Formulario                     : " + R["Formulario"];
-                        RR["Cargo"] =           "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
-                        
-                        RR["Razon"] = get.MyDecRechazoToInforme(  R["Errores"].ToString());
-                        RR["totalDePaginas"] = string.Format("{0:#,#}", totalDePaginas);
-                        RR["Pagina"] =string.Format("{0:#,#}", Pagina);
-
-                        {// Para la Imagen
-                            byte[] EndosoImage = (byte[])R["EndosoImage"];
-                            RR["Img"] = EndosoImage;
-                        }
-
-                        ds.Rechazadas.Rows.Add(RR);
-
-                        if (!Directory.Exists(strPath))
-                             Directory.CreateDirectory(strPath);
-
-                        string pdfName = strPath + Pagina.ToString().PadLeft(2, '0') +"_"+ RR["lot"] + "_Rechazadas.pdf";
-                        objRp.SetDataSource(ds);
-
-                        ExportOptions CrExportOptions;
-                        DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
-                        PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-                        CrDiskFileDestinationOptions.DiskFileName = pdfName;
-                        CrExportOptions = objRp.ExportOptions;
-                        {
-                            CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
-                            CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
-                            CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
-                            CrExportOptions.FormatOptions = CrFormatTypeOptions;
-                        }
-                        objRp.Export(); // Export PDF //      
-                        Pagina++;
-                    }
-                    //Merge PDFs
+                        DBCeeMasterCnnStr = DBMasterCeeCnnStr,
+                        DBCnnStr = DBEndososCnnStr
+                    })
                     {
-                        MergeEx myMerge = new MergeEx();
-                        myMerge.DestinationFile = strPath;
-                        myMerge.setFileName = cbLots_Item + "_Informe de Rechazos"; //pdf name
-                        myMerge.setSplit = 1000;
-                        String[] FileList = Directory.GetFiles(strPath, "*.pdf"); //_pdfPathOut
 
-                        foreach (string fileName in FileList)
+                        DataTable T = get.MyGeRechazadasToInforme(cbLots_Item);
+                        int totalDePaginas = T.Rows.Count;
+
+                        int Pagina = 1;
+                        string strPath = PDFPath + cbLots_Item;
+
+                        if (Directory.Exists(strPath))
+                            Directory.Delete(strPath, true);
+
+                        Directory.CreateDirectory(strPath);
+
+
+
+                        if (!strPath.EndsWith("\\"))
+                            strPath += "\\";
+                        int myICount = 0;
+                        foreach (DataRow R in T.Rows)
                         {
-                            myMerge.AddFile(fileName);
-                        }
-                        myMerge.Execute();
+                            myICount++;
+                            LblTotal = LblTotal = string.Format("PG:{0:#,#}", myICount);
+                            MyDataSet ds = new MyDataSet();
+                            DataRow RR = ds.Tables[0].NewRow();
 
-                        foreach (string fileName in FileList)
+                            string lot = R["Lot"].ToString().Trim();
+                            string NumElec = R["NumElec"].ToString().Trim();
+                            RR["PrecintoCEE"] = get.MyCEEPrecintoToInforme(NumElec);
+
+
+                            RR["Lot"] = lot;
+                            RR["NumeroElec"] = "Número Electoral               : " + NumElec;
+                            RR["Nombre"] = "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim(), " ", R["Paterno"].ToString().Trim(), " ", R["Materno"].ToString().Trim()).Trim();
+                            RR["NombreCee"] = "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
+                            RR["Precinto"] = "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
+                            RR["StatusCEE"] = "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
+                            RR["FuncionarioElec"] = "Funcionario                    : " + R["notario"];
+                            RR["CandidatoElec"] = "Número Candidato               : " + R["Candidato"];
+                            RR["CandidatoName"] = "Nombre Candidato               : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
+                            RR["Batch"] = "Batch                          : " + R["Batch"];
+                            RR["Formulario"] = "Formulario                     : " + R["Formulario"];
+                            RR["Cargo"] = "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
+
+                            RR["Razon"] = get.MyDecRechazoToInforme(R["Errores"].ToString()).Trim();
+                            if (R["LeerMSG"].ToString().Trim().Length >0)
+                                RR["Razon"] +="\r\n " +  R["LeerMSG"].ToString().Trim();
+
+
+                            RR["totalDePaginas"] = string.Format("{0:#,#}", totalDePaginas);
+                            RR["Pagina"] = string.Format("{0:#,#}", Pagina);
+
+                            {// Para la Imagen
+                                byte[] EndosoImage = (byte[])R["EndosoImage"];
+                                RR["Img"] = EndosoImage;
+                            }
+
+                            ds.Rechazadas.Rows.Add(RR);
+
+                            if (!Directory.Exists(strPath))
+                                Directory.CreateDirectory(strPath);
+
+                            string pdfName = strPath + Pagina.ToString().PadLeft(2, '0') + "_" + RR["lot"] + "_Rechazadas.pdf";
+                            objRp.SetDataSource(ds);
+
+                            ExportOptions CrExportOptions;
+                            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+                            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+                            CrDiskFileDestinationOptions.DiskFileName = pdfName;
+                            CrExportOptions = objRp.ExportOptions;
+                            {
+                                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                                CrExportOptions.FormatOptions = CrFormatTypeOptions;
+                            }
+                            objRp.Export(); // Export PDF //      
+                            Pagina++;
+                        }
+                        //Merge PDFs
                         {
-                            System.IO.File.Delete(fileName);
-                        }
+                            MergeEx myMerge = new MergeEx();
+                            myMerge.DestinationFile = strPath;
+                            myMerge.setFileName = cbLots_Item + "_Informe de Rechazos"; //pdf name
+                            myMerge.setSplit = 1000;
+                            String[] FileList = Directory.GetFiles(strPath, "*.pdf"); //_pdfPathOut
+                            myICount = 0;
+                            foreach (string fileName in FileList)
+                            {
+                                myICount++;
+                                LblTotal = LblTotal = string.Format("Merge PDFs:{0:#,#}", myICount);
+                                myMerge.AddFile(fileName);
+                            }
+                            myMerge.Execute();
 
-                        //open pdf
-                        String fileNamepdf = strPath + myMerge.setFileName + "_1.pdf";
-                        System.Diagnostics.Process process = new System.Diagnostics.Process();
-                        process.StartInfo.FileName = fileNamepdf;
-                        process.Start();
-                        process.WaitForExit();
-                        cbLots_Item_Id = -1;
+                            foreach (string fileName in FileList)
+                            {
+                                System.IO.File.Delete(fileName);
+                            }
+
+                            //open pdf
+                            String fileNamepdf = strPath + myMerge.setFileName + "_1.pdf";
+                            System.Diagnostics.Process process = new System.Diagnostics.Process();
+                            process.StartInfo.FileName = fileNamepdf;
+                            process.Start();
+                            process.WaitForExit();
+                            cbLots_Item_Id = -1;
+
+                        }
 
                     }
+
+                    returnBoll = true;
 
                 }
-            }
-            catch (Exception ex)
-            {
-                MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                catch (Exception ex)
+                {
+                    MethodBase site = ex.TargetSite;
+                    MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                return returnBoll;
+            });
+        }
+
+        private async void MyCmdOpen_Click()
+        {
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(MyDispatcherProgressBar);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+
+            MaximumProgressBar = 5;
+            ValueProgressBar = 0;
+            LblTotal = "0";
+            LogBox.Clear();
+
+            Task<bool> resu1 = this.run();
+            LogBox.Add(cbLots_Item);
+            LogBox.Add("Plase Wait...");
+            await resu1;
+            LogBox.Add("Done..");
+            dispatcherTimer.Stop();
+            _Progress = 0;
+            ValueProgressBar = 0;
+            LblTotal = "0";
+            LogBox.Clear();
+            _run = false;
+
         }
 
         public RelayCommand initWindow
@@ -404,6 +513,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             {
                 _MyLotsTable = get.MyGetLot("3");
                 cbLots.Clear();
+                LogBox.Clear();
+                LblTotal = string.Empty;
+                _run = false;
 
                 if (_MyLotsTable.Rows.Count == 0)
                     MessageBox.Show("No hay lotes ", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -435,11 +547,48 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
 
         }
-        
+        private void MyDispatcherProgressBar(object sender, EventArgs e)
+        {
+           
+            _Progress++;
+            if (_Progress <= MaximumProgressBar)
+                ValueProgressBar = _Progress;
+            else
+            {
+                //List<string> ss = new List<string>();
+                //ss = LogBox.ToList();
+                //LogBox.Clear();
+                //LogBox.Add(ss[0]);
+                //LogBox.Add(string.Concat(ss[1], new string('.', _Progress)));
+
+                //if (ss[1].Split('.').Length <= 99)
+                //{
+                //    _TotalDePuntos = 101;
+                //    LogBox.Add(string.Concat(ss[1], new string('.', _Progress)));
+                //}
+                //else
+                //{
+                //    if (_TotalDePuntos <= 200)
+                //    {
+                //        LogBox.Add(string.Concat(ss[1], new string('.', _Progress)));
+                //    }
+                //    else
+                //    {
+                //        LogBox.Add(string.Concat(ss[1], new string('.', _Progress), "\r\n"));
+                //        _TotalDePuntos = 0;
+                //    }
+                //    _TotalDePuntos += 10;
+                //}
+                _Progress = 0;
+                ValueProgressBar = 0;
+            }
+
+
+        }
         #endregion
 
         #region Dispose
-        
+
         public void Dispose()
         {
             Dispose(true);

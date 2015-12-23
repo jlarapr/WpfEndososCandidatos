@@ -205,7 +205,7 @@ namespace jolcode
             try
             {
                // string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
-                string mySqlstr = "Select Endorsements from [dbo].[FilingEndorsements] Where [BatchNumber]='" + lot + "'";
+                string mySqlstr = "Select [FiledEndorsements] as total from [dbo].[FilingEndorsements] Where [BatchNumber]='" + lot + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -326,12 +326,12 @@ namespace jolcode
 
                 string[] mySqlstrAll =
                 {
-                    "Select Partido,BatchTrack,[Num_Candidato], count(*) as Amount ",
+                    "Select Partido,BatchTrack, count(*) as Amount ",
                     "From [dbo].[TF-Partidos] ",
                     "Where BatchTrack =@lot ",
                     "And Imported = 0 ",
-                    "Group By Partido,BatchTrack,[Num_Candidato] ",
-                    "Order By Partido,BatchTrack,[Num_Candidato];"
+                    "Group By Partido,BatchTrack ",
+                    "Order By Partido,BatchTrack;"
                 };
 
                 string[] mySqlstrCountVerificar =
@@ -1122,7 +1122,7 @@ namespace jolcode
                     case "PPD":
                         tableReydi = "EndososPPD";
                         break;
-                    case "EndososCEE":
+                    case "SEC":
                         tableReydi = "EndososCEE";
                         break;
                     default:
@@ -1338,8 +1338,6 @@ namespace jolcode
         {
             object myReturn = null;
 
-
-
             try
             {
                 using (SqlConnection cnn = new SqlConnection()
@@ -1372,7 +1370,7 @@ namespace jolcode
                 throw new Exception(ex.ToString() + "\r\n MyCandidatoNameToInforme Error");
             }
 
-            return myReturn.ToString();
+            return myReturn.ToString().Trim();
         }
         public string MyDecCargoToInforme(string Cargo)
         {
@@ -1414,6 +1412,8 @@ namespace jolcode
 
             return myReturn.ToString();
         }
+
+ 
 
         public string MyTipoDeRechazo(string param,string formulario,string CurrLot,string batch,ref byte[] EndosoImage,ref string rechazoNum)
         {
@@ -2299,7 +2299,7 @@ namespace jolcode
 
                             partidoParam.Value = row["Partido"].ToString();
                             lotParam.Value = row["BatchTrack"].ToString();
-                            Num_CandidatoParam.Value =int.Parse (row["Num_Candidato"].ToString());
+                            Num_CandidatoParam.Value = "0";
                             amountParam.Value = int.Parse(row["Amount"].ToString());
                             usercodeParam.Value = usercode;
                             authDateParam.Value = DateTime.Now.ToString(); ;
@@ -2499,6 +2499,8 @@ namespace jolcode
             String m_PARTIDO = string.Empty;
             int m_Cargo = 0;
             String m_N_CANDIDAT = string.Empty;
+            String m_N_CANDIDAT_Good = string.Empty;
+
             String m_N_NOTARIO = string.Empty;
             DateTime? m_Fecha_Endo = null;
             String m_Suspense_File = string.Empty;
@@ -2510,7 +2512,8 @@ namespace jolcode
             string m_Padre = string.Empty;
             string m_Madre = string.Empty;
             string m_Leer_Inv = string.Empty;
-            string m_Alteracion = string.Empty;
+            string m_Leer = string.Empty;
+            int m_Alteracion = 0;
             DateTime? m_Firma_Fecha = null;
             string m_EndosoImage = string.Empty;
             try
@@ -2669,6 +2672,7 @@ namespace jolcode
 
                     m_N_NOTARIO = string.Empty;
                     m_N_CANDIDAT = string.Empty;
+                    m_N_CANDIDAT_Good = "0";
                     m_Cargo = -1;
                     m_FECHA_N = null;
                     m_SEXO = string.Empty;
@@ -2682,12 +2686,17 @@ namespace jolcode
                     m_Suspense_File = string.Empty;
                     m_Padre = string.Empty;
                     m_Madre = string.Empty;
+                    m_Leer = string.Empty;
                     m_Leer_Inv = string.Empty;
-                    m_Alteracion = string.Empty;
+                    m_Alteracion =0;
                     m_Firma_Fecha = null;
                     m_EndosoImage = string.Empty;
                     strRechazos = string.Empty;
                     //
+                    // m_Alteracion  ==row["Alteracion"].ToString().Trim();
+
+                    int.TryParse(row["Alteracion"].ToString().Trim(), out m_Alteracion);
+                    m_Leer = row["leer"].ToString().Trim();
 
                     string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                     string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
@@ -2709,7 +2718,7 @@ namespace jolcode
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
                     m_Leer_Inv = row["Leer_Inv"].ToString().Trim();
-                    m_Alteracion = row["Alteracion"].ToString().Trim();
+                 
 
                     m_PARTIDO = row["Partido"].ToString().Trim();
                     m_BatchNo = row["BatchNo"].ToString().Trim();
@@ -2757,7 +2766,7 @@ namespace jolcode
                         m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
                     }
 
-                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (m_Firma_Peticionario == "0"))//'1-ELECTOR NO FIRMO EL ENDOSO
+                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (  m_Firma_Peticionario  == "0.00"))//'1-ELECTOR NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[0].Editar == true)
                         {
@@ -2772,7 +2781,7 @@ namespace jolcode
                         }
                     }
 
-                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) && m_Firma_Notario == "0")//2-'NOTARIO NO FIRMO EL ENDOSO
+                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) &&  m_Firma_Notario == "0.00")//2-'NOTARIO NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[1].Editar == true)
                         {
@@ -2949,6 +2958,10 @@ namespace jolcode
                                     Warning[6]++;
                                     isWarning[6] = true;
                                 }
+                            }
+                            else
+                            {
+                                m_N_CANDIDAT_Good = m_N_CANDIDAT;
                             }
                         }
                         else
@@ -3517,6 +3530,14 @@ namespace jolcode
                         }
                     }
 
+                    if (m_Alteracion == 1) //Otro Rechazo
+                    {
+                        Rechazo[17]++;
+                        strRechazos += "18|";
+                        isRechazo[17] = true;
+                    }
+
+
                     bool isrechazo = false;
                     bool iswarning = false;
 
@@ -3576,7 +3597,7 @@ namespace jolcode
                     {
                         "Insert Into LotsEndo",
                         "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Nombre],[Paterno],[Materno],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
-                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores] ) ",
+                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores],[LeerMSG] ) ",
 
                         "Values('" , m_PARTIDO , "'",           //Partido
                         ",'" , m_BatchTrack , "'",              //Lot
@@ -3592,7 +3613,7 @@ namespace jolcode
                         ",'" ,m_Madre , "'",                    //Madre
                         ",'" , MyFechaToSql( m_FECHA_N ),  "'",      //FechaNac
                         ",'" , m_Leer_Inv , "'",                //Leer_Inv
-                        ",'" , m_Alteracion , "'",              //Alteracion
+                        ",'" , m_Alteracion.ToString() , "'",              //Alteracion
                         ",'" , m_N_NOTARIO , "'",               //Notario
                         ",'" , m_Firma_Peticionario , "'",      //Firma_Peticionario
                         "," , m_Firma_Pet_Inv.ToString(),       //Firma_Pet_Inv
@@ -3606,6 +3627,7 @@ namespace jolcode
                         ",'" , m_N_PRECINTO , "'",              //PRECINTO
                         ", @EndosoImage",
                         ",'",strRechazos , "'",
+                        ",'",m_Leer , "'", // Otro Rechazo
                         ")"
 
                     };
@@ -3634,7 +3656,7 @@ namespace jolcode
                 string mySqlqlstrUpdate = "Update Lots";
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " Set Status = " + LotRechazo.ToString() + ", verdate = getdate(), veruser = '" + usercode + "',"; 
                 mySqlqlstrUpdate = mySqlqlstrUpdate + "ValidatedEndorsements=" + ValidatedEndorsements.ToString() + ",RejectedEndorsements=" + RejectedEndorsements.ToString();
-                mySqlqlstrUpdate = mySqlqlstrUpdate + ",StatusReydi=0";
+                mySqlqlstrUpdate = mySqlqlstrUpdate + ",StatusReydi=0,Num_Candidato=" + m_N_CANDIDAT_Good;
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " Where Lot='" + m_BatchTrack + "'";
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " And Status = 1";
 
@@ -3800,7 +3822,7 @@ namespace jolcode
             
         }
         public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
-                                     string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,
+                                     string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,string chkAlteracion,string txtOtraRazonDeRechazo,
                                      string txtFchJuramento,string txtFechaEndosos,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
         {
             bool myBoolReturn = false;
@@ -3858,6 +3880,8 @@ namespace jolcode
                      ", FirmaNotario = '" ,txtNotarioFirma,"'",
                      ", FirmaElec_Inv = " , chkFirmaInv,
                      ", FirmaNot_Inv = " , chkFirmaNotInv,
+                     ", Alteracion = " , chkAlteracion,
+                     ", Leer = '" , txtOtraRazonDeRechazo,"'",
                      ", FechaFirm_Mes  = '" ,FechaFirm_Mes  , "'",
                      ", FechaFirm_Dia = '" ,FechaFirm_Dia , "'",
                      ", FechaFirm_Ano = '" ,FechaFirm_Ano  , "'",

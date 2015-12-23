@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowState="Maximized"
-        Title="wpfFixVoid" Height="906.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
+        Title="wpfFixVoid" Height="941.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -72,7 +72,7 @@
             </GroupBox>
 
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
-            <Label x:Name="txtRazonRechazo" Margin="0,36,0,10"  Background="Yellow" 
+            <Label x:Name="txtRazonRechazo" Margin="0,36,0,0"  Background="Yellow" 
                        Grid.Column="1" 
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
                        Content="{Binding Path=txtRazonRechazo}"
@@ -86,7 +86,7 @@
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
 
             </StackPanel>
-            <Label x:Name="label1" Content="Endoso Rechazado" Margin="5,4,15,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
+            <Label x:Name="label1" Content="Endoso" Margin="5,4,137,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
 
             <GroupBox x:Name="groupBox1" Header="Información del Master" Margin="10" Grid.Column="2" Grid.RowSpan="2">
                 <Grid Margin="0">
@@ -104,7 +104,7 @@
                     <Label x:Name="label2" Content="Número Electoral:" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" Height="26" Width="105"/>
                     <Label x:Name="label3" Content="Precinto:" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
                     <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="35,79,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Column="1"/>
-                    <Label x:Name="label5" Content="Fecha Nac. (mm/dd/yyyy):" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Height="26" Width="148"/>
+                    <Label x:Name="label5" Content="Fecha Nac. (dd/mm/yyyy):" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Height="26" Width="148"/>
                     <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
                     <Label x:Name="txtNumElec" Height="26" Margin="110,42,0,0"   VerticalAlignment="Top"
                                    Background="Yellow"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -151,16 +151,16 @@
             <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="164,85,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="50" />
             <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,85,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="50"/>
             <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="136,85,0,0" VerticalAlignment="Top" Height="26" Width="23"/>
-            <Button Content="+"  Margin="87,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="42" Height="28"
+            <Button Content="+"  Margin="87,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="42" Height="28"
             	Command="{Binding cmdZoomInOut}" CommandParameter="IN" IsTabStop="False" TabIndex="1000000"  />
-            <Button Content="-" Margin="132,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Height="28"
+            <Button Content="-" Margin="132,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Height="28"
             	Command="{Binding cmdZoomInOut}"  CommandParameter="OUT" IsTabStop="False" TabIndex="1000000"/>
-            <Label x:Name="lblI" Content="{Binding i}" HorizontalAlignment="Left" Margin="9,127,0,0" VerticalAlignment="Top" Height="26" Width="29"/>
-            <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,158,10,33" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2">
+            <Label x:Name="lblI" Content="{Binding i}" HorizontalAlignment="Left" Margin="9,178,0,0" VerticalAlignment="Top" Height="18" Width="29"/>
+            <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,158,10,10" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2">
                 <Grid Margin="0,0,0,4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="163*"/>
-                        <ColumnDefinition Width="192*"/>
+                        <ColumnDefinition Width="162*"/>
+                        <ColumnDefinition Width="179*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="474"/>
@@ -269,13 +269,13 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="23"  x:Name="label10" Content="Firma Elector/Funcionario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,199,0,0" Width="148" Grid.ColumnSpan="2"/>
+                    <Label Height="23"  x:Name="label10" Content="Firma Elector/Funcionario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,199,0,0" Width="148"/>
                     <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtFirmaElec_Corregir, Mode=TwoWay}"
                              Background="{Binding txtColor[1]}"
                              
-            			Grid.Column="1" HorizontalAlignment="Left" Width="32" TabIndex="8"
+            			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="8"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -286,12 +286,12 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="131,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
+                    <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="120,199,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
             			MaxLength="10"
             			Text="{Binding txtNotarioFirma_Corregir, Mode=TwoWay}"
                              Background="{Binding txtColor[2]}"
                              
-            			Grid.Column="1" HorizontalAlignment="Left" Width="43" TabIndex="9"
+            			Grid.Column="1" HorizontalAlignment="Left" Width="54" TabIndex="9"
                                      >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -343,13 +343,13 @@
             			IsChecked="{Binding ckbFirma_Not_Inv, Mode=TwoWay}" Height="15" IsTabStop="False" TabIndex="1000000"
                               Background="{Binding txtColor[17]}"
                                   />
-                    <Label Height="28"  x:Name="label13_Copy" Content="Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,286,0,0" Width="119" RenderTransformOrigin="0.504,0.688"/>
-                    <Label x:Name="txtFormulario" Height="28" Margin="10,286,0,0"   VerticalAlignment="Top"
+                    <Label Height="28"  x:Name="label13_Copy" Content="Batch / Formulario:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,286,0,0" Width="119" RenderTransformOrigin="0.504,0.688"/>
+                    <Label x:Name="txtFormulario" Height="23" Margin="0,291,10,0"   VerticalAlignment="Top"
             			Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Left" Width="164"
+            			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Right" Width="79"
                            
                                    />
-                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (dd/mm/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" Grid.ColumnSpan="2" />
+                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (dd/mm/yyyy):" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Height="26" Width="148" IsTabStop="False" />
 
                     <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,87,0,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="4"
                              Background="{Binding txtColor[9]}"
@@ -378,11 +378,19 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
+                    <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Left" Height="23" Margin="6,291,0,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="80" IsEnabled="False" Grid.Column="1"/>
+                    <CheckBox x:Name="chkOtraRazonDeRechazo" Content="Otra Razon de Rechazo" HorizontalAlignment="Left" Margin="15,328,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.479,-1.867" Height="15" Width="143"
+                              IsChecked="{Binding chkOtraRazonDeRechazo, Mode=TwoWay}"
+                              />
+                    <TextBox x:Name="textBox1" Height="83" Margin="11,328,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.Column="1"
+                             Text="{Binding txtOtraRazonDeRechazo}"
+                             IsEnabled="{Binding chkOtraRazonDeRechazo}"
+                             />
                 </Grid>
             </GroupBox>
-            <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="173,125,10,0" IsTabStop="False" TabIndex="1000000" />
-            <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39"  Height="28"  Margin="43,125,0,0" IsTabStop="False" TabIndex="1000000" />
-            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="28" Margin="10,158,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="72"/>
+            <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="173,142,10,0" IsTabStop="False" TabIndex="1000000" />
+            <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39"  Height="28"  Margin="43,142,0,0" IsTabStop="False" TabIndex="1000000" />
+            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="21" Margin="43,175,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="176"/>
             <Grid Background="Beige" Grid.Column="2" Height="143" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top">
                 <ScrollViewer  Background="Beige"  
                            HorizontalScrollBarVisibility="Auto" 
@@ -416,7 +424,6 @@
 
                 </ScrollViewer>
             </Grid>
-            <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Right" Height="23" Margin="0,163,15,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="82" IsEnabled="False"/>
 
         </Grid>
 

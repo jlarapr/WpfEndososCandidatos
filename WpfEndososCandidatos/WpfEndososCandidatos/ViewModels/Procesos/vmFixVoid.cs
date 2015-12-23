@@ -97,6 +97,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private ObservableCollection<Brush> _txtColor;
         Brush tmpBrushes;
         private bool _isAll;
+        private bool _chkOtraRazonDeRechazo;
+        private string _txtOtraRazonDeRechazo;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -667,6 +669,36 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 this.RaisePropertychanged("ckbFirma_Pet_Inv");
             }
         }
+        public string txtOtraRazonDeRechazo
+        {
+            get
+            {
+                return _txtOtraRazonDeRechazo;
+            }
+            set
+            {
+                _txtOtraRazonDeRechazo = value;
+                this.RaisePropertychanged("txtOtraRazonDeRechazo");
+            }
+        }
+        public bool chkOtraRazonDeRechazo
+        {
+            get
+            {
+                return _chkOtraRazonDeRechazo;
+            }set
+            {
+                _chkOtraRazonDeRechazo = value;
+                if (_DataToSave.Count > 0)
+                {
+                    CanGuardar = true;
+                }
+                if (!value)
+                    txtOtraRazonDeRechazo = string.Empty;
+
+                this.RaisePropertychanged("chkOtraRazonDeRechazo");
+            }
+        }
         public bool ckbFirma_Not_Inv
         {
             get
@@ -1052,6 +1084,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.NotarioFirma,
                                    data.Firma_Pet_Inv == true ? "1" : "0",
                                    data.Firma_Not_Inv == true ? "1" : "0",
+                                   data.chkOtraRazonDeRechazo == true ? "1" : "0",
+                                   data.txtOtraRazonDeRechazo,
                                    FchEndosoJuramento,
                                    FechaEndosos,
                                    data.Lot,
@@ -1759,6 +1793,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
                     ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
+                    chkOtraRazonDeRechazo = _DataToSave[i].chkOtraRazonDeRechazo;
+                    txtOtraRazonDeRechazo = _DataToSave[i].txtOtraRazonDeRechazo;
 
                     txtFormulario = _DataToSave[i].Formulario;
 
@@ -1910,7 +1946,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             string Mes = txtFechaNac.Split('/')[0].Trim().PadLeft(2, '0');
                             string Dia = txtFechaNac.Split('/')[1].Trim().PadLeft(2, '0');
                             string Ano = txtFechaNac.Split('/')[2].Trim().Substring(0, 4);
-                            txtFechaNac = Mes + "/" + Dia + "/" + Ano;
+                            txtFechaNac = Dia + "/" + Mes + "/" + Ano;
                         }
 
                         if (_myTableImgFirmaElector.Rows.Count > 0)
@@ -2009,8 +2045,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             batchTF = string.Empty;
             txtStatusElec = string.Empty;
             txtStatusNotario = string.Empty;
+            txtOtraRazonDeRechazo = string.Empty;
+            chkOtraRazonDeRechazo = false;
 
-           
             for (int idx =0;idx <=18;idx++)
             {
                 txtColor[idx] = Brushes.White;
@@ -2086,6 +2123,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             NotarioFirma = row["Firma_Notario"].ToString().Trim(),
                             Firma_Pet_Inv = row["Firma_Pet_Inv"].ToString().Trim() == "1" ? true : false,
                             Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
+                            chkOtraRazonDeRechazo = row["Alteracion"].ToString().Trim() == "1" ? true : false,
+                            txtOtraRazonDeRechazo = row["LeerMSG"].ToString(),
                             Firma_Fecha = juramento,
                             FchEndosoEntregada = FechaEndoso,
                             Batch = row["Batch"].ToString(),
@@ -2142,6 +2181,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             _DataToSave[i].NotarioFirma = txtNotarioFirma_Corregir;
             _DataToSave[i].Firma_Pet_Inv = ckbFirma_Pet_Inv;
             _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
+            _DataToSave[i].chkOtraRazonDeRechazo = chkOtraRazonDeRechazo;
+            _DataToSave[i].txtOtraRazonDeRechazo = txtOtraRazonDeRechazo;
             _DataToSave[i].Firma_Fecha = dtFechaJuramento_Corregirnull;
             _DataToSave[i].FchEndosoEntregada = dtEndosoEntregadanull;
 
