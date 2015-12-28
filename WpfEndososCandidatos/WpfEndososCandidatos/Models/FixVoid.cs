@@ -42,6 +42,7 @@ namespace WpfEndososCandidatos.Models
         public string Batch { get; set; }//LotsEndoBatch
         public string image { get; set; }//LotsEndoimage
         public byte[] EndosoImage { get; set; }
+        public int? Leer_Inv { get; set; }
 
         public override string ToString()
         {

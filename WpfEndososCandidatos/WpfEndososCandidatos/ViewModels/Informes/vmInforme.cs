@@ -40,7 +40,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private int _MaximumProgressBar;
         private int _ValueProgressBar;
         private ObservableCollection<string> _LogBox;
-        private int _TotalDePuntos;
+     //   private int _TotalDePuntos;
         private string _LblTotal;
         private bool _run;
 
@@ -390,7 +390,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             if (!Directory.Exists(strPath))
                                 Directory.CreateDirectory(strPath);
 
-                            string pdfName = strPath + Pagina.ToString().PadLeft(2, '0') + "_" + RR["lot"] + "_Rechazadas.pdf";
+                            string pdfName = strPath + Pagina.ToString().PadLeft(5, '0') + "_" + RR["lot"] + "_Rechazadas.pdf";
                             objRp.SetDataSource(ds);
 
                             ExportOptions CrExportOptions;

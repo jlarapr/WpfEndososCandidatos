@@ -99,6 +99,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _isAll;
         private bool _chkOtraRazonDeRechazo;
         private string _txtOtraRazonDeRechazo;
+        private int? _txtFchEndosoEntregada_Corregir_dias=null;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -766,7 +767,22 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             }
         }
-       
+
+        public int? txtFchEndosoEntregada_Corregir_dias
+        {
+            get
+            {
+                return _txtFchEndosoEntregada_Corregir_dias;
+            }set
+            {
+                if (value != null)
+                {
+                    _txtFchEndosoEntregada_Corregir_dias = value;
+                    this.RaisePropertychanged("txtFchEndosoEntregada_Corregir_dias");
+                }
+            }
+        }
+
         public string FechaNac_Corregir
         {
             get
@@ -930,7 +946,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
-                for (int idx = 0; idx <= 18; idx++)
+                for (int idx = 0; idx <= 19; idx++)
                 {
                     txtColor.Add(Brushes.White);
                 }
@@ -1088,6 +1104,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.txtOtraRazonDeRechazo,
                                    FchEndosoJuramento,
                                    FechaEndosos,
+                                   data.Leer_Inv,
                                    data.Lot,
                                    data.Batch,
                                    data.Formulario,
@@ -1351,7 +1368,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 contenido = txt.Name;
 
                 txt.SelectAll();
-
+               
                 tmpBrushes = txt.Background;
 
                 txt.Background = Brushes.Red;
@@ -1800,7 +1817,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     batchTF = _DataToSave[i].Batch;
 
-
+                    txtFchEndosoEntregada_Corregir_dias = _DataToSave[i].Leer_Inv;
 
 
                     if (_DataToSave[i].FechaNac !=null)
@@ -2002,8 +2019,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             param = param.Substring(0, param.Length - 1);
             string[] cargos = param.Split('|');
+           
 
-            foreach(string s in cargos)
+            foreach (string s in cargos)
             {
                 int idx = int.Parse(s);
 
@@ -2011,6 +2029,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 if (idx == 11)
                     txtColor[6] = Brushes.Green;
+
+                if (idx == 19)
+                    txtColor[15] = Brushes.Green;
+
+                if (idx == 8)
+                    txtColor[4] = Brushes.Green;
 
             }
 
@@ -2102,7 +2126,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
 
+                        int Leer_Inv = 0;
 
+                        int.TryParse(row["Leer_Inv"].ToString(), out Leer_Inv);
 
                         _DataToSave.Add(new FixVoid
                         {
@@ -2129,7 +2155,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             FchEndosoEntregada = FechaEndoso,
                             Batch = row["Batch"].ToString(),
                             image = row["Image"].ToString(),
-                            EndosoImage = (byte[])row["EndosoImage"]
+                            EndosoImage = (byte[])row["EndosoImage"],
+                            Leer_Inv = Leer_Inv
+
                             
                         });
                         k++;
@@ -2170,6 +2198,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             _DataToSave[i].Lot = Lot;
             _DataToSave[i].Formulario = txtFormulario;
             // _DataToSave[i].TipoDeRechazo = row["TipoDeRechazo"].ToString(),
+
+            //for (int tmp=0;tmp < TotalRechazada;tmp++)
+            //        _DataToSave[tmp].Leer_Inv = txtFchEndosoEntregada_Corregir_dias; // esto es para cambiar a todos los endosos la cantidad de dedias 
+
+            _DataToSave[i].Leer_Inv = txtFchEndosoEntregada_Corregir_dias;
+
             _DataToSave[i].Numelec = txtNumElec_Corregir;
             _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
             _DataToSave[i].Precinto = txtPrecinto_Corregir;

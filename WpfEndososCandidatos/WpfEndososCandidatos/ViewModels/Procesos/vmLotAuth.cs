@@ -240,9 +240,15 @@
                         throw new Exception("Error en la Cantidad");
 
                     object EndososDate = get.MyReydiEndososDate(numLote);
+                  
+
 
                     if (EndososDate.ToString() == "???")
                         throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
+
+                    get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
+
+
 
                     if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser,EndososDate))
                         throw new Exception("Error en la base de datos.");

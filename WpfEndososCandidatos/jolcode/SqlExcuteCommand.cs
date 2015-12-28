@@ -1252,6 +1252,72 @@ namespace jolcode
             return myReturn;
         }
 
+        public bool MyTFJuramentoDate(string lot,DateTime EndososDate)
+        {
+            bool myReturn = false;
+
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+
+
+                        DateTime? m_Firma_Fecha = null;
+
+
+                        string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
+                        cmd.CommandText = mySqlstr;
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable table=new DataTable();
+
+                        da.Fill(table);
+
+
+                        foreach(DataRow dr in table.Rows)
+                        {
+                            string tmpmFirma_Fecha = string.Concat(dr["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), dr["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), dr["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+
+                            if (tmpmFirma_Fecha.Trim().Length > 0)
+                            {
+                                string BatchNo = dr["BatchNo"].ToString();
+                                string BatchPgNo = dr["BatchPgNo"].ToString();
+                                m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
+                                long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
+
+                                string update = "update [dbo].[TF-Partidos] set [Leer_Inv]=" + totalDeDias + " where BatchTrack='" + lot + "' and BatchNo='" + BatchNo + "' and BatchPgNo='" + BatchPgNo + "';";
+                                cmd.CommandText = update;
+                                cmd.ExecuteNonQuery();
+
+                            }
+                        }
+
+                        myReturn = true;
+                                                
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message + "\r\n MyTFJuramentoDate Error");
+            }
+
+            return myReturn;
+        }
+
         public string MyCEEPrecintoToInforme(string CItizenId)
         {
             object myReturn = null;
@@ -2133,6 +2199,9 @@ namespace jolcode
                     FechaEndo_Dia = string.Empty;
                     FechaEndo_Ano = string.Empty;
                 }
+               
+
+
 
                 string[] myUpdate_Imported1 =
                     {
@@ -2142,7 +2211,9 @@ namespace jolcode
                             "FirmaElec_Inv = 0,",
                             "FechaEndo_Mes= @FechaEndo_Mes,",
                             "FechaEndo_Dia=@FechaEndo_Dia,",
-                            "FechaEndo_Ano=@FechaEndo_Ano ",
+                            "FechaEndo_Ano=@FechaEndo_Ano,",
+                            "Leer = '',",
+                            "Alteracion=0 ",
                             "WHERE BatchTrack=@where ",
                             "And Imported = 0"
                     };
@@ -2247,6 +2318,10 @@ namespace jolcode
                         FechaEndo_AnoParam.ParameterName = "@FechaEndo_Ano";
                         FechaEndo_AnoParam.SqlDbType = SqlDbType.VarChar;
 
+                        //SqlParameter totalDeDiasParam = new SqlParameter();
+                        //totalDeDiasParam.ParameterName = "@totalDeDias";
+                        //totalDeDiasParam.SqlDbType = SqlDbType.Int;
+
 
                         cmd.Parameters.Add(whereParam);
                        
@@ -2265,10 +2340,13 @@ namespace jolcode
                             cmd.Parameters.Add(FechaEndo_MesParam);
                             cmd.Parameters.Add(FechaEndo_DiaParam);
                             cmd.Parameters.Add(FechaEndo_AnoParam);
+                         //   cmd.Parameters.Add(totalDeDiasParam);
 
                             FechaEndo_MesParam.Value = FechaEndo_Mes;
                             FechaEndo_DiaParam.Value = FechaEndo_Dia;
                             FechaEndo_AnoParam.Value = FechaEndo_Ano;
+                        //    totalDeDiasParam.Value = totalDeDias;
+
 
 
                             cmd.CommandText = string.Concat(myUpdate_Imported1);
@@ -2280,6 +2358,7 @@ namespace jolcode
                             cmd.Parameters.Remove(FechaEndo_MesParam);
                             cmd.Parameters.Remove(FechaEndo_DiaParam);
                             cmd.Parameters.Remove(FechaEndo_AnoParam);
+                         //   cmd.Parameters.Remove(totalDeDiasParam);
 
                             cmd.Parameters.Add(partidoParam);
                             cmd.Parameters.Add(lotParam);
@@ -2511,7 +2590,7 @@ namespace jolcode
             int m_Firma_Not_Inv = 0;
             string m_Padre = string.Empty;
             string m_Madre = string.Empty;
-            string m_Leer_Inv = string.Empty;
+            int? m_Leer_Inv = 0;
             string m_Leer = string.Empty;
             int m_Alteracion = 0;
             DateTime? m_Firma_Fecha = null;
@@ -2687,7 +2766,7 @@ namespace jolcode
                     m_Padre = string.Empty;
                     m_Madre = string.Empty;
                     m_Leer = string.Empty;
-                    m_Leer_Inv = string.Empty;
+                    m_Leer_Inv = 100;
                     m_Alteracion =0;
                     m_Firma_Fecha = null;
                     m_EndosoImage = string.Empty;
@@ -2717,7 +2796,7 @@ namespace jolcode
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
-                    m_Leer_Inv = row["Leer_Inv"].ToString().Trim();
+                    m_Leer_Inv =(int) row["Leer_Inv"];
                  
 
                     m_PARTIDO = row["Partido"].ToString().Trim();
@@ -2801,7 +2880,8 @@ namespace jolcode
                     {
                         if (m_Fecha_Endo != null)
                         {
-                            if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
+                            //   if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
+                            if (m_Leer_Inv >7)
                             {
                                 if (CollCriterios[2].Editar == true)
                                 {
@@ -2838,7 +2918,6 @@ namespace jolcode
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
                                                 " Where ([NumElec] = ", FixNum( m_N_NOTARIO) , ") and ",
-                                                "([Status] ='A') and ",
                                                 " ([NumCand]=", FixNum( m_N_CANDIDAT ) , ")"};
 
                         object total = null;
@@ -3537,6 +3616,33 @@ namespace jolcode
                         isRechazo[17] = true;
                     }
 
+                    if (CollCriterios[18].Editar == true || CollCriterios[18].Warning == true) //No concuerda el cargo
+                    {
+                        string[] sqlstr = { "select [Cargo] from [dbo].[Candidatos] where [NumCand]=" + FixNum( m_N_CANDIDAT ),";"};
+
+                        //string[] sqlstr = { "SELECT [ElectivePositionID] ",
+                        //                        "From [dbo].[Areas] ",
+                        //                        "where Area in (select Area from [dbo].[FilingEndorsements] where [ElectoralNumber]=" + FixNum( m_N_CANDIDAT ),")"};
+
+                        object Cargo = null;
+
+                        if (MyValidarDatos(string.Concat(sqlstr), out Cargo, myCnnDBEndosos) == null)
+                        {
+                            Rechazo[18]++;
+                            strRechazos += "19|";
+                            isRechazo[18] = true;
+                        }else
+                        {
+                            if (m_Cargo != (int)Cargo)
+                            {
+                                Rechazo[18]++;
+                                strRechazos += "19|";
+                                isRechazo[18] = true;
+                            }
+                        }
+                    }
+
+
 
                     bool isrechazo = false;
                     bool iswarning = false;
@@ -3612,7 +3718,7 @@ namespace jolcode
                         ",'" ,m_Padre , "'",                    //Padre
                         ",'" ,m_Madre , "'",                    //Madre
                         ",'" , MyFechaToSql( m_FECHA_N ),  "'",      //FechaNac
-                        ",'" , m_Leer_Inv , "'",                //Leer_Inv
+                        ",'" , m_Leer_Inv.ToString() , "'",                //Leer_Inv
                         ",'" , m_Alteracion.ToString() , "'",              //Alteracion
                         ",'" , m_N_NOTARIO , "'",               //Notario
                         ",'" , m_Firma_Peticionario , "'",      //Firma_Peticionario
@@ -3823,7 +3929,7 @@ namespace jolcode
         }
         public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
                                      string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,string chkAlteracion,string txtOtraRazonDeRechazo,
-                                     string txtFchJuramento,string txtFechaEndosos,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
+                                     string txtFchJuramento,string txtFechaEndosos,int? totalDeDias,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
         {
             bool myBoolReturn = false;
 
@@ -3882,6 +3988,7 @@ namespace jolcode
                      ", FirmaNot_Inv = " , chkFirmaNotInv,
                      ", Alteracion = " , chkAlteracion,
                      ", Leer = '" , txtOtraRazonDeRechazo,"'",
+                     ", Leer_Inv =",totalDeDias.ToString(),
                      ", FechaFirm_Mes  = '" ,FechaFirm_Mes  , "'",
                      ", FechaFirm_Dia = '" ,FechaFirm_Dia , "'",
                      ", FechaFirm_Ano = '" ,FechaFirm_Ano  , "'",
