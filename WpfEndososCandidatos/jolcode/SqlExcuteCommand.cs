@@ -2766,7 +2766,7 @@ namespace jolcode
                     m_Padre = string.Empty;
                     m_Madre = string.Empty;
                     m_Leer = string.Empty;
-                    m_Leer_Inv = 100;
+                    m_Leer_Inv = 0;
                     m_Alteracion =0;
                     m_Firma_Fecha = null;
                     m_EndosoImage = string.Empty;
@@ -2796,9 +2796,11 @@ namespace jolcode
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
-                    m_Leer_Inv =(int) row["Leer_Inv"];
-                 
+                    
+                    if (row["Leer_Inv"] !=null )
+                        m_Leer_Inv =(int) row["Leer_Inv"];
 
+                    
                     m_PARTIDO = row["Partido"].ToString().Trim();
                     m_BatchNo = row["BatchNo"].ToString().Trim();
                     m_Batch = m_BatchNo;// row["Suspense_File"].ToString().Trim().Split('\\')[3];
