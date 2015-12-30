@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ViewModelBase.cs" />
+    <Compile Include="Code.cs" />
     <Compile Include="Criterios.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="ExcuteScript.cs" />

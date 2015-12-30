@@ -229,6 +229,11 @@
         {
             try
             {
+                jolcode.Code.AplicarEfecto(View as Window);
+                jolcode.Code.DoEvents();
+              
+
+
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr,
@@ -242,13 +247,11 @@
                     object EndososDate = get.MyReydiEndososDate(numLote);
                   
 
-
                     if (EndososDate.ToString() == "???")
                         throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
 
                     get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
-
-
+                                    
 
                     if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser,EndososDate))
                         throw new Exception("Error en la base de datos.");
@@ -262,6 +265,9 @@
                 
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                jolcode.Code.QuitarEfecto(View as Window);
             }
         }
         public void MyCmdAddTodoLot_Click()

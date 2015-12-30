@@ -100,6 +100,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _chkOtraRazonDeRechazo;
         private string _txtOtraRazonDeRechazo;
         private int? _txtFchEndosoEntregada_Corregir_dias=null;
+        private int _GoIdx;
+        private string _txtNumElec_Go;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -110,7 +112,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click(),param=> CanAnterior);
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
+            cmdLast = new RelayCommand(param => MycmdLast());
+            cmdFirst = new RelayCommand(param => MycmdFirst());
+            BtnGo_Elec = new RelayCommand(param => MyBtnGo_Elec(), param => BtnGo_Elec_Can);
             cmdZoomInOut = new RelayCommand(param => MyCmdZoomInOut(param));
+            BtnGo = new RelayCommand(param => MyBtnGo());
             cmdSetImg = new RelayCommand(param => MyCmdSetImg());
             SendTab = new RelayCommand(param => MySendTab());
             _DataToSave = new List<FixVoid>();
@@ -123,7 +129,24 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         /*Property*/
         #region MyProperty
 
-            public bool isAll
+
+
+        private bool BtnGo_Elec_Can
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(txtNumElec_Go))
+                    return false;
+
+                int elec;
+                if (!int.TryParse(txtNumElec_Go, out elec))
+                    return false;
+
+                return true;
+            }
+        }
+
+        public bool isAll
         {
             get
             {
@@ -330,6 +353,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                
             }
         }
+        public int GoIdx
+        {
+            get
+            {
+                return _GoIdx;
+            }
+            set
+            {
+                _GoIdx = value;
+                this.RaisePropertychanged("GoIdx");
+
+            }
+        }
+
         public int i_Display
         {
             get
@@ -767,7 +804,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             }
         }
-
+        public string txtNumElec_Go
+        {
+            get
+            {
+                return _txtNumElec_Go;
+            }set
+            {
+                _txtNumElec_Go = value;
+                this.RaisePropertychanged("txtNumElec_Go");
+            }
+        }
         public int? txtFchEndosoEntregada_Corregir_dias
         {
             get
@@ -946,14 +993,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
-                for (int idx = 0; idx <= 19; idx++)
+                for (int idx = 0; idx <= 20; idx++)
                 {
                     txtColor.Add(Brushes.White);
                 }
 
                 MyRefresh(true);
 
-                MyFillField();
+                MyFillField(i);
 
               
                 TextBox tet = new TextBox();
@@ -994,6 +1041,47 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void MyBtnGo_Elec()
+        {
+            int find = 0;
+            bool masdeuno = false;
+            bool loencontre = false;
+            string strIDX = string.Empty;
+
+            for (int f = 0; f < TotalRechazada; f++)
+            {
+
+                if (_DataToSave[f].Numelec == txtNumElec_Go)
+                {
+                    if (loencontre)
+                        masdeuno = true;
+
+                    find = f;
+                    strIDX += f.ToString() + "|";
+                    loencontre = true;
+                }
+
+            }
+
+            if (masdeuno)
+                MessageBox.Show("Este numero electoral esta varias veces en esta radicación. Números de Página:" + strIDX, "Warning", MessageBoxButton.OK,MessageBoxImage.Warning);
+
+            if (!loencontre)
+                MessageBox.Show("Este numero electoral no esta en esta radicación. ", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            SaveTmp();
+            MyFillField(find);
+            i = find;
+            GoIdx = i;
+            i_Display = i + 1;
+            CanGuardar = true;
+            txtNumElec_Go = string.Empty;
+        }
+        public RelayCommand BtnGo_Elec
+        {
+            get;private set;
+        }
         private void MyCmdProximo_Click ()
         {
             SaveTmp();
@@ -1005,10 +1093,65 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 i = TotalRechazada_tmp;
 
             i_Display = i + 1;
-             MyFillField();
+             MyFillField(i);
+
+            GoIdx = i;
 
             CanGuardar = true;
         }
+        private void MycmdLast()
+        {
+            SaveTmp();
+            MyFillField(TotalRechazada - 1);
+
+            i = TotalRechazada - 1;
+            GoIdx = i;
+            i_Display = i + 1;
+            CanGuardar = true;
+
+
+        }
+        public RelayCommand cmdLast
+        {
+            get;private set;
+        }
+        public RelayCommand cmdFirst { get; private set; }
+        private void MycmdFirst()
+        {
+            SaveTmp();
+            MyFillField(0);
+            i = 0;
+            GoIdx = 0;
+            i_Display = 1;
+            CanGuardar = true;
+
+        }
+        private void MyBtnGo()
+        {
+            SaveTmp();
+
+            if (GoIdx < 0)
+                GoIdx = 0;
+
+            int TotalRechazada_tmp = TotalRechazada - 1;
+
+            if (GoIdx >= (TotalRechazada_tmp))
+                GoIdx = TotalRechazada_tmp;
+
+            MyFillField(GoIdx);
+            CanGuardar = true;
+            i = GoIdx;
+           
+
+            i_Display = i + 1;
+
+
+        }
+        public RelayCommand BtnGo
+        {
+            get;private set;
+        }
+
         private void MyCmdAnterior_Click()
         {
             SaveTmp();
@@ -1020,7 +1163,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
             i_Display = i + 1;
 
-            MyFillField();
+            MyFillField(i);
+
+            GoIdx = i;
+
         }
         public void MyCmdVerElec_Click()
         {
@@ -1783,7 +1929,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         /*Modulos*/
         #region MyModule
-        private void MyFillField()
+        private void MyFillField(int idx)
         {
             try
             {
@@ -1796,53 +1942,53 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 })
                 {
-                    Nombre_Corregir = _DataToSave[i].Nombre;
-                    txtNumElec_Corregir = _DataToSave[i].Numelec;
-                    txtNotarioNumElec = _DataToSave[i].NotarioElec;
-                    txtPrecinto_Corregir = _DataToSave[i].Precinto;
-                    txtSex_Corregir = _DataToSave[i].Sexo;
-                    txtCargo_Corregir = _DataToSave[i].Cargo;
-                    txtCandidato_Corregir = _DataToSave[i].Candidato;
-                    txtNotarioElec_Corregir = _DataToSave[i].NotarioElec;
+                    Nombre_Corregir = _DataToSave[idx].Nombre;
+                    txtNumElec_Corregir = _DataToSave[idx].Numelec;
+                    txtNotarioNumElec = _DataToSave[idx].NotarioElec;
+                    txtPrecinto_Corregir = _DataToSave[idx].Precinto;
+                    txtSex_Corregir = _DataToSave[idx].Sexo;
+                    txtCargo_Corregir = _DataToSave[idx].Cargo;
+                    txtCandidato_Corregir = _DataToSave[idx].Candidato;
+                    txtNotarioElec_Corregir = _DataToSave[idx].NotarioElec;
 
-                    txtFirmaElec_Corregir = _DataToSave[i].FirmaElec;
-                    txtNotarioFirma_Corregir = _DataToSave[i].NotarioFirma;
+                    txtFirmaElec_Corregir = _DataToSave[idx].FirmaElec;
+                    txtNotarioFirma_Corregir = _DataToSave[idx].NotarioFirma;
 
-                    ckbFirma_Pet_Inv = _DataToSave[i].Firma_Pet_Inv;
-                    ckbFirma_Not_Inv = _DataToSave[i].Firma_Not_Inv;
-                    chkOtraRazonDeRechazo = _DataToSave[i].chkOtraRazonDeRechazo;
-                    txtOtraRazonDeRechazo = _DataToSave[i].txtOtraRazonDeRechazo;
+                    ckbFirma_Pet_Inv = _DataToSave[idx].Firma_Pet_Inv;
+                    ckbFirma_Not_Inv = _DataToSave[idx].Firma_Not_Inv;
+                    chkOtraRazonDeRechazo = _DataToSave[idx].chkOtraRazonDeRechazo;
+                    txtOtraRazonDeRechazo = _DataToSave[idx].txtOtraRazonDeRechazo;
 
-                    txtFormulario = _DataToSave[i].Formulario;
+                    txtFormulario = _DataToSave[idx].Formulario;
 
-                    batchTF = _DataToSave[i].Batch;
+                    batchTF = _DataToSave[idx].Batch;
 
-                    txtFchEndosoEntregada_Corregir_dias = _DataToSave[i].Leer_Inv;
+                    txtFchEndosoEntregada_Corregir_dias = _DataToSave[idx].Leer_Inv;
 
 
-                    if (_DataToSave[i].FechaNac !=null)
-                    FechaNac_Corregir = _DataToSave[i].FechaNac.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].FechaNac !=null)
+                    FechaNac_Corregir = _DataToSave[idx].FechaNac.Value.ToString("dd/MM/yyyy");
 
 
                     
 
-                    if (_DataToSave[i].FchEndosoEntregada !=null) // Fecha del endosos entregado en la CEE
-                    txtFchEndosoEntregada_Corregir = _DataToSave[i].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].FchEndosoEntregada !=null) // Fecha del endosos entregado en la CEE
+                    txtFchEndosoEntregada_Corregir = _DataToSave[idx].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
                     
-                    if (_DataToSave[i].Firma_Fecha !=null) // Nota : firma del endosos 
-                        txtFchJuramento_Corregir = _DataToSave[i].Firma_Fecha.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].Firma_Fecha !=null) // Nota : firma del endosos 
+                        txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha.Value.ToString("dd/MM/yyyy");
 
                     byte[] EndosoImage = null;
 
                     string rechazoNum = string.Empty;
-                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[i].TipoDeRechazo, txtFormulario, Lot,_DataToSave[i].Batch,ref EndosoImage,ref rechazoNum);
+                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[idx].TipoDeRechazo, txtFormulario, Lot,_DataToSave[idx].Batch,ref EndosoImage,ref rechazoNum);
 
                     if (!string.IsNullOrEmpty(rechazoNum))
                     {
                         SetColor(rechazoNum);
                     }else
                     {
-                        EndosoImage = _DataToSave[i].EndosoImage;
+                        EndosoImage = _DataToSave[idx].EndosoImage;
                     }
                     srcEndoso = new BitmapImage();
                    
@@ -1854,7 +2000,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         strmEndosoImage.Position = 0;
                         srcEndoso.BeginInit();
                         imgEndoso = System.Drawing.Image.FromStream(strmEndosoImage);
-                      //  imgEndoso = System.Drawing.Image.FromFile(_DataToSave[i].image);
+                      //  imgEndoso = System.Drawing.Image.FromFile(_DataToSave[idx].image);
 
                         MemoryStream ms = new MemoryStream();
                         imgEndoso.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
@@ -2001,8 +2147,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtNumElec = txtNumElec_Corregir;
 
                         txtNombre = "No Hay Datos";
-                        txtPrecinto = "No Hay Datos";
-                        txtSex = "No Hay Datos";
+                        txtPrecinto = "???";
+                        txtSex = "?";
                         txtFechaNac = "No Hay Datos";
                         txtStatusElec = "?";
 
@@ -2027,7 +2173,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 txtColor[idx] = Brushes.Green;
 
-                if (idx == 11)
+                if ((idx == 11) || (idx==20))
                     txtColor[6] = Brushes.Green;
 
                 if (idx == 19)
@@ -2035,6 +2181,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 if (idx == 8)
                     txtColor[4] = Brushes.Green;
+
+              
+
 
             }
 

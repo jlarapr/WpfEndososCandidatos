@@ -20,15 +20,15 @@
         </Border.Effect>
         <Grid Margin="10" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="229*"/>
-                <ColumnDefinition Width="472*"/>
+                <ColumnDefinition Width="260*"/>
+                <ColumnDefinition Width="441*"/>
                 <ColumnDefinition Width="373*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="206*"/>
-                <RowDefinition Height="49*"/>
-                <RowDefinition Height="518*"/>
-                <RowDefinition Height="79*"/>
+                <RowDefinition Height="211*"/>
+                <RowDefinition Height="54*"/>
+                <RowDefinition Height="540*"/>
+                <RowDefinition Height="82*"/>
             </Grid.RowDefinitions>
             <GroupBox  x:Name="groupBox" Header="Imagen" Margin="5,0,0,0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
                 <Grid Background="Black">
@@ -86,7 +86,6 @@
                 <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
 
             </StackPanel>
-            <Label x:Name="label1" Content="Endoso" Margin="5,4,137,0" FontSize="21.333" Height="38" VerticalAlignment="Top"/>
 
             <GroupBox x:Name="groupBox1" Header="Información del Master" Margin="10" Grid.Column="2" Grid.RowSpan="2">
                 <Grid Margin="0">
@@ -145,17 +144,16 @@
                 </Grid>
             </GroupBox>
 
-            <Label x:Name="lblLote" Content="{Binding Lot}" Margin="87,54,0,0" VerticalAlignment="Top" Height="26"/>
-            <Label x:Name="label14" Content="Lote:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" Height="26" Width="36"/>
-            <Label x:Name="label14_Copy" Content="Rechazada:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
-            <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="164,85,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="50" />
-            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,85,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="50"/>
-            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="136,85,0,0" VerticalAlignment="Top" Height="26" Width="23"/>
-            <Button Content="+"  Margin="87,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="42" Height="28"
+            <Label x:Name="lblLote" Content="{Binding Lot}" Margin="87,10,0,0" VerticalAlignment="Top" Height="26"/>
+            <Label x:Name="label14" Content="Lote:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="36"/>
+            <Label x:Name="label14_Copy" Content="Endoso:" HorizontalAlignment="Left" Margin="5,52,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
+            <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="169,53,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="64" />
+            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,53,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="41"/>
+            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="132,53,0,0" VerticalAlignment="Top" Height="26" Width="30"/>
+            <Button Content="+"  Margin="46,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28"
             	Command="{Binding cmdZoomInOut}" CommandParameter="IN" IsTabStop="False" TabIndex="1000000"  />
-            <Button Content="-" Margin="132,142,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="36" Height="28"
+            <Button Content="-" Margin="81,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28"
             	Command="{Binding cmdZoomInOut}"  CommandParameter="OUT" IsTabStop="False" TabIndex="1000000"/>
-            <Label x:Name="lblI" Content="{Binding i}" HorizontalAlignment="Left" Margin="9,142,0,0" VerticalAlignment="Top" Height="54" Width="29"/>
             <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,158,10,10" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2">
                 <Grid Margin="0,0,0,4">
                     <Grid.ColumnDefinitions>
@@ -401,11 +399,13 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
+                    <TextBox x:Name="lblI" IsReadOnly="True" Text="{Binding i}" Margin="69,354,10,0" VerticalAlignment="Top" Height="27" IsTabStop="False" />
+                    <Label Height="27"  x:Name="label8_Copy" Content="Página:" VerticalAlignment="Top" Margin="15,354,0,0" HorizontalAlignment="Left" Width="49"/>
                 </Grid>
             </GroupBox>
-            <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="173,142,10,0" IsTabStop="False" TabIndex="1000000" />
-            <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39"  Height="28"  Margin="43,142,0,0" IsTabStop="False" TabIndex="1000000" />
-            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="21" Margin="43,175,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="176"/>
+            <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="118,174,0,0" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="30" />
+            <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="28"  Margin="10,174,0,0" IsTabStop="False" TabIndex="1000000" />
+            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="21" Margin="169,179,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="82"/>
             <Grid Background="Beige" Grid.Column="2" Height="143" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top">
                 <ScrollViewer  Background="Beige"  
                            HorizontalScrollBarVisibility="Auto" 
@@ -439,6 +439,24 @@
 
                 </ScrollViewer>
             </Grid>
+            <Button x:Name="BtnGo" Command="{Binding BtnGo}" Content="GO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="28"  Margin="125,94,0,0" IsTabStop="False" TabIndex="1000000" />
+            <TextBox x:Name="txtFormulario_Copy" Height="28" Margin="82,94,0,0"   VerticalAlignment="Top"
+            	Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+            	Text="{Binding GoIdx}" HorizontalAlignment="Left" Width="41" IsTabStop="False"
+                           
+                                   />
+            <Label x:Name="label14_Copy1" Content="Página:" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Height="26" Width="52"/>
+            <Button Content="&lt;&lt;" Command="{Binding cmdFirst}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28" Margin="160,94,0,0" IsTabStop="False" TabIndex="1000000"/>
+            <Button Content="&gt;&gt;" Command="{Binding cmdLast}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28" Margin="195,94,0,0" IsTabStop="False" TabIndex="1000000"/>
+            <Label x:Name="label2_Copy1" Content="Número Electoral:" Margin="10,134,0,0" HorizontalAlignment="Left" Width="113" Height="23" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtNumElec_Go" Margin="118,134,0,0" TextWrapping="Wrap"
+            	MaxLength="7"
+            	Text="{Binding txtNumElec_Go, UpdateSourceTrigger=PropertyChanged}" 
+            	Height="23" VerticalAlignment="Top" IsTabStop="False" HorizontalAlignment="Left" Width="82" >
+
+
+            </TextBox>
+            <Button x:Name="BtnGo_Elec" Command="{Binding BtnGo_Elec}" Content="GO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="23"  Margin="203,134,0,0" IsTabStop="False" TabIndex="1000000" />
 
         </Grid>
 
