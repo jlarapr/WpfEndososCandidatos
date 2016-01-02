@@ -3986,7 +3986,7 @@ namespace jolcode
             dbCmd.Parameters.Remove(param);
             
         }
-        public bool MyUpdateTFTable(string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
+        public bool MyUpdateTFTable(string txtNombre,string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
                                      string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,string chkAlteracion,string txtOtraRazonDeRechazo,
                                      string txtFchJuramento,string txtFechaEndosos,int? totalDeDias,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
         {
@@ -4054,6 +4054,7 @@ namespace jolcode
                      ",FechaEndo_Mes ='",FechaEndo_Mes,"'",
                      ",FechaEndo_Dia='",FechaEndo_Dia,"'",
                      ", FechaEndo_Ano='",FechaEndo_Ano,"'",
+                     ", Nombre='",txtNombre,"'",
                      " Where NumElec ='" , CurrElect , "'",
                     " And BATCHTRACK = '" , Lot, "'",
                     " And BatchPgNo=",Formulario,

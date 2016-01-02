@@ -18,6 +18,7 @@ namespace WpfEndososCandidatos.Models
         public string Lot { get; set; } //LotsLot
         public string Formulario { get; set; }//LotsEndoFormulario
        public string Nombre { get; set; }
+        public string FirstName { get; set; }
 
 
         public string  TipoDeRechazo { get; set; }//LotsVoid.Rechazo 
@@ -51,6 +52,7 @@ namespace WpfEndososCandidatos.Models
                 i.ToString(),
                 CurrElect,
                 Nombre,
+                FirstName,
               Lot,
               Formulario,
               TipoDeRechazo,

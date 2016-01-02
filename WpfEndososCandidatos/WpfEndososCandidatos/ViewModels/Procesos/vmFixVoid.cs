@@ -102,6 +102,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private int? _txtFchEndosoEntregada_Corregir_dias=null;
         private int _GoIdx;
         private string _txtNumElec_Go;
+        private string _txtNombre_Corregir;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -498,6 +499,30 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 _txtFormulario = value;
 
                 this.RaisePropertychanged("txtFormulario");
+            }
+        }
+
+        public string txtNombre_Corregir
+        {
+            get
+            {
+                return _txtNombre_Corregir;
+            }set
+            {
+                if (_txtNombre_Corregir != value)
+                {
+                    _txtNombre_Corregir = value;
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        if (_DataToSave.Count > 0)
+                        {
+                            CanGuardar = true;
+                        }
+                    }
+
+                    this.RaisePropertychanged("txtNombre_Corregir");
+                }
             }
         }
 
@@ -1235,6 +1260,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                     FechaEndosos = data.FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
 
                                 Exe.MyUpdateTFTable(
+                                    data.FirstName,
                                    data.Numelec,
                                    data.Precinto,
                                    data.Sexo,
@@ -1943,6 +1969,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 })
                 {
                     Nombre_Corregir = _DataToSave[idx].Nombre;
+                    txtNombre_Corregir = _DataToSave[idx].FirstName;
                     txtNumElec_Corregir = _DataToSave[idx].Numelec;
                     txtNotarioNumElec = _DataToSave[idx].NotarioElec;
                     txtPrecinto_Corregir = _DataToSave[idx].Precinto;
@@ -2283,7 +2310,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         {
                             i = k,
                             CurrElect = row["NumElec"].ToString(),
-                            Nombre =  row["Nombre"].ToString().Trim() + " " + row["Paterno"].ToString().Trim() + " " + row["Materno"].ToString(),
+                            Nombre = row["Nombre"].ToString().Trim() + " " + row["Paterno"].ToString().Trim() + " " + row["Materno"].ToString(),
+                            FirstName = row["Nombre"].ToString().Trim(),
                             Lot = Lot,
                             Formulario = row["Formulario"].ToString().Trim(),
                             TipoDeRechazo = "",
@@ -2352,7 +2380,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             //        _DataToSave[tmp].Leer_Inv = txtFchEndosoEntregada_Corregir_dias; // esto es para cambiar a todos los endosos la cantidad de dedias 
 
             _DataToSave[i].Leer_Inv = txtFchEndosoEntregada_Corregir_dias;
-
+            _DataToSave[i].FirstName = txtNombre_Corregir;
             _DataToSave[i].Numelec = txtNumElec_Corregir;
             _DataToSave[i].NotarioElec = txtNotarioElec_Corregir;
             _DataToSave[i].Precinto = txtPrecinto_Corregir;
