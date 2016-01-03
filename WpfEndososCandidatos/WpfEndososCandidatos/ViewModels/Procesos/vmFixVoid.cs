@@ -511,7 +511,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 if (_txtNombre_Corregir != value)
                 {
-                    _txtNombre_Corregir = value;
+                    _txtNombre_Corregir = value.ToUpper();
 
                     if (!string.IsNullOrEmpty(value))
                     {
@@ -1582,6 +1582,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 string[] strError = new string[0];
                 switch (contenido)
                 {
+                    case "txtNombre_Corregir":
                     case "Nombre_Corregir":
                         {
                             string[] xy = jolcode.MyNombreXY.DynamicCode().Split('|');
@@ -1952,7 +1953,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         public RelayCommand SendTab { get; private set; }
         #endregion
 
-
         /*Modulos*/
         #region MyModule
         private void MyFillField(int idx)
@@ -1992,12 +1992,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     txtFchEndosoEntregada_Corregir_dias = _DataToSave[idx].Leer_Inv;
 
-
                     if (_DataToSave[idx].FechaNac !=null)
                     FechaNac_Corregir = _DataToSave[idx].FechaNac.Value.ToString("dd/MM/yyyy");
-
-
-                    
 
                     if (_DataToSave[idx].FchEndosoEntregada !=null) // Fecha del endosos entregado en la CEE
                     txtFchEndosoEntregada_Corregir = _DataToSave[idx].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
@@ -2006,6 +2002,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha.Value.ToString("dd/MM/yyyy");
 
                     byte[] EndosoImage = null;
+                    Source_image = null;
 
                     string rechazoNum = string.Empty;
                     txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[idx].TipoDeRechazo, txtFormulario, Lot,_DataToSave[idx].Batch,ref EndosoImage,ref rechazoNum);
@@ -2040,14 +2037,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                         BitmapSource displayImage = new CroppedBitmap(srcEndoso, new Int32Rect(0, 0, imgEndoso.Width, imgEndoso.Width));  // new CroppedBitmap(original, crop);
 
-
                         Source_image = displayImage;
 
                     }
                     else
                         Source_image = null;
-
-
 
                     _myTableImgFirmaElector = new DataTable();
                      _myTableImgNotario = new DataTable();
@@ -2098,6 +2092,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtNotarioFirstName = "No hay Datos en el Master";
                         txtStatusNotario = "?";
                     }
+                    Source_image_Corregir = null;
 
                     if (_tblCitizen.Rows.Count > 0)
                     {
@@ -2111,7 +2106,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         txtNumElec = txtNumElec_Corregir;
                         txtPrecinto = _tblCitizen.Rows[0]["FirstGeoCode"].ToString().Trim().PadLeft(3, '0');
                         txtSex = _tblCitizen.Rows[0]["Gender"].ToString().Trim();
-                       
 
                         switch (_tblCitizen.Rows[0]["Status"].ToString().Trim().ToUpper())
                         {
@@ -2155,14 +2149,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             bi.StreamSource = ms;
                             bi.EndInit();
 
-
                             ViewboxHeightSing = img.Height;
                             ViewboxWidthSing = img.Width;
 
                             BitmapSource displayImage = bi;//new CroppedBitmap(bi, new Int32Rect(0, 0,img.Width, img.Width));  // new CroppedBitmap(original, crop);
 
                             Source_image_Corregir = displayImage;
-
 
                         }
                         else
@@ -2192,7 +2184,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             param = param.Substring(0, param.Length - 1);
             string[] cargos = param.Split('|');
-           
 
             foreach (string s in cargos)
             {
@@ -2208,10 +2199,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 if (idx == 8)
                     txtColor[4] = Brushes.Green;
-
-              
-
-
             }
 
         }
@@ -2248,11 +2235,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtOtraRazonDeRechazo = string.Empty;
             chkOtraRazonDeRechazo = false;
 
-            for (int idx =0;idx <=18;idx++)
+            for (int idx =0;idx <=20;idx++)
             {
                 txtColor[idx] = Brushes.White;
             }
-       
 
             if (resetAllData)
             {
@@ -2300,8 +2286,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         if (FechaEndoso == null)
                             FechaEndoso = DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso);
 
-
-
                         int Leer_Inv = 0;
 
                         int.TryParse(row["Leer_Inv"].ToString(), out Leer_Inv);
@@ -2334,19 +2318,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             image = row["Image"].ToString(),
                             EndosoImage = (byte[])row["EndosoImage"],
                             Leer_Inv = Leer_Inv
-
                             
                         });
                         k++;
                     }
-
                 }
             }
         }
 
         private void SaveTmp()
         {
-
 
             DateTime dtNac;
             DateTime? dtNacNull = null;
@@ -2369,7 +2350,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 dtNacNull = dtNac;
             }
-
            
             _DataToSave[i].i = i;
             _DataToSave[i].Lot = Lot;
@@ -2419,12 +2399,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         #endregion
 
-
-
         /*Dispose*/
         #region Dispose
-
-
 
         public void Dispose()
         {
@@ -2456,9 +2432,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 nativeResource = IntPtr.Zero;
             }
         }
-
         #endregion
-
-
     }
 }

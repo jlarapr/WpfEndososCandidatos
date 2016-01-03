@@ -407,7 +407,7 @@
                     	MaxLength="7"
                     	Text="{Binding txtNombre_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                     	Background="{Binding txtColor[20], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    	Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="1" >
+                    	Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="0" >
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
