@@ -404,7 +404,7 @@
                     <Label Height="27"  x:Name="label8_Copy" Content="Página:" VerticalAlignment="Top" Margin="15,383,0,0" HorizontalAlignment="Left" Width="49"/>
                     <Label x:Name="label2_Copy2" Content="Nombre:" Margin="10,27,10,421"/>
                     <TextBox x:Name="txtNombre_Corregir" Margin="6,27,14,0" TextWrapping="Wrap"
-                    	MaxLength="7"
+                   
                     	Text="{Binding txtNombre_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                     	Background="{Binding txtColor[20], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     	Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="0" >

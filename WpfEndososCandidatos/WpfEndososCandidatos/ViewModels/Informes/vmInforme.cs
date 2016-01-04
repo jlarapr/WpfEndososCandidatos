@@ -372,7 +372,13 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             RR["Formulario"] = "Formulario                     : " + R["Formulario"];
                             RR["Cargo"] = "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
 
-                            RR["Razon"] = get.MyDecRechazoToInforme(R["Errores"].ToString()).Trim();
+
+                            string Candidato = string.Empty;
+                            if (R["Candidato"] != null)
+                                Candidato = R["Candidato"].ToString().Trim();
+
+                            RR["Razon"] = get.MyDecRechazoToInforme(R["Errores"].ToString(),Candidato, NumElec).Trim();
+
                             if (R["LeerMSG"].ToString().Trim().Length >0)
                                 RR["Razon"] +="\r\n " +  R["LeerMSG"].ToString().Trim();
 

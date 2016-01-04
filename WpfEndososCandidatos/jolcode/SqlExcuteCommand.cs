@@ -1019,7 +1019,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public string MyDecRechazoToInforme(string param)
+        public string MyDecRechazoToInforme(string param,string Candidato,string NumElec)
         {
             string myReturn = string.Empty;
 
@@ -1048,7 +1048,24 @@ namespace jolcode
                             {
                                 string mySqlstr = "SELECT [Desc]  FROM [Criterios] where Campo = " + Campo;
                                 cmd.CommandText = mySqlstr;
-                                myReturn += Campo + "-" + cmd.ExecuteScalar().ToString().Trim() + "\r\n ";
+
+                                myReturn += Campo + "-" + cmd.ExecuteScalar().ToString().Trim();
+
+                                if (Campo =="14")
+                                {
+                                    if (!string.IsNullOrEmpty(Candidato))
+                                    {
+                                        if (!string.IsNullOrEmpty(NumElec))
+                                        {
+                                            mySqlstr = "SELECT [Lot]  FROM [dbo].[LotsEndo] where [Candidato] = " + Candidato + " and NumElec = " + NumElec + " and Status = 0";
+                                            cmd.CommandText = mySqlstr;
+                                            myReturn += " (" + cmd.ExecuteScalar().ToString().Trim() + ")";
+                                        }
+                                    }
+                                }
+
+                                myReturn += "\n\r";
+
                             }
                         }
 
