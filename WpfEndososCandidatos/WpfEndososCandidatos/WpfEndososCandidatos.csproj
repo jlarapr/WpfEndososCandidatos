@@ -167,7 +167,6 @@
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\FixVoid.cs" />
-    <Compile Include="Models\InfoReydi.cs" />
     <Compile Include="Models\Lots.cs" />
     <Compile Include="Models\Notarios.cs" />
     <Compile Include="Models\Partidos.cs" />
@@ -499,6 +498,7 @@
     <Resource Include="Images\CEEbrand.gif" />
     <Resource Include="Images\Logo CEE.JPG" />
     <Resource Include="Images\Logo CEE1.JPG" />
+    <Content Include="Dll\EPPlus.dll" />
     <Content Include="Models\CREATEDATABASE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -545,7 +545,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dll\" />
     <Folder Include="NewDll\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

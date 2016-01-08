@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfEndososCandidatos.Models
+namespace jolcode
 {
-    class InfoReydi : IEquatable<InfoReydi>, IComparable
+   public class InfoReydi : IEquatable<InfoReydi>, IComparable
     {
         private string _Nombre;
 
         public string Lot { get; set; }
 
-       
+
         public int Num_Candidato { get; set; }
         public string Nombre
         {
@@ -31,7 +30,7 @@ namespace WpfEndososCandidatos.Models
                     _Nombre = value;
             }
         }
-        
+
         public int TotalDeEndosos { get; set; }
         public int ValidatedEndorsements { get; set; }
         public int RejectedEndorsements { get; set; }

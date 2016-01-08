@@ -4093,8 +4093,7 @@ namespace jolcode
 
                 txtNombre = txtNombre.Replace("'", "''");
 
-
-        string[] updatequery =
+                string[] updatequery =
                     {
                     "Update [TF-Partidos] ",
                     "Set NumElec = '", txtNumElec , "'",

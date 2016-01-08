@@ -15,6 +15,8 @@ using System.Windows.Media;
 using WpfEndososCandidatos.View.Informes;
 using WpfEndososCandidatos.Models;
 using System.Data;
+using Microsoft.Win32;
+
 
 namespace WpfEndososCandidatos.ViewModels.Informes
 {
@@ -38,7 +40,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
             cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click(param));
             cmdToExcel_Click = new RelayCommand(param => MycmdToExcel_Click());
-            ItemsSource = new ObservableCollection<Models.InfoReydi>();
+            ItemsSource = new ObservableCollection<InfoReydi>();
         }
 
         #region Property
@@ -120,7 +122,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 }
             }
         }
-        public ObservableCollection<Models.InfoReydi> ItemsSource
+        public ObservableCollection<InfoReydi> ItemsSource
         {
             get
             {
@@ -151,15 +153,32 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         {
             try
             {
-               
+                jolcode.Code.AplicarEfecto(View as Window);
+                jolcode.Code.DoEvents();
+
+                using (jolcode.ToExcel excel = new ToExcel())
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "Excel Files|*.xlsx|All Files|*.*";
+
+                    if (sfd.ShowDialog() == true)
+                    {
+                        //excel.TableToExcel(sfd.SafeFileName, _T);
+                        excel.TableToExcel(sfd.FileName, ItemsSource);
+                        MessageBox.Show("Done!!!", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }finally
+            {
+                jolcode.Code.QuitarEfecto(View as Window);
+
             }
         }
-
 
         private void MyCmdRefresh_Click(object param)
         {
