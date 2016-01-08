@@ -167,6 +167,7 @@
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\FixVoid.cs" />
+    <Compile Include="Models\InfoReydi.cs" />
     <Compile Include="Models\Lots.cs" />
     <Compile Include="Models\Notarios.cs" />
     <Compile Include="Models\Partidos.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
+    <Compile Include="ViewModels\Informes\vmInformeReydi.cs" />
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
     <Compile Include="ViewModels\Menu\Configuraciones.cs" />
@@ -231,6 +233,9 @@
     </Compile>
     <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfInformeReydi.xaml.cs">
+      <DependentUpon>wpfInformeReydi.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Informes\wpfInformes.xaml.cs">
       <DependentUpon>wpfInformes.xaml</DependentUpon>
@@ -323,6 +328,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Configuraciones\wpfMantCriterios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfInformeReydi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

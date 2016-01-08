@@ -603,6 +603,51 @@ namespace jolcode
             }
             return myTableReturn;
         }
+        public DataTable MyGetLotInReydi(string StatusReydi = "1")
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //'StatusReydi LOTE para la tabla lots
+                //'0 - no en reydi
+                //'1 - si en reydi
+
+                string mySqlstr = "Select * from lots Where StatusReydi In (" + StatusReydi + ") order by Lot";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyGetLotInReydi Error");
+            }
+            return myTableReturn;
+        }
+
+
         public DataTable MyGetLotToFixVoid(string CurrLot,bool isAll=false)
         {
             DataTable myTableReturn = new DataTable();
@@ -3360,10 +3405,6 @@ namespace jolcode
 
                     if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
                     {
-                      
-
-                      
-                        
 
                         if (CollCriterios[12].Editar == true || CollCriterios[12].Warning ==true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
                         {
@@ -3622,7 +3663,7 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[15].Editar == true || CollCriterios[15].Warning == true)//16-'FIRMA DEL ELECTOR ES NULL
+                    if (CollCriterios[15].Editar == true || CollCriterios[15].Warning == true)//16-'FIRMA DEL ELECTOR NO ES IGUAL A LA DEL ARCHIVO MAESTRO
                     {
                         if (m_Firma_Pet_Inv == 1)
                         {
@@ -3702,18 +3743,21 @@ namespace jolcode
                         {
 
                             //if (FirstName.ToString().Trim().ToUpper() != m_Nombre.Trim().ToUpper())
-                             if (!FirstName.ToString().Trim().ToUpper().Contains(m_Nombre.Trim().ToUpper()))
+                            if (!FirstName.ToString().Trim().ToUpper().Contains(m_Nombre.Trim().ToUpper()))
                             {
-                                if (CollCriterios[19].Editar == true)
+                                if (!m_Nombre.ToString().Trim().ToUpper().Contains(FirstName.ToString().Trim().ToUpper()))
                                 {
-                                    Rechazo[19]++;
-                                    strRechazos += "20|";
-                                    isRechazo[19] = true;
-                                }
-                                if (CollCriterios[19].Warning == true)
-                                {
-                                    Warning[19]++;
-                                    isWarning[19] = true;
+                                    if (CollCriterios[19].Editar == true)
+                                    {
+                                        Rechazo[19]++;
+                                        strRechazos += "20|";
+                                        isRechazo[19] = true;
+                                    }
+                                    if (CollCriterios[19].Warning == true)
+                                    {
+                                        Warning[19]++;
+                                        isWarning[19] = true;
+                                    }
                                 }
                             }
                         }

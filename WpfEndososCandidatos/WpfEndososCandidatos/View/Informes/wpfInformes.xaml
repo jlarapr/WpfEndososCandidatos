@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfEndososCandidatos.View.Informes"
         mc:Ignorable="d"
-      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfLotFix" Height="400.066" Width="595.109" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpf" Height="400.066" Width="595.109" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <Window.Resources>
         <Style TargetType="{x:Type ProgressBar}" x:Key="Basic">
             <Setter Property="Template">
