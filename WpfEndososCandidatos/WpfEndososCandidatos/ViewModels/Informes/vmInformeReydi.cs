@@ -252,7 +252,6 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     txtTotal =  string.Format("{0:0,0}" ,_T.Rows.Count);
                     ItemsSource = new ObservableCollection<InfoReydi>();
 
-
                     foreach (DataRow row in _T.Rows)
                     {
                         int Amount=0;

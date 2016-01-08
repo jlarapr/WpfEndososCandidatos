@@ -3817,6 +3817,7 @@ namespace jolcode
                         Resultados[5] = Warnings.ToString();//lblWarnings               5
                     }
 
+                    m_Nombre = m_Nombre.Replace("'", "''");
 
                     //  'ESCRIBE LOS ENDOSOS A LA TABLA LOTSENDO
                     string[] mySqlStrLOTSENDO =
@@ -3830,30 +3831,30 @@ namespace jolcode
                         ",'" , m_Batch , "'",                   //Batch
                         "," , m_BatchPgNo.ToString(),           //Formulario
                         ",'" , m_N_CANDIDAT , "'",              //Candidato
-                        "," , m_Cargo.ToString(),               //Cargo
-                        ",'" , row["NumElec"].ToString().Trim() , "'",                  //NumElec
-                        ",'" , m_Nombre , "'",                    //Nombre
-                        ",'" , m_Paterno , "'",                   //Paterno
-                        ",'" , m_Materno , "'",                   //Materno
-                        ",'" ,m_Padre , "'",                    //Padre
-                        ",'" ,m_Madre , "'",                    //Madre
+                        "," , m_Cargo.ToString(),                           //Cargo
+                        ",'" , row["NumElec"].ToString().Trim() , "'",      //NumElec
+                        ",'" , m_Nombre , "'",                              //Nombre
+                        ",'" , m_Paterno , "'",                             //Paterno
+                        ",'" , m_Materno , "'",                      //Materno
+                        ",'" ,m_Padre , "'",                         //Padre
+                        ",'" ,m_Madre , "'",                         //Madre
                         ",'" , MyFechaToSql( m_FECHA_N ),  "'",      //FechaNac
-                        ",'" , m_Leer_Inv.ToString() , "'",                //Leer_Inv
-                        ",'" , m_Alteracion.ToString() , "'",              //Alteracion
-                        ",'" , m_N_NOTARIO , "'",               //Notario
-                        ",'" , m_Firma_Peticionario , "'",      //Firma_Peticionario
-                        "," , m_Firma_Pet_Inv.ToString(),       //Firma_Pet_Inv
-                        ",'" , m_Firma_Notario , "'",           //Firma_Notario
-                        "," , m_Firma_Not_Inv.ToString() ,      //Firma_Not_Inv
-                        ",'" , MyFechaToSql(m_Fecha_Endo) , "'",   //Fecha_Endoso
-                        ",'" , m_Suspense_File , "'",           //Image
+                        ",'" , m_Leer_Inv.ToString() , "'",          //Leer_Inv
+                        ",'" , m_Alteracion.ToString() , "'",        //Alteracion
+                        ",'" , m_N_NOTARIO , "'",                       //Notario
+                        ",'" , m_Firma_Peticionario , "'",              //Firma_Peticionario
+                        "," , m_Firma_Pet_Inv.ToString(),               //Firma_Pet_Inv
+                        ",'" , m_Firma_Notario , "'",                   //Firma_Notario
+                        "," , m_Firma_Not_Inv.ToString() ,                             //Firma_Not_Inv
+                        ",'" , MyFechaToSql(m_Fecha_Endo) , "'",                       //Fecha_Endoso
+                        ",'" , m_Suspense_File , "'",                                  //Image
                         "," , (string)iif(isrechazo,  "1", iswarning ?"2":"0") ,      //Status
-                        ",'" , MyFechaToSql( m_Firma_Fecha ), "'",  //Firma_Fecha
-                        ",'" , m_SEXO , "'",                    //SEXO
-                        ",'" , m_N_PRECINTO , "'",              //PRECINTO
+                        ",'" , MyFechaToSql( m_Firma_Fecha ), "'",                    //Firma_Fecha
+                        ",'" , m_SEXO , "'",                                          //SEXO
+                        ",'" , m_N_PRECINTO , "'",                                    //PRECINTO
                         ", @EndosoImage",
                         ",'",strRechazos , "'",
-                        ",'",m_Leer , "'", // Otro Rechazo
+                        ",'",m_Leer , "'",                                            // Otro Rechazo
                         ")"
 
                     };
@@ -4089,6 +4090,9 @@ namespace jolcode
                     FechaEndo_Ano = fechaendosos[2];
 
                 }
+
+                txtNombre = txtNombre.Replace("'", "''");
+
 
         string[] updatequery =
                     {
