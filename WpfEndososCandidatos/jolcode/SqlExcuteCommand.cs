@@ -3817,8 +3817,11 @@ namespace jolcode
                         Resultados[5] = Warnings.ToString();//lblWarnings               5
                     }
 
-                    m_Nombre = m_Nombre.Replace("'", "''");
-
+                //    m_Nombre = m_Nombre.Replace("'", "''");
+                    SqlParameter txtNombreParam = new SqlParameter();
+                    txtNombreParam.ParameterName = "@txtNombre";
+                    txtNombreParam.SqlDbType = SqlDbType.VarChar;
+                    txtNombreParam.Value = m_Nombre;
                     //  'ESCRIBE LOS ENDOSOS A LA TABLA LOTSENDO
                     string[] mySqlStrLOTSENDO =
                     {
@@ -3833,7 +3836,7 @@ namespace jolcode
                         ",'" , m_N_CANDIDAT , "'",              //Candidato
                         "," , m_Cargo.ToString(),                           //Cargo
                         ",'" , row["NumElec"].ToString().Trim() , "'",      //NumElec
-                        ",'" , m_Nombre , "'",                              //Nombre
+                        ", @txtNombre",                              //Nombre
                         ",'" , m_Paterno , "'",                             //Paterno
                         ",'" , m_Materno , "'",                      //Materno
                         ",'" ,m_Padre , "'",                         //Padre
@@ -3868,14 +3871,15 @@ namespace jolcode
                     param.Size = img.Length;
                     param.Value = img;
                     myCmdDBEndosos.Parameters.Add(param);
-
+                    myCmdDBEndosos.Parameters.Add(txtNombreParam);
                     myCmdDBEndosos.CommandText = string.Concat(mySqlStrLOTSENDO);
                     myCmdDBEndosos.ExecuteNonQuery();
 
                     myCmdDBEndosos.Parameters.Remove(param);
+                    myCmdDBEndosos.Parameters.Remove(txtNombreParam);
 
 
-                 //   transaction.Commit();
+                    //   transaction.Commit();
                     DoEvents();
                 }//end loop
                 //[]
@@ -4091,7 +4095,12 @@ namespace jolcode
 
                 }
 
-                txtNombre = txtNombre.Replace("'", "''");
+             //   txtNombre = txtNombre.Replace("'", "''");
+
+                SqlParameter txtNombreParam = new SqlParameter();
+                txtNombreParam.ParameterName = "@txtNombre";
+                txtNombreParam.SqlDbType = SqlDbType.VarChar;
+                txtNombreParam.Value = txtNombre;
 
                 string[] updatequery =
                     {
@@ -4118,7 +4127,7 @@ namespace jolcode
                      ",FechaEndo_Mes ='",FechaEndo_Mes,"'",
                      ",FechaEndo_Dia='",FechaEndo_Dia,"'",
                      ", FechaEndo_Ano='",FechaEndo_Ano,"'",
-                     ", Nombre='",txtNombre,"'",
+                     ", Nombre=@txtNombre",
                      " Where NumElec ='" , CurrElect , "'",
                     " And BATCHTRACK = '" , Lot, "'",
                     " And BatchPgNo=",Formulario,
@@ -4139,8 +4148,10 @@ namespace jolcode
                 cmd.CommandText = string.Concat(sqlstr);
                 cmd.ExecuteNonQuery();
 
+                cmd.Parameters.Add(txtNombreParam);
                 cmd.CommandText = string.Concat(updatequery);
                 cmd.ExecuteNonQuery();
+                cmd.Parameters.Remove(txtNombreParam);
 
                 myBoolReturn = true;
             }
