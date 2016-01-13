@@ -240,6 +240,7 @@
     <Compile Include="ViewModels\Procesos\vmSetImages.cs" />
     <Compile Include="ViewModels\Procesos\vmToReydi.cs" />
     <Compile Include="ViewModels\Procesos\vmVerendosos.cs" />
+    <Compile Include="ViewModels\Procesos\vmVerendososReydi.cs" />
     <Compile Include="ViewModels\Ver\vmElector.cs" />
     <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
       <DependentUpon>wpfAbout.xaml</DependentUpon>
@@ -273,6 +274,9 @@
     </Compile>
     <Compile Include="View\Procesos\wpfVerEndosos.xaml.cs">
       <DependentUpon>wpfVerEndosos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfVerEndososReydi.xaml.cs">
+      <DependentUpon>wpfVerEndososReydi.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ver\wpfElector.xaml.cs">
       <DependentUpon>wpfElector.xaml</DependentUpon>
@@ -376,6 +380,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Procesos\wpfVerEndosos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfVerEndososReydi.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

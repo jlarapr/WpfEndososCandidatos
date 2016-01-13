@@ -517,7 +517,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("3");
+                _MyLotsTable = get.MyGetLot("0","3");
                 cbLots.Clear();
                 LogBox.Clear();
                 LblTotal = string.Empty;

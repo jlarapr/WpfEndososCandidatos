@@ -236,7 +236,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot();
+                _MyLotsTable = get.MyGetLot("0", "0,1,2,3,4");
                 cbLots.Clear();
 
                 foreach (DataRow row in _MyLotsTable.Rows)

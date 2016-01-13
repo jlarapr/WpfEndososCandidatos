@@ -2254,12 +2254,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     MyLotsTable = get.MyGetLotToFixVoid(Lot,isAll);
 
-                    if (_MyLotsTable.Rows.Count == 0)
+                    if (MyLotsTable.Rows.Count == 0)
                         MessageBox.Show("No hay rechazadas para procesar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     int k = 0;
-                    TotalRechazada = _MyLotsTable.Rows.Count;
-                    foreach (DataRow row in _MyLotsTable.Rows)
+                    TotalRechazada = MyLotsTable.Rows.Count;
+                    foreach (DataRow row in MyLotsTable.Rows)
                     {//12/01/0015
                      //string FechaNac_Mes = row["FechaNac_Mes"].ToString().Trim().PadLeft(2,'0');
                      //string FechaNac_Dia = row["FechaNac_Dia"].ToString().Trim().PadLeft(2,'0');

@@ -244,7 +244,7 @@
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("1,2,3,4");
+                _MyLotsTable = get.MyGetLot("0","1,2,3,4");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)

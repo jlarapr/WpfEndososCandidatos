@@ -273,7 +273,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("2,3,4");
+                _MyLotsTable = get.MyGetLot("0","2,3,4");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)

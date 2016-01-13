@@ -14,11 +14,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WpfEndososCandidatos.Models;
-using WpfEndososCandidatos.View.Procesos;
 
 namespace WpfEndososCandidatos.ViewModels.Procesos
 {
-    class vmVerendosos : ViewModelBase<IDialogView>, IDisposable
+    class vmVerendososReydi : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
@@ -30,14 +29,10 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _DBMasterCeeCnnStr;
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
-        public vmVerendosos()
-           : base(new wpfVerEndosos())
+
+        public vmVerendososReydi() : base (new WpfEndososCandidatos.View.Procesos.wpfVerEndososReydi())
         {
-            initWindow = new RelayCommand(param => MyInitWindow());
-            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
-            cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
-            cbLots = new ObservableCollection<string>();
+
         }
         //Property
         #region MyProperty
@@ -262,6 +257,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get; private set;
         }
         #endregion
+
         //Modules
         #region MyModules
         private void MyRefresh()
@@ -271,7 +267,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0","1,2,3,4");
+                _MyLotsTable = get.MyGetLot("0", "1,2,3,4");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
@@ -309,10 +305,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
         #endregion
+
         //Dispose
         #region Dispose
-
-
 
         public void Dispose()
         {
@@ -320,7 +315,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             GC.SuppressFinalize(this);
         }
 
-        ~vmVerendosos()
+        ~vmVerendososReydi()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);

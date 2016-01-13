@@ -392,7 +392,7 @@ namespace jolcode
                 if (myBoolError)
                     throw new Exception(ex.Message);
                 else
-                    throw new Exception(ex.ToString() + "\r\nMyGetSelectLotes Error");
+                    throw new Exception(ex.ToString() + "\r\n MyGetSelectLotes Error");
             }
             return myTableReturn;
         }
@@ -557,7 +557,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLot(string Status = "0,1,2,3,4")
+        public DataTable MyGetLot(string StatusReydi,string Status) //Status= "0,1,2,3,4"
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -569,7 +569,7 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi = 0 order by Lot";
+                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi = "+ StatusReydi +" order by Lot";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -693,14 +693,14 @@ namespace jolcode
                    "and A.lot ='", CurrLot,"' AND b.Status = 1 ",
                    "order by  [Batch], [Formulario]"
                     };
-                else
+                else 
                     mySqlstr = new string[]
                     {
                    "SELECT * ",
                    "from [dbo].[LotsEndo] ",
                    "where lot ='", CurrLot,"' ",
                    "order by  [Batch], [Formulario]"
-                  };
+                    };
 
 
                 using (SqlConnection cnn = new SqlConnection()

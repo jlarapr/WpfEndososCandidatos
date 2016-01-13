@@ -434,7 +434,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBImagenesCnnStr = DBCeeMasterImgCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("2,3,4");
+                _MyLotsTable = get.MyGetLot("0","2,3,4");
 
                 this.View.lsAll.ItemsSource = lsAllLots;
                 this.View.lsValid.ItemsSource = lsValidLots;
