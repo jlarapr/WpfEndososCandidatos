@@ -287,7 +287,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         {
                             Lot = row["Lot"].ToString(),
                             Num_Candidato = Num_Candidato,
-                            Nombre = get.MyCandidatoNameToInforme(row["Num_Candidato"].ToString()),
+                            Nombre = get.MyCandidatoNameToInforme(row["Num_Candidato"].ToString().PadLeft(7,'0')),
                             TotalDeEndosos = Amount,
                             ValidatedEndorsements = ValidatedEndorsements,
                             RejectedEndorsements = RejectedEndorsements,
