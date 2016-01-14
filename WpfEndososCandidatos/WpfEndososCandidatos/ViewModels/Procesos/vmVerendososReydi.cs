@@ -32,7 +32,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         public vmVerendososReydi() : base (new WpfEndososCandidatos.View.Procesos.wpfVerEndososReydi())
         {
-
+            initWindow = new RelayCommand(param => MyInitWindow());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
+            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
+            cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
+            cbLots = new ObservableCollection<string>();
         }
         //Property
         #region MyProperty
@@ -217,16 +221,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             try
             {
-                using (vmFixVoid frmFixVoid = new vmFixVoid())
+                using (vmEndososEnReydi frm = new vmEndososEnReydi())
                 {
-                    frmFixVoid.View.Owner = this.View as Window;
-                    frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
-                    frmFixVoid.DBMasterCeeCnnStr = DBMasterCeeCnnStr;
-                    frmFixVoid.DBCeeMasterImgCnnStr = DBCeeMasterImgCnnStr;
-                    frmFixVoid.SysUser = SysUser;
-                    frmFixVoid.Lot = cbLots_Item;
-                    frmFixVoid.isAll = true;
-                    frmFixVoid.MyOnShow();
+                    frm.View.Owner = this.View as Window;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBMasterCeeCnnStr = DBMasterCeeCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBCeeMasterImgCnnStr;
+                    frm.SysUser = SysUser;
+                    frm.Lot = cbLots_Item;
+                    frm.isAll = true;
+
+
+
+                    frm.MyOnShow();
                     MyRefresh();
                 }
             }
@@ -267,7 +274,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0", "1,2,3,4");
+                _MyLotsTable = get.MyGetLot("1", "1,2,3,4");
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
