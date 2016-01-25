@@ -43,6 +43,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
      //   private int _TotalDePuntos;
         private string _LblTotal;
         private bool _run;
+        private string _StatusReydi;
 
         public vmInforme()
            : base(new wpfInformes())
@@ -250,6 +251,16 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             _PDFPath += "\\";
                     }
                 }
+            }
+        }
+     public string StatusReydi
+        {
+            get
+            {
+                return _StatusReydi;
+            }set
+            {
+                _StatusReydi = value;
             }
         }
         #endregion
@@ -517,7 +528,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0","3");
+                _MyLotsTable = get.MyGetLot(StatusReydi,"3");
                 cbLots.Clear();
                 LogBox.Clear();
                 LblTotal = string.Empty;

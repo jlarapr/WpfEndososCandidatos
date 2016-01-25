@@ -56,6 +56,7 @@
             <MenuItem Name="mnuInformeEndosos"  Margin="5,5,0,0"  IsEnabled="{Binding mnuInformeEndosos_IsEnabled}" Header="_Informes"  >
                 <MenuItem Name="mnuRechazo"  Header="_Rechazos" Command="{Binding mnuRechazo_click}" />
                 <MenuItem Name="mnuREYDI"  Header="_Reydi" Command="{Binding mnuReydi_click}" />
+                <MenuItem Name="mnuRechazoReydi" Header="_Rechazos en Reydi" Command="{Binding mnuRechazoReydi_click}" />
 
 
             </MenuItem>
