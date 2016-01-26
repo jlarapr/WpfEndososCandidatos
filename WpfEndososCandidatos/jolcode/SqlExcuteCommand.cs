@@ -2938,7 +2938,16 @@ namespace jolcode
                         m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
                     }
 
-                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (  m_Firma_Peticionario  == "0.00"))//'1-ELECTOR NO FIRMO EL ENDOSO
+                    float m_Firma_Peticionario_tmp_f = 0.0f;
+                    int m_Firma_Peticionario_tmp_i = 0;
+
+                    if (float.TryParse(m_Firma_Peticionario,out m_Firma_Peticionario_tmp_f))
+                    {
+                        m_Firma_Peticionario_tmp_i = (int)m_Firma_Peticionario_tmp_f;
+                    }
+
+
+                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (m_Firma_Peticionario_tmp_i == 0))//'1-ELECTOR NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[0].Editar == true)
                         {
@@ -2953,7 +2962,15 @@ namespace jolcode
                         }
                     }
 
-                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) &&  m_Firma_Notario == "0.00")//2-'NOTARIO NO FIRMO EL ENDOSO
+                    float m_Firma_Notario_f = 0.0f;
+                    int m_Firma_Notario_i = 0;
+
+                    if (float.TryParse(m_Firma_Notario,out m_Firma_Notario_f))
+                    {
+                        m_Firma_Notario_i = (int)m_Firma_Notario_f;
+                    }
+
+                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) && m_Firma_Notario_i == 0)//2-'NOTARIO NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[1].Editar == true)
                         {
@@ -3741,11 +3758,29 @@ namespace jolcode
 
                         if (MyValidarDatos(string.Concat(sqlstr), out FirstName, myCnnDBCeeMaster) != null)
                         {
+                            string[] m_Nombre_t = { " " };
+                            if (m_Nombre.Trim().Length > 0)
+                            {
+                                if (m_Nombre.Contains(" "))
+                                    m_Nombre_t = m_Nombre.Split(' ');
+                                else
+                                    m_Nombre_t[0] = m_Nombre.Trim();
+
+                            }
 
                             //if (FirstName.ToString().Trim().ToUpper() != m_Nombre.Trim().ToUpper())
-                            if (!FirstName.ToString().Trim().ToUpper().Contains(m_Nombre.Trim().ToUpper()))
+                            if (!FirstName.ToString().Trim().ToUpper().Contains(m_Nombre_t[0].Trim().ToUpper()))
                             {
-                                if (!m_Nombre.ToString().Trim().ToUpper().Contains(FirstName.ToString().Trim().ToUpper()))
+                                string[] FirstName_t = { " " };
+
+                                if (FirstName != null)
+                                    if (FirstName.ToString().Trim().Length > 0)
+                                        if (FirstName.ToString().Contains(" "))
+                                            FirstName_t = FirstName.ToString().Split(' ');
+                                        else
+                                            FirstName_t[0] = FirstName.ToString().Trim();
+
+                                if (!m_Nombre.ToString().Trim().ToUpper().Contains(FirstName_t[0].ToString().Trim().ToUpper()))
                                 {
                                     if (CollCriterios[19].Editar == true)
                                     {
