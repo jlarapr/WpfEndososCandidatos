@@ -56,8 +56,9 @@ namespace WpfEndososCandidatos.ViewModels
         public MainVM()
             : base(new MainWindow())
         {
+            mnuduplicado_click = new RelayCommand(param => Mymnuduplicado_clickC());
 
-          
+
         }
         public string WhatIsUserName
         {

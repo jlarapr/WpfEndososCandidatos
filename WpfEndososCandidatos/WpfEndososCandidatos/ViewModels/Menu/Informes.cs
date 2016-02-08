@@ -16,6 +16,14 @@ namespace WpfEndososCandidatos.ViewModels
         private RelayCommand _mnuReydi_click;
         private RelayCommand _mnuRechazoReydi_click;
 
+      
+        public RelayCommand mnuduplicado_click
+        {
+            get;private set;
+        }
+
+
+
         public RelayCommand mnuRechazo_click
         {
             get
@@ -115,5 +123,28 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+
+        private void Mymnuduplicado_clickC()
+        {
+            try
+            {
+               using (vmDuplicados frm = new vmDuplicados())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    //frm.PDFPath = _PDFPath;
+                    frm.StatusReydi = "0,1";
+                    frm.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }

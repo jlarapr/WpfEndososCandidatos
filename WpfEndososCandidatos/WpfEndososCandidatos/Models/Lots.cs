@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfEndososCandidatos.Models
 {
-    class Lots : IEquatable<Lots>, IComparable
+    public class Lots : IEquatable<Lots>, IComparable
     {
 
 
@@ -24,10 +24,11 @@ namespace WpfEndososCandidatos.Models
         public string RevUser { get; set; }
         public string conditions { get; set; }
         public string ImportDate { get; set; }
+        public string StatusReydi { get; set; }
 
 
 
-    
+
         public override string ToString()
         {
             List<string> myOut = new List<string>()
@@ -46,6 +47,7 @@ namespace WpfEndososCandidatos.Models
                 RevUser,
                 conditions,
                 ImportDate,
+                StatusReydi,
             };
             string myJoined = string.Join(" - ", myOut);
             return myJoined;

@@ -53,6 +53,38 @@ namespace jolcode
             }
         }
 
+
+        public void TableToExcel(string excelFileName, IEnumerable<InfoDuplicado> data)
+        {
+            try
+            {
+                if (System.IO.File.Exists(excelFileName))
+                    System.IO.File.Delete(excelFileName);
+
+                string worksheetsName = "CEE Duplicados" + DateTime.Now.ToString();
+                bool firstRowIsHeader = true;
+
+                // var format = new ExcelTextFormat();
+
+                using (ExcelPackage package = new ExcelPackage(new FileInfo(excelFileName)))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(worksheetsName);
+
+                    worksheet.Cells["A:XFD"].Style.Font.Bold = true;
+
+                    //worksheet.Cells["A:XFD"].LoadFromText(new FileInfo(csvFileName), format, OfficeOpenXml.Table.TableStyles.Medium27, firstRowIsHeader);
+                    worksheet.Cells["A:XFD"].LoadFromCollection<InfoDuplicado> (data, firstRowIsHeader, OfficeOpenXml.Table.TableStyles.Medium27);
+
+                    package.Save();
+                }
+
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public void TableToExcel(string excelFileName, IEnumerable<InfoReydi> data)
         {
             try

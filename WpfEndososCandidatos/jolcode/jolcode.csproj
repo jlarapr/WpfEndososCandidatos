@@ -69,6 +69,7 @@
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="ExcuteScript.cs" />
     <Compile Include="GetRegistry.cs" />
+    <Compile Include="InfoDuplicado.cs" />
     <Compile Include="InfoReydi.cs" />
     <Compile Include="Logclass.cs" />
     <Compile Include="LotsToReydi.cs" />

@@ -220,6 +220,7 @@
     <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
+    <Compile Include="ViewModels\Informes\vmDuplicados.cs" />
     <Compile Include="ViewModels\Informes\vmInformeReydi.cs" />
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
@@ -251,6 +252,9 @@
     </Compile>
     <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
       <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfDuplicados.xaml.cs">
+      <DependentUpon>wpfDuplicados.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Informes\wpfInformeReydi.xaml.cs">
       <DependentUpon>wpfInformeReydi.xaml</DependentUpon>
@@ -352,6 +356,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Configuraciones\wpfMantCriterios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfDuplicados.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

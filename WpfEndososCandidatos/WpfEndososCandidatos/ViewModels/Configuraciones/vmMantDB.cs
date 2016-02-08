@@ -632,6 +632,7 @@
                 if (PDFPath.Trim().Length == 0)
                     throw new Exception("Error con los Path");
 
+                imgPath = PDFPath;
 
                 if ((sqlServer.Trim().Length == 0) ||
                     (userName.Trim().Length == 0) ||
@@ -895,6 +896,7 @@
                     cbDatabase_Item = database;
                     //dfPassword_txt = ToSecureString(decryptPassword);
                     dfPassword_txt = decryptPassword;
+                    password = decryptPassword;
                 }
 
                 if (mastPass.Trim().Length > 0)
@@ -909,6 +911,7 @@
 
                     //dfMastPass_txt = ToSecureString(decryptPassword);
                     dfMastPass_txt = decryptPassword;
+                    mastPass = decryptPassword;
                 }
 
                 if (imagePass.Trim().Length >0)
@@ -923,6 +926,7 @@
 
                     //dfImagePass_txt = ToSecureString(decryptPassword);
                     dfImagePass_txt = decryptPassword;
+                    imagePass = decryptPassword;
                 }
                 if (RadicacionesPass.Trim().Length > 0)
                 {
@@ -935,6 +939,7 @@
                     RadicacionesUsr_txt = RadicacionesUsr;
 
                     RadicacionesUPass_txt = decryptPassword;
+                    RadicacionesPass = decryptPassword;
                 }
 
 

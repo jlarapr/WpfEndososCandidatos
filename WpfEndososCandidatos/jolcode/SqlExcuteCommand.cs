@@ -569,7 +569,7 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi = "+ StatusReydi +" order by Lot";
+                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi in ("+ StatusReydi +") order by Lot";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -603,6 +603,49 @@ namespace jolcode
             }
             return myTableReturn;
         }
+        public DataTable MyGetDuplicados(string lot)
+        {
+            DataTable myTableReturn = new DataTable();
+
+            try
+            {
+                string mySqlstr = "Select * from [LotsEndo] Where lot = '" + lot + "' order by [Batch],[Formulario]";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyGetDuplicados Error");
+            }
+            return myTableReturn;
+
+        }
+
+
         public DataTable MyGetLotInReydi(string StatusReydi = "1")
         {
             DataTable myTableReturn = new DataTable();
@@ -3657,9 +3700,24 @@ namespace jolcode
                                             "where [Precinto] like '%",precintoMasterCee,"%'"
                                         };
 
-                                        MyValidarDatos(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos);
+                                        if (MyValidarDatos(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos) != null)
+                                        {
+                                            if ((int)total > (int)totalPermitidos)
+                                            {
+                                                if (CollCriterios[14].Editar == true)
+                                                {
+                                                    Rechazo[14]++;
+                                                    strRechazos += "15|";
+                                                    isRechazo[14] = true;
+                                                }
 
-                                        if ((int)total > (int)totalPermitidos)
+                                                if (CollCriterios[14].Warning == true)
+                                                {
+                                                    Warning[14]++;
+                                                    isWarning[14] = true;
+                                                }
+                                            }
+                                        }else
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {

@@ -342,6 +342,7 @@ namespace WpfEndososCandidatos.ViewModels
                         frmMantDB.RadicacionesDB = _RadicacionesDB;
 
                         frmMantDB.imgPath = _PDFPath;
+                        
 
                         frmMantDB.View.Owner = this.View as Window;
                         frmMantDB.OnShow();
