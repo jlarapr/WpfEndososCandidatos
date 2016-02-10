@@ -102,8 +102,13 @@
             		Command="{Binding cmdCancel_Click}"
             		IsEnabled="{Binding IsEnabled_CmdCancel}"
                     />
+                <Button Content="Certificación"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="29"
+                	Margin="5,5,0,5"
+                	Command="{Binding mnuCertificacion_click}"
+                	IsEnabled="{Binding IsEnabled_cmdEdit}"
+                    />
                 <Button Content="Salir"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="29"
-            		Margin="5"
+            		Margin="5,5,0,5"
             		Command="{Binding cmdSalir_Click}"
             		IsEnabled="{Binding IsEnabled_cmdSalir}"
                     />

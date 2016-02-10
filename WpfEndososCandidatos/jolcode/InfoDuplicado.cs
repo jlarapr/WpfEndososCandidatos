@@ -12,6 +12,8 @@ namespace jolcode
         public string Batch { get; set; }
         public string Formulario { get; set; }
         public string NumElec { get; set; }
+        public string Cargo { get; set; }
+
         public DateTime? VerDate { get; set; }
         public DateTime? FinDate { get; set; }
         public string StatusReydi { get; set; }
@@ -25,11 +27,13 @@ namespace jolcode
                 Batch,
                 Formulario,
                 NumElec,
+                Cargo,
                 VerDate.Value.ToShortDateString(),
                 FinDate.Value.ToShortDateString(),
                 StatusReydi,
                 Status,
                 LotDuplicado
+                
             };
             string myJoined = string.Join("|", myout);
             return myJoined;

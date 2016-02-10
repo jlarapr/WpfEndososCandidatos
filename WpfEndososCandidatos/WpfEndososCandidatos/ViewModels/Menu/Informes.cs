@@ -23,7 +23,6 @@ namespace WpfEndososCandidatos.ViewModels
         }
 
 
-
         public RelayCommand mnuRechazo_click
         {
             get
@@ -123,6 +122,8 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+
+   
 
         private void Mymnuduplicado_clickC()
         {

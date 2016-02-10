@@ -2023,6 +2023,140 @@ namespace jolcode
             }
             return myBoolReturn;
         }
+
+
+      public DataTable MyGetBodyCertificacion()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string mySqlstr = "Select * from tblSetBodyCertificacion";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+            }
+            return myTableReturn;
+        }
+
+        public bool MyInsertBodyCertificacion (string HupDerecho,string Fecha,string InfoSecretario,string InfoComisionado,
+            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myInsert =
+                      {
+                            "INSERT INTO [dbo].[tblSetBodyCertificacion]",
+                           "([HupDerecho]",
+                           ",[Fecha]",
+                           ",[InfoSecretario]",
+                           ",[InfoComisionado]",
+                           ",[P1Body]",
+                           ",[P2Body]",
+                           ",[InfoDirectorValidaciones]",
+                           ",[DireccionPostal]",
+                           ",[Telefono]",
+                           ",[Logo],[LogoPath]) ",
+                            "Values(@HupDerecho,",
+                                   "@Fecha,",
+                                   "@InfoSecretario,",
+                                   "@InfoComisionado, ",
+                                   "@P1Body, ",
+                                   "@P2Body, ",
+                                   "@InfoDirectorValidaciones,",
+                                   "@DireccionPostal, ",
+                                   "@Telefono, ",
+                                   "@Logo,@LogoPath) "
+                        };
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                       
+                    })
+                    {
+                        cmd.CommandText = "Delete from [dbo].[tblSetBodyCertificacion]";
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = string.Concat(myInsert);
+
+                        cmd.Parameters.Add(new SqlParameter("@HupDerecho", SqlDbType.VarChar)).Value = HupDerecho.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Fecha", SqlDbType.VarChar)).Value = Fecha.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@InfoSecretario", SqlDbType.VarChar)).Value = InfoSecretario.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@InfoComisionado", SqlDbType.VarChar)).Value = InfoComisionado.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@P1Body", SqlDbType.VarChar)).Value = P1Body;
+                        cmd.Parameters.Add(new SqlParameter("@P2Body", SqlDbType.VarChar)).Value = P2Body;
+                        cmd.Parameters.Add(new SqlParameter("@InfoDirectorValidaciones", SqlDbType.VarChar)).Value= InfoDirectorValidaciones;
+                        cmd.Parameters.Add(new SqlParameter("@DireccionPostal", SqlDbType.VarChar)).Value = DireccionPostal.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Telefono", SqlDbType.VarChar)).Value=Telefono.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Logo", SqlDbType.Image));
+                        cmd.Parameters.Add(new SqlParameter("@LogoPath", SqlDbType.VarChar)).Value = Logo.Trim();
+
+                        FileStream stream = new FileStream(Logo, FileMode.Open, FileAccess.Read);
+                        BinaryReader reader = new BinaryReader(stream);
+
+                        byte[] img = reader.ReadBytes((int)stream.Length);
+
+                        reader.Close();
+                        stream.Close();
+
+                        cmd.Parameters["@Logo"].Value = img;
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyInsertBodyCertificacion Error");
+
+            }
+            return myBoolReturn;
+        }
+
         public bool MyChangeArea(bool isInsert, string area, string desc, string precintos, string electivePositionID, string demarcationID, string where)
         {
             bool myBoolReturn = false;
@@ -3544,7 +3678,7 @@ namespace jolcode
                             {
                                 case 1:// 'Gobernador
                                     {
-                                        if ((int)total > 1)
+                                        if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3563,7 +3697,7 @@ namespace jolcode
 
                                 case 2://'Comisionado Residente
                                     {
-                                        if ((int)total > 1)
+                                        if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3582,7 +3716,7 @@ namespace jolcode
 
                                 case 3: //'Senador Distrito
                                     {
-                                        if ((int)total > 2)
+                                        if ((int)total >= 2)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3608,7 +3742,7 @@ namespace jolcode
                                         if (m_PARTIDO == "PPD")
                                             permitidos = 6;
 
-                                        if ((int)total > permitidos)
+                                        if ((int)total >= permitidos)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3627,7 +3761,7 @@ namespace jolcode
 
                                 case 5: //'Representante Distrito
                                     {
-                                        if ((int)total > 1)
+                                        if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3654,7 +3788,7 @@ namespace jolcode
                                             permitidos = 6;
 
 
-                                        if ((int)total > permitidos)
+                                        if ((int)total >= permitidos)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3673,7 +3807,7 @@ namespace jolcode
 
                                 case 7: //'Alcalde
                                     {
-                                        if ((int)total > 1)
+                                        if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -3702,7 +3836,7 @@ namespace jolcode
 
                                         if (MyValidarDatos(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos) != null)
                                         {
-                                            if ((int)total > (int)totalPermitidos)
+                                            if ((int)total >= (int)totalPermitidos)
                                             {
                                                 if (CollCriterios[14].Editar == true)
                                                 {

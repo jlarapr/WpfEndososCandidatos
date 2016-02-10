@@ -158,7 +158,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
             set
             {
-
+                ItemsSource.Clear();
                 _cbLots_Item_Id = value;
                 this.RaisePropertychanged("cbLots_Item_Id");
             }
@@ -286,12 +286,13 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             FirstGeoCode = "000";
                         }
                         
-                        string[] sqlstr = { "SELECT count(*) as total,[NumElec],lot ",
+                        string[] sqlstr = { "SELECT count(*) as total,[NumElec],lot,[Status] ",
                                                 "From [LotsEndo]  ",
                                                 "Where [NumElec] = '",  FixNum(m_NumElec.Trim()) , "' ",
-                                                "and ", "Cargo='",m_Cargo.ToString(),"' And Status = 0 ",
+                                                "and ", "Cargo='",m_Cargo.ToString(), "' ",
                                                 "and lot not in ('", m_lot ,"') ",
-                                                "group by NumElec,lot"};
+                                                "group by NumElec,lot,[Status]"};
+
                         List<string> total = null;
                         
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
@@ -300,7 +301,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             {
                                 case 1:// 'Gobernador
                                     {
-                                        if ((total.Count + 1) > 1)
+                                        if ((total.Count + 1) >= 1)
                                         {
                                             isError = true ;
                                         }
@@ -309,7 +310,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                 case 2://'Comisionado Residente
                                     {
-                                        if ((total.Count + 1) > 1)
+                                        if ((total.Count + 1) >= 1)
                                         {
                                             isError = true ;
                                         }
@@ -318,7 +319,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                 case 3: //'Senador Distrito
                                     {
-                                        if ((total.Count + 1) > 2)
+                                        if ((total.Count + 1) >= 2)
                                         {
                                             isError = true ;
                                         }
@@ -334,7 +335,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                         if (m_PARTIDO == "PPD")
                                             permitidos = 6;
 
-                                        if ((total.Count + 1) > permitidos)
+                                        if ((total.Count + 1) >= permitidos)
                                         {
                                             isError = true ;
                                         }
@@ -343,7 +344,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                 case 5: //'Representante Distrito
                                     {
-                                        if ((total.Count + 1) > 1)
+                                        if ((total.Count + 1) >= 1)
                                         {
                                             isError = true ;
                                         }
@@ -360,7 +361,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                             permitidos = 6;
 
 
-                                        if ((total.Count + 1) > permitidos)
+                                        if ((total.Count + 1) >= permitidos)
                                         {
                                             isError = true ;
                                         }
@@ -369,7 +370,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                 case 7: //'Alcalde
                                     {
-                                        if ((total.Count + 1) > 1)
+                                        if ((total.Count + 1) >= 1)
                                         {
                                             isError = true ;
                                         }
@@ -388,7 +389,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                        if ( MyValidarDatosScalar(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos)!=null)
                                         {
-                                            if ((total.Count + 1) > (int)totalPermitidos)
+                                            if ((total.Count + 1) >= (int)totalPermitidos)
                                             {
                                                 isError = true;
                                             }
@@ -420,31 +421,30 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                                 if (DateTime.TryParse(vd.ToList<Lots>()[0].FinDate, out FinDate))
                                     FinDateNull = FinDate;
-                                ItemsSource.Add(new InfoDuplicado()
+                                foreach (string slot in total)
                                 {
-                                    Lot = row["lot"].ToString(),
-                                    Batch = row["Batch"].ToString(),
-                                    Formulario = row["Formulario"].ToString(),
-                                    NumElec = row["NumElec"].ToString(),
-                                    VerDate = VerDateNull,
-                                    FinDate = FinDateNull,
-                                    StatusReydi = StatusReydi.Trim() == "1" ? "SI" : "NO",
-                                    Status = row["Status"].ToString(),
-                                    LotDuplicado = total[0]
+                                    ItemsSource.Add(new InfoDuplicado()
+                                    {
+                                        Lot = row["lot"].ToString(),
+                                        Batch = row["Batch"].ToString(),
+                                        Formulario = row["Formulario"].ToString(),
+                                        NumElec = row["NumElec"].ToString(),
+                                        Cargo = m_Cargo.ToString(),
+                                        VerDate = VerDateNull,
+                                        FinDate = FinDateNull,
+                                        StatusReydi = StatusReydi.Trim() == "1" ? "SI" : "NO",
+                                        Status = row["Status"].ToString(),
+                                        LotDuplicado = slot
 
-                                });
+                                    });
+                                }
                             }
                             //list.Where(x=>x.Title == title)
                             //var listItem = list.Single(i => i.Title == title);
                         }
-
-
                     }
-
+                    MessageBox.Show("Done...", "Done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
-
-
-                
             }
             catch (Exception ex)
             {
@@ -584,7 +584,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     
                     foreach(DataRow row in ds.Tables[0].Rows)
                     {
-                        mylist.Add(row["lot"].ToString());
+                        mylist.Add(row["lot"].ToString() + " Status: " + row["Status"].ToString());
                     }
 
                     returnValue = mylist;

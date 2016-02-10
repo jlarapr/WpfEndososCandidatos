@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Media;
 using WpfEndososCandidatos.Models;
 using WpfEndososCandidatos.View;
+using WpfEndososCandidatos.ViewModels.Informes;
 
 namespace WpfEndososCandidatos.ViewModels.Configuraciones
 {
@@ -58,6 +59,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsInsert;
         private string _DBCeeMasterCnnStr;
         private string _txtStatusElec;
+        private string _DBImagenesCnnStr;
+        private string _PDFPath;
 
         public vmMantCandidatos() 
             : base (new wpfMantCadidatos() )
@@ -70,6 +73,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdAdd_Click = new RelayCommand(param => MyCmdAdd_Click());
             cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
+            mnuCertificacion_click = new RelayCommand(param => MymnuCertificacion_click());
 
             cbNombre = new ObservableCollection<string>();
             IsChecked_rbCargos = new ObservableCollection<bool>();
@@ -130,6 +134,28 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _DBCeeMasterCnnStr = value;
             }
         }
+        public string DBImagenesCnnStr
+        {
+            get
+            {
+                return _DBImagenesCnnStr;
+            }set
+            {
+                _DBImagenesCnnStr = value;
+            }
+        }
+
+        public string PDFPath
+        {
+            get
+            {
+                return _PDFPath;
+            }set
+            {
+                _PDFPath = value;
+            }
+        }
+
         public string DBEndososCnnStr
         {
             get
@@ -940,6 +966,34 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             get; private set;
         }
+        public RelayCommand mnuCertificacion_click { get; private set; }
+
+        private void MymnuCertificacion_click()
+        {
+            try
+            {
+                using (vmCertificacion frm = new vmCertificacion())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.PDFPath = PDFPath;
+                    frm.Nombre = cbNombre_Item;
+                    frm.Total = int.Parse( txtEndoReq );
+
+                    frm.MyOnShow();
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         #endregion
 
