@@ -615,7 +615,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 foreach (DataRow row in t.Rows)
                 {
                     txtHUpDerecha = row["HupDerecho"].ToString();
-                    txtFecha = row["Fecha"].ToString();
+                    txtFecha = txtFecha;
                     txtInfoSecretario = row["InfoSecretario"].ToString();
                     txtInfoComisionado = row["InfoComisionado"].ToString();
                     txtP1Body = row["P1Body"].ToString();
