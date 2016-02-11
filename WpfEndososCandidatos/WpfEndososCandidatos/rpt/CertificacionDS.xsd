@@ -12,7 +12,7 @@
   <xs:element name="Certificacion" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="Certificacion" msprop:Generator_UserDSName="Certificacion">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="tblCertificacion" msprop:Generator_TableClassName="tblCertificacionDataTable" msprop:Generator_TableVarName="tabletblCertificacion" msprop:Generator_RowChangedName="tblCertificacionRowChanged" msprop:Generator_TablePropName="tblCertificacion" msprop:Generator_RowDeletingName="tblCertificacionRowDeleting" msprop:Generator_RowChangingName="tblCertificacionRowChanging" msprop:Generator_RowEvHandlerName="tblCertificacionRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCertificacionRowDeleted" msprop:Generator_RowClassName="tblCertificacionRow" msprop:Generator_UserTableName="tblCertificacion" msprop:Generator_RowEvArgName="tblCertificacionRowChangeEvent">
+        <xs:element name="tblCertificacion" msprop:Generator_TableClassName="tblCertificacionDataTable" msprop:Generator_TableVarName="tabletblCertificacion" msprop:Generator_TablePropName="tblCertificacion" msprop:Generator_RowDeletingName="tblCertificacionRowDeleting" msprop:Generator_RowChangingName="tblCertificacionRowChanging" msprop:Generator_RowEvHandlerName="tblCertificacionRowChangeEventHandler" msprop:Generator_RowDeletedName="tblCertificacionRowDeleted" msprop:Generator_UserTableName="tblCertificacion" msprop:Generator_RowChangedName="tblCertificacionRowChanged" msprop:Generator_RowEvArgName="tblCertificacionRowChangeEvent" msprop:Generator_RowClassName="tblCertificacionRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="HupDerecha" msprop:Generator_ColumnVarNameInTable="columnHupDerecha" msprop:Generator_ColumnPropNameInRow="HupDerecha" msprop:Generator_ColumnPropNameInTable="HupDerechaColumn" msprop:Generator_UserColumnName="HupDerecha" type="xs:string" minOccurs="0" />
@@ -29,6 +29,8 @@
               <xs:element name="direccionPostal" msprop:Generator_ColumnVarNameInTable="columndireccionPostal" msprop:Generator_ColumnPropNameInRow="direccionPostal" msprop:Generator_ColumnPropNameInTable="direccionPostalColumn" msprop:Generator_UserColumnName="direccionPostal" type="xs:string" minOccurs="0" />
               <xs:element name="Telefono" msprop:Generator_ColumnVarNameInTable="columnTelefono" msprop:Generator_ColumnPropNameInRow="Telefono" msprop:Generator_ColumnPropNameInTable="TelefonoColumn" msprop:Generator_UserColumnName="Telefono" type="xs:string" minOccurs="0" />
               <xs:element name="LogoPartido" msprop:Generator_ColumnVarNameInTable="columnLogoPartido" msprop:Generator_ColumnPropNameInRow="LogoPartido" msprop:Generator_ColumnPropNameInTable="LogoPartidoColumn" msprop:Generator_UserColumnName="LogoPartido" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="Color" msprop:Generator_ColumnVarNameInTable="columnColor" msprop:Generator_ColumnPropNameInRow="Color" msprop:Generator_ColumnPropNameInTable="ColorColumn" msprop:Generator_UserColumnName="Color" type="xs:string" minOccurs="0" />
+              <xs:element name="PageHeader" msprop:Generator_ColumnVarNameInTable="columnPageHeader" msprop:Generator_ColumnPropNameInRow="PageHeader" msprop:Generator_ColumnPropNameInTable="PageHeaderColumn" msprop:Generator_UserColumnName="PageHeader" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -45,6 +45,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _Partido;
         private string _txtNombre;
         private string _Area;
+        private string _txtCargo;
+        private string _txtColor;
+        private string _PageHeader;
 
         public vmCertificacion() : base (new View.Informes.wpfCertificacion())
         {
@@ -80,6 +83,28 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }set
             {
                 _NumCandidato = value;
+            }
+        }
+        public string txtCargo
+        {
+            get
+            {
+                return _txtCargo;
+            }set
+            {
+                _txtCargo = value;
+                this.RaisePropertychanged("txtCargo");
+            }
+        }
+        public string txtPageHeader
+        {
+            get
+            {
+                return _PageHeader;
+            }set
+            {
+                _PageHeader = value;
+                this.RaisePropertychanged("txtPageHeader");
             }
         }
         public string txtNombre
@@ -305,6 +330,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 this.RaisePropertychanged("txtTelefono");
             }
         }
+        public string txtColor
+        {
+            get
+            {
+                return _txtColor;
+            }set
+            {
+                _txtColor = value;
+                this.RaisePropertychanged("txtColor");
+            }
+        }
         public string txtLogo
         {
             get
@@ -412,7 +448,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                            txtP2Body,
                            txtInfoDirectorValidaciones,
                            txtDireccionPostal,
-                           txtTelefono,txtLogo
+                           txtTelefono,txtLogo,txtColor,txtPageHeader
                         );
                 }
                 MessageBox.Show("Done...", "done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -512,46 +548,60 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             Cargo = data[4].Trim();
             txtNombre = Nombre.ToUpper(); // ConvertTo_ProperCase(Nombre);
 
-           
+
 
             switch (Cargo)
             {
-                case "1":
+                case "1": //isla
                     Cargo = "Gobernador";
                     break;
-                case "2":
+                case "2"://isla
                     Cargo = "Comisionado Residente";
                     break;
                 case "3":
-                  //  Cargo = "Senador Distrito ";
-                    Cargo = Area;
-                    break;
-                case "4":
-                    //Cargo = "Senador por Acumulación ";
-                    Cargo = Area;
+                    {
+                        string[] temp = Area.Split('-');
+                        //SENADOR DISTRITO 1 SAN JUAN
+                        temp[1] = temp[1].Trim().Substring(19);
+                        Cargo = "Senador Distrito ";
+                        Cargo += temp[1].Trim();
+                        break;
+                    }
+                case "4"://isla
+                    Cargo = "Senador por Acumulación ";
+                    //Cargo = Area;
 
                     break;
                 case "5":
-                    Cargo = "Representante Distrito ";
-                    Cargo = Area;
-
-                    break;
-                case "6":
+                    {
+                        Cargo = "Representante Distrito ";
+                        //5011 - REP. DIST. 11
+                        string[] temp = Area.Split('-');
+                        temp[1] = temp[1].Replace("REP. DIST. ", "Representante Distrito ");
+                        Cargo = temp[1].Trim();
+                        break;
+                    }
+                case "6"://isla
                     Cargo = "Representante por Acumulación ";
-                    Cargo = Area;
-
+                    //Cargo = Area;
                     break;
                 case "7":
-                    Cargo = "Alcalde ";
-                    Cargo = Area;
-
-                    break;
+                    {
+                        Cargo = "Alcalde ";
+                        string[] temp = Area.Split('-');
+                        Cargo += temp[1].Trim();
+                        break;
+                    }
                 case "8":
-                    Cargo = "Asambleista ";
-                    Cargo = Area;
-
-                    break;
+                    {
+                        string[] temp = Area.Split('-');
+                        Cargo = "Asambleista ";
+                        Cargo += temp[1].Trim();
+                        break;
+                    }
             }
+
+            txtCargo = Cargo.ToUpper();
 
 
             using (SqlExcuteCommand get = new SqlExcuteCommand()
@@ -574,6 +624,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     txtDireccionPostal = row["DireccionPostal"].ToString();
                     txtTelefono = row["Telefono"].ToString();
                     txtLogo = row["LogoPath"].ToString();
+                    txtColor = row["Color"].ToString();
+                    txtPageHeader = row["PageHeader"].ToString();
                 }
               
             }
@@ -598,9 +650,15 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 {
 
                     string P1Body = txtP1Body.Replace("<Nombre>", "<b>" + txtNombre.ToUpper() + "</b>");
-                    P1Body = P1Body.Replace("<Cargo>", "<b>" +  Cargo.ToUpper() + "</b>");
+                    P1Body = P1Body.Replace("<Cargo>", "<b>" +  txtCargo.ToUpper() + "</b>");
                     P1Body = P1Body.Replace("<fecha>", "<b>" + txtFecha + "</b>");
-                    string P2Body = txtP2Body.Replace("<Total>", "<b>" + Total.ToString("###,###,##0") + "</b>");
+                    P1Body = P1Body.Replace("<Total>", "<b>" + Total.ToString("###,###,##0") + "</b>");
+
+                    string P2Body = txtP2Body.Replace("<Nombre>", "<b>" + txtNombre.ToUpper() + "</b>");
+                    P2Body = P2Body.Replace("<Cargo>", "<b>" + txtCargo.ToUpper() + "</b>");
+                    P2Body = P2Body.Replace("<fecha>", "<b>" + txtFecha + "</b>");
+                    P2Body = P2Body.Replace("<Total>", "<b>" + Total.ToString("###,###,##0") + "</b>");
+
 
                     saveName = sd.FileName;
 
@@ -611,7 +669,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                     rpt.Certificacion ds = new rpt.Certificacion();
                     DataRow RR = ds.Tables[0].NewRow();
-                    RR["HupDerecha"] = txtHUpDerecha;
+                    RR["HupDerecha"] = "<span style=color:" + txtColor + ">"+ txtHUpDerecha + "</span>";
                     RR["Fecha"] = txtFecha;
                     RR["InfoSecretario"] = txtInfoSecretario;
                     RR["InfoComisionado"] = txtInfoComisionado;
@@ -620,6 +678,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     RR["infoDirectorValidaciones"] = txtInfoDirectorValidaciones;
                     RR["direccionPostal"] = txtDireccionPostal;
                     RR["Telefono"] = txtTelefono;
+                    RR["PageHeader"] = "<b>" +  txtPageHeader + "</b>";
 
                     FileStream stream = new FileStream(txtLogo, FileMode.Open, FileAccess.Read);
                     BinaryReader reader = new BinaryReader(stream);

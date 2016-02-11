@@ -2122,7 +2122,7 @@ namespace jolcode
         }
 
         public bool MyInsertBodyCertificacion (string HupDerecho,string Fecha,string InfoSecretario,string InfoComisionado,
-            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo)
+            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo,string Color,string PageHeader)
         {
             bool myBoolReturn = false;
             try
@@ -2139,7 +2139,7 @@ namespace jolcode
                            ",[InfoDirectorValidaciones]",
                            ",[DireccionPostal]",
                            ",[Telefono]",
-                           ",[Logo],[LogoPath]) ",
+                           ",[Logo],[LogoPath],[Color],[PageHeader]) ",
                             "Values(@HupDerecho,",
                                    "@Fecha,",
                                    "@InfoSecretario,",
@@ -2149,7 +2149,7 @@ namespace jolcode
                                    "@InfoDirectorValidaciones,",
                                    "@DireccionPostal, ",
                                    "@Telefono, ",
-                                   "@Logo,@LogoPath) "
+                                   "@Logo,@LogoPath,@Color,@PageHeader) "
                         };
 
 
@@ -2183,6 +2183,8 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Telefono", SqlDbType.VarChar)).Value=Telefono.Trim();
                         cmd.Parameters.Add(new SqlParameter("@Logo", SqlDbType.Image));
                         cmd.Parameters.Add(new SqlParameter("@LogoPath", SqlDbType.VarChar)).Value = Logo.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Color", SqlDbType.VarChar)).Value = Color.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@PageHeader", SqlDbType.VarChar)).Value = PageHeader.Trim();
 
                         FileStream stream = new FileStream(Logo, FileMode.Open, FileAccess.Read);
                         BinaryReader reader = new BinaryReader(stream);

@@ -307,6 +307,10 @@ namespace WpfEndososCandidatos.rpt {
             
             private global::System.Data.DataColumn columnLogoPartido;
             
+            private global::System.Data.DataColumn columnColor;
+            
+            private global::System.Data.DataColumn columnPageHeader;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public tblCertificacionDataTable() {
@@ -454,6 +458,22 @@ namespace WpfEndososCandidatos.rpt {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ColorColumn {
+                get {
+                    return this.columnColor;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PageHeaderColumn {
+                get {
+                    return this.columnPageHeader;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -489,7 +509,23 @@ namespace WpfEndososCandidatos.rpt {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public tblCertificacionRow AddtblCertificacionRow(string HupDerecha, string Fecha, string InfoSecretario, string InfoComisionado, string P1Body, string P2Body, string NombreAspirante, string Cargo, string FechaBody, string TotalEndososRequeridos, string infoDirectorValidaciones, string direccionPostal, string Telefono, byte[] LogoPartido) {
+            public tblCertificacionRow AddtblCertificacionRow(
+                        string HupDerecha, 
+                        string Fecha, 
+                        string InfoSecretario, 
+                        string InfoComisionado, 
+                        string P1Body, 
+                        string P2Body, 
+                        string NombreAspirante, 
+                        string Cargo, 
+                        string FechaBody, 
+                        string TotalEndososRequeridos, 
+                        string infoDirectorValidaciones, 
+                        string direccionPostal, 
+                        string Telefono, 
+                        byte[] LogoPartido, 
+                        string Color, 
+                        string PageHeader) {
                 tblCertificacionRow rowtblCertificacionRow = ((tblCertificacionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         HupDerecha,
@@ -505,7 +541,9 @@ namespace WpfEndososCandidatos.rpt {
                         infoDirectorValidaciones,
                         direccionPostal,
                         Telefono,
-                        LogoPartido};
+                        LogoPartido,
+                        Color,
+                        PageHeader};
                 rowtblCertificacionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowtblCertificacionRow);
                 return rowtblCertificacionRow;
@@ -542,6 +580,8 @@ namespace WpfEndososCandidatos.rpt {
                 this.columndireccionPostal = base.Columns["direccionPostal"];
                 this.columnTelefono = base.Columns["Telefono"];
                 this.columnLogoPartido = base.Columns["LogoPartido"];
+                this.columnColor = base.Columns["Color"];
+                this.columnPageHeader = base.Columns["PageHeader"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -575,6 +615,10 @@ namespace WpfEndososCandidatos.rpt {
                 base.Columns.Add(this.columnTelefono);
                 this.columnLogoPartido = new global::System.Data.DataColumn("LogoPartido", typeof(byte[]), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLogoPartido);
+                this.columnColor = new global::System.Data.DataColumn("Color", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnColor);
+                this.columnPageHeader = new global::System.Data.DataColumn("PageHeader", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPageHeader);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -943,6 +987,38 @@ namespace WpfEndososCandidatos.rpt {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Color {
+                get {
+                    try {
+                        return ((string)(this[this.tabletblCertificacion.ColorColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Color\' in table \'tblCertificacion\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletblCertificacion.ColorColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PageHeader {
+                get {
+                    try {
+                        return ((string)(this[this.tabletblCertificacion.PageHeaderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PageHeader\' in table \'tblCertificacion\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletblCertificacion.PageHeaderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsHupDerechaNull() {
                 return this.IsNull(this.tabletblCertificacion.HupDerechaColumn);
             }
@@ -1107,6 +1183,30 @@ namespace WpfEndososCandidatos.rpt {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLogoPartidoNull() {
                 this[this.tabletblCertificacion.LogoPartidoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsColorNull() {
+                return this.IsNull(this.tabletblCertificacion.ColorColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetColorNull() {
+                this[this.tabletblCertificacion.ColorColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPageHeaderNull() {
+                return this.IsNull(this.tabletblCertificacion.PageHeaderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPageHeaderNull() {
+                this[this.tabletblCertificacion.PageHeaderColumn] = global::System.Convert.DBNull;
             }
         }
         
