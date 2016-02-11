@@ -205,7 +205,7 @@ namespace jolcode
             try
             {
                // string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
-                string mySqlstr = "Select [FiledEndorsements] as total from [dbo].[FilingEndorsements] Where [BatchNumber]='" + lot + "'";
+                string mySqlstr = "Select [FiledEndorsements] as total from [dbo].[FilingEndorsements] with (nolock) Where [BatchNumber]='" + lot + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1339,7 +1339,7 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        string mySqlstr = "SELECT [BatchFilingDate] FROM [dbo].[FilingEndorsements] where [BatchNumber] = '" + lot + "'";
+                        string mySqlstr = "SELECT [BatchFilingDate] FROM [dbo].[FilingEndorsements] with (nolock) where [BatchNumber] = '" + lot + "'";
                         cmd.CommandText = mySqlstr;
                         myReturn = cmd.ExecuteScalar();
                         if (myReturn == null)
@@ -2025,7 +2025,63 @@ namespace jolcode
         }
 
 
-      public DataTable MyGetBodyCertificacion()
+
+        public string[] MyGetTotalReq(string numElec)
+        {
+            string[] sOut = { "", "","","" ,""};
+
+            int tmpElec = 0;
+
+            int.TryParse(numElec, out tmpElec);
+
+            string mySqlstr = "Select top 1 [RequiredEndorsements],[FirstName] , [MiddleName],[LastName] ,[MaternalName] from [dbo].[FilingEndorsements] with (nolock) where [ElectoralNumber]=" + tmpElec.ToString();
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBRadicacionesCEECnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+
+                    })
+                    {
+                        SqlDataReader dr;
+
+                        dr = cmd.ExecuteReader();
+
+                        while (dr.Read())
+                        {
+                            sOut[0] = dr[0].ToString().Trim();
+                            sOut[1] = dr[1].ToString().Trim();
+                            sOut[2] = dr[2].ToString().Trim();
+                            sOut[3] = dr[3].ToString().Trim();
+                            sOut[4] = dr[4].ToString().Trim();
+                        }
+                        dr.Close();
+                        dr = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+                
+            }
+            return sOut;
+        }
+
+
+        public DataTable MyGetBodyCertificacion()
         {
             DataTable myTableReturn = new DataTable();
             try

@@ -23,7 +23,7 @@
             <TextBox x:Name="txtFecha"  HorizontalAlignment="Left" Height="39" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding txtFecha}" VerticalAlignment="Top" Width="291"/>
             <TextBox x:Name="txtInfoSecretario" AcceptsReturn="True" HorizontalAlignment="Left" Height="50" Margin="10,54,0,0" TextWrapping="Wrap" Text="{Binding txtInfoSecretario}" VerticalAlignment="Top" Width="243"/>
             <TextBox x:Name="txtInfoComisionado" AcceptsReturn="True" HorizontalAlignment="Left" Height="50" Margin="318,54,0,0" TextWrapping="Wrap" Text="{Binding txtInfoComisionado}" VerticalAlignment="Top" Width="243"/>
-            <TextBox x:Name="txtP1Body"   HorizontalAlignment="Left" AcceptsReturn="True" Height="88" Margin="10,109,0,0" TextWrapping="Wrap" Text="{Binding txtP1Body}" VerticalAlignment="Top" Width="551"/>
+            <TextBox x:Name="txtP1Body"   HorizontalAlignment="Left" AcceptsReturn="True" Height="88" Margin="10,109,0,0" TextWrapping="Wrap" Text="{Binding txtP1Body}" VerticalAlignment="Top" Width="551" />
             <TextBox x:Name="txtP2Body" AcceptsReturn="True" HorizontalAlignment="Left" Height="88" Margin="10,202,0,0" TextWrapping="Wrap" Text="{Binding txtP2Body}" VerticalAlignment="Top" Width="551"/>
             <TextBox x:Name="txtInfoDirectorValidaciones" AcceptsReturn="True" HorizontalAlignment="Left" Height="51" Margin="10,295,0,0" TextWrapping="Wrap" Text="{Binding txtInfoDirectorValidaciones}" VerticalAlignment="Top" Width="243"/>
             <TextBox x:Name="txtDireccionPostal" AcceptsReturn="True" HorizontalAlignment="Left" Height="26" Margin="10,351,0,0" TextWrapping="Wrap" Text="{Binding txtDireccionPostal}" VerticalAlignment="Top" Width="243"/>
@@ -32,6 +32,7 @@
             <Button x:Name="btnSave" Command="{Binding btnSave}" Content="Save" HorizontalAlignment="Left" Margin="486,425,0,0" VerticalAlignment="Top" Width="75"/>
             <Button x:Name="btnLogo" Command="{Binding btnLogo}" Content="Logo" HorizontalAlignment="Left" Height="20" Margin="258,404,0,0" VerticalAlignment="Top" Width="55"/>
             <Button x:Name="btnPrint" Command="{Binding btnPrint}" Content="Print" HorizontalAlignment="Left" Margin="486,400,0,0" VerticalAlignment="Top" Width="75"/>
+            <TextBox x:Name="txtNombre"  HorizontalAlignment="Left" Height="26" Margin="258,295,0,0" TextWrapping="Wrap" Text="{Binding txtNombre}" VerticalAlignment="Top" Width="243"/>
 
         </Grid>
     </Border>

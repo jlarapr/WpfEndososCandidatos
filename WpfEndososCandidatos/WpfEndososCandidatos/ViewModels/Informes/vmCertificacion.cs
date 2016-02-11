@@ -40,6 +40,11 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _Nombre;
         private string _Cargo;
         private int _Total;
+        private string _DBRadicacionesCEECnnStr;
+        private string _NumCandidato;
+        private string _Partido;
+        private string _txtNombre;
+        private string _Area;
 
         public vmCertificacion() : base (new View.Informes.wpfCertificacion())
         {
@@ -57,6 +62,37 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         public RelayCommand btnLogo { get; private set; }
         public RelayCommand btnPrint { get; private set; }
 
+        public string Partido
+        {
+            get
+            {
+               return _Partido;
+            }set
+            {
+                _Partido = value;
+            }
+        }
+        public string NumCandidato
+        {
+            get
+            {
+                return _NumCandidato;
+            }set
+            {
+                _NumCandidato = value;
+            }
+        }
+        public string txtNombre
+        {
+            get
+            {
+                return _txtNombre;
+            }set
+            {
+                _txtNombre = value;
+                this.RaisePropertychanged("txtNombre");
+            }
+        }
         public string Nombre
         {
             get
@@ -66,6 +102,16 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             set
             {
                 _Nombre = value;
+            }
+        }
+        public string Area
+        {
+            get
+            {
+                return _Area;
+            }set
+            {
+                _Area = value;
             }
         }
         public string Cargo
@@ -135,6 +181,16 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             set
             {
                 _DBMasterCeeCnnStr = value;
+            }
+        }
+        public string DBRadicacionesCEECnnStr
+        {
+            get
+            {
+                return _DBRadicacionesCEECnnStr;
+            }set
+            {
+                _DBRadicacionesCEECnnStr = value;
             }
         }
         public string DBEndososCnnStr
@@ -415,11 +471,50 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             txtFecha = dateNow.Day.ToString() + " de " + mes + " de " + dateNow.Year.ToString("####");
 
             string[] data = Nombre.Split('-');
+            Partido = data[0].Trim();
+            NumCandidato = data[1].Trim();
 
-            Nombre = data[2].Trim();
+            string[] dataReydi; 
+            using (SqlExcuteCommand get = new SqlExcuteCommand()
+            {
+                DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
+            })
+            {
+                dataReydi =
+                get.MyGetTotalReq(NumCandidato);
+
+            }
+
+            int total = 0;
+
+            int.TryParse(dataReydi[0].Trim(), out total);
+            Total = total;
+
+            Nombre = dataReydi[1].Trim();                // data[2].Trim();
+
+            if (dataReydi[2].Trim().Length > 0)
+                Nombre += " " + dataReydi[2].Trim();
+
+            if (dataReydi[3].Trim().Length > 0)
+            {
+                if (dataReydi[3].Trim().Length ==1) 
+                    Nombre += " " + dataReydi[3].Trim() + ".";
+                else
+                    Nombre += " " + dataReydi[3].Trim();
+
+            }
+
+            if (dataReydi[4].Trim().Length > 0)
+                Nombre += " " + dataReydi[4].Trim();
+
+
+
             Cargo = data[4].Trim();
+            txtNombre = Nombre.ToUpper(); // ConvertTo_ProperCase(Nombre);
 
-            switch(Cargo)
+           
+
+            switch (Cargo)
             {
                 case "1":
                     Cargo = "Gobernador";
@@ -428,33 +523,41 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     Cargo = "Comisionado Residente";
                     break;
                 case "3":
-                    Cargo = "Senador Distrito";
+                  //  Cargo = "Senador Distrito ";
+                    Cargo = Area;
                     break;
                 case "4":
-                    Cargo = "Senador por Acumulación";
+                    //Cargo = "Senador por Acumulación ";
+                    Cargo = Area;
+
                     break;
                 case "5":
-                    Cargo = "Representante Distrito";
+                    Cargo = "Representante Distrito ";
+                    Cargo = Area;
+
                     break;
                 case "6":
-                    Cargo = "Representante por Acumulación";
+                    Cargo = "Representante por Acumulación ";
+                    Cargo = Area;
+
                     break;
                 case "7":
-                    Cargo = "Alcalde";
+                    Cargo = "Alcalde ";
+                    Cargo = Area;
+
                     break;
                 case "8":
-                    Cargo = "Asambleista";
+                    Cargo = "Asambleista ";
+                    Cargo = Area;
+
                     break;
-
-
-
-
             }
 
 
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
-                DBCnnStr = DBEndososCnnStr
+                DBCnnStr = DBEndososCnnStr,
+                DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
             })
             {
                 DataTable t = get.MyGetBodyCertificacion();
@@ -472,10 +575,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     txtTelefono = row["Telefono"].ToString();
                     txtLogo = row["LogoPath"].ToString();
                 }
-                txtP1Body = txtP1Body.Replace("<Nombre>", ConvertTo_ProperCase( Nombre));
-                txtP1Body = txtP1Body.Replace("<Cargo>", Cargo);
-                txtP1Body = txtP1Body.Replace("<fecha>", txtFecha);
-                txtP2Body = txtP2Body.Replace("<Total>", Total.ToString("###,###,##0"));
+              
             }
         }
         public static string ConvertTo_ProperCase(string text)
@@ -496,7 +596,14 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                 if (respuesta.Value)
                 {
+
+                    string P1Body = txtP1Body.Replace("<Nombre>", "<b>" + txtNombre.ToUpper() + "</b>");
+                    P1Body = P1Body.Replace("<Cargo>", "<b>" +  Cargo.ToUpper() + "</b>");
+                    P1Body = P1Body.Replace("<fecha>", "<b>" + txtFecha + "</b>");
+                    string P2Body = txtP2Body.Replace("<Total>", "<b>" + Total.ToString("###,###,##0") + "</b>");
+
                     saveName = sd.FileName;
+
                     rpt.mycertificacion objRpt = new rpt.mycertificacion();
 
                     if (System.IO.File.Exists(saveName))
@@ -508,8 +615,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     RR["Fecha"] = txtFecha;
                     RR["InfoSecretario"] = txtInfoSecretario;
                     RR["InfoComisionado"] = txtInfoComisionado;
-                    RR["P1Body"] = txtP1Body;
-                    RR["P2Body"] = txtP2Body;
+                    RR["P1Body"] = P1Body;
+                    RR["P2Body"] = P2Body;
                     RR["infoDirectorValidaciones"] = txtInfoDirectorValidaciones;
                     RR["direccionPostal"] = txtDireccionPostal;
                     RR["Telefono"] = txtTelefono;

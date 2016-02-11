@@ -61,6 +61,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _txtStatusElec;
         private string _DBImagenesCnnStr;
         private string _PDFPath;
+        private string _DBRadicacionesCEECnnStr;
 
         public vmMantCandidatos() 
             : base (new wpfMantCadidatos() )
@@ -142,6 +143,17 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }set
             {
                 _DBImagenesCnnStr = value;
+            }
+        }
+
+        public string DBRadicacionesCEECnnStr
+        {
+            get
+            {
+                return _DBRadicacionesCEECnnStr;
+            }set
+            {
+                _DBRadicacionesCEECnnStr = value;
             }
         }
 
@@ -978,8 +990,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frm.PDFPath = PDFPath;
                     frm.Nombre = cbNombre_Item;
+                    frm.Area = cbArea_Item;
                     frm.Total = int.Parse( txtEndoReq );
 
                     frm.MyOnShow();

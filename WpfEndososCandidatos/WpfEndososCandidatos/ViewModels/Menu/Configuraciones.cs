@@ -392,6 +392,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frmMantCandidatos.View.Owner = this.View as Window;
                     frmMantCandidatos.DBEndososCnnStr = DBEndososCnnStr;
                     frmMantCandidatos.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
+                    frmMantCandidatos.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frmMantCandidatos.MyOnShow();
                 }
             }
