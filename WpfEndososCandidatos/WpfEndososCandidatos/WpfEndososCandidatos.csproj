@@ -210,6 +210,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CertificacionDS.xsd</DependentUpon>
     </Compile>
+    <Compile Include="rpt\mycertificacion-ppd.cs">
+      <DependentUpon>mycertificacion-ppd.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="rpt\mycertificacion.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -500,6 +506,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpt\mycertificacion-ppd.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>mycertificacion-ppd.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="rpt\mycertificacion.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

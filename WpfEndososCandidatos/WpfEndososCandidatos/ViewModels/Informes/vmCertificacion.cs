@@ -48,6 +48,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _txtCargo;
         private string _txtColor;
         private string _PageHeader;
+        private byte _Template;
 
         public vmCertificacion() : base (new View.Informes.wpfCertificacion())
         {
@@ -65,6 +66,21 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         public RelayCommand btnLogo { get; private set; }
         public RelayCommand btnPrint { get; private set; }
 
+        public byte Template
+        {
+            get
+            {
+                return _Template;
+            }set
+            {
+                if (value > 0)
+                    _Template = value;
+                else
+                    _Template = 1;
+
+                this.RaisePropertychanged("Template");
+            }
+        }
         public string Partido
         {
             get
@@ -448,7 +464,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                            txtP2Body,
                            txtInfoDirectorValidaciones,
                            txtDireccionPostal,
-                           txtTelefono,txtLogo,txtColor,txtPageHeader
+                           txtTelefono,txtLogo,txtColor,txtPageHeader, Template
                         );
                 }
                 MessageBox.Show("Done...", "done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -626,6 +642,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     txtLogo = row["LogoPath"].ToString();
                     txtColor = row["Color"].ToString();
                     txtPageHeader = row["PageHeader"].ToString();
+                    Template =byte.Parse( row["Template"].ToString());
                 }
               
             }
@@ -649,8 +666,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 if (respuesta.Value)
                 {
 
-                    string P1Body = txtP1Body.Replace("<Nombre>", "<b>" + txtNombre.ToUpper() + "</b>");
-                    P1Body = P1Body.Replace("<Cargo>", "<b>" +  txtCargo.ToUpper() + "</b>");
+                    string P1Body = txtP1Body.Replace("<Nombre>", "<b>" +  txtNombre.ToUpper()  + "</b>");
+                    P1Body = P1Body.Replace("<Cargo>", "<b>" + txtCargo.ToUpper() + "</b>");
                     P1Body = P1Body.Replace("<fecha>", "<b>" + txtFecha + "</b>");
                     P1Body = P1Body.Replace("<Total>", "<b>" + Total.ToString("###,###,##0") + "</b>");
 
@@ -662,7 +679,14 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                     saveName = sd.FileName;
 
-                    rpt.mycertificacion objRpt = new rpt.mycertificacion();
+                    //rpt.mycertificacion objRpt = new rpt.mycertificacion();
+                    dynamic objRpt = new rpt.mycertificacion();
+
+
+                    if (Template == 2)
+                        objRpt = new rpt.mycertificacion_ppd();
+                      
+                   
 
                     if (System.IO.File.Exists(saveName))
                         System.IO.File.Delete(saveName);
@@ -673,12 +697,12 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     RR["Fecha"] = txtFecha;
                     RR["InfoSecretario"] = txtInfoSecretario;
                     RR["InfoComisionado"] = txtInfoComisionado;
-                    RR["P1Body"] = P1Body;
+                    RR["P1Body"] = P1Body ;
                     RR["P2Body"] = P2Body;
                     RR["infoDirectorValidaciones"] = txtInfoDirectorValidaciones;
                     RR["direccionPostal"] = txtDireccionPostal;
                     RR["Telefono"] = txtTelefono;
-                    RR["PageHeader"] = "<b>" +  txtPageHeader + "</b>";
+                    RR["PageHeader"] =  txtPageHeader ;
 
                     FileStream stream = new FileStream(txtLogo, FileMode.Open, FileAccess.Read);
                     BinaryReader reader = new BinaryReader(stream);

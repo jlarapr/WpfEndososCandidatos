@@ -36,6 +36,8 @@
             <TextBox x:Name="txtCargo"  HorizontalAlignment="Left" Height="26" Margin="258,375,0,0" TextWrapping="Wrap" Text="{Binding txtCargo}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtColor" CharacterCasing="Upper" FontWeight="Bold"  HorizontalAlignment="Left" Height="26" Margin="258,449,0,0" TextWrapping="Wrap" Text="{Binding txtColor}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtPageHeader"   HorizontalAlignment="Left" AcceptsReturn="True" Height="41" Margin="10,109,0,0" TextWrapping="Wrap" Text="{Binding txtPageHeader}" VerticalAlignment="Top" Width="551" />
+            <TextBox x:Name="Template"  HorizontalAlignment="Left" Height="26" Margin="258,480,0,0" TextWrapping="Wrap" Text="{Binding Template}" VerticalAlignment="Top" Width="41"/>
+            <Label x:Name="label" Content="Template:" HorizontalAlignment="Left" Margin="192,480,0,0" VerticalAlignment="Top"/>
 
         </Grid>
     </Border>
