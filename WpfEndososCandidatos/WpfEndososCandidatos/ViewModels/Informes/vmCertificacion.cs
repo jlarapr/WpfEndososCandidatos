@@ -49,6 +49,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _txtColor;
         private string _PageHeader;
         private byte _Template;
+        private string _txtFirma;
 
         public vmCertificacion() : base (new View.Informes.wpfCertificacion())
         {
@@ -58,6 +59,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             btnSave = new RelayCommand(param => MybtnSave());
             btnLogo = new RelayCommand(param => MybtnLogo());
             btnPrint = new RelayCommand(param => MybtnPrint());
+            btnFirma = new RelayCommand(para => MybtnFirma());
         }
         public RelayCommand cmdSalir_Click { get; private set; }
         public RelayCommand initWindow { get; private set; }
@@ -65,6 +67,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         public RelayCommand btnSave { get; private set; }
         public RelayCommand btnLogo { get; private set; }
         public RelayCommand btnPrint { get; private set; }
+        public RelayCommand btnFirma { get; private set; }
 
         public byte Template
         {
@@ -368,6 +371,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 this.RaisePropertychanged("txtLogo");
             }
         }
+        public string txtFirma
+        {
+            get
+            {
+                return _txtFirma;
+            }set
+            {
+                _txtFirma = value;
+                this.RaisePropertychanged("txtFirma");
+            }
+        }
         private void MyInitWindow()
         {
             try
@@ -445,6 +459,32 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void MybtnFirma()
+        {
+            try
+            {
+                OpenFileDialog op = new OpenFileDialog();
+                op.Filter = "Firma |*.jpg|All Files|*.*";
+                bool? result;
+
+                result = op.ShowDialog();
+
+                if ((bool)result)
+                {
+                    txtFirma = op.FileName;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
         private void MybtnSave()
         {
             try
@@ -464,7 +504,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                            txtP2Body,
                            txtInfoDirectorValidaciones,
                            txtDireccionPostal,
-                           txtTelefono,txtLogo,txtColor,txtPageHeader, Template
+                           txtTelefono,txtLogo,txtColor,txtPageHeader, Template,txtFirma
                         );
                 }
                 MessageBox.Show("Done...", "done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -643,6 +683,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     txtColor = row["Color"].ToString();
                     txtPageHeader = row["PageHeader"].ToString();
                     Template =byte.Parse( row["Template"].ToString());
+                    txtFirma = row["FirmaPath"].ToString();
                 }
               
             }
@@ -685,14 +726,28 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                     if (Template == 2)
                         objRpt = new rpt.mycertificacion_ppd();
-                      
-                   
 
                     if (System.IO.File.Exists(saveName))
                         System.IO.File.Delete(saveName);
 
                     rpt.Certificacion ds = new rpt.Certificacion();
                     DataRow RR = ds.Tables[0].NewRow();
+
+                    FileStream stream = new FileStream(txtLogo, FileMode.Open, FileAccess.Read);
+                    BinaryReader reader = new BinaryReader(stream);
+                    byte[] img = reader.ReadBytes((int)stream.Length);
+                    reader.Close();
+                    stream.Close();
+                    RR["LogoPartido"] = img;
+
+                    stream = new FileStream(txtFirma, FileMode.Open, FileAccess.Read);
+                    reader = new BinaryReader(stream);
+                    img = reader.ReadBytes((int)stream.Length);
+                    reader.Close();
+                    stream.Close();
+
+                    RR["FirmaComisionado"] = img;
+
                     RR["HupDerecha"] = "<span style=color:" + txtColor + ">"+ txtHUpDerecha + "</span>";
                     RR["Fecha"] = txtFecha;
                     RR["InfoSecretario"] = txtInfoSecretario;
@@ -704,15 +759,6 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     RR["Telefono"] = txtTelefono;
                     RR["PageHeader"] =  txtPageHeader ;
 
-                    FileStream stream = new FileStream(txtLogo, FileMode.Open, FileAccess.Read);
-                    BinaryReader reader = new BinaryReader(stream);
-
-                    byte[] img = reader.ReadBytes((int)stream.Length);
-
-                    reader.Close();
-                    stream.Close();
-
-                    RR["LogoPartido"] = img;
                     ds.tblCertificacion.Rows.Add(RR);
 
                     objRpt.SetDataSource(ds);

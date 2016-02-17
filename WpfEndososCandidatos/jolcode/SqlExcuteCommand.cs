@@ -2122,7 +2122,8 @@ namespace jolcode
         }
 
         public bool MyInsertBodyCertificacion (string HupDerecho,string Fecha,string InfoSecretario,string InfoComisionado,
-            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo,string Color,string PageHeader,byte Template)
+            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo,
+            string Color,string PageHeader,byte Template,string Firma)
         {
             bool myBoolReturn = false;
             try
@@ -2139,7 +2140,7 @@ namespace jolcode
                            ",[InfoDirectorValidaciones]",
                            ",[DireccionPostal]",
                            ",[Telefono]",
-                           ",[Logo],[LogoPath],[Color],[PageHeader],Template) ",
+                           ",[Logo],[LogoPath],[Color],[PageHeader],Template,Firma,FirmaPath) ",
                             "Values(@HupDerecho,",
                                    "@Fecha,",
                                    "@InfoSecretario,",
@@ -2149,7 +2150,7 @@ namespace jolcode
                                    "@InfoDirectorValidaciones,",
                                    "@DireccionPostal, ",
                                    "@Telefono, ",
-                                   "@Logo,@LogoPath,@Color,@PageHeader,@Template) "
+                                   "@Logo,@LogoPath,@Color,@PageHeader,@Template,@Firma,@FirmaPath) "
                         };
 
 
@@ -2187,15 +2188,25 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@PageHeader", SqlDbType.VarChar)).Value = PageHeader.Trim();
                         cmd.Parameters.Add(new SqlParameter("@Template", SqlDbType.VarChar)).Value = Template;
 
+                        cmd.Parameters.Add(new SqlParameter("@FirmaPath", SqlDbType.VarChar)).Value = Firma.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Firma", SqlDbType.Image));
+
+                        //Logo
                         FileStream stream = new FileStream(Logo, FileMode.Open, FileAccess.Read);
                         BinaryReader reader = new BinaryReader(stream);
-
                         byte[] img = reader.ReadBytes((int)stream.Length);
-
                         reader.Close();
                         stream.Close();
-
                         cmd.Parameters["@Logo"].Value = img;
+
+                        //Firma
+                        stream = new FileStream(Firma, FileMode.Open, FileAccess.Read);
+                        reader = new BinaryReader(stream);
+                        img = reader.ReadBytes((int)stream.Length);
+                        reader.Close();
+                        stream.Close();
+                        cmd.Parameters["@Firma"].Value = img;
+
 
                         int myReturn = cmd.ExecuteNonQuery();
 

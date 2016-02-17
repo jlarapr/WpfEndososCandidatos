@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfEndososCandidatos.View.Informes"
            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"  Background="Transparent"
-        Title="wpfCertificacion" Height="552.19" Width="606.074" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" >
+        Title="wpfCertificacion" Height="607.19" Width="609.074" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -18,7 +18,7 @@
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
         </Border.Effect>
         <Grid>
-            <Button x:Name="btnSalir" Command="{Binding cmdSalir_Click}" Content="Salir" HorizontalAlignment="Left" Margin="486,480,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
+            <Button x:Name="btnSalir" Command="{Binding cmdSalir_Click}" Content="Salir" HorizontalAlignment="Left" Margin="486,511,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
             <TextBox x:Name="txtHUpDerecha"  HorizontalAlignment="Left" Height="39" Margin="318,10,0,0" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding txtHUpDerecha}" VerticalAlignment="Top" Width="243"/>
             <TextBox x:Name="txtFecha"  HorizontalAlignment="Left" Height="39" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding txtFecha}" VerticalAlignment="Top" Width="291"/>
             <TextBox x:Name="txtInfoSecretario" AcceptsReturn="True" HorizontalAlignment="Left" Height="50" Margin="10,54,0,0" TextWrapping="Wrap" Text="{Binding txtInfoSecretario}" VerticalAlignment="Top" Width="291"/>
@@ -29,15 +29,17 @@
             <TextBox x:Name="txtDireccionPostal" AcceptsReturn="True" HorizontalAlignment="Left" Height="26" Margin="10,406,0,0" TextWrapping="Wrap" Text="{Binding txtDireccionPostal}" VerticalAlignment="Top" Width="243"/>
             <TextBox x:Name="txtTelefono"  HorizontalAlignment="Left" Height="26" Margin="258,406,0,0" TextWrapping="Wrap" Text="{Binding txtTelefono}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtLogo"  HorizontalAlignment="Left" Height="26" Margin="10,449,0,0" TextWrapping="Wrap" Text="{Binding txtLogo}" VerticalAlignment="Top" Width="243"/>
-            <Button x:Name="btnSave" Command="{Binding btnSave}" Content="Save" HorizontalAlignment="Left" Margin="406,480,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
+            <Button x:Name="btnSave" Command="{Binding btnSave}" Content="Save" HorizontalAlignment="Left" Margin="398,511,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
             <Button x:Name="btnLogo" Command="{Binding btnLogo}" Content="Logo" HorizontalAlignment="Left" Height="26" Margin="10,480,0,0" VerticalAlignment="Top" Width="63"/>
-            <Button x:Name="btnPrint" Command="{Binding btnPrint}" Content="Print" HorizontalAlignment="Left" Margin="326,480,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
+            <Button x:Name="btnPrint" Command="{Binding btnPrint}" Content="Print" HorizontalAlignment="Left" Margin="318,511,0,0" VerticalAlignment="Top" Width="75" Height="26"/>
             <TextBox x:Name="txtNombre"  HorizontalAlignment="Left" Height="26" Margin="258,340,0,0" TextWrapping="Wrap" Text="{Binding txtNombre}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtCargo"  HorizontalAlignment="Left" Height="26" Margin="258,375,0,0" TextWrapping="Wrap" Text="{Binding txtCargo}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtColor" CharacterCasing="Upper" FontWeight="Bold"  HorizontalAlignment="Left" Height="26" Margin="258,449,0,0" TextWrapping="Wrap" Text="{Binding txtColor}" VerticalAlignment="Top" Width="303"/>
             <TextBox x:Name="txtPageHeader"   HorizontalAlignment="Left" AcceptsReturn="True" Height="41" Margin="10,109,0,0" TextWrapping="Wrap" Text="{Binding txtPageHeader}" VerticalAlignment="Top" Width="551" />
             <TextBox x:Name="Template"  HorizontalAlignment="Left" Height="26" Margin="258,480,0,0" TextWrapping="Wrap" Text="{Binding Template}" VerticalAlignment="Top" Width="41"/>
             <Label x:Name="label" Content="Template:" HorizontalAlignment="Left" Margin="192,480,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="txtFirma"  HorizontalAlignment="Left" Height="26" Margin="10,511,0,0" TextWrapping="Wrap" Text="{Binding txtFirma}" VerticalAlignment="Top" Width="243"/>
+            <Button x:Name="btnFirma" Command="{Binding btnFirma}" Content="Firma" HorizontalAlignment="Left" Height="26" Margin="10,542,0,0" VerticalAlignment="Top" Width="63"/>
 
         </Grid>
     </Border>

@@ -311,6 +311,8 @@ namespace WpfEndososCandidatos.rpt {
             
             private global::System.Data.DataColumn columnPageHeader;
             
+            private global::System.Data.DataColumn columnFirmaComisionado;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public tblCertificacionDataTable() {
@@ -474,6 +476,14 @@ namespace WpfEndososCandidatos.rpt {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FirmaComisionadoColumn {
+                get {
+                    return this.columnFirmaComisionado;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -525,7 +535,8 @@ namespace WpfEndososCandidatos.rpt {
                         string Telefono, 
                         byte[] LogoPartido, 
                         string Color, 
-                        string PageHeader) {
+                        string PageHeader, 
+                        byte[] FirmaComisionado) {
                 tblCertificacionRow rowtblCertificacionRow = ((tblCertificacionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         HupDerecha,
@@ -543,7 +554,8 @@ namespace WpfEndososCandidatos.rpt {
                         Telefono,
                         LogoPartido,
                         Color,
-                        PageHeader};
+                        PageHeader,
+                        FirmaComisionado};
                 rowtblCertificacionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowtblCertificacionRow);
                 return rowtblCertificacionRow;
@@ -582,6 +594,7 @@ namespace WpfEndososCandidatos.rpt {
                 this.columnLogoPartido = base.Columns["LogoPartido"];
                 this.columnColor = base.Columns["Color"];
                 this.columnPageHeader = base.Columns["PageHeader"];
+                this.columnFirmaComisionado = base.Columns["FirmaComisionado"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -619,6 +632,8 @@ namespace WpfEndososCandidatos.rpt {
                 base.Columns.Add(this.columnColor);
                 this.columnPageHeader = new global::System.Data.DataColumn("PageHeader", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPageHeader);
+                this.columnFirmaComisionado = new global::System.Data.DataColumn("FirmaComisionado", typeof(byte[]), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFirmaComisionado);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1019,6 +1034,22 @@ namespace WpfEndososCandidatos.rpt {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public byte[] FirmaComisionado {
+                get {
+                    try {
+                        return ((byte[])(this[this.tabletblCertificacion.FirmaComisionadoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FirmaComisionado\' in table \'tblCertificacion\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabletblCertificacion.FirmaComisionadoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsHupDerechaNull() {
                 return this.IsNull(this.tabletblCertificacion.HupDerechaColumn);
             }
@@ -1207,6 +1238,18 @@ namespace WpfEndososCandidatos.rpt {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPageHeaderNull() {
                 this[this.tabletblCertificacion.PageHeaderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFirmaComisionadoNull() {
+                return this.IsNull(this.tabletblCertificacion.FirmaComisionadoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFirmaComisionadoNull() {
+                this[this.tabletblCertificacion.FirmaComisionadoColumn] = global::System.Convert.DBNull;
             }
         }
         
