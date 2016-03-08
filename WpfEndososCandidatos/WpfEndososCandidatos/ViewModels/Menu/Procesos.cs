@@ -266,6 +266,12 @@
                 using (vmFixLot frm = new vmFixLot())
                 {
                     frm.View.Owner = this.View as Window;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
+                    frm.SysUser = WhatIsUserName;
+
                     frm.MyOnShow();
 
                 }

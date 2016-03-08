@@ -1,0 +1,67 @@
+﻿<Window x:Class="WpfEndososCandidatos.View.Procesos.wpfSubsanar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfEndososCandidatos.View.Procesos"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        Background="Transparent"
+        Title="wpfSubsanar" Height="422.23" Width="710.87" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding initWindow}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
+        <Border.Effect>
+            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+        </Border.Effect>
+        <Grid>
+
+            <TextBlock Background="White" x:Name="txtTotalRadicaciones" HorizontalAlignment="Left" Margin="436,51,0,0" TextWrapping="Wrap" Text="{Binding txtTotalDeRadicaciones}" VerticalAlignment="Top" Width="231" Height="23"/>
+
+            <TextBlock Background="White" x:Name="txtEndorsementGroupCode" HorizontalAlignment="Left" Margin="10,10,0,0"  
+                       VerticalAlignment="Top" Width="657" Height="33" Text="{Binding Path=SelectedItem.EndorsementGroupCode ,ElementName=dataGrid, Mode=TwoWay}" FontWeight="Bold" TextDecorations="Underline" 
+                     FontSize="24"  />
+
+            <Label x:Name="label_Copy" Content="Número de Validadas:" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="135"/>
+            <Label x:Name="label_Copy1" Content="Número de InValidas:" HorizontalAlignment="Left" Margin="12,89,0,0" VerticalAlignment="Top" Width="133"/>
+            <Label x:Name="label_Copy2" Content="Total de Endosos:" HorizontalAlignment="Left" Margin="12,120,0,0" VerticalAlignment="Top" Width="127"/>
+
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="592,151,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30"/>
+            <Button Content="&lt;" Command="{Binding OnBtnBack}" HorizontalAlignment="Left" Margin="18,151,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30"/>
+            <Button Content="&gt;" Command="{Binding OnBtnNext}" HorizontalAlignment="Left" Margin="98,151,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30"/>
+
+            <DataGrid ItemsSource="{Binding Path = ReymiTable, IsAsync=True, Mode=TwoWay}" CanUserAddRows="True" AutoGenerateColumns="False" x:Name="dataGrid" Margin="10,186,10,10"
+                      SelectedIndex ="{Binding Path=SelectedValuePath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="EndorsementGroupCode" Header="EndorsementGroupCode" Binding="{Binding EndorsementGroupCode,Mode=TwoWay}" />
+                    <DataGridTextColumn x:Name="ValidatedEndorsements" Header="ValidatedEndorsements" Binding="{Binding ValidatedEndorsements,Mode=TwoWay}" />
+                    <DataGridTextColumn x:Name="RejectedEndorsements" Header="ValidatedEndorsements" Binding="{Binding RejectedEndorsements,Mode=TwoWay}" />
+                    <DataGridTextColumn x:Name="EndorsementValidationDate" Header="EndorsementValidationDate" Binding="{Binding EndorsementValidationDate,Mode=TwoWay}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBox x:Name="txtValidatedEndorsements" HorizontalAlignment="Left" Height="25" Margin="145,51,0,0" TextWrapping="Wrap" 
+                     Text="{Binding Path=SelectedItem.ValidatedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="251"/>
+            <TextBox x:Name="txtRejectedEndorsements" HorizontalAlignment="Left" Height="25" Margin="145,89,0,0" TextWrapping="Wrap" 
+                     Text="{Binding Path=SelectedItem.RejectedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="251"/>
+            <TextBlock Background="White" x:Name="txtTotalRadicaciones_Copy" HorizontalAlignment="Left" Margin="436,92,0,0" TextWrapping="Wrap" 
+                       Text="{Binding Path= SelectedItem.EndorsementValidationDate,ElementName=dataGrid,Mode=TwoWay}" VerticalAlignment="Top" Width="231" Height="23"/>
+
+            <TextBlock Background="White" x:Name="txtTotalEndososEndososEnLaRadicacion" 
+                       HorizontalAlignment="Left" Margin="145,123,0,0" TextWrapping="NoWrap" 
+                       VerticalAlignment="Top" Width="251" Height="23"
+                       Text="{Binding Path= txtTotalEndososEndososEnLaRadicacion ,   Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                       />
+            <TextBlock Background="Red" x:Name="txtTotalEndososEndososEnLaRadicacion_Copy" 
+            	HorizontalAlignment="Left" Margin="436,123,0,0" TextWrapping="NoWrap" 
+            	VerticalAlignment="Top" Width="149" Height="23" 
+            	Text="{Binding Path=SelectedItem.Amount,ElementName=dataGrid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       />
+
+        </Grid>
+    </Border>
+</Window>

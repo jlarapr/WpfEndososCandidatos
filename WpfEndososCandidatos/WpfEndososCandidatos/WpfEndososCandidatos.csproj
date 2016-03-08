@@ -258,6 +258,7 @@
     <Compile Include="ViewModels\Procesos\vmLotReceive.cs" />
     <Compile Include="ViewModels\Procesos\vmLotReverse.cs" />
     <Compile Include="ViewModels\Procesos\vmSetImages.cs" />
+    <Compile Include="ViewModels\Procesos\vmSubsanar.cs" />
     <Compile Include="ViewModels\Procesos\vmToReydi.cs" />
     <Compile Include="ViewModels\Procesos\vmVerendosos.cs" />
     <Compile Include="ViewModels\Procesos\vmVerendososReydi.cs" />
@@ -297,6 +298,9 @@
     </Compile>
     <Compile Include="View\Procesos\wpfSetImages.xaml.cs">
       <DependentUpon>wpfSetImages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfSubsanar.xaml.cs">
+      <DependentUpon>wpfSubsanar.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Procesos\wpfToReydi.xaml.cs">
       <DependentUpon>wpfToReydi.xaml</DependentUpon>
@@ -413,6 +417,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Procesos\wpfSetImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfSubsanar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
