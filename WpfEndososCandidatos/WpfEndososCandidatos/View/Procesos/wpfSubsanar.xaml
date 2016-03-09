@@ -45,9 +45,24 @@
             </DataGrid>
 
             <TextBox x:Name="txtValidatedEndorsements" HorizontalAlignment="Left" Height="25" Margin="145,51,0,0" TextWrapping="Wrap" 
-                     Text="{Binding Path=SelectedItem.ValidatedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="251"/>
+                     Text="{Binding Path=SelectedItem.ValidatedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="251">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding OnSelectionChanged}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
             <TextBox x:Name="txtRejectedEndorsements" HorizontalAlignment="Left" Height="25" Margin="145,89,0,0" TextWrapping="Wrap" 
-                     Text="{Binding Path=SelectedItem.RejectedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="251"/>
+                     Text="{Binding Path=SelectedItem.RejectedEndorsements,ElementName=dataGrid,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="251">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding OnSelectionChanged}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </TextBox>
+
+
             <TextBlock Background="White" x:Name="txtTotalRadicaciones_Copy" HorizontalAlignment="Left" Margin="436,92,0,0" TextWrapping="Wrap" 
                        Text="{Binding Path= SelectedItem.EndorsementValidationDate,ElementName=dataGrid,Mode=TwoWay}" VerticalAlignment="Top" Width="231" Height="23"/>
 
