@@ -34,19 +34,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtTotalEndososEndososEnLaRadicacion;
         private int _RejectedEndorsements;
         private int _SelectedValuePath;
+        private bool _isDGEnable;
 
         public vmSubsanar() : base (new wpfSubsanar() )
         {
             initWindow = new RelayCommand(param => MyInitWindow());
-            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            OnBtnBack = new RelayCommand(param => MyOnBtnBack());
-            OnBtnNext = new RelayCommand(param => MyOnBtnNext());
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(),param => MyCmdSalir_Click_Can);
+            OnBtnBack = new RelayCommand(param => MyOnBtnBack(),param=> MyCmdSalir_Click_Can);
+            OnBtnNext = new RelayCommand(param => MyOnBtnNext(),param=> MyCmdSalir_Click_Can);
             OnSelectionChanged = new RelayCommand(param => MyOnSelectionChanged());
-
+            onCancel = new RelayCommand(param => MyonCancel());
             NumeroDeRadicacion = new ObservableCollection<ListaNumeroEndosos>();
         }
 
-       
+      
 
         public string tableReydi
         {
@@ -54,6 +55,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public string DBRadicacionesCEECnnStr { get; set; }
         public ObservableCollection<ListaNumeroEndosos> NumeroDeRadicacion { get; set; }
+
+        public bool isDGEnable
+        {
+            get
+            {
+                return _isDGEnable;
+            }set
+            {
+                _isDGEnable = value;
+                this.RaisePropertychanged("isDGEnable");
+            }
+        }
         public string txtTotalEndososEndososEnLaRadicacion
         {
             get
@@ -170,6 +183,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             get;private set;
         }
+        public RelayCommand onCancel
+        {
+            get;private set;
+        }
+        public bool MyCmdSalir_Click_Can { get; private set; }
 
         private void MyInitWindow()
         {
@@ -249,7 +267,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     string r = ReymiTable.Table.Rows[SelectedValuePath]["RejectedEndorsements"].ToString();
 
                     int t = int.Parse(v) + int.Parse(r);
+
                     txtTotalEndososEndososEnLaRadicacion = t.ToString("###,###,##0");
+
+                    // MyCmdSalir_Click_Can = true;
+
+                   
 
                     //DataView dataView = ReymiTable.DefaultView;
 
@@ -265,7 +288,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
             catch (Exception ex)
             {
-
+                MyCmdSalir_Click_Can = false;
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -316,16 +339,24 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         private void MyOnSelectionChanged()
         {
+            MyCmdSalir_Click_Can = false;
+
             string v = ReymiTable.Table.Rows[SelectedValuePath]["ValidatedEndorsements"].ToString();
             string r = ReymiTable.Table.Rows[SelectedValuePath]["RejectedEndorsements"].ToString();
 
             int t = int.Parse(v) + int.Parse(r);
-
-
-
+            
             txtTotalEndososEndososEnLaRadicacion = t.ToString("###,###,##0");
 
-            
+            int totaldeendososenrydi = int.Parse(ReymiTable.Table.Rows[SelectedValuePath]["Amount"].ToString());
+
+            if (t == totaldeendososenrydi)
+                MyCmdSalir_Click_Can = true;
+
+
+
+            isDGEnable = MyCmdSalir_Click_Can;
+
 
         }
         public void MyCmdSalir_Click()
@@ -342,6 +373,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void MyonCancel()
+        {
+            this.View.Close();
         }
 
         #region Dispose

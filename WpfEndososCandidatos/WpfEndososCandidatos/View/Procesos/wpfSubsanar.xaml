@@ -25,8 +25,8 @@
                        VerticalAlignment="Top" Width="657" Height="33" Text="{Binding Path=SelectedItem.EndorsementGroupCode ,ElementName=dataGrid, Mode=TwoWay}" FontWeight="Bold" TextDecorations="Underline" 
                      FontSize="24"  />
 
-            <Label x:Name="label_Copy" Content="Número de Validadas:" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="135"/>
-            <Label x:Name="label_Copy1" Content="Número de InValidas:" HorizontalAlignment="Left" Margin="12,89,0,0" VerticalAlignment="Top" Width="133"/>
+            <Label x:Name="label_Copy" Content="Número de Válidadas:" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="135"/>
+            <Label x:Name="label_Copy1" Content="Número de InVálidas:" HorizontalAlignment="Left" Margin="12,89,0,0" VerticalAlignment="Top" Width="133"/>
             <Label x:Name="label_Copy2" Content="Total de Endosos:" HorizontalAlignment="Left" Margin="12,120,0,0" VerticalAlignment="Top" Width="127"/>
 
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="592,151,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30"/>
@@ -35,11 +35,11 @@
 
             <DataGrid ItemsSource="{Binding Path = ReymiTable, IsAsync=True, Mode=TwoWay}" CanUserAddRows="True" AutoGenerateColumns="False" x:Name="dataGrid" Margin="10,186,10,10"
                       SelectedIndex ="{Binding Path=SelectedValuePath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                      >
+                      IsEnabled="{Binding isDGEnable,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="EndorsementGroupCode" Header="EndorsementGroupCode" Binding="{Binding EndorsementGroupCode,Mode=TwoWay}" />
                     <DataGridTextColumn x:Name="ValidatedEndorsements" Header="ValidatedEndorsements" Binding="{Binding ValidatedEndorsements,Mode=TwoWay}" />
-                    <DataGridTextColumn x:Name="RejectedEndorsements" Header="ValidatedEndorsements" Binding="{Binding RejectedEndorsements,Mode=TwoWay}" />
+                    <DataGridTextColumn x:Name="RejectedEndorsements" Header="RejectedEndorsements" Binding="{Binding RejectedEndorsements,Mode=TwoWay}" />
                     <DataGridTextColumn x:Name="EndorsementValidationDate" Header="EndorsementValidationDate" Binding="{Binding EndorsementValidationDate,Mode=TwoWay}" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -76,6 +76,7 @@
             	VerticalAlignment="Top" Width="149" Height="23" 
             	Text="{Binding Path=SelectedItem.Amount,ElementName=dataGrid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        />
+            <Button Content="Cancel" Command="{Binding onCancel}" HorizontalAlignment="Left" Margin="510,151,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30"/>
 
         </Grid>
     </Border>
