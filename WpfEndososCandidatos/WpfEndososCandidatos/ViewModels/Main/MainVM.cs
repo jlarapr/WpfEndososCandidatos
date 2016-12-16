@@ -216,6 +216,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch(Exception ex)
             {
+                MessageBox.Show(ex.ToString(), "Error-MyOnInitWindow", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception("Error en el EventLog " + ex.ToString());
             }
 
