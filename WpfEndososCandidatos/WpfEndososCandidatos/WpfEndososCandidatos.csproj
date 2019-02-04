@@ -86,15 +86,16 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -104,7 +105,7 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -532,6 +533,8 @@
       <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="app.manifest" />
+    <None Include="dbBk\dbEndososPartidos.bak" />
+    <None Include="dbBk\Digitalizacion.bak" />
     <None Include="Models\EndososPartidos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
@@ -589,6 +592,20 @@
     <Resource Include="Images\Logo CEE.JPG" />
     <Resource Include="Images\Logo CEE1.JPG" />
     <Content Include="Dll\EPPlus.dll" />
+    <Content Include="Dll\System.Windows.Interactivity.dll" />
+    <Content Include="Dll\txtCandidato_XY.dll" />
+    <Content Include="Dll\txtCargo_XY.dll" />
+    <Content Include="Dll\txtFchEndosoEntregada_XY.dll" />
+    <Content Include="Dll\txtFchEndoso_XY.dll" />
+    <Content Include="Dll\txtFechaNac_XY.dll" />
+    <Content Include="Dll\txtFirmaElec_XY.dll" />
+    <Content Include="Dll\txtNombre_XY.dll" />
+    <Content Include="Dll\txtNotarioElec_XY.dll" />
+    <Content Include="Dll\txtNotarioFirma_XY.dll" />
+    <Content Include="Dll\txtNumElec_XY.dll" />
+    <Content Include="Dll\txtPrecinto_XY.dll" />
+    <Content Include="Dll\txtSex_XY.dll" />
+    <Content Include="Dll\Xceed.Wpf.Toolkit.dll" />
     <Content Include="Models\CREATEDATABASE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
