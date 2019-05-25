@@ -8,6 +8,7 @@ namespace WpfEndososCandidatos.Models
 {
     class Partidos : IEquatable<Partidos>, IComparable
     {
+        public int Id { get; set; }
         public string PartidoKey { get; set; }
         public string Desc { get; set; }
         public int EndoReq { get; set; }
@@ -17,10 +18,11 @@ namespace WpfEndososCandidatos.Models
         {
             List<string> myOut = new List<string>()
             {
-               PartidoKey.Trim(),
-               Desc.Trim(),
-               EndoReq.ToString(),
-               Area.ToString()
+                PartidoKey.Trim(),
+                Desc.Trim(),
+                EndoReq.ToString(),
+                Area.ToString(),
+                Id.ToString(),
             };
             string myJoined = string.Join(" - ", myOut);
             return myJoined;

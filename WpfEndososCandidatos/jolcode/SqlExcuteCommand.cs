@@ -2365,7 +2365,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeNotario(bool isInsert, string NumElec, string NumCand, string Nombre, string Apellido1, string Apellido2,string Status , string where)
+        public bool MyChangeNotario(bool isInsert, string NumElec,String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2,string Status , string where)
         {
             bool myBoolReturn = false;
             try
@@ -2374,14 +2374,15 @@ namespace jolcode
 
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Notarios] ([NumElec],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status]) ",
-                            "VALUES (@NumElec,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status)"
+                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status]) ",
+                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status)"
                         };
 
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Notarios] ",
                             "SET [NumElec] = @NumElec,",
+                            "[Partido] = @Partido",
                             "[NumCand] = @NumCand,",
                             "[Nombre] = @Nombre,",
                             "[Apellido1] = @Apellido1,",
@@ -2406,6 +2407,7 @@ namespace jolcode
                             cnn.Open();
 
                         cmd.Parameters.Add(new SqlParameter("@NumElec", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@NumCand", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Apellido1", SqlDbType.VarChar));
@@ -2416,6 +2418,7 @@ namespace jolcode
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
 
                         cmd.Parameters["@NumElec"].Value = NumElec.Trim();
+                        cmd.Parameters["@Partido"].Value = Partido.Trim();
                         cmd.Parameters["@NumCand"].Value = NumCand.Trim();
                         cmd.Parameters["@Nombre"].Value = Nombre.Trim();
                         cmd.Parameters["@Apellido1"].Value = Apellido1.Trim();

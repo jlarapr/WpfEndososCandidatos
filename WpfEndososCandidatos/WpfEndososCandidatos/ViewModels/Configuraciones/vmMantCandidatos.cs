@@ -646,7 +646,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     foreach (DataRow row in _MyPartidosTable.Rows)
                     {
                         Partidos mypartido = new Partidos();
-
+                        mypartido.Id = (int)row["Id"];
                         mypartido.PartidoKey = row["Partido"].ToString();
                         mypartido.Desc = row["Desc"].ToString();
                         mypartido.EndoReq = (int)row["EndoReq"];

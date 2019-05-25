@@ -58,7 +58,7 @@
                              CharacterCasing="Upper"
                              
                              />
-                    <Label x:Name="lblAspirante" Content="Aspirante" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lblAspirante" Content="Aspirante | Partido" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="23" Margin="10,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="304"
                              Text="{Binding txtNombre}"
                              Background="{Binding Background_txtNombre}"
@@ -67,7 +67,7 @@
                              IsReadOnly="{Binding IsReadOnly_txtNombre}"
                              
                              />
-                    <ComboBox x:Name="cbAspirante" HorizontalAlignment="Left" Margin="10,324,0,0" VerticalAlignment="Top" Width="326"
+                    <ComboBox x:Name="cbAspirante" HorizontalAlignment="Left" Margin="10,324,0,0" VerticalAlignment="Top" Width="151"
                     	ItemsSource="{Binding cbAspirante}"
                     	SelectedItem="{Binding cbAspirante_Item, Mode=TwoWay}"                                     
                     	SelectedIndex="{Binding cbAspirante_Item_Id, Mode=TwoWay}"
@@ -128,6 +128,14 @@
                     <Button x:Name="cmdFind_Copy" Content="Buscar..." HorizontalAlignment="Left" Margin="102,293,0,0" VerticalAlignment="Top" Width="59"
                     	Command="{Binding cmdFindAspirante_Click}" Height="23"
                             />
+                    <ComboBox x:Name="cbPartidos" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165"
+                        ItemsSource="{Binding cbPartidos}"
+                        SelectedItem="{Binding cbPartidos_Item, Mode=TwoWay}"                                     
+                        SelectedIndex="{Binding cbPartidos_Item_Id, Mode=TwoWay}"
+                        Visibility="{Binding Visibility_cbPartidos}" Height="23"
+                        IsEnabled="{Binding IsEnabled_cbPartidos}"
+                        Margin="166,324,0,0"
+                              />
                 </Grid>
             </GroupBox>
 
