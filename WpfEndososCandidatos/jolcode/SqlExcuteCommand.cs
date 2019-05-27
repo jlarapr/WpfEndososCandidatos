@@ -1026,7 +1026,48 @@ namespace jolcode
             return myTableReturn;
         }
 
-    
+
+
+        public DataTable MyGetPartidos(String IdPartido)
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                //string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
+                string mySqlstr = "Select * from Partidos where id=" +IdPartido +";" ;
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetPartidos Error");
+            }
+            return myTableReturn;
+        }
 
 
         public DataTable MyGetNotarios()

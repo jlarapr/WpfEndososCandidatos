@@ -63,8 +63,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _PDFPath;
         private string _DBRadicacionesCEECnnStr;
 
-        public vmMantCandidatos() 
-            : base (new wpfMantCadidatos() )
+        public vmMantCandidatos()
+            : base(new wpfMantCadidatos())
         {
             InitWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
@@ -73,7 +73,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cmdSave_Click = new RelayCommand(param => MyCmdSave_Click(), param => MyCanSave);
             cmdDelete_Click = new RelayCommand(param => MyCmdDelete_Click());
             cmdAdd_Click = new RelayCommand(param => MyCmdAdd_Click());
-            cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(),param => CanFind);
+            cmdFind_Click = new RelayCommand(param => MyCmdFind_Click(), param => CanFind);
             mnuCertificacion_click = new RelayCommand(param => MymnuCertificacion_click());
 
             cbNombre = new ObservableCollection<string>();
@@ -118,7 +118,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _Background_txtEndoReq;
-            }set
+            }
+            set
             {
                 _Background_txtEndoReq = value;
                 this.RaisePropertychanged("Background_txtEndoReq");
@@ -140,7 +141,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _DBImagenesCnnStr;
-            }set
+            }
+            set
             {
                 _DBImagenesCnnStr = value;
             }
@@ -151,7 +153,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _DBRadicacionesCEECnnStr;
-            }set
+            }
+            set
             {
                 _DBRadicacionesCEECnnStr = value;
             }
@@ -162,7 +165,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _PDFPath;
-            }set
+            }
+            set
             {
                 _PDFPath = value;
             }
@@ -238,7 +242,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     {
                         _txtEndoReq = value.Trim();
                         this.RaisePropertychanged("txtEndoReq");
-                    }else
+                    }
+                    else
                     {
                         _txtEndoReq = string.Empty;
                         this.RaisePropertychanged("txtEndoReq");
@@ -257,8 +262,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _IsChecked_rbCargos;
-            }set
-            { 
+            }
+            set
+            {
                 _IsChecked_rbCargos = value;
                 this.RaisePropertychanged("IsChecked_rbCargos");
             }
@@ -336,13 +342,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _IsEnabled_cmdSalir = value;
                 this.RaisePropertychanged("IsEnabled_cmdSalir");
             }
-        }        
+        }
         public bool IsEnabled_gbCargo
         {
             get
             {
                 return _IsEnabled_gbCargo;
-            }set
+            }
+            set
             {
                 _IsEnabled_gbCargo = value;
                 this.RaisePropertychanged("IsEnabled_gbCargo");
@@ -365,7 +372,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _IsReadOnly_txtEndoReq;
-            }set
+            }
+            set
             {
                 _IsReadOnly_txtEndoReq = value;
                 this.RaisePropertychanged("IsReadOnly_txtEndoReq");
@@ -377,7 +385,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _IsEnabled_cbArea;
-            }set
+            }
+            set
             {
                 _IsEnabled_cbArea = value;
                 this.RaisePropertychanged("IsEnabled_cbArea");
@@ -388,7 +397,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _IsEnabled_cbPartidos;
-            }set
+            }
+            set
             {
                 _IsEnabled_cbPartidos = value;
                 this.RaisePropertychanged("IsEnabled_cbPartidos");
@@ -425,7 +435,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             get
             {
                 return _Visibility_cbNombre;
-            }set
+            }
+            set
             {
                 _Visibility_cbNombre = value;
                 this.RaisePropertychanged("Visibility_cbNombre");
@@ -460,7 +471,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNumCandidato = myData[1].ToString();
                     txtEndoReq = myData[5].ToString();
                     int i;
-                    if (int.TryParse(myData[4].ToString(), out i)) 
+                    if (int.TryParse(myData[4].ToString(), out i))
                         IsChecked_rbCargos[i] = true;
 
                     _cbNombre_Item = value;
@@ -488,13 +499,14 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 this.RaisePropertychanged("cbNombre_Item_Id");
             }
         }
-      
+
         public ObservableCollection<Partidos> cbPartidos
         {
             get
             {
                 return _cbPartidos;
-            }set
+            }
+            set
             {
                 _cbPartidos = value;
                 this.RaisePropertychanged("cbPartidos");
@@ -560,10 +572,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
             set
             {
-              
+
                 _cbArea_Item_Id = value;
 
-               
+
                 this.RaisePropertychanged("cbArea_Item_Id");
             }
         }
@@ -668,7 +680,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }        
+        }
         public bool? MyOnShow()
         {
             return this.View.ShowDialog();
@@ -729,12 +741,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         {
             try
             {
-                if ((txtNumCandidato.Trim().Length == 0) || (txtNombre.Trim().Length == 0) || (txtEndoReq.Trim().Length == 0) )
+                if ((txtNumCandidato.Trim().Length == 0) || (txtNombre.Trim().Length == 0) || (txtEndoReq.Trim().Length == 0))
                     return;
 
-                if (cbArea_Item_Id < 0 || cbPartidos_Item_Id <0 )
+                if (cbArea_Item_Id < 0 || cbPartidos_Item_Id < 0)
                     return;
-               
+
 
                 bool myUpDate = false;
 
@@ -755,22 +767,22 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = _DBEndososCnnStr
                 })
                 {
-                    string myPartido= cbPartidos_Item.Split('-')[0].Trim();
-                    string myNumCand= txtNumCandidato.Trim();
-                    string myNombre= txtNombre.Trim();
+                    string myPartido = cbPartidos_Item.Split('-')[0].Trim();
+                    string myNumCand = txtNumCandidato.Trim();
+                    string myNombre = txtNombre.Trim();
                     string myArea = cbArea_Item.Split('-')[0].Trim();
-                    int myCargo=0;
-                    string myEndoReq= txtEndoReq.Trim();
+                    int myCargo = 0;
+                    string myEndoReq = txtEndoReq.Trim();
 
 
-                    for (int rb =0; rb <9;rb++)
+                    for (int rb = 0; rb < 9; rb++)
                         if (IsChecked_rbCargos[rb] == true)
                         {
-                            myCargo =rb;
+                            myCargo = rb;
                             break;
                         }
 
-                    
+
                     myUpDate = mySqlExe.MyChangeCandidatos(_IsInsert, myPartido, myNumCand, myNombre, myArea, myCargo.ToString(), myEndoReq, myWhere);
                 }
 
@@ -798,18 +810,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 if ((txtNumCandidato == null) || (txtNombre == null) || (txtEndoReq == null) || (_IsEdit == false))
                     return false;
 
-                if ((txtNumCandidato.Trim().Length == 0) || (txtNombre.Trim().Length == 0) ||(txtEndoReq.Trim().Length ==0) )
+                if ((txtNumCandidato.Trim().Length == 0) || (txtNombre.Trim().Length == 0) || (txtEndoReq.Trim().Length == 0))
                     return false;
 
-                if (cbArea_Item_Id <0)
+                if (cbArea_Item_Id < 0)
                     return false;
 
-                if (cbPartidos_Item_Id <0)
+                if (cbPartidos_Item_Id < 0)
                     return false;
 
                 foreach (bool rb in IsChecked_rbCargos)
                     if (rb == true)
-                        return true; 
+                        return true;
 
                 return false;
             }
@@ -907,30 +919,53 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNumCandidato = txtNumCandidato.PadLeft(7, '0');
 
                     DataTable myTable = get.MyGetCitizen(txtNumCandidato);
-                    if (myTable.Rows.Count == 0)
-                        throw new Exception("Número electoral invalido.");
+                    bool mIsPartido = false;
 
-                    txtNombre = myTable.Rows[0]["FirstName"].ToString() + " " + myTable.Rows[0]["LastName1"].ToString()+" "+ myTable.Rows[0]["LastName2"].ToString();
+                    if (myTable.Rows.Count == 0)
+                    {
+                        int id = 0; int.TryParse(txtNumCandidato, out id);
+                        get.DBCnnStr = DBEndososCnnStr;
+                        myTable = get.MyGetPartidos(id.ToString());
+
+
+                        if (myTable.Rows.Count == 0)
+                            throw new Exception("Número electoral invalido.");
+                        else
+                            mIsPartido = true;
+                    }
+
+                    if (!mIsPartido)
+                    {
+                        txtNombre = myTable.Rows[0]["FirstName"].ToString() + " " + myTable.Rows[0]["LastName1"].ToString() + " " + myTable.Rows[0]["LastName2"].ToString();
+                        switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                        {
+                            case "A":
+                                txtStatusElec = "A";
+                                break;
+                            case "E":
+                                //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                                txtStatusElec = "E";
+                                break;
+                            case "I":
+                                txtStatusElec = "I";
+                                //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                break;
+                            default:
+                                txtStatusElec = "?";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        txtNombre = myTable.Rows[0]["Desc"].ToString();
+                        txtEndoReq = myTable.Rows[0]["EndoReq"].ToString();
+                    }
+
                     //txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
                     //txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
 
-                    switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
-                    {
-                        case "A":
-                            txtStatusElec = "A";
-                            break;
-                        case "E":
-                            //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                            txtStatusElec = "E";
-                            break;
-                        case "I":
-                            txtStatusElec = "I";
-                            //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            break;
-                        default:
-                            txtStatusElec = "?";
-                            break;
-                    }
+
+                    
 
 
                 }
@@ -939,7 +974,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-               // _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
+                // _LogClass.MYEventLog.WriteEntry(string.Concat(ex.Message, "\r\n", site.Name), EventLogEntryType.Error, 9999);
                 MyReset();
             }
         }
@@ -947,7 +982,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         public RelayCommand InitWindow
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdSalir_Click
         {
@@ -994,7 +1029,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     frm.PDFPath = PDFPath;
                     frm.Nombre = cbNombre_Item;
                     frm.Area = cbArea_Item;
-                    frm.Total = int.Parse( txtEndoReq );
+                    frm.Total = int.Parse(txtEndoReq);
 
                     frm.MyOnShow();
 
@@ -1015,7 +1050,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private void MyReset()
         {
             IsChecked_rbCargos.Clear();
-            for (int i = 0; i<9; i++)
+            for (int i = 0; i < 9; i++)
                 IsChecked_rbCargos.Add(false);
 
             IsEnabled_cmdAdd = true;
@@ -1064,7 +1099,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 foreach (DataRow row in _MyCandidatosTable.Rows)
                 {
                     Candidatos myCand = new Candidatos();
-                            
+
                     myCand.Partido = row["Partido"].ToString();
                     myCand.NumCand = row["NumCand"].ToString();
                     myCand.Nombre = row["Nombre"].ToString();

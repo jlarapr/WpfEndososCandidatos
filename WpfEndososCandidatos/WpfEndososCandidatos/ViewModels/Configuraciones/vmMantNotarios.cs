@@ -42,13 +42,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private bool _IsReadOnly_txtNombreAspirante;
         private Brush _Background_txtNombreAspirante;
         private ObservableCollection<Candidatos> _cbAspirante;
-        private ObservableCollection<Partidos> _cbPartidos;
-        private string _cbPartidos_Item;
-        private int _cbPartidos_Item_Id;
+        //private ObservableCollection<Partidos> _cbPartidos;
+        //private string _cbPartidos_Item;
+        //private int _cbPartidos_Item_Id;
         private bool _IsEnabled_cbPartidos;
         private string _cbAspirante_Item;
         private int _cbAspirante_Item_Id;
-        DataTable _MyPartidosTable;
+        //DataTable _MyPartidosTable;
         private DataTable _MyAspiranteTable;
         private DataTable _MyNotarioTable;
         private string _txtNombreAspirante;
@@ -95,7 +95,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             cbAspirante = new ObservableCollection<Candidatos>();
             cbNotario = new ObservableCollection<Notarios>();
-            cbPartidos = new ObservableCollection<Partidos>();
+
             _LogClass = new Logclass();
         }
 
@@ -492,7 +492,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                             txtApellido2 = string.Empty;
                             txtNombre = string.Empty;
                             cbAspirante_Item_Id = -1;
-                            cbPartidos_Item_Id = -1;
+
                             txtNombreAspirante = string.Empty;
                             txtStatusElec = string.Empty;
 
@@ -507,7 +507,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         txtApellido2 = string.Empty;
                         txtNombre = string.Empty;
                         cbAspirante_Item_Id = -1;
-                        cbPartidos_Item_Id = -1;
+
                         txtNombreAspirante = string.Empty;
                         txtStatusElec = string.Empty;
                         this.RaisePropertychanged("txtNumElec");
@@ -627,48 +627,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             }
         }
 
-        public ObservableCollection<Partidos> cbPartidos
-        {
-            get
-            {
-                return _cbPartidos;
-            }
-            set
-            {
-                _cbPartidos = value;
-                this.RaisePropertychanged("cbPartidos");
-            }
-        }
 
-        public string cbPartidos_Item
-        {
-            get
-            {
-                return _cbPartidos_Item;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    _cbPartidos_Item = value;
-                    txtNombreAspirante = value;
-                    cbAspirante_Item_Id = -1;
-                    this.RaisePropertychanged("cbPartidos_Item");
-                }
-            }
-        }
-        public int cbPartidos_Item_Id
-        {
-            get
-            {
-                return _cbPartidos_Item_Id;
-            }
-            set
-            {
-                _cbPartidos_Item_Id = value;
-                this.RaisePropertychanged("cbPartidos_Item_Id");
-            }
-        }
+
+
+
 
         public Visibility Visibility_cbPartidos
         {
@@ -740,7 +702,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     if (!string.IsNullOrEmpty(txtNumElecAspirante))
                         txtNumElecAspirante = string.Empty;
 
-                    cbPartidos_Item_Id = -1;
+
+
                     _cbAspirante_Item_Id = value;
 
                     this.RaisePropertychanged("cbAspirante_Item_Id");
@@ -1037,7 +1000,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _IsInsert = true;
                 _isEdit = true;
                 cbAspirante_Item_Id = -1;
-                cbPartidos_Item_Id = -1;
+
+
 
             }
             catch (Exception ex)
@@ -1155,7 +1119,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             _isEdit = false;
             cbAspirante_Item_Id = -1;
             cbNotario_Item_Id = -1;
-            cbPartidos_Item_Id = -1;
+
+
         }
 
         private void MyRefresh()
@@ -1169,7 +1134,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 {
                     _MyNotarioTable = get.MyGetNotarios();
                     _MyAspiranteTable = get.MyGetCandidatos();
-                    _MyPartidosTable = get.MyGetPartidos();
 
                     cbAspirante.Clear();
                     foreach (DataRow row in _MyAspiranteTable.Rows)
@@ -1184,21 +1148,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         cbAspirante.Add(myCand);
                     }
                     cbAspirante_Item_Id = -1;
-
-                    cbPartidos.Clear();
-                    foreach (DataRow row in _MyPartidosTable.Rows)
-                    {
-                        Partidos mypartido = new Partidos();
-                        mypartido.Id = (int)row["Id"];
-                        mypartido.PartidoKey = row["Partido"].ToString();
-                        mypartido.Desc = row["Desc"].ToString();
-                        mypartido.EndoReq = (int)row["EndoReq"];
-                        mypartido.Area = row["Area"].ToString();
-
-                        cbPartidos.Add(mypartido);
-                    }
-                    cbPartidos.Sort();
-                    cbPartidos_Item_Id = -1;
 
                     cbNotario.Clear();
                     foreach (DataRow row in _MyNotarioTable.Rows)
