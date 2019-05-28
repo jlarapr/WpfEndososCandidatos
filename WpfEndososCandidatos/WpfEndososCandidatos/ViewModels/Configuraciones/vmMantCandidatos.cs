@@ -959,6 +959,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     {
                         txtNombre = myTable.Rows[0]["Desc"].ToString();
                         txtEndoReq = myTable.Rows[0]["EndoReq"].ToString();
+                        String area = myTable.Rows[0]["Area"].ToString();
+                        IsChecked_rbCargos[0] = true;
+                        cbArea_Item_Id = FindByArea(area);
                     }
 
                     //txtApellido1 = myTable.Rows[0]["LastName1"].ToString();

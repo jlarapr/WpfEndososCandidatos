@@ -61,8 +61,8 @@
 
                     frmfLogin.OnShow();
 
-
-                    Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
+                    Title = String.Format("CEE Systema de Validación de Endosos " + "Version {0}", AssemblyVersion);
+                    //Title = String.Format("CEE Endosos Candidatos 2015 Version {0}", AssemblyVersion);
                     if (frmfLogin.View.DialogResult == false)
                         return;
 

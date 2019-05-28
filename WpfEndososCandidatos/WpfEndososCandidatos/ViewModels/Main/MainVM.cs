@@ -185,7 +185,7 @@ namespace WpfEndososCandidatos.ViewModels
         private void MyOnInitWindow()
         {
             String yy = System.DateTime.Now.ToString("yyyy");
-            Title = String.Format("CEE Endosos Candidatos " + yy + " Version {0}", AssemblyVersion);
+            Title = String.Format("CEE Systema de Validación de Endosos " + yy + " Version {0}", AssemblyVersion);
             Dia = DateTime.Now.ToString("MMM/dd/yyyy");
             Hora = DateTime.Now.ToString("hh:mm:ss tt");
 

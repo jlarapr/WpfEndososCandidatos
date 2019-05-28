@@ -608,6 +608,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
             switch (Cargo)
             {
+                case "0": //Partido
+                    Cargo = "Partido";
+                    break;
                 case "1": //isla
                     Cargo = "Gobernador";
                     break;

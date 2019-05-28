@@ -48,7 +48,7 @@
             			Content="{Binding lblCount}"
             			Background="Gray" Height="53" HorizontalAlignment="Left" Width="270"
                    />
-                    <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="142,97,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
+                    <TextBox IsReadOnly="False" HorizontalAlignment="Left" Height="23" Margin="142,97,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
                     	Text="{Binding cantidadEntregada}"
                      />
                     <Label Content="Cantidad Entregadas" HorizontalAlignment="Left" Margin="142,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.908,0.5" Width="120"/>

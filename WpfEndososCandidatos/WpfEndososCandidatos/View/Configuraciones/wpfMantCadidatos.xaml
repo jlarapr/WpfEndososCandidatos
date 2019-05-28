@@ -46,10 +46,10 @@
         <Grid>
             <Label
                 x:Name="lblNumPartido"
-                Margin="11,60,0,0"
+                Margin="11,77,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Num. Candidat:o" Height="23" Width="97"  />
+                Content="Num. Partido o Candidato:" Height="29" Width="161"  />
             <Label
                 x:Name="lblNombre"
                 Width="149"
@@ -323,7 +323,7 @@
                 x:Name="label6_Copy1"
                 Width="56"
                 Height="26"
-                Margin="184,80,0,0"
+                Margin="218,80,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Status :" />
@@ -331,7 +331,7 @@
                 x:Name="txtSatatusElec"
                 Width="106"
                 Height="26"
-                Margin="0,108,281,0"
+                Margin="0,108,247,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"

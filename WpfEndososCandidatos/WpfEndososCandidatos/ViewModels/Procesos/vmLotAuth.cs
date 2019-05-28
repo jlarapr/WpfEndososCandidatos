@@ -18,10 +18,10 @@
     using System.Windows.Media;
     using WpfEndososCandidatos.View;
 
-    class vmLotAuth : ViewModelBase<IDialogView>,IDisposable 
+    class vmLotAuth : ViewModelBase<IDialogView>, IDisposable
     {
         private string _numLote;
-        private int  _cantidad;
+        private int _cantidad;
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
         private string _DBEndososCnnStr;
@@ -39,7 +39,7 @@
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click(),param=>CanAddLot);
+            cmdAddLot_Click = new RelayCommand(param => MyCmdAddLot_Click(), param => CanAddLot);
             cmdAddTodoLot_Click = new RelayCommand(param => MyCmdAddTodoLot_Click());
             cmdRefresh_Click = new RelayCommand(param => MycmdRefresh_Click());
             _LogClass = new Logclass();
@@ -52,10 +52,11 @@
             get
             {
                 return _cantidadEntregada;
-            }set
+            }
+            set
             {
-          
-                    _cantidadEntregada = value;
+
+                _cantidadEntregada = value;
                 this.RaisePropertychanged("cantidadEntregada");
             }
         }
@@ -72,7 +73,7 @@
                     _numLote = value;
                     this.RaisePropertychanged("numLote");
                 }
-                    
+
             }
         }
         public Brush BorderBrush
@@ -99,17 +100,18 @@
             }
             set
             {
-                    _cantidad = value;
-                    this.RaisePropertychanged("cantidad");
+                _cantidad = value;
+                this.RaisePropertychanged("cantidad");
             }
-            
+
         }
         public string DBEndososCnnStr
         {
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -119,7 +121,8 @@
             get
             {
                 return _DBRadicacionesCEECnnStr;
-            }set
+            }
+            set
             {
                 _DBRadicacionesCEECnnStr = value;
             }
@@ -129,7 +132,8 @@
             get
             {
                 return _SysUser;
-            }set
+            }
+            set
             {
                 _SysUser = value;
             }
@@ -146,7 +150,8 @@
             get
             {
                 return _lblCount;
-            }set
+            }
+            set
             {
                 _lblCount = "Total de Lotes Disponibles: " + value;
                 this.RaisePropertychanged("lblCount");
@@ -177,7 +182,7 @@
                 if (value != null)
                 {
 
-                   // string[] tmp = value.Split('-');
+                    // string[] tmp = value.Split('-');
                     //numLote = tmp[0].ToString();
                     numLote = value.Trim();
                     //cantidad = 0;
@@ -188,7 +193,8 @@
 
 
 
-                    try {
+                    try
+                    {
                         using (SqlExcuteCommand get = new SqlExcuteCommand()
                         {
                             DBCnnStr = DBEndososCnnStr,
@@ -198,11 +204,12 @@
                             cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
                             cantidad = get.MyGetCatntidadDigitalizada(numLote);
                         }
-                    }catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                         MyReset();
-                       
+
                     }
 
                 }
@@ -231,7 +238,7 @@
             {
                 jolcode.Code.AplicarEfecto(View as Window);
                 jolcode.Code.DoEvents();
-              
+
 
 
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
@@ -244,28 +251,33 @@
                     if (cantidad != cantidadEntregada)
                         throw new Exception("Error en la Cantidad");
 
-                    object EndososDate = get.MyReydiEndososDate(numLote);
+                    //                    object EndososDate = get.MyReydiEndososDate(numLote);
+
+                    //                  if (EndososDate.ToString() == "???")
+                    //                    throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
+
+                    //              get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
+
+                    DateTime mDate = DateTime.Now;
+
+                    get.MyTFJuramentoDate(numLote, mDate);
 
 
-                    if (EndososDate.ToString() == "???")
-                        throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
-
-                    get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
-                                    
-
-                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote,cantidad.ToString()), SysUser,EndososDate))
+                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate))   // EndososDate))
                         throw new Exception("Error en la base de datos. *MyChangeTF*");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+
                 }
                 MyReset();
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }finally
+            }
+            finally
             {
                 jolcode.Code.QuitarEfecto(View as Window);
             }
@@ -279,8 +291,8 @@
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    
-                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser,""))
+
+                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser, ""))
                         throw new Exception("Error en la base de datos.");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -378,7 +390,7 @@
         }
         public RelayCommand cmdRefresh_Click
         {
-            get;private set;
+            get; private set;
         }
         #endregion
 
@@ -386,7 +398,7 @@
 
         private void MyReset()
         {
-         
+
 
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
@@ -448,7 +460,7 @@
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
 
     }//end
