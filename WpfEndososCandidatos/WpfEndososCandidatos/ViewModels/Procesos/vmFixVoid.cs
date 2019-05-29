@@ -1018,7 +1018,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
-                for (int idx = 0; idx <= 20; idx++)
+                for (int idx = 0; idx <= 21; idx++)
                 {
                     txtColor.Add(Brushes.White);
                 }
@@ -2197,7 +2197,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 txtColor[idx] = Brushes.Green;
 
-                if ((idx == 11) || (idx==20))
+                if ((idx == 11) || (idx==20) || idx==21)
                     txtColor[6] = Brushes.Green;
 
                 if (idx == 19)

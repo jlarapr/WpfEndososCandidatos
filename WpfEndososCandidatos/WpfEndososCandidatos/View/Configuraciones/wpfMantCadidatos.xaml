@@ -307,7 +307,7 @@
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                Content="Aspirante"
+                Content="Set Aspirante o Partido"
                 FontSize="26.667"
                 FontWeight="Bold" />
             <Button

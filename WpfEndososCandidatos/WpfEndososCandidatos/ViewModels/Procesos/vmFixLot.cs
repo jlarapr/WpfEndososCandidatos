@@ -358,14 +358,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             tableReydi = "EndososCEE";
                             break;
                         default:
-                            throw new Exception("Error con el Partido");
+                            tableReydi = "EndososCEE";
+                            break;
                     }
-
 
                     //query = "select   CONCAT( [NumCand],' | ',[Nombre]) as Candidato from [Candidatos] order by nombre ";
                     query = "select   [NumCand],[Nombre] from [Candidatos] order by nombre ";
                     cmd.CommandText = query;
-
 
                     System.Data.SqlClient.SqlDataReader dr = cmd.ExecuteReader();
                     
@@ -386,8 +385,6 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     _isFrmLoadFull = true;
 
                 }
-
-
 
             }
             catch (Exception ex)

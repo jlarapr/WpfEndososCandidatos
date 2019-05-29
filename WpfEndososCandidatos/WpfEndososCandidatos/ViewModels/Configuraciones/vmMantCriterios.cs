@@ -239,7 +239,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    for (int i = 0; i < 17; i++)
+                    for (int i = 0; i < 21; i++)
                     {
                         myUpDate = mySqlExe.MyChangeCriterios(chk[i].Campo, chk[i].Editar, chk[i].Desc, chk[i].Warning);
                     }
@@ -443,7 +443,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
             Background_0.Clear();
 
-            for (int i=0; i <=17;i++ )
+            for (int i=0; i <=21;i++ )
                 Background_0.Add(Brushes.White);
             
         }

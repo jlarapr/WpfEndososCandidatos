@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfMantCriterios" Height="781.54" Width="959.807" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantCriterios" Height="882.54" Width="959.807" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -16,8 +16,8 @@
         </Border.Effect>
         <Grid>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="20" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="813,704,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
-            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="524">
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="841,804,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="630">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -233,7 +233,59 @@
                                         <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="16"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                
+
+                            </CheckBox>
+                            <CheckBox x:Name="ckbW1_Copy19"   Height="26" Margin="5,0,0,0"
+                                       IsChecked="{Binding chk[17].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="17"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="17"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
+                            <CheckBox x:Name="ckbW1_Copy20"   Height="26" Margin="5,0,0,0"
+                                       IsChecked="{Binding chk[18].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="18"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="18"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
+                            <CheckBox x:Name="ckbW1_Copy21"   Height="26" Margin="5,0,0,0"
+                                       IsChecked="{Binding chk[19].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="19"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="19"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </CheckBox>
+                            <CheckBox x:Name="ckbW1_Copy22"   Height="26" Margin="5,0,0,0"
+                                       IsChecked="{Binding chk[20].Warning}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="20"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="20"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
                             </CheckBox>
                         </StackPanel>
                     </Border>
@@ -241,17 +293,17 @@
                         <StackPanel Margin="9" IsEnabled="{Binding isEdit}" >
                             <CheckBox x:Name="ckb1" VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                        IsChecked="{Binding chk[0].Editar}">
-                                
+
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
                                         <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="0"/>
                                     </i:EventTrigger>
-                                 
+
                                     <i:EventTrigger EventName="Unchecked">
                                         <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="0"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                
+
                                 <TextBlock x:Name="txtckb1" TextWrapping="Wrap" 
                                            Height="26"
                                            Width="783"
@@ -275,8 +327,8 @@
                                            Height="26"
                                            Width="783"
                                            Text="{Binding chk[1].Txt}" 
-                                            Background="{Binding Background_0[1]}"/> 
-                                
+                                            Background="{Binding Background_0[1]}"/>
+
                             </CheckBox>
 
                             <CheckBox x:Name="ckb1_Copy1" VerticalAlignment="Top" Height="26"
@@ -295,8 +347,8 @@
                                            Height="26"
                                            Width="783"
                                            Text="{Binding chk[2].Txt}"
-                                            Background="{Binding Background_0[2]}"/> 
-                                
+                                            Background="{Binding Background_0[2]}"/>
+
                             </CheckBox>
                             <CheckBox x:Name="ckb1_Copy2"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                       
@@ -316,7 +368,7 @@
                                            Width="783"
                                            Text="{Binding chk[3].Txt}" 
                                             Background="{Binding Background_0[3]}"/>
-                                
+
                             </CheckBox>
                             <CheckBox x:Name="ckb1_Copy3" VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                        
@@ -336,7 +388,7 @@
                                            Width="783"
                                            Text="{Binding chk[4].Txt}" 
                                             Background="{Binding Background_0[4]}"/>
-                                
+
                             </CheckBox>
                             <CheckBox x:Name="ckb1_Copy4"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                       
@@ -356,7 +408,7 @@
                                            Width="783"
                                            Text="{Binding chk[5].Txt}" 
                                             Background="{Binding Background_0[5]}"/>
-                                
+
                             </CheckBox>
                             <CheckBox x:Name="ckb1_Copy5"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                       
@@ -436,7 +488,7 @@
                                            Width="783"
                                            Text="{Binding chk[9].Txt}" 
                                             Background="{Binding Background_0[9]}"/>
-                                
+
                             </CheckBox>
                             <CheckBox x:Name="ckb1_Copy9"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
                                       
@@ -577,17 +629,96 @@
                                             Background="{Binding Background_0[16]}"/>
 
                             </CheckBox>
+
+                            <CheckBox x:Name="ckb1_Copy19"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
+                                      
+                                       IsChecked="{Binding chk[17].Editar}"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="17"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="17"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <TextBlock x:Name="txtckb18" TextWrapping="Wrap" 
+                                           Height="26"
+                                           Width="783"
+                                           Text="{Binding chk[17].Txt}" 
+                                            Background="{Binding Background_0[17]}"/>
+
+                            </CheckBox>
+
+                            <CheckBox x:Name="ckb1_Copy20"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
+                                       IsChecked="{Binding chk[18].Editar}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="18"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="18"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <TextBlock x:Name="txtckb19" TextWrapping="Wrap" 
+                                           Height="26"
+                                           Width="783"
+                                           Text="{Binding chk[18].Txt}" 
+                                            Background="{Binding Background_0[18]}"/>
+
+                            </CheckBox>
+
+                            <CheckBox x:Name="ckb1_Copy21"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
+                                       IsChecked="{Binding chk[19].Editar}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="19"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="19"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <TextBlock x:Name="txtckb20" TextWrapping="Wrap" 
+                                           Height="26"
+                                           Width="783"
+                                           Text="{Binding chk[19].Txt}" 
+                                            Background="{Binding Background_0[19]}"/>
+
+                            </CheckBox>
+
+                            <CheckBox x:Name="ckb1_Copy22"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
+                                       IsChecked="{Binding chk[20].Editar}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="20"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="20"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <TextBlock x:Name="txtckb21" TextWrapping="Wrap" 
+                                           Height="26"
+                                           Width="783"
+                                           Text="{Binding chk[20].Txt}" 
+                                            Background="{Binding Background_0[20]}"/>
+
+                            </CheckBox>
+
                         </StackPanel>
                     </Border>
                 </Grid>
             </GroupBox>
-            <Label x:Name="label1"  HorizontalAlignment="Left" Margin="22,583,0,0" VerticalAlignment="Top"
-                   Content="{Binding Explicacion}"
+            <Label x:Name="label1"  HorizontalAlignment="Left" Margin="13,695,0,0" VerticalAlignment="Top"
+                   Content="{Binding Explicacion}" Height="35" Width="170"
                    />
-            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="813,667,0,0" VerticalAlignment="Top" Width="75" Height="32"
+            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="841,767,0,0" VerticalAlignment="Top" Width="75" Height="32"
                     Command="{Binding cmdActualize_Click}"
                     />
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="101" Margin="22,614,0,0" VerticalAlignment="Top" Width="786"
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="101" Margin="13,735,0,0" VerticalAlignment="Top" Width="786"
                     CornerRadius="10"
                     >
                 <TextBox x:Name="txtExplicacion" TextWrapping="Wrap"  Margin="9"
@@ -595,10 +726,10 @@
                          IsEnabled="{Binding IsEnabled_txtExplicacion}"
                          />
             </Border>
-            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="813,596,0,0" VerticalAlignment="Top" Width="75"
+            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="841,696,0,0" VerticalAlignment="Top" Width="75"
                     Command="{Binding cmdEditar_Click}"
                     />
-            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="813,633,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="841,733,0,0" VerticalAlignment="Top" Width="75"  Height="29"
             	Command="{Binding cmdCancel_Click}"
                     />
 

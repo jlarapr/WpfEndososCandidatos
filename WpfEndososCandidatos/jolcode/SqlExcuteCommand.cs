@@ -32,7 +32,8 @@ namespace jolcode
             get
             {
                 return _DBCnnStr;
-            } set
+            }
+            set
             {
                 _DBCnnStr = value;
             }
@@ -74,9 +75,9 @@ namespace jolcode
 
         public DataTable MyGeRechazadasToInforme(string lot)
         {
-           
+
             DataTable myTableReturn = new DataTable();
-            
+
             try
             {
                 string[] mySqlstr = { "SELECT * ",
@@ -188,7 +189,7 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        returnInt =(int) cmd.ExecuteScalar();
+                        returnInt = (int)cmd.ExecuteScalar();
                     }
                 }
             }
@@ -204,7 +205,7 @@ namespace jolcode
             int returnInt = 0;
             try
             {
-               // string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
+                // string mySqlstr = "Select  distinct [BatchNo],[BatchPgCnt] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
                 string mySqlstr = "Select [FiledEndorsements] as total from [dbo].[FilingEndorsements] with (nolock) Where [BatchNumber]='" + lot + "'";
 
                 using (SqlConnection cnn = new SqlConnection()
@@ -557,7 +558,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLot(string StatusReydi,string Status) //Status= "0,1,2,3,4"
+        public DataTable MyGetLot(string StatusReydi, string Status) //Status= "0,1,2,3,4"
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -569,7 +570,7 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi in ("+ StatusReydi +") order by Lot";
+                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi in (" + StatusReydi + ") order by Lot";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -691,7 +692,7 @@ namespace jolcode
         }
 
 
-        public DataTable MyGetLotToFixVoid(string CurrLot,bool isAll=false)
+        public DataTable MyGetLotToFixVoid(string CurrLot, bool isAll = false)
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -736,7 +737,7 @@ namespace jolcode
                    "and A.lot ='", CurrLot,"' AND b.Status = 1 ",
                    "order by  [Batch], [Formulario]"
                     };
-                else 
+                else
                     mySqlstr = new string[]
                     {
                    "SELECT * ",
@@ -755,7 +756,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText =string.Concat( mySqlstr )
+                        CommandText = string.Concat(mySqlstr)
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
@@ -766,7 +767,7 @@ namespace jolcode
                             SelectCommand = cmd
                         })
                         {
-                            da.Fill(myTableReturn);                
+                            da.Fill(myTableReturn);
                         }
 
                     }
@@ -1034,7 +1035,7 @@ namespace jolcode
             try
             {
                 //string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
-                string mySqlstr = "Select * from Partidos where id=" +IdPartido +";" ;
+                string mySqlstr = "Select * from Partidos where id=" + IdPartido + ";";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1148,7 +1149,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public string MyDecRechazoToInforme(string param,string Candidato,string NumElec)
+        public string MyDecRechazoToInforme(string param, string Candidato, string NumElec)
         {
             string myReturn = string.Empty;
 
@@ -1165,7 +1166,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                     
+
                     })
                     {
                         if (cnn.State == ConnectionState.Closed)
@@ -1180,7 +1181,7 @@ namespace jolcode
 
                                 myReturn += Campo + "-" + cmd.ExecuteScalar().ToString().Trim();
 
-                                if (Campo =="14")
+                                if (Campo == "14")
                                 {
                                     if (!string.IsNullOrEmpty(Candidato))
                                     {
@@ -1213,7 +1214,7 @@ namespace jolcode
         {
             object myReturn = null;
 
-           
+
 
             try
             {
@@ -1250,7 +1251,7 @@ namespace jolcode
             return myReturn.ToString();
         }
 
-        public bool MySendToReydi(ObservableCollection<LotsToReydi> listaDeLotes,string sysUser,string partido)
+        public bool MySendToReydi(ObservableCollection<LotsToReydi> listaDeLotes, string sysUser, string partido)
         {
             bool myReturn = false;
             string lot = string.Empty;
@@ -1259,7 +1260,7 @@ namespace jolcode
             try
             {
                 string tableReydi = string.Empty;
-                
+
                 switch (partido)
                 {
                     case "PNP":
@@ -1290,7 +1291,7 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                      
+
                         using (SqlConnection cnnReydi = new SqlConnection()
                         {
                             ConnectionString = DBRadicacionesCEECnnStr
@@ -1313,7 +1314,7 @@ namespace jolcode
                                     //insert reydi log
                                     string insertReydiLog = "INSERT INTO [dbo].[tblLog]";
                                     insertReydiLog += " ([EndorsementGroupCode],[SysDate],[SysUser],[ElectoralNumber]) VALUES('";
-                                    insertReydiLog += item.Lot + "',getdate(),'" + sysUser + "'," + item.Num_Candidato +");";
+                                    insertReydiLog += item.Lot + "',getdate(),'" + sysUser + "'," + item.Num_Candidato + ");";
                                     cmdReydi.CommandText = insertReydiLog;
                                     cmdReydi.ExecuteNonQuery();
 
@@ -1341,12 +1342,12 @@ namespace jolcode
             {
                 if (sqlEX.Message.Contains("FOREIGN KEY constraint"))
                 {
-                 throw new Exception("Numero de Radicacion " + lot + " es invalido en el Sistema de Reydi o el nuemero del candidato es incorrecto " + Num_Candidato +" \r\n MySendToReydi Error");
+                    throw new Exception("Numero de Radicacion " + lot + " es invalido en el Sistema de Reydi o el nuemero del candidato es incorrecto " + Num_Candidato + " \r\n MySendToReydi Error");
                 }
                 else
                 {
                     MethodBase site = sqlEX.TargetSite;
-                    throw new Exception (sqlEX.Message + "\r\n" + site.Name);
+                    throw new Exception(sqlEX.Message + "\r\n" + site.Name);
 
                 }
             }
@@ -1398,7 +1399,7 @@ namespace jolcode
             return myReturn;
         }
 
-        public bool MyTFJuramentoDate(string lot,DateTime EndososDate)
+        public bool MyTFJuramentoDate(string lot, DateTime EndososDate)
         {
             bool myReturn = false;
 
@@ -1428,10 +1429,10 @@ namespace jolcode
                         string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
                         cmd.CommandText = mySqlstr;
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        DataTable table=new DataTable();
+                        DataTable table = new DataTable();
 
                         da.Fill(table);
-                      
+
 
                         foreach (DataRow dr in table.Rows)
                         {
@@ -1445,7 +1446,7 @@ namespace jolcode
 
                                 long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
 
-                            
+
 
                                 if (totalDeDias > 7)
                                     totalDeDias = totalDeDias - 2;
@@ -1463,7 +1464,7 @@ namespace jolcode
                             MessageBox.Show("La radicacion " + lot + " tiene mas de 20 días.\r\n Fecha de Entrega en CEE:" + EndososDate + "\r\n Total de Días:" + totalDeDiasDeEntregada.ToString() + "\r\n Favor verificar...", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                         myReturn = true;
-                                                
+
                     }
                 }
             }
@@ -1582,9 +1583,9 @@ namespace jolcode
                         string mySqlstr = "SELECT [Nombre] FROM [Candidatos] where [NumCand] = '" + NumCand + "'";
                         cmd.CommandText = mySqlstr;
                         myReturn = cmd.ExecuteScalar();
-                        if (myReturn ==null )
+                        if (myReturn == null)
                             myReturn = "???";
-                       
+
 
                     }
                 }
@@ -1600,7 +1601,7 @@ namespace jolcode
         {
             object myReturn = null;
 
-         
+
 
             try
             {
@@ -1610,9 +1611,9 @@ namespace jolcode
                 {
                     int cargo = 0;
 
-                    if (!int.TryParse(Cargo,out cargo))
+                    if (!int.TryParse(Cargo, out cargo))
                         return "???";
-                    
+
                     if (cargo <= 0)
                         return "???";
                 }
@@ -1654,9 +1655,9 @@ namespace jolcode
             return myReturn.ToString();
         }
 
- 
 
-        public string MyTipoDeRechazo(string param,string formulario,string CurrLot,string batch,ref byte[] EndosoImage,ref string rechazoNum)
+
+        public string MyTipoDeRechazo(string param, string formulario, string CurrLot, string batch, ref byte[] EndosoImage, ref string rechazoNum)
         {
             string myReturn = string.Empty;
             try
@@ -1682,7 +1683,7 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                       
+
 
                         cmd.CommandText = string.Concat(tipoDeRechazo);
                         SqlDataReader dr = cmd.ExecuteReader();
@@ -1698,7 +1699,7 @@ namespace jolcode
                         string[] data = myReturn.Trim().Split('|');
                         myReturn = string.Empty;
 
-                        foreach(string s in data)
+                        foreach (string s in data)
                         {
                             if (s.Trim().Length > 0)
                             {
@@ -1810,16 +1811,17 @@ namespace jolcode
         public bool MyReverseLots(string lotNum, string SysUser)
         {
             bool myBoolReturn = false;
-            SqlTransaction transaction=null;
+            SqlTransaction transaction = null;
 
             string[] sqlstr = { "Update Lots Set Status = 0,[RejectedEndorsements]=0,[ValidatedEndorsements]=0, Revdate = getdate(), Revuser = @SysUser",
                                   " Where Lot = @lot "};
 
             string sqlstrDeleteLotEndo = "Delete from LotsEndo Where lot=@lot";
-            
+
             string sqlstrDeleteLotVoid = "Delete from LotsVoid Where lot=@lot";
 
-            try {
+            try
+            {
                 using (SqlConnection cnn = new SqlConnection()
                 {
                     ConnectionString = DBCnnStr
@@ -1859,7 +1861,8 @@ namespace jolcode
                 }
                 myBoolReturn = true;
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 if (transaction != null)
                 {
@@ -1879,7 +1882,7 @@ namespace jolcode
                 throw new Exception(ex.ToString() + "\r\nMyReverseLots Error\r\nAn exception of type" + ex.GetType());
 
             }
-                    return myBoolReturn;
+            return myBoolReturn;
         }
         public bool MyDeletePartidos(string where)
         {
@@ -2016,7 +2019,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyDeleteNotario(string where, string where2,string NumCand)
+        public bool MyDeleteNotario(string where, string where2, string NumCand)
         {
             bool myBoolReturn = false;
             string[] myDelete =
@@ -2069,7 +2072,7 @@ namespace jolcode
 
         public string[] MyGetTotalReq(string numElec)
         {
-            string[] sOut = { "", "","","" ,""};
+            string[] sOut = { "", "", "", "", "" };
 
             int tmpElec = 0;
 
@@ -2116,7 +2119,7 @@ namespace jolcode
             {
 
                 throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
-                
+
             }
             return sOut;
         }
@@ -2162,9 +2165,9 @@ namespace jolcode
             return myTableReturn;
         }
 
-        public bool MyInsertBodyCertificacion (string HupDerecho,string Fecha,string InfoSecretario,string InfoComisionado,
-            string P1Body,string P2Body,string InfoDirectorValidaciones,string DireccionPostal,string Telefono,string Logo,
-            string Color,string PageHeader,byte Template,string Firma)
+        public bool MyInsertBodyCertificacion(string HupDerecho, string Fecha, string InfoSecretario, string InfoComisionado,
+            string P1Body, string P2Body, string InfoDirectorValidaciones, string DireccionPostal, string Telefono, string Logo,
+            string Color, string PageHeader, byte Template, string Firma)
         {
             bool myBoolReturn = false;
             try
@@ -2207,7 +2210,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                       
+
                     })
                     {
                         cmd.CommandText = "Delete from [dbo].[tblSetBodyCertificacion]";
@@ -2220,9 +2223,9 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@InfoComisionado", SqlDbType.VarChar)).Value = InfoComisionado.Trim();
                         cmd.Parameters.Add(new SqlParameter("@P1Body", SqlDbType.VarChar)).Value = P1Body;
                         cmd.Parameters.Add(new SqlParameter("@P2Body", SqlDbType.VarChar)).Value = P2Body;
-                        cmd.Parameters.Add(new SqlParameter("@InfoDirectorValidaciones", SqlDbType.VarChar)).Value= InfoDirectorValidaciones;
+                        cmd.Parameters.Add(new SqlParameter("@InfoDirectorValidaciones", SqlDbType.VarChar)).Value = InfoDirectorValidaciones;
                         cmd.Parameters.Add(new SqlParameter("@DireccionPostal", SqlDbType.VarChar)).Value = DireccionPostal.Trim();
-                        cmd.Parameters.Add(new SqlParameter("@Telefono", SqlDbType.VarChar)).Value=Telefono.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Telefono", SqlDbType.VarChar)).Value = Telefono.Trim();
                         cmd.Parameters.Add(new SqlParameter("@Logo", SqlDbType.Image));
                         cmd.Parameters.Add(new SqlParameter("@LogoPath", SqlDbType.VarChar)).Value = Logo.Trim();
                         cmd.Parameters.Add(new SqlParameter("@Color", SqlDbType.VarChar)).Value = Color.Trim();
@@ -2406,7 +2409,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeNotario(bool isInsert, string NumElec,String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2,string Status , string where)
+        public bool MyChangeNotario(bool isInsert, string NumElec, String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2, string Status, string where)
         {
             bool myBoolReturn = false;
             try
@@ -2541,7 +2544,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots, string usercode,object fechaEndosos)
+        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaEndosos)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -2581,7 +2584,7 @@ namespace jolcode
                     FechaEndo_Dia = string.Empty;
                     FechaEndo_Ano = string.Empty;
                 }
-               
+
 
 
 
@@ -2706,7 +2709,7 @@ namespace jolcode
 
 
                         cmd.Parameters.Add(whereParam);
-                       
+
                         foreach (DataRow row in tableLots.Rows)
                         {
                             // Start a local transaction.
@@ -2722,12 +2725,12 @@ namespace jolcode
                             cmd.Parameters.Add(FechaEndo_MesParam);
                             cmd.Parameters.Add(FechaEndo_DiaParam);
                             cmd.Parameters.Add(FechaEndo_AnoParam);
-                         //   cmd.Parameters.Add(totalDeDiasParam);
+                            //   cmd.Parameters.Add(totalDeDiasParam);
 
                             FechaEndo_MesParam.Value = FechaEndo_Mes;
                             FechaEndo_DiaParam.Value = FechaEndo_Dia;
                             FechaEndo_AnoParam.Value = FechaEndo_Ano;
-                        //    totalDeDiasParam.Value = totalDeDias;
+                            //    totalDeDiasParam.Value = totalDeDias;
 
 
 
@@ -2740,7 +2743,7 @@ namespace jolcode
                             cmd.Parameters.Remove(FechaEndo_MesParam);
                             cmd.Parameters.Remove(FechaEndo_DiaParam);
                             cmd.Parameters.Remove(FechaEndo_AnoParam);
-                         //   cmd.Parameters.Remove(totalDeDiasParam);
+                            //   cmd.Parameters.Remove(totalDeDiasParam);
 
                             cmd.Parameters.Add(partidoParam);
                             cmd.Parameters.Add(lotParam);
@@ -2984,7 +2987,7 @@ namespace jolcode
                                         "from [dbo].[TF-Partidos] ",
                                         "Where Imported = 2 and BatchTrack=@lot ",
                                         "Order By Partido,BatchTrack, BatchNo, BatchPgNo;" };
-                
+
                 // 'VERIFICA QUE EL LOTE EXISTA EN TELEFORM
                 string[] mySqlstrTFCount = { "Select count(*) ",
                                         "from [dbo].[TF-Partidos] ",
@@ -3007,13 +3010,13 @@ namespace jolcode
                                                 " Set Status = 1",
                                                 " Where Lot=@lot",
                                                 " And Status = 0" };
-   
-                                                //'STATUS LOTE
-                                                //'0 - LISTO PARA PROCESAR
-                                                //'1 - SIENDO PROCESADA
-                                                //'2 - FINALIZADO
-                                                //'3 - CON ERRORES
-                                                //'4 - SIENDO REVISADA
+
+                //'STATUS LOTE
+                //'0 - LISTO PARA PROCESAR
+                //'1 - SIENDO PROCESADA
+                //'2 - FINALIZADO
+                //'3 - CON ERRORES
+                //'4 - SIENDO REVISADA
 
 
 
@@ -3092,18 +3095,18 @@ namespace jolcode
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsVoid);
                 myCmdDBEndosos.ExecuteNonQuery();
 
-                myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsEndo);                
+                myCmdDBEndosos.CommandText = string.Concat(mySqlStrDeleteLotsEndo);
                 myCmdDBEndosos.ExecuteNonQuery();
 
                 myCmdDBEndosos.CommandText = string.Concat(mySqlStrUpdateLots);
                 myCmdDBEndosos.ExecuteNonQuery();
 
-            //    transaction.Commit();
+                //    transaction.Commit();
 
-                int[] Rechazo = new int[20];
-                int[] Warning = new int[20];
-                bool[] isRechazo = new bool[20];
-                bool[] isWarning = new bool[20];
+                int[] Rechazo = new int[21];
+                int[] Warning = new int[21];
+                bool[] isRechazo = new bool[21];
+                bool[] isWarning = new bool[21];
                 Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
                 string strRechazos = string.Empty;
                 int ValidatedEndorsements = 0;
@@ -3117,10 +3120,10 @@ namespace jolcode
 
                     //transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                     //myCmdDBEndosos.Transaction = transaction;
-                    
-                    isRechazo = new bool[20];
-                    isWarning = new bool[20];
-                    
+
+                    isRechazo = new bool[21];
+                    isWarning = new bool[21];
+
                     //default
                     m_Firma_Peticionario = "0";
                     m_Firma_Notario = "0";
@@ -3129,7 +3132,7 @@ namespace jolcode
 
                     m_Nombre = string.Empty;
                     m_Materno = string.Empty;
-                    m_Paterno = string.Empty; 
+                    m_Paterno = string.Empty;
 
                     m_N_NOTARIO = string.Empty;
                     m_N_CANDIDAT = string.Empty;
@@ -3149,7 +3152,7 @@ namespace jolcode
                     m_Madre = string.Empty;
                     m_Leer = string.Empty;
                     m_Leer_Inv = 0;
-                    m_Alteracion =0;
+                    m_Alteracion = 0;
                     m_Firma_Fecha = null;
                     m_EndosoImage = string.Empty;
                     strRechazos = string.Empty;
@@ -3169,8 +3172,8 @@ namespace jolcode
 
                     try { int.TryParse(row["Funcionario"].ToString().Trim(), out m_Cargo); } catch { throw; }
 
-                  //  m_Firma_Pet_Inv = 0; // se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
-                   // m_Firma_Not_Inv = 0;// se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
+                    //  m_Firma_Pet_Inv = 0; // se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
+                    // m_Firma_Not_Inv = 0;// se inicializa en 0 para que el empleado pueda evaluar la firma con la master de cee
 
                     m_Nombre = row["Nombre"].ToString().Trim();
                     m_Materno = row["Materno"].ToString().Trim();
@@ -3178,18 +3181,18 @@ namespace jolcode
 
                     m_Padre = row["Padre"].ToString().Trim();
                     m_Madre = row["Madre"].ToString().Trim();
-                    
-                    if (row["Leer_Inv"] !=null )
-                        m_Leer_Inv =(int) row["Leer_Inv"];
 
-                    
+                    if (row["Leer_Inv"] != null)
+                        m_Leer_Inv = (int)row["Leer_Inv"];
+
+
                     m_PARTIDO = row["Partido"].ToString().Trim();
                     m_BatchNo = row["BatchNo"].ToString().Trim();
                     m_Batch = m_BatchNo;// row["Suspense_File"].ToString().Trim().Split('\\')[3];
 
                     m_Suspense_File = row["Suspense_File"].ToString().Trim();
 
-                   // m_EndosoImage = row["BatchDir"].ToString().Trim();
+                    // m_EndosoImage = row["BatchDir"].ToString().Trim();
 
                     //if (!m_EndosoImage.EndsWith("\\"))
                     //    m_EndosoImage += "\\";
@@ -3219,7 +3222,7 @@ namespace jolcode
                     {
                         m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
 
-                      
+
                     }
 
                     if (tmpFecha_Endo.Length < 8)
@@ -3232,13 +3235,13 @@ namespace jolcode
                     float m_Firma_Peticionario_tmp_f = 0.0f;
                     int m_Firma_Peticionario_tmp_i = 0;
 
-                    if (float.TryParse(m_Firma_Peticionario,out m_Firma_Peticionario_tmp_f))
+                    if (float.TryParse(m_Firma_Peticionario, out m_Firma_Peticionario_tmp_f))
                     {
                         m_Firma_Peticionario_tmp_i = (int)m_Firma_Peticionario_tmp_f;
                     }
 
 
-                    if ( ((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true))  && (m_Firma_Peticionario_tmp_i == 0))//'1-ELECTOR NO FIRMO EL ENDOSO
+                    if (((CollCriterios[0].Editar == true) || (CollCriterios[0].Warning == true)) && (m_Firma_Peticionario_tmp_i == 0))//'1-ELECTOR NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[0].Editar == true)
                         {
@@ -3256,12 +3259,12 @@ namespace jolcode
                     float m_Firma_Notario_f = 0.0f;
                     int m_Firma_Notario_i = 0;
 
-                    if (float.TryParse(m_Firma_Notario,out m_Firma_Notario_f))
+                    if (float.TryParse(m_Firma_Notario, out m_Firma_Notario_f))
                     {
                         m_Firma_Notario_i = (int)m_Firma_Notario_f;
                     }
 
-                    if ( ((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning ==true)) && m_Firma_Notario_i == 0)//2-'NOTARIO NO FIRMO EL ENDOSO
+                    if (((CollCriterios[1].Editar == true) || (CollCriterios[1].Warning == true)) && m_Firma_Notario_i == 0)//2-'NOTARIO NO FIRMO EL ENDOSO
                     {
                         if (CollCriterios[1].Editar == true)
                         {
@@ -3282,7 +3285,7 @@ namespace jolcode
                         if (m_Fecha_Endo != null)
                         {
                             //   if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
-                            if (m_Leer_Inv >7)
+                            if (m_Leer_Inv > 7)
                             {
                                 if (CollCriterios[2].Editar == true)
                                 {
@@ -3357,7 +3360,7 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[4].Editar == true || CollCriterios[4].Warning==true)// '5-ELECTOR IGUAL AL NOTARIO
+                    if (CollCriterios[4].Editar == true || CollCriterios[4].Warning == true)// '5-ELECTOR IGUAL AL NOTARIO
                     {
                         if (m_N_ELEC == m_N_NOTARIO)
                         {
@@ -3422,9 +3425,9 @@ namespace jolcode
                                                 " Where [NumCand] = '", FixNum( m_N_CANDIDAT ), "'"};
                         object total = null;
                         //myCnnDBEndososValidarDatos
-                       // if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
+                        // if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
-                            {
+                        {
                             if ((int)total == 0)
                             {
                                 if (CollCriterios[6].Editar == true)
@@ -3461,7 +3464,7 @@ namespace jolcode
 
                     }
 
-                    if (CollCriterios[7].Editar == true || CollCriterios[7].Warning==true)//'8-NOTARIO INACTIVO
+                    if (CollCriterios[7].Editar == true || CollCriterios[7].Warning == true)//'8-NOTARIO INACTIVO
                     {
                         string[] sqlstr = { "SELECT status ",
                                                 "From [usercid].[Citizen] ",
@@ -3506,7 +3509,7 @@ namespace jolcode
                                 if (CollCriterios[7].Editar == true)
                                 {
                                     Rechazo[7]++;
-                                strRechazos += "8|";
+                                    strRechazos += "8|";
                                     isRechazo[7] = true;
                                 }
                                 if (CollCriterios[7].Warning == true)
@@ -3547,7 +3550,7 @@ namespace jolcode
                                 if (CollCriterios[8].Editar == true)
                                 {
                                     Rechazo[8]++;
-                                strRechazos += "9|";
+                                    strRechazos += "9|";
                                     isRechazo[8] = true;
                                 }
                                 if (CollCriterios[8].Warning == true)
@@ -3600,7 +3603,7 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[10].Editar == true || CollCriterios[10].Warning==true)// '11-STATUS ELECTO EXCLUIDO
+                    if (CollCriterios[10].Editar == true || CollCriterios[10].Warning == true)// '11-STATUS ELECTO EXCLUIDO
                     {
                         string[] sqlstr = { "SELECT status ",
                                                 "From [usercid].[Citizen] ",
@@ -3714,9 +3717,9 @@ namespace jolcode
                     if (m_Cargo == 3 || m_Cargo == 5 || m_Cargo == 7 || m_Cargo == 8)
                     {
 
-                        if (CollCriterios[12].Editar == true || CollCriterios[12].Warning ==true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
+                        if (CollCriterios[12].Editar == true || CollCriterios[12].Warning == true)//13-'PRECINTO ELECTOR DISTINTO AL DEL CANDIDATO
                         {
-                    
+
                             string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
 
                             object CodigoArea = null;
@@ -3778,7 +3781,7 @@ namespace jolcode
 
                     if (CollCriterios[14].Editar == true || CollCriterios[14].Warning == true)//15- 'MULTIPLES ENDOSOS PARA EL MISMO CARGO
                     {
-                     
+
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [LotsEndo]  ",
                                                 "Where [NumElec] = '", FixNum(m_N_ELEC) , "' ",
@@ -3790,6 +3793,24 @@ namespace jolcode
                         {
                             switch (m_Cargo)
                             {
+                                case 0: //Partido
+                                    {
+                                        if ((int)total >= 1)
+                                        {
+                                            if (CollCriterios[14].Editar == true)
+                                            {
+                                                Rechazo[14]++;
+                                                strRechazos += "15|";
+                                                isRechazo[14] = true;
+                                            }
+                                            if (CollCriterios[14].Warning == true)
+                                            {
+                                                Warning[14]++;
+                                                isWarning[14] = true;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 case 1:// 'Gobernador
                                     {
                                         if ((int)total >= 1)
@@ -3965,7 +3986,8 @@ namespace jolcode
                                                     isWarning[14] = true;
                                                 }
                                             }
-                                        }else
+                                        }
+                                        else
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4031,7 +4053,7 @@ namespace jolcode
 
                     if (CollCriterios[18].Editar == true || CollCriterios[18].Warning == true) //19- No concuerda el cargo
                     {
-                        string[] sqlstr = { "select [Cargo] from [dbo].[Candidatos] where [NumCand]=" + FixNum( m_N_CANDIDAT ),";"};
+                        string[] sqlstr = { "select [Cargo] from [dbo].[Candidatos] where [NumCand]=" + FixNum(m_N_CANDIDAT), ";" };
 
                         //string[] sqlstr = { "SELECT [ElectivePositionID] ",
                         //                        "From [dbo].[Areas] ",
@@ -4044,7 +4066,8 @@ namespace jolcode
                             Rechazo[18]++;
                             strRechazos += "19|";
                             isRechazo[18] = true;
-                        }else
+                        }
+                        else
                         {
                             if (m_Cargo != (int)Cargo)
                             {
@@ -4055,11 +4078,11 @@ namespace jolcode
                         }
                     }
 
-                    if (CollCriterios[9].Editar == true || CollCriterios[9].Warning == true)//'20- nombre no concuerda
+                    if (CollCriterios[19].Editar == true || CollCriterios[19].Warning == true)//'20- Elector no concuerda
                     {
                         string[] sqlstr = { "SELECT [FirstName] ",
                                                 "From [usercid].[Citizen] ",
-                                                " Where [CitizenID] = '", FixNum( m_N_ELEC) , "'"};
+                                                " Where [CitizenID] = '", FixNum(m_N_ELEC) , "'"};
                         object FirstName = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out FirstName, myCnnDBCeeMaster) != null)
@@ -4104,6 +4127,30 @@ namespace jolcode
                         }
                     }
 
+                    if (CollCriterios[20].Editar == true || CollCriterios[20].Warning == true)//'21- Endosaron a otros partidos
+                    {
+                        string[] sqlstr = { "SELECT [NumElec] ",
+                                                "From [tblEndosaronOtroPartido2019] ",
+                                                " Where [NumElec] = '", FixNum(m_N_ELEC) , "'"};
+                        object total = null;
+                        if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndosos) != null)
+                        {
+                            if ((int)total > 0) {
+                                if (CollCriterios[19].Editar == true)
+                                {
+                                    Rechazo[20]++;
+                                    strRechazos += "21|";
+                                    isRechazo[20] = true;
+                                }
+                                if (CollCriterios[19].Warning == true)
+                                {
+                                    Rechazo[20]++;
+                                    isWarning[20] = true;
+                                }
+                            }
+                        }
+                    }
+
 
                     bool isrechazo = false;
                     bool iswarning = false;
@@ -4117,27 +4164,27 @@ namespace jolcode
 
 
                     //'ACTUALIZA LOS COUNTERS DE LA PANTALLA
-                    for (int X = 0; X < CollCriterios.Count; X++) 
+                    for (int X = 0; X < CollCriterios.Count; X++)
                     {
                         if (isRechazo[X])
                         {
                             lblNReasons[X] = Rechazo[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X+1, m_PARTIDO, 0, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 0, img, myCmdDBEndosos);
                             isrechazo = true;
                         }
-                        else  if (isWarning[X])
+                        else if (isWarning[X])
                         {
                             lblNReasons[X] = Warning[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X+1, m_PARTIDO, 2, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 2, img, myCmdDBEndosos);
                             iswarning = true;
                         }
                     }
 
                     if (!isrechazo)
                     {
-                         ValidatedEndorsements++;
+                        ValidatedEndorsements++;
                         int Aprobadas = int.Parse(Resultados[3]);
                         Aprobadas++;
                         Resultados[3] = Aprobadas.ToString();//lblAprobadas             3
@@ -4158,7 +4205,7 @@ namespace jolcode
                         Resultados[5] = Warnings.ToString();//lblWarnings               5
                     }
 
-                //    m_Nombre = m_Nombre.Replace("'", "''");
+                    //    m_Nombre = m_Nombre.Replace("'", "''");
                     SqlParameter txtNombreParam = new SqlParameter();
                     txtNombreParam.ParameterName = "@txtNombre";
                     txtNombreParam.SqlDbType = SqlDbType.VarChar;
@@ -4226,7 +4273,7 @@ namespace jolcode
                 //[]
                 //'ACTUALIZA EL STATUS DEL LOTE
                 string mySqlqlstrUpdate = "Update Lots";
-                mySqlqlstrUpdate = mySqlqlstrUpdate + " Set Status = " + LotRechazo.ToString() + ", verdate = getdate(), veruser = '" + usercode + "',"; 
+                mySqlqlstrUpdate = mySqlqlstrUpdate + " Set Status = " + LotRechazo.ToString() + ", verdate = getdate(), veruser = '" + usercode + "',";
                 mySqlqlstrUpdate = mySqlqlstrUpdate + "ValidatedEndorsements=" + ValidatedEndorsements.ToString() + ",RejectedEndorsements=" + RejectedEndorsements.ToString();
                 mySqlqlstrUpdate = mySqlqlstrUpdate + ",StatusReydi=0,Num_Candidato=" + m_N_CANDIDAT_Good;
                 mySqlqlstrUpdate = mySqlqlstrUpdate + " Where Lot='" + m_BatchTrack + "'";
@@ -4246,7 +4293,7 @@ namespace jolcode
             }
             catch (Exception ex)
             {
-                MyReverseLots(numlot,usercode);
+                MyReverseLots(numlot, usercode);
                 //if (transaction != null)
                 //{
                 //    try
@@ -4282,7 +4329,8 @@ namespace jolcode
                 try
                 {
                     myIntReturn = (int)cmd.ExecuteScalar();
-                } catch
+                }
+                catch
                 {
                     myIntReturn = (string)cmd.ExecuteScalar();
 
@@ -4302,9 +4350,11 @@ namespace jolcode
 
             })
             {
-                try {
+                try
+                {
                     returnValue = cmd.ExecuteScalar();
-                } catch
+                }
+                catch
                 {
                     throw new Exception("Error " + sql);
                 }
@@ -4359,7 +4409,7 @@ namespace jolcode
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
             new Action(delegate { }));
         }
-        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status,byte[] EndosoImage, SqlCommand dbCmd)
+        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status, byte[] EndosoImage, SqlCommand dbCmd)
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
             // 'STATUS DEL RECHAZO
@@ -4367,7 +4417,7 @@ namespace jolcode
             //'1 - CORREJIDO
             //'2 - WARNING
 
-         
+
 
             string sqlstr = "Insert Into LotsVoid Values";
             sqlstr = sqlstr + "('" + m_PARTIDO + "'";
@@ -4391,11 +4441,11 @@ namespace jolcode
             dbCmd.ExecuteNonQuery();
 
             dbCmd.Parameters.Remove(param);
-            
+
         }
-        public bool MyUpdateTFTable(string txtNombre,string txtNumElec,string txtPrecinto,string txtSexo,string txtFechaNac,string txtCargo,string txtNotario,
-                                     string txtCandidato,string txtFirma,string txtNotarioFirma,string chkFirmaInv,string chkFirmaNotInv,string chkAlteracion,string txtOtraRazonDeRechazo,
-                                     string txtFchJuramento,string txtFechaEndosos,int? totalDeDias,string Lot,string Batch,string Formulario,string CurrElect,string SysUser,SqlCommand cmd )
+        public bool MyUpdateTFTable(string txtNombre, string txtNumElec, string txtPrecinto, string txtSexo, string txtFechaNac, string txtCargo, string txtNotario,
+                                     string txtCandidato, string txtFirma, string txtNotarioFirma, string chkFirmaInv, string chkFirmaNotInv, string chkAlteracion, string txtOtraRazonDeRechazo,
+                                     string txtFchJuramento, string txtFechaEndosos, int? totalDeDias, string Lot, string Batch, string Formulario, string CurrElect, string SysUser, SqlCommand cmd)
         {
             bool myBoolReturn = false;
 
@@ -4436,7 +4486,7 @@ namespace jolcode
 
                 }
 
-             //   txtNombre = txtNombre.Replace("'", "''");
+                //   txtNombre = txtNombre.Replace("'", "''");
 
                 SqlParameter txtNombreParam = new SqlParameter();
                 txtNombreParam.ParameterName = "@txtNombre";
@@ -4503,13 +4553,13 @@ namespace jolcode
             return myBoolReturn;
         }
 
-        private  object iif(bool expression, object truePart, object falsePart)
+        private object iif(bool expression, object truePart, object falsePart)
         {
-           
+
             return expression ? truePart : falsePart;
         }
 
-        
+
         #region Dispose
         public void Dispose()
         {
