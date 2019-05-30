@@ -85,6 +85,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 {
                     _cbInfoCandidato_Item = value;
                    if (_isFrmLoadFull) MyReset();
+
+                    string[] datos = value.Split('|');
+
+
+                    txtPartido = datos[datos.Length - 1];
+
                     this.RaisePropertychanged("cbInfoCandidato_Item");
                 }
             }
@@ -344,7 +350,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 })
                 {
                     partido = cmd.ExecuteScalar();
-                    txtPartido = partido.ToString();
+                  //  txtPartido = partido.ToString();
 
                     switch (partido as string)
                     { 
@@ -363,7 +369,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
 
                     //query = "select   CONCAT( [NumCand],' | ',[Nombre]) as Candidato from [Candidatos] order by nombre ";
-                    query = "select   [NumCand],[Nombre] from [Candidatos] order by nombre ";
+                    query = "select   [NumCand],[Nombre],[Partido] from [Candidatos] order by nombre ";
                     cmd.CommandText = query;
 
                     System.Data.SqlClient.SqlDataReader dr = cmd.ExecuteReader();
@@ -373,7 +379,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         cbInfoCandidato.Add(new modelCandidato
                         {
                             numCandidato = dr[0] as string,
-                            Nombre = dr[1].ToString()
+                            Nombre = dr[1].ToString(),
+                            partido = dr[2].ToString()
                         });
 
                     }
@@ -398,9 +405,16 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             try
             {
-                string candidato = cbInfoCandidato_Item.Split('|')[0].Trim();
-                txtFindCandidato = candidato;
-                string query = "select [Partido], Lot,[Num_Candidato],Amount,[ValidatedEndorsements],[RejectedEndorsements],[StatusReydi] from lots where [Num_Candidato] = " + candidato + " and StatusReydi = 1";
+                string[] candidato = cbInfoCandidato_Item.Split('|');
+                                             
+                txtFindCandidato = candidato[0].Trim();
+                int icandidato;
+                int.TryParse(candidato[0].Trim() ,out icandidato);
+
+                 //string query = "select [Partido], Lot,[Num_Candidato],Amount,[ValidatedEndorsements],[RejectedEndorsements],[StatusReydi] from lots where [Num_Candidato] = " + icandidato.ToString() + " and StatusReydi = 1";
+                string query = "select [Partido], Lot,[Num_Candidato],Amount,[ValidatedEndorsements],[RejectedEndorsements] from lots where Partido='" + candidato[candidato.Length-1].Trim() + "'";
+
+
 
                 if (_cnn.State == ConnectionState.Closed)
                     _cnn.Open();
@@ -474,12 +488,15 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         public string Nombre { get; set; }
 
+        public string partido { get; set; }
+
         public override string ToString()
         {
             List<string> myOut = new List<string>()
             {
                 numCandidato,
-                Nombre
+                Nombre,
+                partido
             };
             string myJoined = string.Join(" | ", myOut);
             return myJoined;

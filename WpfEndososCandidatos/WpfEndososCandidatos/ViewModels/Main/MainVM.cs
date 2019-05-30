@@ -446,6 +446,8 @@ namespace WpfEndososCandidatos.ViewModels
                 _DBRadicacionesCnnStr = string.Concat("Persist Security Info=False;Data Source=", _RadicacionesSvr, ";Initial Catalog=", _RadicacionesDB, ";User ID=", _RadicacionesUsr, ";Password=", PasswordHash.Decrypt1(_RadicacionesPass));
                  
                 Login_Click();
+
+                
             }
             catch(Exception ex)
             {

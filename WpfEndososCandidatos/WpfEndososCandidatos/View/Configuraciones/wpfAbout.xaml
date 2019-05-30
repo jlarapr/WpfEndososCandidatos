@@ -18,7 +18,7 @@
             </Border.Effect>
 
             <Grid>
-                <Label  Content="Endosos - Partidos" Margin="10,10,10,0" VerticalAlignment="Top" Height="75" FontWeight="Bold" FontSize="36"/>
+                <Label  Content="{Binding titulo}" Margin="10,10,10,0" VerticalAlignment="Top" Height="75" FontWeight="Bold" FontSize="30"/>
                 <Label Content="{Binding mensaje}" Margin="10,90,10,0" VerticalAlignment="Top" Height="86"/>
 
                 <Button x:Name="cmOk" Command="{Binding ok_Click}" Content="O_k" HorizontalAlignment="Left" Margin="281,293,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="1.036,0.474"/>

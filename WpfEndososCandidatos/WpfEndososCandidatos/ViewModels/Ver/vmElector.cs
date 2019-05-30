@@ -77,7 +77,8 @@
             get
             {
                 return _DBCeeMasterCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterCnnStr = value;
             }
@@ -87,7 +88,8 @@
             get
             {
                 return _DBCeeMasterImgCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterImgCnnStr = value;
 
@@ -98,17 +100,19 @@
             get
             {
                 return _TxtElecNum;
-            }set
+            }
+            set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
                     if (value != _TxtElecNum)
                         MyReset();
 
-                      _TxtElecNum = value;
+                    _TxtElecNum = value;
 
                     this.RaisePropertychanged("TxtElecNum");
-                }else
+                }
+                else
                 {
                     _TxtElecNum = null;
                     this.RaisePropertychanged("TxtElecNum");
@@ -121,7 +125,8 @@
             get
             {
                 return _TxtNombre;
-            }set
+            }
+            set
             {
                 _TxtNombre = value;
                 this.RaisePropertychanged("TxtNombre");
@@ -132,7 +137,8 @@
             get
             {
                 return _TxtPaterno;
-            }set
+            }
+            set
             {
                 _TxtPaterno = value;
                 this.RaisePropertychanged("TxtPaterno");
@@ -143,7 +149,8 @@
             get
             {
                 return _TxtMaterno;
-            }set
+            }
+            set
             {
                 _TxtMaterno = value;
                 this.RaisePropertychanged("TxtMaterno");
@@ -154,7 +161,8 @@
             get
             {
                 return _TxtPadre;
-            }set
+            }
+            set
             {
                 _TxtPadre = value;
                 this.RaisePropertychanged("TxtPadre");
@@ -165,7 +173,8 @@
             get
             {
                 return _TxtMadre;
-            }set
+            }
+            set
             {
                 _TxtMadre = value;
                 this.RaisePropertychanged("TxtMadre");
@@ -176,7 +185,8 @@
             get
             {
                 return _TxtDia;
-            }set
+            }
+            set
             {
                 _TxtDia = value;
                 this.RaisePropertychanged("TxtDia");
@@ -187,7 +197,8 @@
             get
             {
                 return _TxtMes;
-            }set
+            }
+            set
             {
                 _TxtMes = value;
                 this.RaisePropertychanged("TxtMes");
@@ -198,7 +209,8 @@
             get
             {
                 return _TxtAno;
-            }set
+            }
+            set
             {
                 _TxtAno = value;
                 this.RaisePropertychanged("TxtAno");
@@ -209,7 +221,8 @@
             get
             {
                 return _TxtPrecinto;
-            }set
+            }
+            set
             {
                 _TxtPrecinto = value;
                 this.RaisePropertychanged("TxtPrecinto");
@@ -220,7 +233,8 @@
             get
             {
                 return _TxtUnidad;
-            }set
+            }
+            set
             {
                 _TxtUnidad = value;
                 this.RaisePropertychanged("TxtUnidad");
@@ -231,7 +245,8 @@
             get
             {
                 return _IsChecked_Activo;
-            }set
+            }
+            set
             {
                 _IsChecked_Activo = value;
                 this.RaisePropertychanged("IsChecked_Activo");
@@ -242,7 +257,8 @@
             get
             {
                 return _IsChecked_Inactivo;
-            }set
+            }
+            set
             {
                 _IsChecked_Inactivo = value;
                 this.RaisePropertychanged("IsChecked_Inactivo");
@@ -253,7 +269,8 @@
             get
             {
                 return _IsChecked_Excluido;
-            }set
+            }
+            set
             {
                 _IsChecked_Excluido = value;
                 this.RaisePropertychanged("IsChecked_Excluido");
@@ -264,7 +281,8 @@
             get
             {
                 return _IsChecked_SexM;
-            }set
+            }
+            set
             {
                 _IsChecked_SexM = value;
                 this.RaisePropertychanged("IsChecked_SexM");
@@ -287,7 +305,8 @@
             get
             {
                 return _Source_image;
-            }set
+            }
+            set
             {
                 _Source_image = value;
                 this.RaisePropertychanged("Source_image");
@@ -298,7 +317,8 @@
             get
             {
                 return _Source_imagePhoto;
-            }set
+            }
+            set
             {
                 _Source_imagePhoto = value;
                 this.RaisePropertychanged("Source_imagePhoto");
@@ -309,7 +329,7 @@
         {
             get
             {
-                
+
                 if (string.IsNullOrEmpty(TxtElecNum))
                 {
                     MyReset();
@@ -322,13 +342,13 @@
                     MyReset();
                     return false;
                 }
-                
-               if ( _CanFind)
-                   return false ;
+
+                if (_CanFind)
+                    return false;
 
                 return true;// !string.IsNullOrEmpty(TxtElecNum);
             }
-          
+
         }
         private bool CommandCan
         {
@@ -342,10 +362,10 @@
         #region MyCmd
 
         private void MyInitWindow()
-       {
-           try
-           {
-              
+        {
+            bool mIsWriteLog = false;
+            try
+            {
 
                 string Dia = DateTime.Now.ToString("MMM/dd/yyyy");
                 string Hora = DateTime.Now.ToString("hh:mm:ss tt");
@@ -375,20 +395,23 @@
                     else
                         TxtElecNum = string.Empty;
                 }
-            }
-           catch (Exception ex)
-           {
+                mIsWriteLog = true;
 
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
+            }
+            catch (Exception ex)
+            {
+
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                if (mIsWriteLog)
+                    _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
 
             }
         }
         public bool? MyOnShow()
-       {
-           return this.View.ShowDialog();
-       }
+        {
+            return this.View.ShowDialog();
+        }
         public void MyCmdFind_Click()
         {
             try
@@ -421,15 +444,15 @@
 
                     TxtPadre = myTable.Rows[0]["FatherName"].ToString();
                     TxtMadre = myTable.Rows[0]["MotherName"].ToString();
-                    TxtUnidad = myTable.Rows[0]["SecondGeoCode"].ToString().PadLeft(2,'0');
-                    TxtPrecinto = myTable.Rows[0]["FirstGeoCode"].ToString().PadLeft(3,'0');
+                    TxtUnidad = myTable.Rows[0]["SecondGeoCode"].ToString().PadLeft(2, '0');
+                    TxtPrecinto = myTable.Rows[0]["FirstGeoCode"].ToString().PadLeft(3, '0');
 
                     string Fechanac = myTable.Rows[0]["DateOfBirth"].ToString();
 
                     if (!string.IsNullOrEmpty(Fechanac))
                     {
-                        TxtMes = Fechanac.Split('/')[0].Trim().PadLeft(2,'0');
-                        TxtDia = Fechanac.Split('/')[1].Trim().PadLeft(2,'0');
+                        TxtMes = Fechanac.Split('/')[0].Trim().PadLeft(2, '0');
+                        TxtDia = Fechanac.Split('/')[1].Trim().PadLeft(2, '0');
                         TxtAno = Fechanac.Split('/')[2].Trim().Substring(0, 4);
                     }
 
@@ -506,8 +529,10 @@
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-                _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
-            }finally
+
+                try { _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999); } catch   {      }
+            }
+            finally
             {
 
             }
@@ -527,13 +552,13 @@
         }
 
         public RelayCommand initWindow
-       {
-           get;
-           private set;
-       }
+        {
+            get;
+            private set;
+        }
         public RelayCommand cmdFind_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdSalir_Click
         {
@@ -571,11 +596,11 @@
         }
         #endregion
 
-       
+
 
         #region Dispose
-       
-       
+
+
 
         public void Dispose()
         {
@@ -607,7 +632,7 @@
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
 
     }

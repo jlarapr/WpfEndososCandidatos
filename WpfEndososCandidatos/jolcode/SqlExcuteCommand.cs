@@ -343,6 +343,17 @@ namespace jolcode
                     "And Imported = 0;"
                 };
 
+                string[] mySqlstrCountVerificarMasDeUnPartido =
+                {
+                    "select count(*) as total ",
+                    "from ( SELECT  Partido,count(*) as total ",
+                    "FROM [TF-Endosos-CEE].[dbo].[TF-Partidos] ",
+                    "where BatchTrack = 'P-2020-EG-SEC-00001' ",
+                    "group by Partido ",
+                    ") as A"
+                };
+
+
                 using (SqlConnection cnn = new SqlConnection()
                 {
                     ConnectionString = DBCnnStr
@@ -378,6 +389,11 @@ namespace jolcode
                             cmd.CommandText = string.Concat(mySqlstrCountVerificar);
                             if ((int)cmd.ExecuteScalar() != myIntCantidad)
                                 throw new Exception("La cantidad de Endosos no concuerda");
+
+                            cmd.CommandText = string.Concat(mySqlstrCountVerificarMasDeUnPartido);
+                            if ((int)cmd.ExecuteScalar() > 1 )
+                                throw new Exception("La cantidad de Partidos en este Lot es mayor de 1\r\nSolo es permitido un partido por lote. favor verificar y subsanar la situacion.");
+
 
                             myBoolError = false;
 
@@ -1027,6 +1043,38 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public object MyGetPartidoTF(string lot)
+        {
+            object returnStr = "";
+            try
+            {
+                string mySqlstr = "Select  [Partido] as total from [dbo].[TF-Partidos] Where [BatchTrack]='" + lot + "'";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+                        returnStr = cmd.ExecuteScalar();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n MyGetCatntidadDigitalizada");
+            }
+            return returnStr;
+        }
 
 
         public DataTable MyGetPartidos(String IdPartido)
@@ -1403,7 +1451,6 @@ namespace jolcode
         {
             bool myReturn = false;
 
-
             try
             {
                 using (SqlConnection cnn = new SqlConnection()
@@ -1421,10 +1468,7 @@ namespace jolcode
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-
-
                         DateTime? m_Firma_Fecha = null;
-
 
                         string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
                         cmd.CommandText = mySqlstr;
@@ -1432,7 +1476,6 @@ namespace jolcode
                         DataTable table = new DataTable();
 
                         da.Fill(table);
-
 
                         foreach (DataRow dr in table.Rows)
                         {
@@ -1446,10 +1489,9 @@ namespace jolcode
 
                                 long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
 
-
-
                                 if (totalDeDias > 7)
                                     totalDeDias = totalDeDias - 2;
+
 
                                 string update = "update [dbo].[TF-Partidos] set [Leer_Inv]=" + totalDeDias + " where BatchTrack='" + lot + "' and BatchNo='" + BatchNo + "' and BatchPgNo='" + BatchPgNo + "';";
                                 cmd.CommandText = update;
@@ -3285,7 +3327,7 @@ namespace jolcode
                         if (m_Fecha_Endo != null)
                         {
                             //   if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
-                            if (m_Leer_Inv > 7)
+                            if (m_Leer_Inv > 7 || m_Leer_Inv <= -1)
                             {
                                 if (CollCriterios[2].Editar == true)
                                 {
@@ -3424,22 +3466,36 @@ namespace jolcode
                                                 "From [Candidatos]  ",
                                                 " Where [NumCand] = '", FixNum( m_N_CANDIDAT ), "'"};
                         object total = null;
-                        //myCnnDBEndososValidarDatos
-                        // if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnRadicacionesCEE) != null)
+
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
                         {
                             if ((int)total == 0)
                             {
-                                if (CollCriterios[6].Editar == true)
+                                string[] sqlstrPartido = {
+                                    "SELECT count(*) ",
+                                                "From [Candidatos]  ",
+                                                " Where [Partido] = '", m_PARTIDO, "'"};
+
+                                if (MyValidarDatos(string.Concat(sqlstrPartido), out total, myCnnDBEndososValidarDatos) != null)
                                 {
-                                    Rechazo[6]++;
-                                    strRechazos += "7|";
-                                    isRechazo[6] = true;
-                                }
-                                if (CollCriterios[6].Warning == true)
-                                {
-                                    Warning[6]++;
-                                    isWarning[6] = true;
+                                    if ((int)total == 0)
+                                    {
+                                        if (CollCriterios[6].Editar == true)
+                                        {
+                                            Rechazo[6]++;
+                                            strRechazos += "7|";
+                                            isRechazo[6] = true;
+                                        }
+                                        if (CollCriterios[6].Warning == true)
+                                        {
+                                            Warning[6]++;
+                                            isWarning[6] = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        m_N_CANDIDAT_Good = m_N_CANDIDAT;
+                                    }
                                 }
                             }
                             else
@@ -4135,7 +4191,8 @@ namespace jolcode
                         object total = null;
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndosos) != null)
                         {
-                            if ((int)total > 0) {
+                            if ((int)total > 0)
+                            {
                                 if (CollCriterios[19].Editar == true)
                                 {
                                     Rechazo[20]++;

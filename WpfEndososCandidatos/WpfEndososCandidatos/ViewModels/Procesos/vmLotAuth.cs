@@ -33,6 +33,8 @@
         private string _lblCount;
         private int _cantidadEntregada;
         private string _DBRadicacionesCEECnnStr;
+        private DateTime _dpFchRecibo;
+        private string _lblPartido;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
@@ -47,6 +49,30 @@
         }
 
         #region MyProperty
+        public string lblPartido
+        {
+            get
+            {
+                return _lblPartido;
+            }
+            set
+            {
+                _lblPartido = value;
+                this.RaisePropertychanged("lblPartido");
+            }
+        }
+        public DateTime dpFchRecibo
+        {
+            get
+            {
+                return _dpFchRecibo;
+            }set
+            {
+                _dpFchRecibo = value;
+                this.RaisePropertychanged("dpFchRecibo");
+            }
+        }
+
         public int cantidadEntregada
         {
             get
@@ -181,17 +207,7 @@
 
                 if (value != null)
                 {
-
-                    // string[] tmp = value.Split('-');
-                    //numLote = tmp[0].ToString();
                     numLote = value.Trim();
-                    //cantidad = 0;
-                    //int k = 0;
-
-                    //if (int.TryParse(tmp[1].ToString(), out k))
-                    //    cantidad = k;
-
-
 
                     try
                     {
@@ -203,6 +219,7 @@
                         {
                             cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
                             cantidad = get.MyGetCatntidadDigitalizada(numLote);
+                            lblPartido = get.MyGetPartidoTF(numLote).ToString();
                         }
                     }
                     catch (Exception ex)
@@ -212,6 +229,9 @@
 
                     }
 
+                }else
+                {
+                    lblPartido = string.Empty;
                 }
                 this.RaisePropertychanged("cbLots_Item");
             }
@@ -251,14 +271,17 @@
                     if (cantidad != cantidadEntregada)
                         throw new Exception("Error en la Cantidad");
 
-                    //                    object EndososDate = get.MyReydiEndososDate(numLote);
+                    //Redy 
+                    //object EndososDate = get.MyReydiEndososDate(numLote);
 
-                    //                  if (EndososDate.ToString() == "???")
-                    //                    throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
+                    //if (EndososDate.ToString() == "???")
+                    //    throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
 
-                    //              get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
+                    //get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
 
-                    DateTime mDate = DateTime.Now;
+
+                    DateTime mDate;
+                    mDate = dpFchRecibo;
 
                     get.MyTFJuramentoDate(numLote, mDate);
 
@@ -344,6 +367,8 @@
                 _LogClass.MessageFile = string.Empty;
                 _LogClass.CreateEvent();
                 _LogClass.MYEventLog.WriteEntry("Autorizar_Lotes Start:" + Dia + " " + Hora, EventLogEntryType.Information);
+
+                dpFchRecibo = DateTime.Now;
 
                 MyReset();
 

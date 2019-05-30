@@ -46,22 +46,22 @@
         <Grid>
             <Label
                 x:Name="lblNumPartido"
-                Margin="11,77,0,0"
+                Margin="16,78,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Num. Partido o Candidato:" Height="29" Width="161"  />
+                Content="Num. Partido  " Height="29" Width="79"  />
             <Label
                 x:Name="lblNombre"
-                Width="149"
+                Width="263"
                 Margin="11,139,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Nombre" />
             <TextBox
                 x:Name="dfNumPartido"
-                Width="97"
+                Width="194"
                 Height="23"
-                Margin="11,111,0,0"
+                Margin="16,107,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="{Binding Background_txtNumCandidato}"
@@ -302,8 +302,8 @@
                 VerticalAlignment="Top"
                 Content="Partido" />
             <Label
-                Height="55"
-                Margin="5,5,21,0"
+                Height="53"
+                Margin="10,5,10,0"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
@@ -314,7 +314,7 @@
                 x:Name="cmdFind"
                 Width="59"
                 Height="23"
-                Margin="113,112,0,0"
+                Margin="215,107,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding cmdFind_Click}"
@@ -323,7 +323,7 @@
                 x:Name="label6_Copy1"
                 Width="56"
                 Height="26"
-                Margin="218,80,0,0"
+                Margin="307,77,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Status :" />
@@ -331,7 +331,7 @@
                 x:Name="txtSatatusElec"
                 Width="106"
                 Height="26"
-                Margin="0,108,247,0"
+                Margin="0,108,158,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
@@ -340,6 +340,13 @@
                 Content="{Binding txtStatusElec}"
                 IsTabStop="False"
                 TabIndex="1000000" />
+            <CheckBox x:Name="chkPartido" Content="Partido" HorizontalAlignment="Left" Margin="16,58,0,0" VerticalAlignment="Top" IsChecked="{Binding chkPartido}" />
+            <Label
+                x:Name="lblNumPartido_Copy"
+                Margin="113,78,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Num. Candidato:" Height="29" Width="97"  />
 
         </Grid>
     </Border>

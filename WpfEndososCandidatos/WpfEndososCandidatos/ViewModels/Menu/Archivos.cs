@@ -7,6 +7,7 @@
     using WpfEndososCandidatos.Models;
     using System.Linq;
     using System.Windows.Input;
+    using System.Configuration;
 
     partial class MainVM
     {
@@ -87,7 +88,11 @@
                                 mnuRecibirLotes_IsEnabled = true;
                                 mnuProcesarLotes_IsEnabled = true;
                                 mnuVerEndosos_IsEnabled = true;
-                                mnuReydi_IsEnabled = true;
+
+                                bool ReydiMenuIsEnable;
+                                bool.TryParse(ConfigurationManager.AppSettings["ReydiMenuIsEnable"], out ReydiMenuIsEnable);
+                                mnuReydi_IsEnabled = ReydiMenuIsEnable;
+                                
                                 break;
                             case 'D':// VerElector
                                 mnuVerElector_IsEnabled = true;

@@ -62,6 +62,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private string _DBImagenesCnnStr;
         private string _PDFPath;
         private string _DBRadicacionesCEECnnStr;
+        private bool _chkPartido;
 
         public vmMantCandidatos()
             : base(new wpfMantCadidatos())
@@ -271,6 +272,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
         }
 
+        public bool chkPartido
+        {
+            get
+            {
+                return _chkPartido;
+            }
+            set
+            {
+                _chkPartido = value;
+                this.RaisePropertychanged("chkPartido");
+            }
+        }
         public bool IsEnabled_cmdAdd
         {
             get
@@ -472,7 +485,11 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtEndoReq = myData[5].ToString();
                     int i;
                     if (int.TryParse(myData[4].ToString(), out i))
+                    {
                         IsChecked_rbCargos[i] = true;
+                        if (i == 0)
+                            chkPartido = true;
+                    }
 
                     _cbNombre_Item = value;
                     txtNombre = myData[2].ToString();
@@ -918,59 +935,74 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
 
                     txtNumCandidato = txtNumCandidato.PadLeft(7, '0');
 
-                    DataTable myTable = get.MyGetCitizen(txtNumCandidato);
-                    bool mIsPartido = false;
 
-                    if (myTable.Rows.Count == 0)
+                    if (!chkPartido)
                     {
-                        int id = 0; int.TryParse(txtNumCandidato, out id);
-                        get.DBCnnStr = DBEndososCnnStr;
-                        myTable = get.MyGetPartidos(id.ToString());
+                        DataTable myTable = get.MyGetCitizen(txtNumCandidato);
+                        bool mIsPartido = false;
 
 
                         if (myTable.Rows.Count == 0)
-                            throw new Exception("Número electoral invalido.");
-                        else
-                            mIsPartido = true;
-                    }
-
-                    if (!mIsPartido)
-                    {
-                        txtNombre = myTable.Rows[0]["FirstName"].ToString() + " " + myTable.Rows[0]["LastName1"].ToString() + " " + myTable.Rows[0]["LastName2"].ToString();
-                        switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
                         {
-                            case "A":
-                                txtStatusElec = "A";
-                                break;
-                            case "E":
-                                //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                                txtStatusElec = "E";
-                                break;
-                            case "I":
-                                txtStatusElec = "I";
-                                //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                break;
-                            default:
-                                txtStatusElec = "?";
-                                break;
+                            int id = 0; int.TryParse(txtNumCandidato, out id);
+                            get.DBCnnStr = DBEndososCnnStr;
+                            myTable = get.MyGetPartidos(id.ToString());
+
+
+                            if (myTable.Rows.Count == 0)
+                                throw new Exception("Número invalido.");
+                            else
+                                mIsPartido = true;
+                        }
+
+                        if (!mIsPartido)
+                        {
+                            txtNombre = myTable.Rows[0]["FirstName"].ToString() + " " + myTable.Rows[0]["LastName1"].ToString() + " " + myTable.Rows[0]["LastName2"].ToString();
+                            switch (myTable.Rows[0]["Status"].ToString().Trim().ToUpper())
+                            {
+                                case "A":
+                                    txtStatusElec = "A";
+                                    break;
+                                case "E":
+                                    //  MessageBox.Show("Excluido","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                                    txtStatusElec = "E";
+                                    break;
+                                case "I":
+                                    txtStatusElec = "I";
+                                    //MessageBox.Show("Inactivo", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    break;
+                                default:
+                                    txtStatusElec = "?";
+                                    break;
+                            }
+                        }
+                        else
+                        { // isPartido
+                            chkPartido = true;
+                            txtNombre = myTable.Rows[0]["Desc"].ToString();
+                            txtEndoReq = myTable.Rows[0]["EndoReq"].ToString();
+                            String area = myTable.Rows[0]["Area"].ToString();
+                            IsChecked_rbCargos[0] = true;
+                            cbArea_Item_Id = FindByArea(area);
                         }
                     }
                     else
-                    {
+                    {//isPartido
+                        int id = 0; int.TryParse(txtNumCandidato, out id);
+                        get.DBCnnStr = DBEndososCnnStr;
+                        DataTable myTable = get.MyGetPartidos(id.ToString());
+
+                        if (myTable.Rows.Count == 0)
+                            throw new Exception("Número invalido.");
+
                         txtNombre = myTable.Rows[0]["Desc"].ToString();
                         txtEndoReq = myTable.Rows[0]["EndoReq"].ToString();
                         String area = myTable.Rows[0]["Area"].ToString();
                         IsChecked_rbCargos[0] = true;
                         cbArea_Item_Id = FindByArea(area);
                     }
-
                     //txtApellido1 = myTable.Rows[0]["LastName1"].ToString();
                     //txtApellido2 = myTable.Rows[0]["LastName2"].ToString();
-
-
-                    
-
-
                 }
             }
             catch (Exception ex)
@@ -1085,7 +1117,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cbNombre_Item_Id = -1;
             IsEnabled_cbArea = false;
             IsEnabled_cbPartidos = false;
-
+            chkPartido = false;
             MyRefresh();
         }
         private void MyRefresh()

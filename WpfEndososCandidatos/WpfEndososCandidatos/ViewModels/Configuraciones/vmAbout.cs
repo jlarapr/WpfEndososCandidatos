@@ -11,6 +11,7 @@ using WpfEndososCandidatos.View;
     class vmAbout : ViewModelBase<IDialogView>, IDisposable
     {
         private string _mensaje;
+        private string _titulo;
         private RelayCommand _InitWindow;
         private RelayCommand _ok_Click;
 
@@ -58,10 +59,10 @@ using WpfEndososCandidatos.View;
         {
             mensaje = String.Format("CEE Systema de Validación de Endosos Version {0}", AssemblyVersion);
             mensaje  += "\rEsta aplicación procesa las peticiones de endoso para\rlos candidatos o los partido.";
+            titulo = "Validación de Endosos";
             //mensaje  += "\rEsta aplicación procesa las peticiones de endoso para\rlos candidatos de las primarias.";
 
         }
-
 
         public string mensaje
         {
@@ -75,6 +76,21 @@ using WpfEndososCandidatos.View;
                 {
                     _mensaje = value;
                     this.RaisePropertychanged("mensaje");
+                }
+            }
+        }
+
+        public string titulo
+        {
+            get
+            {
+                return _titulo;
+            }set
+            {
+                if (_titulo != value)
+                {
+                    _titulo = value;
+                    this.RaisePropertychanged("titulo");
                 }
             }
         }
