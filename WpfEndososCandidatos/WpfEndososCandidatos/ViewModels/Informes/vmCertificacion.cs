@@ -566,46 +566,47 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             Partido = data[0].Trim();
             NumCandidato = data[1].Trim();
 
-            string[] dataReydi; 
+            string[] mItotalEndoReq;
+
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
-                DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
+                DBRadicacionesCEECnnStr = DBEndososCnnStr //  DBRadicacionesCEECnnStr
             })
             {
-                dataReydi =
-                get.MyGetTotalReq(NumCandidato);
+                mItotalEndoReq = get.MyGetTotalEndosReqPartido(Partido);
+
+                //get.MyGetTotalReq(NumCandidato);
 
             }
+
 
             int total = 0;
-
-            int.TryParse(dataReydi[0].Trim(), out total);
+            
+            int.TryParse(mItotalEndoReq[5].Trim(), out total);
             Total = total;
 
-            Nombre = dataReydi[1].Trim();                // data[2].Trim();
+            Nombre = mItotalEndoReq[2].Trim();                // data[2].Trim();
 
-            if (dataReydi[2].Trim().Length > 0)
-                Nombre += " " + dataReydi[2].Trim();
+            //if (dataReydi[2].Trim().Length > 0)
+            //    Nombre += " " + dataReydi[2].Trim();
 
-            if (dataReydi[3].Trim().Length > 0)
-            {
-                if (dataReydi[3].Trim().Length ==1) 
-                    Nombre += " " + dataReydi[3].Trim() + ".";
-                else
-                    Nombre += " " + dataReydi[3].Trim();
+            //if (dataReydi[3].Trim().Length > 0)
+            //{
+            //    if (dataReydi[3].Trim().Length ==1) 
+            //        Nombre += " " + dataReydi[3].Trim() + ".";
+            //    else
+            //        Nombre += " " + dataReydi[3].Trim();
 
-            }
+            //}
 
-            if (dataReydi[4].Trim().Length > 0)
-                Nombre += " " + dataReydi[4].Trim();
+            //if (dataReydi[4].Trim().Length > 0)
+            //    Nombre += " " + dataReydi[4].Trim();
 
 
 
             Cargo = data[4].Trim();
             txtNombre = Nombre.ToUpper(); // ConvertTo_ProperCase(Nombre);
-
-
-
+                       
             switch (Cargo)
             {
                 case "0": //Partido

@@ -2111,6 +2111,53 @@ namespace jolcode
         }
 
 
+        public string[] MyGetTotalEndosReqPartido(string partido)
+        {
+            string[] sOut = { "", "", "", "", "","" };
+
+            string mySqlstr = "Select * from [dbo].[Candidatos]  where [partido]='" +  partido +"';" ;
+
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBRadicacionesCEECnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+
+                    })
+                    {
+                        SqlDataReader dr;
+                        dr = cmd.ExecuteReader();
+
+                        while (dr.Read())
+                        {
+                            sOut[0] = dr[0].ToString().Trim();
+                            sOut[1] = dr[1].ToString().Trim();
+                            sOut[2] = dr[2].ToString().Trim();
+                            sOut[3] = dr[3].ToString().Trim();
+                            sOut[4] = dr[4].ToString().Trim();
+                            sOut[5] = dr[5].ToString().Trim();
+                        }
+                        dr.Close();
+                        dr = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetTotalEndosReqPartido Error");
+            }
+            return sOut;
+        }
 
         public string[] MyGetTotalReq(string numElec)
         {
@@ -2160,7 +2207,7 @@ namespace jolcode
             catch (Exception ex)
             {
 
-                throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
+                throw new Exception(ex.ToString() + "\r\nMyGetTotalReq Error");
 
             }
             return sOut;
