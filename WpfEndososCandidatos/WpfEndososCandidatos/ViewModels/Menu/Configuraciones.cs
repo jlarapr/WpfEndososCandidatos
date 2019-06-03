@@ -200,6 +200,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frmMatUsers._userName = _Username;
                     frmMatUsers._userPassword = _Password;
                     frmMatUsers._database = _Database;
+                    frmMatUsers.DBEndososCnnStr = DBEndososCnnStr;
                     frmMatUsers.OnShow();
                 }
             }

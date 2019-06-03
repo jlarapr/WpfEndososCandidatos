@@ -199,6 +199,7 @@
     <Compile Include="Models\tblUser.cs">
       <DependentUpon>EndososPartidos.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Users.cs" />
     <Compile Include="MyDataSet.cs">
       <DependentUpon>MyDataSet.xsd</DependentUpon>
     </Compile>

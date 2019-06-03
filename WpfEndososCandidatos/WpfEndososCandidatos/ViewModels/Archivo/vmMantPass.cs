@@ -31,7 +31,7 @@ namespace WpfEndososCandidatos.ViewModels
         private Byte[] _hash;
         private const int iterations = 10002;
         private const int saltSize = PWDTK.CDefaultSaltLength + 2;
-        private dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
+       // private dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
 
         PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
         private Visibility _Password_Cls_Visibility;
@@ -40,6 +40,7 @@ namespace WpfEndososCandidatos.ViewModels
         public Guid _Id { get; set; }
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private string _DBEndososCnnStr;
 
         public vmMantPass() : base (new wpfMantPass())
         {
@@ -47,6 +48,18 @@ namespace WpfEndososCandidatos.ViewModels
             cmdSalir_Click = new RelayCommand(param => CmdSalir_Click(),null);
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
             cmdGuardar_Click = new RelayCommand(param => CmdGuardar_Click(), null);
+        }
+
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+            set
+            {
+                _DBEndososCnnStr = value;
+            }
         }
 
         public Brush BorderBrush
@@ -218,8 +231,8 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                tblUser tbluser = _db.tblUsers.Find(_Id);
-                _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
+              //  tblUser tbluser = _db.tblUsers.Find(_Id);
+               // _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
 
                 IntPtr passwordBSTR = default(IntPtr);
                 string insecurePassword = "";
@@ -248,10 +261,18 @@ namespace WpfEndososCandidatos.ViewModels
 
                 var hashedPassword = PWDTK.HashBytesToHexString(_hash);
 
-                tbluser.SecurityStamp = salt;
-                tbluser.PasswordHash = hashedPassword;
+                using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    exe.MyUpdateUser(_Id, hashedPassword, salt);
+                }
 
-                _db.SaveChanges();
+                //  tbluser.SecurityStamp = salt;
+                //  tbluser.PasswordHash = hashedPassword;
+
+                //_db.SaveChanges();
                 MessageBox.Show("Dones...", "Done", MessageBoxButton.OK, MessageBoxImage.Information);
                 CmdSalir_Click();
             }

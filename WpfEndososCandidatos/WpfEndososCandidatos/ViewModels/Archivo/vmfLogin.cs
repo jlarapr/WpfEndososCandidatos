@@ -24,8 +24,10 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Windows.Media;
     using System.Configuration;
     using System.Windows.Input;
+    using System.Collections.ObjectModel;
+    
 
-    class vmfLogin : ViewModelBase<IDialogView>,  IDisposable 
+    class vmfLogin : ViewModelBase<IDialogView>, IDisposable
     {
         //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
         private const int numberUpper = 1;
@@ -55,6 +57,7 @@ namespace WpfEndososCandidatos.ViewModels
         private string _DBEndososCnnStr;
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
+        DataTable _MyUsersTable;
 
         public vmfLogin() :
             base(new wpfLogin())
@@ -68,7 +71,8 @@ namespace WpfEndososCandidatos.ViewModels
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -78,7 +82,8 @@ namespace WpfEndososCandidatos.ViewModels
             get
             {
                 return _DBCeeMasterCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterCnnStr = value;
             }
@@ -88,7 +93,8 @@ namespace WpfEndososCandidatos.ViewModels
             get
             {
                 return _DBImagenesCnnStr;
-            }set
+            }
+            set
             {
                 _DBImagenesCnnStr = value;
             }
@@ -97,10 +103,11 @@ namespace WpfEndososCandidatos.ViewModels
 
         public System.Windows.Input.Cursor MiCursor
         {
-           get
+            get
             {
                 return _MiCursor;
-            }set
+            }
+            set
             {
                 _MiCursor = value;
                 this.RaisePropertychanged("MiCursor");
@@ -115,7 +122,8 @@ namespace WpfEndososCandidatos.ViewModels
             get
             {
                 return _BorderBrush;
-            }set
+            }
+            set
             {
                 if (_BorderBrush != value)
                 {
@@ -128,7 +136,7 @@ namespace WpfEndososCandidatos.ViewModels
 
 
         public string _AreasDeAcceso { get; private set; }
-        public Guid _Id  {get;private set;}
+        public Guid _Id { get; private set; }
 
         public bool? OnShow()
         {
@@ -153,11 +161,11 @@ namespace WpfEndososCandidatos.ViewModels
                 txtUserName_txt = string.Empty;
                 txtPassword_txt = string.Empty;
                 Password_Cls_Visibility = Visibility.Hidden;
-               
+
 
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
-                if (myBorderBrush !=null && myBorderBrush.Trim().Length > 0 )
+                if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
                 {
                     Type t = typeof(Brushes);
                     Brush b = (Brush)t.GetProperty(myBorderBrush).GetValue(null, null);
@@ -170,7 +178,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch (System.Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -192,13 +200,13 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                
+
                 this.View.DialogResult = false;
-                this.View.Close();                
+                this.View.Close();
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -287,7 +295,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 if (_oK_Click == null)
                 {
-                    _oK_Click = new RelayCommand(param => MyOK_Click(param),param=>Ok_Can);
+                    _oK_Click = new RelayCommand(param => MyOK_Click(param), param => Ok_Can);
                 }
                 return _oK_Click;
             }
@@ -318,13 +326,13 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     return false;
                 }
-            }          
+            }
         }
 
-        private  void MyOK_Click(object param)
+        private void MyOK_Click(object param)
         {
             MiCursor = Cursors.Wait;
-          
+
             try
             {
                 if (txtUserName_txt != "Applica")
@@ -332,10 +340,29 @@ namespace WpfEndososCandidatos.ViewModels
                     PasswordBox passwordBox = param as PasswordBox;
 
                     txtPassword_txt = passwordBox.Password;
+                                        
+                    ObservableCollection<Users> db = new ObservableCollection<Users>(); 
+                    
+                    using (SqlExcuteCommand get = new SqlExcuteCommand()
+                    {
+                        DBCnnStr = DBEndososCnnStr
+                    })
+                    {
+                        _MyUsersTable = get.MyGetUsers();
 
-                    dbEndososPartidosEntities db = new dbEndososPartidosEntities();
+                        foreach(DataRow r in _MyUsersTable.Rows)
+                        {
+                            Users mUsers = new Users();
+                            mUsers.UserId = (Guid)r["UserId"];
+                            mUsers.UserName = r["UserName"].ToString();
+                            mUsers.PasswordHash =  r["PasswordHash"].ToString();
+                            mUsers.SecurityStamp = r["SecurityStamp"].ToString();
+                            mUsers.AreasDeAcceso = r["AreasDeAcceso"].ToString();
+                            db.Add(mUsers);
+                        }
+                    }
 
-                    var user = from u in db.tblUsers
+                    var user = from u in db
                                where u.UserName == txtUserName_txt
                                select new
                                {
@@ -375,16 +402,17 @@ namespace WpfEndososCandidatos.ViewModels
                     _Id = Guid.NewGuid();
                 }
                 this.View.DialogResult = true;
-                               
+
                 this.View.Close();
 
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }finally
+            }
+            finally
             {
                 MiCursor = Cursors.Arrow;
 
@@ -404,14 +432,14 @@ namespace WpfEndososCandidatos.ViewModels
                 //errorPasswd.SetError(txtPassword, pwdEx.Message);
 
                 throw new Exception(pwdEx.Message);
-                
+
             }
         }
 
 
         #region Dispose
-       
-       
+
+
 
         public void Dispose()
         {
@@ -443,8 +471,8 @@ namespace WpfEndososCandidatos.ViewModels
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
-       
+
     }//end
 }//end

@@ -47,6 +47,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         private int _cbPartidos_Item_Id;
         DataTable _MyPartidosTable;
         DataTable _MyAreasTable;
+        
         private ObservableCollection<Area> _cbArea;
         private string _cbArea_Item;
         private int _cbArea_Item_Id;

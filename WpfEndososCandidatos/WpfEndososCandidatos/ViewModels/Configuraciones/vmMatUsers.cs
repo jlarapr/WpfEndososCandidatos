@@ -5,6 +5,7 @@ namespace WpfEndososCandidatos.ViewModels
     using jolcode.MyInterface;
     using WpfEndososCandidatos.View;
     using System;
+    using System.Data;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -25,7 +26,7 @@ namespace WpfEndososCandidatos.ViewModels
     using System.Windows.Media;
     using System.Configuration;
 
-    public class vmMatUsers : ViewModelBase<IDialogView>, IDisposable 
+    public class vmMatUsers : ViewModelBase<IDialogView>, IDisposable
     {
         //Below is used to generate a password policy that you may use to check that passwords adhere to this policy
         private const int numberUpper = 1;
@@ -41,13 +42,15 @@ namespace WpfEndososCandidatos.ViewModels
         PWDTK.PasswordPolicy PwdPolicy = new PWDTK.PasswordPolicy(numberUpper, numberNonAlphaNumeric, numberNumeric, minPwdLength, maxPwdLength);
         PWDTK.UserPolicy UserPolicy = new PWDTK.UserPolicy(4, Int32.MaxValue);
 
-        dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
+        //dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
+        ObservableCollection<Users> _db = new ObservableCollection<Users>();
+
         private int _Operation;
-        private string[] _AreasDeAcceso = new string[9]; 
+        private string[] _AreasDeAcceso = new string[9];
         private bool _cambiarPassword_IsChecked;
-        private bool _autorizarLotes_IsChecked;        
-        private bool _procesarLotes_IsChecked;        
-        private bool _verElector_IsCheked;        
+        private bool _autorizarLotes_IsChecked;
+        private bool _procesarLotes_IsChecked;
+        private bool _verElector_IsCheked;
         private bool _reportes_IsChecked;
         private bool _reversarLote_IsChecked;
         private bool _configuraciones_IsChecked;
@@ -61,10 +64,10 @@ namespace WpfEndososCandidatos.ViewModels
         private string _verificacionPassword_Cls;
 
         public string _sqlServer { get; set; }
-        public string _userName { get;set; }
-        public string _userPassword { get;set; }
+        public string _userName { get; set; }
+        public string _userPassword { get; set; }
         public string _database { get; set; }
-        
+
         private bool _CbUser_IsEditable;
         private bool _Password_IsEnabled;
         private bool _AreasdeAcceso_IsEnabled;
@@ -80,6 +83,10 @@ namespace WpfEndososCandidatos.ViewModels
         private Visibility _Password_Cls_Visibility;
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
+        private string _DBEndososCnnStr;
+        DataTable _MyUsersTable;
+
+
         public vmMatUsers()
             : base(new wpfMantUsers())
         {
@@ -102,6 +109,19 @@ namespace WpfEndososCandidatos.ViewModels
             cbUser_ChangeItem = new RelayCommand(param => CbUser_ChangeItem());
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click());
         }
+
+        public string DBEndososCnnStr
+        {
+            get
+            {
+                return _DBEndososCnnStr;
+            }
+            set
+            {
+                _DBEndososCnnStr = value;
+            }
+        }
+
         public Brush BorderBrush
         {
             get
@@ -227,6 +247,72 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
+        private void MyInserUsers()
+        {
+            try
+            {
+                using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error-MyInserUsers", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+        private void MyRefresh()
+        {
+            CbUser.Clear();
+            _db.Clear();
+            try
+            {
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
+                    _MyUsersTable = get.MyGetUsers();
+
+                    foreach (DataRow r in _MyUsersTable.Rows)
+                    {
+                        Users mUsers = new Users();
+                        mUsers.UserId = (Guid)r["UserId"];
+                        mUsers.UserName = r["UserName"].ToString();
+                        mUsers.PasswordHash = r["PasswordHash"].ToString();
+                        mUsers.SecurityStamp = r["SecurityStamp"].ToString();
+                        mUsers.AreasDeAcceso = r["AreasDeAcceso"].ToString();
+                        _db.Add(mUsers);
+                    }
+                }
+
+                var usernames = from u in _db
+                                orderby u.UserName
+                                select u;
+
+
+                foreach (var s in usernames)
+                {
+                    CbUser.Add(s.UserName);
+                }
+
+                if (CbUser.Count > 0)
+                    CbUser_SelectedIndex = -1;
+                //GetUsers(_sqlServer,_database, _userName, PasswordHash.Decrypt(_userPassword),this.CbUser);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error-MyRefresh", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
 
         #region SaveBorrarEdiatarAnadir
 
@@ -242,7 +328,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     areasDeAcceso += s;
                 }
-                switch(_Operation)
+                switch (_Operation)
                 {
                     case 1:
                         {//Anadir
@@ -266,40 +352,61 @@ namespace WpfEndososCandidatos.ViewModels
                             if (!userMeetsPolicy(CbUser_Text, UserPolicy)) return;
 
                             if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
-                            
+
                             //Hash password
                             _salt = PWDTK.GetRandomSalt(saltSize);
 
                             string salt = PWDTK.GetSaltHexString(_salt);
 
                             _hash = PWDTK.PasswordToHash(_salt, insecurePassword, iterations);
-                            
+
                             var hashedPassword = PWDTK.HashBytesToHexString(_hash);
 
                             List<tblUser> u = new List<tblUser>
                             {
-                                new tblUser 
-                                {  
-                                    UserId=System.Guid.NewGuid(), 
+                                new tblUser
+                                {
+                                    UserId=System.Guid.NewGuid(),
                                     UserName = CbUser_Text ,
-                                    PasswordHash=hashedPassword, 
+                                    PasswordHash=hashedPassword,
                                     SecurityStamp = salt,
-                                    Email= CbUser_Text +  "@jolpr.com", 
-                                    AreasDeAcceso=areasDeAcceso 
+                                    Email= CbUser_Text +  "@jolpr.com",
+                                    AreasDeAcceso=areasDeAcceso
                                 }
                             };
-                            u.ForEach(m => _db.tblUsers.Add(m));
-                            _db.SaveChanges();
+
+                            using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                            {
+                                DBCnnStr = DBEndososCnnStr
+                            })
+                            {
+                                exe.MyInsertUsers(u[0].UserId, u[0].UserName, u[0].PasswordHash,u[0].SecurityStamp , u[0].Email, u[0].AreasDeAcceso);
+                            }
+
+                            MyRefresh();
+                            //   u.ForEach(m => _db.tblUsers.Add(m));
+                            //  _db.SaveChanges();
                         }
                         break;
                     case 2://Editar Areas De Acceso
                         {
-                            tblUser tbluser = _db.tblUsers.Find(_Id);
-                            _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
-                                                       
-                            tbluser.AreasDeAcceso = areasDeAcceso;
+                            using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                            {
+                                DBCnnStr = DBEndososCnnStr
+                            })
+                            {
+                                exe.MyUpdateUser(_Id, areasDeAcceso);
+                            }
 
-                            _db.SaveChanges();
+                            MyRefresh();
+
+
+                            // tblUser tbluser = _db.tblUsers.Find(_Id);
+                            // _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
+                            //                            
+                            // tbluser.AreasDeAcceso = areasDeAcceso;
+                            //
+                            // _db.SaveChanges();
                         }
                         break;
                     case 3://Delete
@@ -312,51 +419,76 @@ namespace WpfEndososCandidatos.ViewModels
 
                             if (response == MessageBoxResult.Yes)
                             {
-                                tblUser tbluser = _db.tblUsers.Find(_Id);
-                                _db.tblUsers.Remove(tbluser);
-                                _db.SaveChanges();
+
+                                using (SqlExcuteCommand exe = new SqlExcuteCommand()
+                                {
+                                    DBCnnStr = DBEndososCnnStr
+                                })
+                                {
+                                    exe.MyDeleteUsers(_Id);
+                                }
+
+                                MyRefresh();
+
+                                //Users tbluser = _db.tblUsers.Find(_Id);
+                                //
+                                //
+                                //_db.tblUsers.Remove(tbluser);
+                                //_db.SaveChanges();
                             }
                         }
                         break;
                     case 4: //Edit Pass
                         {
-                            tblUser tbluser = _db.tblUsers.Find(_Id);
-                            _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
+                            //    tblUser tbluser = _db.tblUsers.Find(_Id);
+                            //    _db.Entry(tbluser).State = System.Data.Entity.EntityState.Modified;
+                            //
+                                IntPtr passwordBSTR = default(IntPtr);
+                                string insecurePassword = "";
+                                passwordBSTR = Marshal.SecureStringToBSTR(Password);
+                                insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
+                            
+                                IntPtr passwordVerificationBSTR = default(IntPtr);
+                                string insecurePasswordVerification = string.Empty;
+                            
+                                passwordVerificationBSTR = Marshal.SecureStringToBSTR(PasswordVerification);
+                                insecurePasswordVerification = Marshal.PtrToStringBSTR(passwordVerificationBSTR);
+                            
+                                if (!insecurePassword.Equals(insecurePasswordVerification))
+                                {
+                                    throw new Exception("Error con el Password");
+                                }
+                            
+                                //Policy
+                                if (!userMeetsPolicy(CbUser_Text, UserPolicy)) return;
+                            
+                                if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
+                            
+                                //Hash password                                                        
+                                _salt = PWDTK.GetRandomSalt(saltSize);
+                            
+                                string salt = PWDTK.GetSaltHexString(_salt);
+                            
+                                _hash = PWDTK.PasswordToHash(_salt, insecurePassword, iterations);
+                            
+                                var hashedPassword = PWDTK.HashBytesToHexString(_hash);
 
-                            IntPtr passwordBSTR = default(IntPtr);
-                            string insecurePassword = "";
-                            passwordBSTR = Marshal.SecureStringToBSTR(Password);
-                            insecurePassword = Marshal.PtrToStringBSTR(passwordBSTR);
 
-                            IntPtr passwordVerificationBSTR = default(IntPtr);
-                            string insecurePasswordVerification = string.Empty;
-
-                            passwordVerificationBSTR = Marshal.SecureStringToBSTR(PasswordVerification);
-                            insecurePasswordVerification = Marshal.PtrToStringBSTR(passwordVerificationBSTR);
-
-                            if (!insecurePassword.Equals(insecurePasswordVerification))
+                            using (SqlExcuteCommand exe = new SqlExcuteCommand()
                             {
-                                throw new Exception("Error con el Password");
+                                DBCnnStr = DBEndososCnnStr
+                            })
+                            {
+                                exe.MyUpdateUser(_Id, hashedPassword,salt);
                             }
 
-                            //Policy
-                            if (!userMeetsPolicy(CbUser_Text, UserPolicy)) return;
+                            MyRefresh();
 
-                            if (!PasswordMeetsPolicy(insecurePassword, PwdPolicy)) return;
 
-                            //Hash password                                                        
-                            _salt = PWDTK.GetRandomSalt(saltSize);
-
-                            string salt = PWDTK.GetSaltHexString(_salt);
-
-                            _hash = PWDTK.PasswordToHash(_salt, insecurePassword, iterations);
-
-                            var hashedPassword = PWDTK.HashBytesToHexString(_hash);
-
-                            tbluser.SecurityStamp = salt;
-                            tbluser.PasswordHash = hashedPassword;
-
-                            _db.SaveChanges();
+                            //    tbluser.SecurityStamp = salt;
+                            //    tbluser.PasswordHash = hashedPassword;
+                            //
+                            //    _db.SaveChanges();
                         }
                         break;
                 }
@@ -369,20 +501,20 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
         public RelayCommand borrar_Click { get; private set; }
-        
+
         private void Borrar_Click()
         {
             try
             {
                 _Operation = 3;
                 cmdSave_IsEnabled = true;
-                cmdEdit_IsEnabled = false;                
+                cmdEdit_IsEnabled = false;
                 cbUser_IsEnabled = false;
                 cmdDelete_IsEnabled = false;
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -409,7 +541,7 @@ namespace WpfEndososCandidatos.ViewModels
                 AreasdeAcceso_IsEnabled = false;
                 CbUser_IsEditable = false;
                 Password_IsEnabled = false;
-            
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -439,14 +571,14 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
-        public RelayCommand anadir_Click {get;private set;}
+        public RelayCommand anadir_Click { get; private set; }
         private void Anadir_Click()
         {
             try
@@ -474,7 +606,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
-        public RelayCommand cancelar_Click { get; private set;}
+        public RelayCommand cancelar_Click { get; private set; }
 
         private void Cancelar_Click()
         {
@@ -504,7 +636,7 @@ namespace WpfEndososCandidatos.ViewModels
 
                 CbUser = new ObservableCollection<string>();
 
-                var usernames = from u in _db.tblUsers
+                var usernames = from u in _db
                                 orderby u.UserName
                                 select u;
 
@@ -522,7 +654,7 @@ namespace WpfEndososCandidatos.ViewModels
                 cmdDelete_IsEnabled = false;
                 cmdSave_IsEnabled = false;
                 cmdEditPass_IsEnabled = false;
-                
+
                 Id = Guid.Empty.ToString();
 
             }
@@ -539,7 +671,7 @@ namespace WpfEndososCandidatos.ViewModels
 
         }
 
-        private void CmdVerPass_Click() 
+        private void CmdVerPass_Click()
         {
             try
             {
@@ -555,18 +687,19 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-        } 
+        }
         public Visibility Password_Cls_Visibility
         {
             get
             {
                 return _Password_Cls_Visibility;
-            }set
+            }
+            set
             {
                 if (_Password_Cls_Visibility != value)
                 {
@@ -578,7 +711,7 @@ namespace WpfEndososCandidatos.ViewModels
 
 
         #endregion
-        
+
         #region cambiarPassword
 
 
@@ -597,7 +730,7 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
-        public RelayCommand cambiarPassword_Click {get;private set;}
+        public RelayCommand cambiarPassword_Click { get; private set; }
 
         private void CambiarPassword_Click()
         {
@@ -613,11 +746,11 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso[1] = string.Empty;
 
                 }
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -665,11 +798,11 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso[2] = string.Empty;
                 }
 
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -677,7 +810,7 @@ namespace WpfEndososCandidatos.ViewModels
         #endregion
 
         #region Procesar Lotes
-        
+
         public bool procesarLotes_IsChecked
         {
             get
@@ -713,11 +846,11 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso[3] = string.Empty;
                 }
 
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -763,11 +896,11 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso[4] = string.Empty;
                 }
 
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -814,7 +947,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -861,11 +994,11 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     _AreasDeAcceso[6] = string.Empty;
                 }
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -874,7 +1007,7 @@ namespace WpfEndososCandidatos.ViewModels
         #endregion
 
         #region Configuraciones
-         
+
         public bool configuraciones_IsChecked
         {
             get
@@ -908,17 +1041,17 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     _AreasDeAcceso[7] = string.Empty;
                 }
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        
+
 
 
 
@@ -960,11 +1093,11 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     _AreasDeAcceso[8] = string.Empty;
                 }
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -1016,7 +1149,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 _CbUser = value;
                 this.RaisePropertychanged("CbUser");
-           
+
             }
         }
 
@@ -1035,7 +1168,7 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
-        public string   CbUser_SelectedItem
+        public string CbUser_SelectedItem
         {
             get
             {
@@ -1045,7 +1178,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 _CbUser_SelectedItem = value;
                 this.RaisePropertychanged("CbUser_SelectedItem");
-                
+
             }
         }
 
@@ -1071,7 +1204,7 @@ namespace WpfEndososCandidatos.ViewModels
             get
             {
                 return _Id.ToString();
-            }       
+            }
             set
             {
                 if (_Id.ToString() != value)
@@ -1086,7 +1219,7 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                var pass = from p in _db.tblUsers
+                var pass = from p in _db
                            where p.UserName == CbUser_SelectedItem
                            select p;
 
@@ -1099,13 +1232,21 @@ namespace WpfEndososCandidatos.ViewModels
                 Password_IsEnabled = false;
                 Password_Cls_Visibility = Visibility.Hidden;
 
+                cambiarPassword_IsChecked = false;  //A
+                autorizarLotes_IsChecked = false;   //B
+                procesarLotes_IsChecked = false;    //C
+                verElector_IsChecked = false;       //D
+                reportes_IsChecked = false;         //E
+                reversarLote_IsChecked = false;     //F
+                configuraciones_IsChecked = false;  //G
+                corregirEndosos_IsChecked = false;  //H
 
-                _AreasDeAcceso = new string[9]; 
+                _AreasDeAcceso = new string[9];
 
-                foreach(var pss in pass)
+                foreach (var pss in pass)
                 {
-                     
-                    Byte[] hash = PWDTK.HashHexStringToBytes (pss.PasswordHash);
+
+                    Byte[] hash = PWDTK.HashHexStringToBytes(pss.PasswordHash);
 
                     password_Cls = PWDTK.HashBytesToHexString(hash);  // Helper.PasswordHash.HashPasswordDecrypt(pss.PasswordHash);  // Helper.PasswordHash.Decrypt(pss.PasswordHash);
 
@@ -1120,8 +1261,8 @@ namespace WpfEndososCandidatos.ViewModels
                                 _AreasDeAcceso[1] = "A";
                                 cambiarPassword_IsChecked = true;
                                 break;
-                            case 'B' :
-                                _AreasDeAcceso[2] ="B";
+                            case 'B':
+                                _AreasDeAcceso[2] = "B";
                                 autorizarLotes_IsChecked = true;
                                 break;
                             case 'C':
@@ -1129,23 +1270,23 @@ namespace WpfEndososCandidatos.ViewModels
                                 procesarLotes_IsChecked = true;
                                 break;
                             case 'D':
-                                _AreasDeAcceso[4] ="D";
+                                _AreasDeAcceso[4] = "D";
                                 verElector_IsChecked = true;
                                 break;
                             case 'E':
-                                _AreasDeAcceso[5] ="E";
+                                _AreasDeAcceso[5] = "E";
                                 reportes_IsChecked = true;
                                 break;
                             case 'F':
-                                _AreasDeAcceso[6] ="F";
+                                _AreasDeAcceso[6] = "F";
                                 reversarLote_IsChecked = true;
                                 break;
                             case 'G':
-                                _AreasDeAcceso[7] ="G";
+                                _AreasDeAcceso[7] = "G";
                                 configuraciones_IsChecked = true;
                                 break;
                             case 'H':
-                                _AreasDeAcceso[8] ="H";
+                                _AreasDeAcceso[8] = "H";
                                 corregirEndosos_IsChecked = true;
                                 break;
 
@@ -1180,7 +1321,7 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
-        
+
         public SecureString Password
         {
             get
@@ -1212,7 +1353,7 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
-        
+
         public string verificacionPassword_Cls
         {
             get
@@ -1229,34 +1370,34 @@ namespace WpfEndososCandidatos.ViewModels
                 }
             }
         }
-        
+
         public SecureString PasswordVerification
-          {
-              get
-              {
-                  return _passwordVerification;
-              }
-              set
-              {
-                  if (_passwordVerification != value)
-                  {
-                      _passwordVerification = value;
-                      this.RaisePropertychanged("PasswordVerification");
-                  }
-              }
-          }
-      
+        {
+            get
+            {
+                return _passwordVerification;
+            }
+            set
+            {
+                if (_passwordVerification != value)
+                {
+                    _passwordVerification = value;
+                    this.RaisePropertychanged("PasswordVerification");
+                }
+            }
+        }
+
         #endregion
-      
+
         #region Swowwindow
         public bool? OnShow()
         {
             return this.View.ShowDialog();
         }
-        
-      public RelayCommand initWindow { get; private set; }
-            
-      private void InitWindow()
+
+        public RelayCommand initWindow { get; private set; }
+
+        private void InitWindow()
         {
             try
             {
@@ -1265,7 +1406,7 @@ namespace WpfEndososCandidatos.ViewModels
                 CbUser_IsEditable = false;
                 Password_IsEnabled = false;
                 AreasdeAcceso_IsEnabled = false;
-                
+
                 cmdAdd_IsEnabled = true;
                 cbUser_IsEnabled = true;
 
@@ -1275,20 +1416,9 @@ namespace WpfEndososCandidatos.ViewModels
                 cmdCancel_IsEnabled = false;
                 cmdEditPass_IsEnabled = false;
 
-                Password_Cls_Visibility =  Visibility.Hidden;
+                Password_Cls_Visibility = Visibility.Hidden;
 
-                var usernames = from u in _db.tblUsers
-                             orderby u.UserName
-                             select u;
-
-
-                foreach (var s in usernames)
-                {
-                    CbUser.Add(s.UserName);
-                }
-                if (CbUser.Count > 0)
-                    CbUser_SelectedIndex = -1;
-                //GetUsers(_sqlServer,_database, _userName, PasswordHash.Decrypt(_userPassword),this.CbUser);
+                MyRefresh();
 
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
@@ -1303,7 +1433,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -1313,17 +1443,17 @@ namespace WpfEndososCandidatos.ViewModels
 
         #region Close
         public RelayCommand close_Click { get; private set; }
-        
+
         private void Close_Click()
         {
             try
             {
                 this.View.Close();
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -1332,10 +1462,10 @@ namespace WpfEndososCandidatos.ViewModels
 
 
         #endregion
-                
+
         #region Tools
 
-        private void GetUsers(string server,string database, string user, string insecurePassword, ObservableCollection<string> ListDatabase) 
+        private void GetUsers(string server, string database, string user, string insecurePassword, ObservableCollection<string> ListDatabase)
         {
             try
             {
@@ -1345,10 +1475,10 @@ namespace WpfEndososCandidatos.ViewModels
                 //Persist Security Info=False;Data Source=[server name];Initial Catalog=[DataBase Name];User ID=myUsername;Password=myPassword
                 cnnString = string.Concat("Persist Security Info=False;",
                                           "Data Source=", server,
-                                          ";Initial Catalog=",database ,
+                                          ";Initial Catalog=", database,
                                           ";User ID=", user,
                                           ";Password=", insecurePassword);
-                                
+
                 using (SqlConnection cnn = new SqlConnection(cnnString))
                 {
                     cnn.Open();
@@ -1377,7 +1507,7 @@ namespace WpfEndososCandidatos.ViewModels
                 ListDatabase = new ObservableCollection<string>();
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+            }
         }
 
 
@@ -1415,8 +1545,8 @@ namespace WpfEndososCandidatos.ViewModels
         #endregion
 
         #region Dispose
-       
-       
+
+
 
         public void Dispose()
         {
@@ -1448,7 +1578,7 @@ namespace WpfEndososCandidatos.ViewModels
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
     }//end
 }//end

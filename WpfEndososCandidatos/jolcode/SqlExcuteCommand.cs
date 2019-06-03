@@ -391,7 +391,7 @@ namespace jolcode
                                 throw new Exception("La cantidad de Endosos no concuerda");
 
                             cmd.CommandText = string.Concat(mySqlstrCountVerificarMasDeUnPartido);
-                            if ((int)cmd.ExecuteScalar() > 1 )
+                            if ((int)cmd.ExecuteScalar() > 1)
                                 throw new Exception("La cantidad de Partidos en este Lot es mayor de 1\r\nSolo es permitido un partido por lote. favor verificar y subsanar la situacion.");
 
 
@@ -883,6 +883,49 @@ namespace jolcode
             }
             return myTableReturn;
         }
+
+        public DataTable MyGetUsers()
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                string mySqlstr = "Select * from tblUsers order by username";
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = mySqlstr
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }//end using 2
+                }//end using 1
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetUsers Error");
+            }
+
+            return myTableReturn;
+        }
+
         public DataTable MyGetPrecintos()
         {
             DataTable myTableReturn = new DataTable();
@@ -1972,6 +2015,51 @@ namespace jolcode
             return myBoolReturn;
 
         }
+        public bool MyDeleteUsers(Guid UserID)
+        {
+            bool myBoolReturn = false;
+
+            try
+            {
+                string[] myDelete =
+                      {
+                            "Delete from [dbo].[tblUsers] ",
+                            " WHERE [UserId]=@Where "
+                        };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(myDelete)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.UniqueIdentifier));
+                        cmd.Parameters["@Where"].Value = UserID;
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return myBoolReturn;
+        }
         public bool MyDeleteCandidato(string where)
         {
             bool myBoolReturn = false;
@@ -2113,9 +2201,9 @@ namespace jolcode
 
         public string[] MyGetTotalEndosReqPartido(string partido)
         {
-            string[] sOut = { "", "", "", "", "","" };
+            string[] sOut = { "", "", "", "", "", "" };
 
-            string mySqlstr = "Select * from [dbo].[Candidatos]  where [partido]='" +  partido +"';" ;
+            string mySqlstr = "Select * from [dbo].[Candidatos]  where [partido]='" + partido + "';";
 
             try
             {
@@ -2252,6 +2340,172 @@ namespace jolcode
                 throw new Exception(ex.ToString() + "\r\nMyGetCandidatos Error");
             }
             return myTableReturn;
+        }
+
+        public bool MyUpdateUser(Guid UserId,String PasswordHash, String SecurityStamp)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myUpdate =
+                    {
+                    "update [dbo].[tblUsers] ",
+                    "set [SecurityStamp] = @SecurityStamp, ",
+                    "[PasswordHash] = @PasswordHash ",
+                    "where UserId=@UserId"
+                };
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        cmd.CommandText = string.Concat(myUpdate);
+                        cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.UniqueIdentifier)).Value = UserId;
+                        cmd.Parameters.Add(new SqlParameter("@SecurityStamp", SqlDbType.VarChar)).Value = SecurityStamp.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@PasswordHash", SqlDbType.VarChar)).Value = PasswordHash.Trim();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n" + "MyUpdateUser");
+            }
+
+
+            return myBoolReturn;
+        }
+
+
+        public bool MyUpdateUser(Guid UserId,  String AreasDeAcceso)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myUpdate =
+                    {
+                    "update [dbo].[tblUsers] ",
+                    "set [AreasDeAcceso] = @AreasDeAcceso ",
+                    "where UserId=@UserId"
+                };
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        cmd.CommandText = string.Concat(myUpdate);
+                        cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.UniqueIdentifier)).Value = UserId;
+                        cmd.Parameters.Add(new SqlParameter("@AreasDeAcceso", SqlDbType.VarChar)).Value = AreasDeAcceso.Trim();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n" + "MyUpdateUser");
+            }
+
+
+            return myBoolReturn;
+        }
+
+
+        public bool MyInsertUsers(Guid UserId, String UserName, String PasswordHash, String SecurityStamp, String Email, String AreasDeAcceso)
+        {
+            bool myBoolReturn = false;
+            try
+            {
+                string[] myInsert =
+                     {
+                    "insert into  [dbo].[tblUsers]([UserId],[UserName],[PasswordHash],[SecurityStamp],[Email],[AreasDeAcceso]) ",
+                    "Values(@UserId,@UserName,@PasswordHash,@SecurityStamp,@Email,@AreasDeAcceso)"};
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    if (cnn.State == ConnectionState.Closed)
+                        cnn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+
+                    })
+                    {
+                        cmd.CommandText = string.Concat(myInsert);
+                        cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.UniqueIdentifier)).Value = UserId;
+                        cmd.Parameters.Add(new SqlParameter("@UserName", SqlDbType.VarChar)).Value = UserName.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@PasswordHash", SqlDbType.VarChar)).Value = PasswordHash.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@SecurityStamp", SqlDbType.VarChar)).Value = SecurityStamp.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar)).Value = Email.Trim();
+                        cmd.Parameters.Add(new SqlParameter("@AreasDeAcceso", SqlDbType.VarChar)).Value = AreasDeAcceso.Trim();
+
+                        int myReturn = cmd.ExecuteNonQuery();
+
+                        if (myReturn <= 0)
+                            myBoolReturn = false;
+                        else
+                            myBoolReturn = true;
+
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\n" + "MyInsertUsers");
+            }
+            return myBoolReturn;
         }
 
         public bool MyInsertBodyCertificacion(string HupDerecho, string Fecha, string InfoSecretario, string InfoComisionado,

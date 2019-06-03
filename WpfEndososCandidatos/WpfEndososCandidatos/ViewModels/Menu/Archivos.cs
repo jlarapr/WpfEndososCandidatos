@@ -18,7 +18,7 @@
         private bool _mnuChangePassword_IsEnabled;
         private bool _mnuLogout_IsEnabled;
         private bool _mnuLogin_IsEnabled;
-        dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
+      //  dbEndososPartidosEntities _db = new dbEndososPartidosEntities();
         private Guid _Id;
         
         public bool mnuLogin_IsEnabled
@@ -228,6 +228,7 @@
                 {
                     frmMantPass.View.Owner = this.View as Window;
                     frmMantPass._Id = _Id;
+                    frmMantPass.DBEndososCnnStr = DBEndososCnnStr;
                     frmMantPass.OnShow();
                 }
               
