@@ -347,8 +347,8 @@ namespace jolcode
                 {
                     "select count(*) as total ",
                     "from ( SELECT  Partido,count(*) as total ",
-                    "FROM [TF-Endosos-CEE].[dbo].[TF-Partidos] ",
-                    "where BatchTrack = 'P-2020-EG-SEC-00001' ",
+                    "FROM [dbo].[TF-Partidos] ",
+                    "where BatchTrack = @lot ",
                     "group by Partido ",
                     ") as A"
                 };
@@ -2769,7 +2769,7 @@ namespace jolcode
                     {
                             "UPDATE [dbo].[Notarios] ",
                             "SET [NumElec] = @NumElec,",
-                            "[Partido] = @Partido",
+                            "[Partido] = @Partido,",
                             "[NumCand] = @NumCand,",
                             "[Nombre] = @Nombre,",
                             "[Apellido1] = @Apellido1,",
@@ -2787,9 +2787,11 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate)
+                        
                     })
                     {
+                        cmd.CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate);
+
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
@@ -3665,7 +3667,7 @@ namespace jolcode
                         string[] sqlstr = { "SELECT count(*) ",
                                                 "From [Notarios] ",
                                                 " Where ([NumElec] = ", FixNum( m_N_NOTARIO) , ") and ",
-                                                " ([NumCand]=", FixNum( m_N_CANDIDAT ) , ")"};
+                                                " ([Partido]='", m_PARTIDO , "')"};
 
                         object total = null;
 
