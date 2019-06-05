@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfEndososCandidatos.Models
 {
-    class Partidos : IEquatable<Partidos>, IComparable
+    public class Partidos : IEquatable<Partidos>, IComparable
     {
         public int Id { get; set; }
         public string PartidoKey { get; set; }

@@ -707,6 +707,63 @@ namespace jolcode
             return myTableReturn;
         }
 
+        public DataTable MyGetLotVoid(String Partido, String FechaDeRecibo)
+        {
+            DataTable myTableReturn = new DataTable();
+
+            try
+            {
+                string[] mySqlstr = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch]          ",
+                    "      ,A.[Formulario] ,A.[Rechazo]," ,
+                    "      (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
+                    "      A.[NumElec]",
+                    "      ,A.[Status] ,A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso and a.Partido = @Partido",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
+                        cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.ToString() + "\r\n MyGetLotVoid Error");
+            }
+
+            return myTableReturn;
+        }
 
         public DataTable MyGetLotToFixVoid(string CurrLot, bool isAll = false)
         {
@@ -2342,7 +2399,7 @@ namespace jolcode
             return myTableReturn;
         }
 
-        public bool MyUpdateUser(Guid UserId,String PasswordHash, String SecurityStamp)
+        public bool MyUpdateUser(Guid UserId, String PasswordHash, String SecurityStamp)
         {
             bool myBoolReturn = false;
             try
@@ -2399,7 +2456,7 @@ namespace jolcode
         }
 
 
-        public bool MyUpdateUser(Guid UserId,  String AreasDeAcceso)
+        public bool MyUpdateUser(Guid UserId, String AreasDeAcceso)
         {
             bool myBoolReturn = false;
             try
@@ -2787,7 +2844,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        
+
                     })
                     {
                         cmd.CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate);

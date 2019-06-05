@@ -54,6 +54,34 @@ namespace jolcode
         }
 
 
+        public void TableToExcel(string excelFileName, IEnumerable<infoEndososRechazados> data)
+        {
+            try
+            {
+                if (System.IO.File.Exists(excelFileName))
+                    System.IO.File.Delete(excelFileName);
+
+                string worksheetsName = "CEE Endosos Rechazados " + DateTime.Now.ToString();
+                bool firstRowIsHeader = true;
+
+            
+                using (ExcelPackage package = new ExcelPackage(new FileInfo(excelFileName)))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(worksheetsName);
+
+                    worksheet.Cells["A:XFD"].Style.Font.Bold = true;
+                    
+                    worksheet.Cells["A:XFD"].LoadFromCollection<infoEndososRechazados>(data, firstRowIsHeader, OfficeOpenXml.Table.TableStyles.Medium27);
+
+                    package.Save();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void TableToExcel(string excelFileName, IEnumerable<InfoDuplicado> data)
         {
             try

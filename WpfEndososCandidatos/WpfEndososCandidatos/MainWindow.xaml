@@ -132,6 +132,14 @@
                     Name="mnuRechazo"
                     Command="{Binding mnuRechazo_click}"
                     Header="_Rechazos" />
+                <MenuItem 
+                    Name="mnuEndososRechazados"
+                    Command="{Binding mnuEndososRechazados_click}"
+                    Header="Endosos Rechazados"/>
+                <MenuItem
+                    Name="mnuEstatus"
+                    Command="{Binding mnuEstatus_click}"
+                    Header="_Estatus" />
                 <MenuItem
                     Name="mnuduplicado"
                     Command="{Binding mnuduplicado_click}"

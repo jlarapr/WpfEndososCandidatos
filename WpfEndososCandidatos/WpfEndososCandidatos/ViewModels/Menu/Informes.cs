@@ -22,6 +22,15 @@ namespace WpfEndososCandidatos.ViewModels
             get;private set;
         }
 
+        public RelayCommand mnuEndososRechazados_click
+        {
+            get; private set;
+        }
+        public RelayCommand mnuEstatus_click
+        {
+            get; private set;
+        }
+
 
         public RelayCommand mnuRechazo_click
         {
@@ -146,6 +155,43 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        private void MymnuEstatus_click()
+        {
+            try
+            {
+                using (vmEstatus frm = new vmEstatus())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void MymnuEndososRechazados_click()
+        {
+            try
+            {
+                using (vmEndososRechazados frm =new vmEndososRechazados())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

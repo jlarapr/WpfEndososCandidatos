@@ -242,6 +242,8 @@
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
     <Compile Include="ViewModels\Informes\vmCertificacion.cs" />
     <Compile Include="ViewModels\Informes\vmDuplicados.cs" />
+    <Compile Include="ViewModels\Informes\vmEndososRechazados.cs" />
+    <Compile Include="ViewModels\Informes\vmEstatus.cs" />
     <Compile Include="ViewModels\Informes\vmInformeReydi.cs" />
     <Compile Include="ViewModels\Main\MainVM.cs" />
     <Compile Include="ViewModels\Menu\Archivos.cs" />
@@ -280,6 +282,12 @@
     </Compile>
     <Compile Include="View\Informes\wpfDuplicados.xaml.cs">
       <DependentUpon>wpfDuplicados.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfEndososRechazados.xaml.cs">
+      <DependentUpon>wpfEndososRechazados.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfEstatus.xaml.cs">
+      <DependentUpon>wpfEstatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Informes\wpfInformeReydi.xaml.cs">
       <DependentUpon>wpfInformeReydi.xaml</DependentUpon>
@@ -392,6 +400,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Informes\wpfDuplicados.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfEndososRechazados.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfEstatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
