@@ -299,6 +299,14 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         {
                             switch (m_Cargo)
                             {
+                                case 0:
+                                    {
+                                        if ((total.Count + 1) >= 1)
+                                        {
+                                            isError = true;
+                                        }
+                                    }
+                                    break;
                                 case 1:// 'Gobernador
                                     {
                                         if ((total.Count + 1) >= 1)

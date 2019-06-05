@@ -372,18 +372,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                             RR["Lot"] = lot;
                             RR["NumeroElec"] = "Número Electoral               : " + NumElec;
-                            RR["Nombre"] = "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim(), " ", R["Paterno"].ToString().Trim(), " ", R["Materno"].ToString().Trim()).Trim();
-                            RR["NombreCee"] = "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
-                            RR["Precinto"] = "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
-                            RR["StatusCEE"] = "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
-                            RR["FuncionarioElec"] = "Funcionario                    : " + R["notario"];
-                            RR["CandidatoElec"] = "Número Candidato               : " + R["Candidato"];
-                            RR["CandidatoName"] = "Nombre Candidato               : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
+                            RR["Nombre"] =     "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim(), " ", R["Paterno"].ToString().Trim(), " ", R["Materno"].ToString().Trim()).Trim();
+                            RR["NombreCee"] =  "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
+                            RR["Precinto"] =   "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
+                            RR["StatusCEE"] =       "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
+                            RR["FuncionarioElec"] = "Notario                        : " + R["notario"];
+                            RR["CandidatoElec"] =   "Partido                        : " + R["Partido"];//R["Candidato"];
+                            //RR["CandidatoName"] = "Nombre Candidato               : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
                             RR["Batch"] = "Batch                          : " + R["Batch"];
                             RR["Formulario"] = "Formulario                     : " + R["Formulario"];
-                            RR["Cargo"] = "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
-
-
+                            //RR["Cargo"] = "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
+                            
                             string Candidato = string.Empty;
                             if (R["Candidato"] != null)
                                 Candidato = R["Candidato"].ToString().Trim();

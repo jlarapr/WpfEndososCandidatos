@@ -57,7 +57,7 @@ using WpfEndososCandidatos.View;
 
         private void OnInitWindow()
         {
-            mensaje = String.Format("CEE Systema de Validación de Endosos Version {0}", AssemblyVersion);
+            mensaje = String.Format("CEE Sistema de Validación de Endosos Version {0}", AssemblyVersion);
             mensaje  += "\rEsta aplicación procesa las peticiones de endoso para\rlos candidatos o los partido.";
             titulo = "Validación de Endosos";
             //mensaje  += "\rEsta aplicación procesa las peticiones de endoso para\rlos candidatos de las primarias.";
