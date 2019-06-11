@@ -25,6 +25,7 @@
         private RelayCommand _FixLot_Click;
         private RelayCommand _reydi_Click;
         private RelayCommand _VerEndososReydi_Click;
+        private bool _mnuInformeDuplicados_IsEnable;
 
         public bool mnuRecibirLotes_IsEnabled
         {
@@ -219,6 +220,17 @@
                     _mnuInformeEndosos_IsEnabled = value;
                     this.RaisePropertychanged("mnuInformeEndosos_IsEnabled");
                 }
+            }
+        }
+        public bool mnuInformeDuplicados_IsEnable
+        {
+            get
+            {
+                return _mnuInformeDuplicados_IsEnable;
+            }set
+            {
+                _mnuInformeDuplicados_IsEnable = value;
+                this.RaisePropertychanged("mnuInformeDuplicados_IsEnable");
             }
         }
         public bool mnuReydi_IsEnabled

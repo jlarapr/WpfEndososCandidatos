@@ -132,10 +132,10 @@
                     Name="mnuRechazo"
                     Command="{Binding mnuRechazo_click}"
                     Header="_Rechazos" />
-                <MenuItem 
+                <MenuItem
                     Name="mnuEndososRechazados"
                     Command="{Binding mnuEndososRechazados_click}"
-                    Header="Endosos Rechazados"/>
+                    Header="Endosos Rechazados" />
                 <MenuItem
                     Name="mnuEstatus"
                     Command="{Binding mnuEstatus_click}"
@@ -143,18 +143,19 @@
                 <MenuItem
                     Name="mnuduplicado"
                     Command="{Binding mnuduplicado_click}"
-                    Header="_Duplicados" />
+                    Header="_Duplicados"
+                    IsEnabled="{Binding mnuInformeDuplicados_IsEnable}" />
                 <Separator />
                 <MenuItem
                     Name="mnuREYDI"
                     Command="{Binding mnuReydi_click}"
-                    IsEnabled="{Binding mnuReydi_IsEnabled}" 
-                    Header="_Reydi" />
+                    Header="_Reydi"
+                    IsEnabled="{Binding mnuReydi_IsEnabled}" />
                 <MenuItem
                     Name="mnuRechazoReydi"
                     Command="{Binding mnuRechazoReydi_click}"
-                    IsEnabled="{Binding mnuReydi_IsEnabled}" 
-                    Header="_Rechazos en Reydi" />
+                    Header="_Rechazos en Reydi"
+                    IsEnabled="{Binding mnuReydi_IsEnabled}" />
 
             </MenuItem>
 

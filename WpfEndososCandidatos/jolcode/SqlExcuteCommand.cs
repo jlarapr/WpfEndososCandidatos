@@ -707,7 +707,7 @@ namespace jolcode
             return myTableReturn;
         }
 
-        public DataTable MyGetLotVoid(String Partido, String FechaDeRecibo)
+        public DataTable MyGetLotVoid(String Partido, String FechaDeRecibo,bool isDuplicados)
         {
             DataTable myTableReturn = new DataTable();
 
@@ -725,6 +725,20 @@ namespace jolcode
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
 
+                //Duplicados 
+                string[] mySqlstr2 = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch]          ",
+                    "      ,A.[Formulario] ,A.[Rechazo]," ,
+                    "      (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
+                    "      A.[NumElec]",
+                    "      ,A.[Status] ,A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and a.Partido = @Partido",
+                    " and [Rechazo] in (14,15,21)",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+
                 using (SqlConnection cnn = new SqlConnection()
                 {
                     ConnectionString = DBCnnStr
@@ -734,15 +748,31 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = string.Concat(mySqlstr)
                     })
                     {
+
+                        if (isDuplicados)
+                        {
+                            cmd.CommandText = string.Concat(mySqlstr2);
+                        }
+                        else
+                        {
+                            cmd.CommandText = string.Concat(mySqlstr);
+                        }
+                        
 
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
-                        cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
-                        cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
+                        if (isDuplicados)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
+                            //cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
+                        }else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
+                            cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
+                        }
 
                         using (SqlDataAdapter da = new SqlDataAdapter()
                         {

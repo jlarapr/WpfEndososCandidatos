@@ -66,9 +66,9 @@
                 SelectedItem="{Binding cbPartido_Item, Mode=TwoWay}" />
 
             <DataGrid
-                IsReadOnly="True"
                 x:Name="dataGrid"
                 Margin="10,132,10,38"
+                IsReadOnly="True"
                 ItemsSource="{Binding ItemsSource}"
                 SelectedIndex="{Binding dgSelectedIndex, Mode=TwoWay}"
                 SelectedItem="{Binding dgSelectedItem, Mode=TwoWay}">
@@ -142,6 +142,14 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 SelectedDate="{Binding dpFchRecibo}" />
+            <CheckBox
+                x:Name="isDuplicados"
+                Width="145"
+                Margin="334,80,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Duplicados"
+                IsChecked="{Binding isDuplicados}" />
         </Grid>
     </Border>
 </Window>

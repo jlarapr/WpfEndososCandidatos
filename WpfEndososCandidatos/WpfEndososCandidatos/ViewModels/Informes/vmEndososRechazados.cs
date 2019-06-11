@@ -42,6 +42,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private infoEndososRechazados _dgSelectedItem;
         private int _dgSelectedIndex;
         private ObservableCollection<String> _filesTmp;
+        private bool _isDuplicados;
 
         public vmEndososRechazados() : base(new wpfEndososRechazados())
         {
@@ -145,6 +146,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         {
             try
             {
+                ItemsSource.Clear();
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr
@@ -155,7 +157,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                     String mpartido = cbPartido[cbPartido_Item_Id].PartidoKey;   // cbPartido_Item.Split('-');
 
-                    _MyLotsVoidTable = get.MyGetLotVoid(mpartido.ToString().Trim(), dpFchRecibo.ToString("MM/dd/yyyy"));
+                    _MyLotsVoidTable = get.MyGetLotVoid(mpartido.ToString().Trim(), dpFchRecibo.ToString("MM/dd/yyyy"),isDuplicados);
                     txtTotal = string.Format("{0:N0}", _MyLotsVoidTable.Rows.Count);
 
                     foreach (DataRow r in _MyLotsVoidTable.Rows)
@@ -174,6 +176,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         ItemsSource.Add(myLotsVoid);
                     }
                 }
+                MessageBox.Show("Done...", "Done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             catch (Exception ex)
             {
@@ -249,6 +252,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 cbPartido.Clear();
                 ItemsSource.Clear();
                 txtTotal = "0";
+                isDuplicados = false;
                 cbPartido_Item = string.Empty;
 
                 foreach (DataRow row in _MyPartidoTable.Rows)
@@ -270,6 +274,19 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         #endregion
 
         #region property 
+
+        public bool isDuplicados
+        {
+            get
+            {
+                return _isDuplicados;
+            }set
+            {
+                _isDuplicados = value;
+                this.RaisePropertychanged("isDuplicados");
+            }
+        }
+
         public int dgSelectedIndex
         {
             get

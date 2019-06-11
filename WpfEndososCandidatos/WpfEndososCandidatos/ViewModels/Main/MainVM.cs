@@ -60,10 +60,7 @@ namespace WpfEndososCandidatos.ViewModels
             mnuEndososRechazados_click = new RelayCommand(param => MymnuEndososRechazados_click());
             mnuEstatus_click = new RelayCommand(param => MymnuEstatus_click());
         }
-
-      
-
-        
+                     
 
         public string WhatIsUserName
         {
