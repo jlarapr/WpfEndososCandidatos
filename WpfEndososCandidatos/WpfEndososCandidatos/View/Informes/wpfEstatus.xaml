@@ -68,6 +68,7 @@
             <DataGrid
                 x:Name="dataGrid"
                 Margin="10,132,10,38"
+                IsReadOnly="True"
                 ItemsSource="{Binding ItemsSource}" />
             <Label
                 x:Name="label"
@@ -119,6 +120,14 @@
                 VerticalAlignment="Top"
                 Command="{Binding cmdSalir_Click}"
                 Content="Exit" />
+            <CheckBox
+                x:Name="isPartidos"
+                Width="88"
+                Margin="326,84,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Partidos"
+                IsChecked="{Binding isPartidos}" />
         </Grid>
     </Border>
 </Window>

@@ -165,6 +165,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    
                     frm.MyOnShow();
                 }
             }

@@ -71,6 +71,7 @@
     <Compile Include="GetRegistry.cs" />
     <Compile Include="InfoDuplicado.cs" />
     <Compile Include="infoEndososRechazados.cs" />
+    <Compile Include="infoEstatus.cs" />
     <Compile Include="InfoReydi.cs" />
     <Compile Include="Logclass.cs" />
     <Compile Include="LotsToReydi.cs" />

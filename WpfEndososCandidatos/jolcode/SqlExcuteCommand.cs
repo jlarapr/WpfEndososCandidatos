@@ -706,36 +706,224 @@ namespace jolcode
             }
             return myTableReturn;
         }
-
-        public DataTable MyGetLotVoid(String Partido, String FechaDeRecibo,bool isDuplicados)
+        public DataTable MyGetInfoEstatus(String Partido, bool isPartido )
         {
             DataTable myTableReturn = new DataTable();
 
             try
             {
                 string[] mySqlstr = {
-                    "SELECT A.[Partido],A.[Lot],A.[Batch]          ",
-                    "      ,A.[Formulario] ,A.[Rechazo]," ,
-                    "      (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
-                    "      A.[NumElec]",
-                    "      ,A.[Status] ,A.[EndosoImage],b.Fecha_Endoso",
+                   "Select ",
+                   "(SELECT [Partido] FROM [dbo].[Candidatos]  where [Partido] = @Partido) as Partido ,",
+                   "(SELECT [EndoReq] FROM [dbo].[Candidatos]  where [Partido] = @Partido) as Endosos_Requeridos,",
+                   "(select count(*)  FROM [dbo].[LotsEndo]    where [Partido] = @Partido and [Status] = 0) as Endosos_Aceptados,",
+                   "(select count(*)  FROM [dbo].[LotsEndo]    where [Partido] = @Partido and [Status] != 0) as Endosos_Rechazados,",
+                   "(select count(*)  FROM [dbo].[LotsEndo]    where [Partido] = @Partido) as Endosos_Procesados,",
+                   "(select count(*)  from [dbo].[TF-Partidos] where [Partido] = @Partido) as Endosos_Entregados"
+                };
+                string[] mySqlstrNoPartido = {
+                    "SELECT * from ",
+                    "(",
+                    "    (SELECT partido,'Endosos_Requeridos' as Titulo, sum([EndoReq]) as Total FROM [dbo].[Candidatos] group by [Partido])",
+                    "     union",
+                    "    (select partido,'Endosos_Aceptados' as Titulo, count(*) as Total FROM [dbo].[LotsEndo]  where [Status] = 0 group by [Partido] )",
+                    "     union",
+                    "    (select partido,'Endosos_Rechazados' as Titulo ,count(*)  as Total FROM [dbo].[LotsEndo] where [Status] != 0 group by [Partido])",
+                    "     union ",
+                    "    (select partido,'Endosos_Procesados' as Titulo, count(*) as Total  FROM [dbo].[LotsEndo]  group by [Partido])",
+                    "     union ",
+                    "    (SELECT partido,'Endosos_Entregados' as Titulo, count(*)  as Total FROM [dbo].[TF-Partidos]  group by [Partido])",
+                    ") ",
+                    " as TT" 
+                };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                    })
+                    {
+                        if (isPartido)
+                        {
+                            cmd.CommandText = String.Concat(mySqlstr);
+                        }else
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrNoPartido);
+                        }
+
+                        if (isPartido)
+                        {
+                            SqlParameter sqlParameterPartido = new SqlParameter("@Partido", SqlDbType.VarChar);
+                            cmd.Parameters.Add(sqlParameterPartido).Value = Partido;
+                        }
+
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.ToString() + "\r\n MyGetInfoEstatus Error");
+
+            }
+
+
+            return myTableReturn;
+        }
+
+        public DataTable MyGetLotVoid(String Partido, String FechaDeRecibo, bool isDuplicados, bool isFechaRecibo, bool isPartidos)
+        {
+            DataTable myTableReturn = new DataTable();
+
+            try
+            {
+                //partido and fecha de recibo
+                string[] mySqlstrPartidoFecha = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso and a.Partido = @Partido",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
-
-                //Duplicados 
-                string[] mySqlstr2 = {
-                    "SELECT A.[Partido],A.[Lot],A.[Batch]          ",
-                    "      ,A.[Formulario] ,A.[Rechazo]," ,
-                    "      (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
-                    "      A.[NumElec]",
-                    "      ,A.[Status] ,A.[EndosoImage],b.Fecha_Endoso",
+                //fecha de recibo
+                string[] mySqlstrFecha = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso ",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+                //Duplicados and partido
+                string[] mySqlstrDuplicadosPartido = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2) and a.Partido = @Partido",
-                    " and [Rechazo] in (14,15,21)",
+                    "  and [Rechazo] in (14,15,21)",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+
+                //Duplicados and Fecha
+                string[] mySqlstrDuplicadosFecha = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso",
+                    "  and [Rechazo] in (14,15,21)",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+                //Duplicados and Fecha and partido
+                string[] mySqlstrDuplicadosFechaPartido = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso and a.Partido = @Partido",
+                    "  and [Rechazo] in (14,15,21)",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+                //Duplicados 
+                string[] mySqlstrDuplicados = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2)",
+                    "  and [Rechazo] in (14,15,21)",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+
+                string[] mySqlstrPartidos = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "       (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal ," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) and a.Partido = @Partido",
+                    "  order by  A.Rechazo,A.Lot,A.NumElec"
+                };
+
+                string[] mySqlstrTodos = {
+                    "SELECT A.[Partido],A.[Lot],A.[Batch],",
+                    "       A.[Formulario] ,A.[Rechazo]," ,
+                    "      (select [Desc] from [dbo].[Criterios] where [Campo] = A.Rechazo) as Causal," ,
+                    "       A.[NumElec],",
+                    "       B.[Nombre],",
+                    "       B.[Paterno],",
+                    "       B.[Materno],",
+                    "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
+                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
+                    "  on A.NumElec = B.NumElec",
+                    "  where B.Status in (1,2) ",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
 
@@ -750,29 +938,71 @@ namespace jolcode
                         CommandType = CommandType.Text,
                     })
                     {
+                        SqlParameter sqlParameterPartido = new SqlParameter("@Partido", SqlDbType.VarChar);
+                        SqlParameter sqlParameterFecha = new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar);
 
-                        if (isDuplicados)
+                        cmd.Parameters.Add(sqlParameterPartido).Value = Partido;
+                        cmd.Parameters.Add(sqlParameterFecha).Value = FechaDeRecibo;
+
+                        if ((isPartidos) && (isFechaRecibo) && (!isDuplicados))
                         {
-                            cmd.CommandText = string.Concat(mySqlstr2);
+                            cmd.CommandText = String.Concat(mySqlstrPartidoFecha);
                         }
-                        else
+                        if ((isPartidos) && (isFechaRecibo) && (isDuplicados))
                         {
-                            cmd.CommandText = string.Concat(mySqlstr);
+                            cmd.CommandText = String.Concat(mySqlstrDuplicadosFechaPartido);
                         }
-                        
+
+                        if ((!isPartidos) && (isFechaRecibo) && (!isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrFecha);
+                            cmd.Parameters.Remove(sqlParameterPartido);
+                        }
+
+                        if ((isPartidos) && (!isFechaRecibo) && (isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrDuplicadosPartido);
+                            cmd.Parameters.Remove(sqlParameterFecha);
+                        }
+
+                        if ((!isPartidos) && (!isFechaRecibo) && (isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrDuplicados);
+                            cmd.Parameters.Remove(sqlParameterPartido);
+                            cmd.Parameters.Remove(sqlParameterFecha);
+                        }
+
+                        if ((isPartidos) && (!isFechaRecibo) && (!isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrPartidos);
+                            cmd.Parameters.Remove(sqlParameterFecha);
+                        }
+
+                        if ((!isPartidos) && (!isFechaRecibo) && (!isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrTodos);
+                            cmd.Parameters.Remove(sqlParameterPartido);
+                            cmd.Parameters.Remove(sqlParameterFecha);
+                        }
+
+                        if ((!isPartidos) && (isFechaRecibo) && (isDuplicados))
+                        {
+                            cmd.CommandText = String.Concat(mySqlstrDuplicadosFecha);
+                            cmd.Parameters.Remove(sqlParameterPartido);
+                        }
+
+
+                        if (cmd.CommandText.Trim().Length == 0)
+                        {
+                            MessageBox.Show("Problemas con el query");
+                            return myTableReturn;
+                            //cmd.CommandText = String.Concat(mySqlstrTodos);
+                            //cmd.Parameters.Remove(sqlParameterPartido);
+                            //cmd.Parameters.Remove(sqlParameterFecha);
+                        }
 
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
-
-                        if (isDuplicados)
-                        {
-                            cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
-                            //cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
-                        }else
-                        {
-                            cmd.Parameters.Add(new SqlParameter("@Partido", SqlDbType.VarChar)).Value = Partido;
-                            cmd.Parameters.Add(new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar)).Value = FechaDeRecibo;
-                        }
 
                         using (SqlDataAdapter da = new SqlDataAdapter()
                         {

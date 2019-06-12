@@ -144,12 +144,27 @@
                 SelectedDate="{Binding dpFchRecibo}" />
             <CheckBox
                 x:Name="isDuplicados"
-                Width="145"
-                Margin="334,80,0,0"
+                Width="88"
+                Margin="334,60,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Duplicados"
                 IsChecked="{Binding isDuplicados}" />
+            <CheckBox
+                x:Name="isPartidos"
+                Width="88"
+                Margin="334,80,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Partidos"
+                IsChecked="{Binding isPartidos}" />
+            <CheckBox
+                x:Name="isFechaRecibo"
+                Margin="427,80,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Fecha de Recibo"
+                IsChecked="{Binding isFechaRecibo}" />
         </Grid>
     </Border>
 </Window>

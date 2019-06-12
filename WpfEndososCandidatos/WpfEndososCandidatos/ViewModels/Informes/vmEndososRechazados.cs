@@ -43,6 +43,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private int _dgSelectedIndex;
         private ObservableCollection<String> _filesTmp;
         private bool _isDuplicados;
+        private bool _isPartidos;
+        private bool _isFechaRecibo;
 
         public vmEndososRechazados() : base(new wpfEndososRechazados())
         {
@@ -120,6 +122,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                     if (sfd.ShowDialog() == true)
                     {
+                        
+
                         excel.TableToExcel(sfd.FileName, ItemsSource);
                         MessageBox.Show("Done!!!", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -152,12 +156,12 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    if (cbPartido_Item_Id > 1)
-                        return;
+                    //if (cbPartido_Item_Id > 1)
+                    //    return;
 
-                    String mpartido = cbPartido[cbPartido_Item_Id].PartidoKey;   // cbPartido_Item.Split('-');
+                    String mpartido = isPartidos == true ? cbPartido[cbPartido_Item_Id].PartidoKey : String.Empty;   // cbPartido_Item.Split('-');
 
-                    _MyLotsVoidTable = get.MyGetLotVoid(mpartido.ToString().Trim(), dpFchRecibo.ToString("MM/dd/yyyy"),isDuplicados);
+                    _MyLotsVoidTable = get.MyGetLotVoid(mpartido.ToString().Trim(), dpFchRecibo.ToString("MM/dd/yyyy"),isDuplicados,isFechaRecibo,isPartidos);
                     txtTotal = string.Format("{0:N0}", _MyLotsVoidTable.Rows.Count);
 
                     foreach (DataRow r in _MyLotsVoidTable.Rows)
@@ -170,13 +174,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         myLotsVoid.Rechazo = r["Rechazo"].ToString().Trim();
                         myLotsVoid.Causal = r["Causal"].ToString().Trim();
                         myLotsVoid.NumElec = r["NumElec"].ToString().Trim();
-                        myLotsVoid.Status = Convert.ToInt32(r["Status"].ToString().Trim());
+                        myLotsVoid.Status =  r["Status"].ToString().Trim();
+                        myLotsVoid.Nombre = r["Nombre"].ToString().Trim();
+                        myLotsVoid.Paterno = r["Paterno"].ToString().Trim();
+                        myLotsVoid.Materno = r["Materno"].ToString().Trim();
                         myLotsVoid.EndosoImage = (Byte[])r["EndosoImage"];
                         myLotsVoid.Fecha_Endoso = r["Fecha_Endoso"].ToString().Trim();
                         ItemsSource.Add(myLotsVoid);
+                        
                     }
                 }
-                MessageBox.Show("Done...", "Done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Done...\r\nTotal:" + string.Format("{0:N0}", _MyLotsVoidTable.Rows.Count), "Done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             catch (Exception ex)
             {
@@ -241,7 +249,6 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         }
         private void MyRefresh()
         {
-
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
                 DBCnnStr = DBEndososCnnStr
@@ -253,6 +260,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 ItemsSource.Clear();
                 txtTotal = "0";
                 isDuplicados = false;
+                isPartidos = true;
+                isFechaRecibo = true;
                 cbPartido_Item = string.Empty;
 
                 foreach (DataRow row in _MyPartidoTable.Rows)
@@ -267,13 +276,33 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 }
                 cbPartido.Sort();
                 cbPartido_Item_Id = -1;
-
-
             }
         }
         #endregion
 
         #region property 
+        public bool isFechaRecibo
+        {
+            get
+            {
+                return _isFechaRecibo;
+            }set
+            {
+                _isFechaRecibo = value;
+                this.RaisePropertychanged("isFechaRecibo");
+            }
+        }
+        public bool isPartidos
+        {
+            get
+            {
+                return _isPartidos;
+            }set
+            {
+                _isPartidos = value;
+                this.RaisePropertychanged("isPartidos");
+            }
+        }
 
         public bool isDuplicados
         {

@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,7 +55,7 @@ namespace jolcode
         }
 
 
-        public void TableToExcel(string excelFileName, IEnumerable<infoEndososRechazados> data)
+        public void TableToExcel(string excelFileName, IEnumerable<infoEstatus> data)
         {
             try
             {
@@ -64,6 +65,32 @@ namespace jolcode
                 string worksheetsName = "CEE Endosos Rechazados " + DateTime.Now.ToString();
                 bool firstRowIsHeader = true;
 
+                using (ExcelPackage package = new ExcelPackage(new FileInfo(excelFileName)))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(worksheetsName);
+
+                    worksheet.Cells["A:XFD"].Style.Font.Bold = true;
+
+                    worksheet.Cells["A:XFD"].LoadFromCollection<infoEstatus>(data, firstRowIsHeader, OfficeOpenXml.Table.TableStyles.Medium27);
+
+                    package.Save();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void TableToExcel(string excelFileName, IEnumerable<infoEndososRechazados> data)
+        {
+            try
+            {
+                if (System.IO.File.Exists(excelFileName))
+                    System.IO.File.Delete(excelFileName);
+
+                string worksheetsName = "CEE Endosos Rechazados " + DateTime.Now.ToString();
+                bool firstRowIsHeader = true;
             
                 using (ExcelPackage package = new ExcelPackage(new FileInfo(excelFileName)))
                 {

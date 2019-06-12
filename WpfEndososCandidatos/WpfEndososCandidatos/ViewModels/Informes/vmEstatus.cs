@@ -33,10 +33,11 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private string _cbPartido_Item;
         private int _cbPartido_Item_Id;
         private DataTable _MyPartidoTable;
-        private ObservableCollection<InfoDuplicado> _ItemsSource;
+        private ObservableCollection<infoEstatus> _ItemsSource;
+        private DataTable _MyEstatusTable;
         //private ObservableCollection<Partidos> _infoLot;
         private string _txtTotal;
-
+        private bool _isPartidos;
 
         public vmEstatus() : base(new wpfEstatus())
         {
@@ -45,7 +46,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click());
             cmdExecute_Click = new RelayCommand(param => MycmdExecute_Click());
             cmdToExcel_Click = new RelayCommand(param => MycmdToExcel_Click());
-            ItemsSource = new ObservableCollection<InfoDuplicado>();
+            ItemsSource = new ObservableCollection<infoEstatus>();
             cbPartido = new ObservableCollection<Partidos>();
 
         }
@@ -58,20 +59,160 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         public RelayCommand cmdToExcel_Click { get; private set; }
 
 
-
         private void MycmdToExcel_Click()
         {
+            try
+            {
+                jolcode.Code.AplicarEfecto(View as Window);
+                jolcode.Code.DoEvents();
 
+                using (jolcode.ToExcel excel = new ToExcel())
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "Excel Files|*.xlsx|All Files|*.*";
+
+                    if (sfd.ShowDialog() == true)
+                    {
+                        excel.TableToExcel(sfd.FileName, ItemsSource);
+                        MessageBox.Show("Done!!!", "Save", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+            finally
+            {
+                jolcode.Code.QuitarEfecto(View as Window);
+
+            }
         }
 
         private void MyCmdRefresh_Click()
         {
-
+            MyRefresh();
         }
 
         private void MycmdExecute_Click()
         {
+            try
+            {
+                ItemsSource.Clear();
+                using (SqlExcuteCommand get = new SqlExcuteCommand()
+                {
+                    DBCnnStr = DBEndososCnnStr
+                })
+                {
 
+                    //if (cbPartido_Item_Id > 1)
+                    //    return;
+
+                    String mpartido = isPartidos == true ? cbPartido[cbPartido_Item_Id].PartidoKey : "";
+
+                    _MyEstatusTable = get.MyGetInfoEstatus(mpartido, isPartidos);
+                    int Endosos_Requeridos = 0;
+                    int Endosos_Aceptados = 0;
+                    int Endosos_Rechazados = 0;
+                    int Endosos_Procesados = 0;
+                    int Endosos_Entregados = 0;
+                    txtTotal = string.Format("{0:N0}", _MyEstatusTable.Rows.Count);
+
+
+                    if (!isPartidos)
+                    {
+                        int count = 0;
+                        String mPartido = String.Empty;
+                        String mTitulo = String.Empty;
+                        infoEstatus myinfoEstatus = new infoEstatus();
+                        bool misStart = true;
+
+                        foreach (DataRow d in _MyEstatusTable.Rows)
+                        {
+                            
+                            mTitulo = d["Titulo"].ToString();
+                           if (mpartido != d["partido"].ToString().Trim())
+                            {
+                                if (!misStart)
+                                {
+                                    myinfoEstatus.Partido = mpartido;
+                                    ItemsSource.Add(myinfoEstatus);
+                                }
+                                count++;
+                                mpartido = d["partido"].ToString().Trim();
+                                myinfoEstatus = new infoEstatus();
+                                misStart = false;
+                            }
+
+                           switch (mTitulo)
+                            {
+                                case "Endosos_Requeridos":
+                                    {
+                                        int.TryParse(d["Total"].ToString().Trim(), out Endosos_Requeridos);
+                                        myinfoEstatus.Endosos_Requeridos = Endosos_Requeridos;
+                                    }
+                                    break;
+                                case "Endosos_Aceptados":
+                                    {
+                                        int.TryParse(d["Total"].ToString().Trim(), out Endosos_Aceptados);
+                                        myinfoEstatus.Endosos_Aceptados = Endosos_Aceptados;
+                                    }
+                                    break;
+                                case "Endosos_Rechazados":
+                                    {
+                                        int.TryParse(d["Total"].ToString().Trim(), out Endosos_Rechazados);
+                                        myinfoEstatus.Endosos_Rechazados = Endosos_Rechazados;
+                                    }
+                                    break;
+                                case "Endosos_Procesados":
+                                    {
+                                        int.TryParse(d["Total"].ToString().Trim(), out Endosos_Procesados);
+                                        myinfoEstatus.Endosos_Procesados = Endosos_Procesados;
+                                    }
+                                    break;
+                                case "Endosos_Entregados":
+                                    {
+                                        int.TryParse(d["Total"].ToString().Trim(), out Endosos_Entregados);
+                                        myinfoEstatus.Endosos_Entregados = Endosos_Entregados;
+                                    }
+                                    break;
+                            }
+                        }
+                        myinfoEstatus.Partido = mpartido;
+                        ItemsSource.Add(myinfoEstatus);
+                        txtTotal = string.Format("{0:N0}", count);
+                    }
+                    else
+                    {
+                        foreach (DataRow d in _MyEstatusTable.Rows)
+                        {
+                            infoEstatus myinfoEstatus = new infoEstatus();
+                            myinfoEstatus.Partido = d["Partido"].ToString();
+                            int.TryParse(d["Endosos_Requeridos"].ToString().Trim(), out Endosos_Requeridos);
+                            int.TryParse(d["Endosos_Aceptados"].ToString().Trim(), out Endosos_Aceptados);
+                            int.TryParse(d["Endosos_Rechazados"].ToString().Trim(), out Endosos_Rechazados);
+                            int.TryParse(d["Endosos_Procesados"].ToString().Trim(), out Endosos_Procesados);
+                            int.TryParse(d["Endosos_Entregados"].ToString().Trim(), out Endosos_Entregados);
+                            myinfoEstatus.Endosos_Requeridos = Endosos_Requeridos;
+                            myinfoEstatus.Endosos_Aceptados = Endosos_Aceptados;
+                            myinfoEstatus.Endosos_Rechazados = Endosos_Rechazados;
+                            myinfoEstatus.Endosos_Procesados = Endosos_Procesados;
+                            myinfoEstatus.Endosos_Entregados = Endosos_Entregados;
+                            ItemsSource.Add(myinfoEstatus);
+                        }
+                    }
+
+                }
+                MessageBox.Show("Done...", "Done", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public bool? MyOnShow()
@@ -127,6 +268,10 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             })
             {
                 _MyPartidoTable = get.MyGetPartidos();
+                cbPartido.Clear();
+                ItemsSource.Clear();
+                isPartidos = true;
+                cbPartido_Item = string.Empty;
 
                 foreach (DataRow row in _MyPartidoTable.Rows)
                 {
@@ -140,6 +285,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     cbPartido.Add(mypartido);
                 }
                 cbPartido.Sort();
+                cbPartido_Item_Id = -1;
 
             }
         }
@@ -147,7 +293,20 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
         #region property 
 
-        public ObservableCollection<InfoDuplicado> ItemsSource
+        public bool isPartidos
+        {
+            get
+            {
+                return _isPartidos;
+            }
+            set
+            {
+                _isPartidos = value;
+                this.RaisePropertychanged("isPartidos");
+            }
+        }
+
+        public ObservableCollection<infoEstatus> ItemsSource
         {
             get
             {

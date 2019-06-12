@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,18 +11,20 @@ namespace jolcode
     public class infoEndososRechazados : IEquatable<infoEndososRechazados>, IComparable
     {//[LotsVoid]
 
-        public string Partido { get; set; }
-        public string Lot { get; set; }
-        public string Batch { get; set; }
-        public int Formulario { get; set; }
-        public string Rechazo { get; set; }
-        public string Causal { get; set; }
+        public string Partido       { get; set; }
+        public string Lot           { get; set; }
+        public string Batch         { get; set; }
+        public int    Formulario    { get; set; }
+        public string Rechazo       { get; set; }
+        public string Causal        { get; set; }
+        public string NumElec       { get; set; }
+        public string Nombre        { get; set; }
+        public string Paterno       { get; set; }
+        public string Materno       { get; set; }
+        public String Status        { get; set; }
+        public string Fecha_Endoso  { get; set; }
 
-        public string NumElec { get; set; }
-        public int Status { get; set; }
         public Byte[] EndosoImage { get; set; }
-        public string Fecha_Endoso { get; set; }
-
 
         public override string ToString()
         {
@@ -32,12 +35,17 @@ namespace jolcode
             myout.Add(Formulario.ToString());
             myout.Add(Rechazo);
             myout.Add(Causal);
-            myout.Add(Status.ToString());
-            myout.Add(EndosoImage.ToString());
+            myout.Add(Status);
+            myout.Add(Nombre);
+            myout.Add(Paterno);
+            myout.Add(Materno);
             myout.Add(Fecha_Endoso);
+            //myout.Add(EndosoImage.ToString());
+            
             string myJoined = string.Join("|", myout);
             return myJoined;
         }
+   
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
