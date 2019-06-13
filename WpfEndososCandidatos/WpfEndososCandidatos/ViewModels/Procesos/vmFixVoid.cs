@@ -99,18 +99,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _isAll;
         private bool _chkOtraRazonDeRechazo;
         private string _txtOtraRazonDeRechazo;
-        private int? _txtFchEndosoEntregada_Corregir_dias=null;
+        private int? _txtFchEndosoEntregada_Corregir_dias = null;
         private int _GoIdx;
         private string _txtNumElec_Go;
         private string _txtNombre_Corregir;
+        private string _txtFchFirmaElector_Corregir;
 
         public vmFixVoid() :
             base(new wpfFixVoid())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
-            cmdProximo_Click = new RelayCommand(param => MyCmdProximo_Click(),param=> CanProximo);
-            cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click(),param=> CanAnterior);
+            cmdProximo_Click = new RelayCommand(param => MyCmdProximo_Click(), param => CanProximo);
+            cmdAnterior_Click = new RelayCommand(param => MyCmdAnterior_Click(), param => CanAnterior);
             cmdVerElec_Click = new RelayCommand(param => MyCmdVerElec_Click());
             cmdGuardar_Click = new RelayCommand(param => MyCmdGuardar_Click(), param => CanGuardar);
             cmdLast = new RelayCommand(param => MycmdLast());
@@ -152,7 +153,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _isAll;
-            }set
+            }
+            set
             {
                 _isAll = value;
             }
@@ -162,7 +164,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _srcEndoso;
-            }set
+            }
+            set
             {
                 _srcEndoso = value;
             }
@@ -197,7 +200,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _Nombre_Corregir;
-            }set
+            }
+            set
             {
                 _Nombre_Corregir = value;
                 this.RaisePropertychanged("Nombre_Corregir");
@@ -209,7 +213,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _lblCordenadas;
-            }set
+            }
+            set
             {
                 _lblCordenadas = value;
                 this.RaisePropertychanged("lblCordenadas");
@@ -256,7 +261,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtStatusElec;
-            }set
+            }
+            set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -270,7 +276,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtStatusNotario;
-            }set
+            }
+            set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -323,7 +330,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _Source_image_Corregir;
-            }set
+            }
+            set
             {
                 _Source_image_Corregir = value;
                 this.RaisePropertychanged("Source_image_Corregir");
@@ -336,7 +344,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _MyLotsTable;
-            }set
+            }
+            set
             {
                 _MyLotsTable = value;
                 this.RaisePropertychanged("MyLotsTable");
@@ -347,11 +356,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _i;
-            }set
+            }
+            set
             {
                 _i = value;
                 this.RaisePropertychanged("i");
-               
+
             }
         }
         public int GoIdx
@@ -385,7 +395,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _SysUser;
-            }set
+            }
+            set
             {
                 _SysUser = value;
             }
@@ -396,7 +407,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtRazonRechazo;
-            }set
+            }
+            set
             {
                 _txtRazonRechazo = value;
                 this.RaisePropertychanged("txtRazonRechazo");
@@ -407,7 +419,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNombre;
-            }set
+            }
+            set
             {
                 _txtNombre = value;
                 this.RaisePropertychanged("txtNombre");
@@ -418,7 +431,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNumElec;
-            }set
+            }
+            set
             {
                 _txtNumElec = value;
                 this.RaisePropertychanged("txtNumElec");
@@ -429,7 +443,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtPrecinto;
-            }set
+            }
+            set
             {
                 _txtPrecinto = value;
                 this.RaisePropertychanged("txtPrecinto");
@@ -440,7 +455,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtSex;
-            }set
+            }
+            set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -448,7 +464,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     if (int.TryParse(value, out trash))
                         _txtSex = "E";
                     else
-                    _txtSex = value;
+                        _txtSex = value;
 
                     this.RaisePropertychanged("txtSex");
                 }
@@ -459,7 +475,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtFechaNac;
-            }set
+            }
+            set
             {
                 _txtFechaNac = value;
                 this.RaisePropertychanged("txtFechaNac");
@@ -471,7 +488,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNotarioNumElec;
-            }set
+            }
+            set
             {
                 _txtNotarioNumElec = value;
                 this.RaisePropertychanged("txtNotarioNumElec");
@@ -482,7 +500,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNotarioFirstName;
-            }set
+            }
+            set
             {
                 _txtNotarioFirstName = value;
                 this.RaisePropertychanged("txtNotarioFirstName");
@@ -507,7 +526,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNombre_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtNombre_Corregir != value)
                 {
@@ -556,7 +576,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtPrecinto_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtPrecinto_Corregir != value)
                 {
@@ -579,7 +600,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtSex_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtSex_Corregir != value)
                 {
@@ -602,7 +624,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtCargo_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtCargo_Corregir != value)
                 {
@@ -626,7 +649,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtCandidato_Corregir;
-            }set
+            }
+            set
             {
 
                 if (_txtCandidato_Corregir != value)
@@ -650,7 +674,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNotarioElec_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtNotarioElec_Corregir != value)
                 {
@@ -673,7 +698,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtFirmaElec_Corregir;
-            }set
+            }
+            set
             {
 
                 if (_txtFirmaElec_Corregir != value)
@@ -687,7 +713,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             CanGuardar = true;
                         }
                     }
-                   
+
                     this.RaisePropertychanged("txtFirmaElec_Corregir");
                 }
             }
@@ -697,7 +723,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNotarioFirma_Corregir;
-            }set
+            }
+            set
             {
                 if (_txtNotarioFirma_Corregir != value)
                 {
@@ -720,7 +747,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _ckbFirma_Pet_Inv;
-            }set
+            }
+            set
             {
                 _ckbFirma_Pet_Inv = value;
 
@@ -749,7 +777,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _chkOtraRazonDeRechazo;
-            }set
+            }
+            set
             {
                 _chkOtraRazonDeRechazo = value;
                 if (_DataToSave.Count > 0)
@@ -767,7 +796,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _ckbFirma_Not_Inv;
-            }set
+            }
+            set
             {
                 _ckbFirma_Not_Inv = value;
 
@@ -780,43 +810,65 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
         public string txtFchJuramento_Corregir
-        {
+        {//Fecha de la Firma del Notario
             get
             {
                 return _txtFchJuramento_Corregir;
-            }set
+            }
+            set
             {
-                    _txtFchJuramento_Corregir = value;
+                _txtFchJuramento_Corregir = value;
 
-                if (value !=null)
+                if (value != null)
                 {
                     if (_DataToSave.Count > 0)
                     {
                         CanGuardar = true;
                     }
-                    _txtFchJuramento_Corregir =  jolcode.DateTimeUtil.MyValidarFecha2(value) == null?value: jolcode.DateTimeUtil.MyValidarFecha2(value);
+                    _txtFchJuramento_Corregir = jolcode.DateTimeUtil.MyValidarFecha2(value) == null ? value : jolcode.DateTimeUtil.MyValidarFecha2(value);
 
                     if (_txtFchJuramento_Corregir == null)
                     {
                         ;
                     }
-                    
+
                 }
 
                 this.RaisePropertychanged("txtFchJuramento_Corregir");
 
             }
         }
+        public string txtFchFirmaElector_Corregir
+        {//Fecha de la firma del elector
+            get
+            {
+                return _txtFchFirmaElector_Corregir;
+            }
+            set
+            {
+                _txtFchFirmaElector_Corregir = value;
+                if (value != null)
+                {
+                    if (_DataToSave.Count > 0)
+                    {
+                        CanGuardar = true;
+                    }
+                    _txtFchFirmaElector_Corregir = jolcode.DateTimeUtil.MyValidarFecha2(value) == null ? value : jolcode.DateTimeUtil.MyValidarFecha2(value);
+                }
+                this.RaisePropertychanged("txtFchFirmaElector_Corregir");
+            }
+        }
         public string txtFchEndosoEntregada_Corregir
-        {
+        {//Fecha de Recibo del Endoso a la CEE
             get
             {
                 return _txtFchEndosoEntregada_Corregir;
-            }set
+            }
+            set
             {
                 _txtFchEndosoEntregada_Corregir = value;
 
-                if (value !=null)
+                if (value != null)
                 {
                     if (_DataToSave.Count > 0)
                     {
@@ -834,7 +886,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtNumElec_Go;
-            }set
+            }
+            set
             {
                 _txtNumElec_Go = value;
                 this.RaisePropertychanged("txtNumElec_Go");
@@ -845,7 +898,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _txtFchEndosoEntregada_Corregir_dias;
-            }set
+            }
+            set
             {
                 if (value != null)
                 {
@@ -860,10 +914,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _FechaNac_Corregir;
-            }set
+            }
+            set
             {
                 _FechaNac_Corregir = value;
-                if (value!=null)
+                if (value != null)
                 {
                     if (_DataToSave.Count > 0)
                     {
@@ -871,18 +926,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
                     _FechaNac_Corregir = jolcode.DateTimeUtil.MyValidarFecha2(value) == null ? value : jolcode.DateTimeUtil.MyValidarFecha2(value);
                 }
-              
+
                 this.RaisePropertychanged("FechaNac_Corregir");
             }
         }
 
-                             
-        public ObservableCollection<Brush>  txtColor
+
+        public ObservableCollection<Brush> txtColor
         {
             get
             {
                 return _txtColor;
-            }set
+            }
+            set
             {
                 _txtColor = value;
                 this.RaisePropertychanged("txtColor");
@@ -909,7 +965,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -919,7 +976,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBMasterCeeCnnStr;
-            }set
+            }
+            set
             {
                 _DBMasterCeeCnnStr = value;
             }
@@ -929,7 +987,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBCeeMasterImgCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterImgCnnStr = value;
             }
@@ -940,12 +999,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _Lot;
-            } set
+            }
+            set
             {
                 if (_Lot != value)
                 {
                     _Lot = value;
-                  
+
                     this.RaisePropertychanged("Lot");
                 }
             }
@@ -955,20 +1015,22 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _TotalRechazada;
-            }set
+            }
+            set
             {
                 _TotalRechazada = value;
                 this.RaisePropertychanged("TotalRechazada");
             }
 
         }
-        
+
         private bool CanGuardar
         {
             get
             {
-                return _CanGuardar ;
-            }set
+                return _CanGuardar;
+            }
+            set
             {
                 _CanGuardar = value;
             }
@@ -977,13 +1039,13 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             get
             {
-                if (i >= (TotalRechazada)-1)
+                if (i >= (TotalRechazada) - 1)
                     return false;
                 else
                     return true;
             }
         }
-        
+
         private bool CanAnterior
         {
             get
@@ -997,8 +1059,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         #endregion
 
-        
-        
+
+
         /*Command*/
         #region MyCmd
         private void MyInitWindow()
@@ -1027,12 +1089,12 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 MyFillField(i);
 
-              
+
                 TextBox tet = new TextBox();
                 tet.Name = "Nombre_Corregir";
                 MyGotFocus(tet);
 
-                 //MySendTab();
+                //MySendTab();
 
             }
             catch (Exception ex)
@@ -1044,7 +1106,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public bool? MyOnShow()
         {
-            _wpfFixVoid =this.View as wpfFixVoid;
+            _wpfFixVoid = this.View as wpfFixVoid;
 
             _wpfFixVoid.miCanvas.MouseMove += View_MouseMove;
             _wpfFixVoid.miCanvas.MouseLeftButtonDown += View_MouseLeftButtonDown;
@@ -1090,7 +1152,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
 
             if (masdeuno)
-                MessageBox.Show("Este numero electoral esta varias veces en esta radicación. Números de Página:" + strIDX, "Warning", MessageBoxButton.OK,MessageBoxImage.Warning);
+                MessageBox.Show("Este numero electoral esta varias veces en esta radicación. Números de Página:" + strIDX, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             if (!loencontre)
                 MessageBox.Show("Este numero electoral no esta en esta radicación. ", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -1105,9 +1167,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public RelayCommand BtnGo_Elec
         {
-            get;private set;
+            get; private set;
         }
-        private void MyCmdProximo_Click ()
+        private void MyCmdProximo_Click()
         {
             SaveTmp();
 
@@ -1118,7 +1180,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 i = TotalRechazada_tmp;
 
             i_Display = i + 1;
-             MyFillField(i);
+            MyFillField(i);
 
             GoIdx = i;
 
@@ -1138,7 +1200,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public RelayCommand cmdLast
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdFirst { get; private set; }
         private void MycmdFirst()
@@ -1166,7 +1228,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             MyFillField(GoIdx);
             CanGuardar = true;
             i = GoIdx;
-           
+
 
             i_Display = i + 1;
 
@@ -1174,7 +1236,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public RelayCommand BtnGo
         {
-            get;private set;
+            get; private set;
         }
 
         private void MyCmdAnterior_Click()
@@ -1236,8 +1298,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         cnn.Open();
                         using (SqlCommand cmd = new SqlCommand()
                         {
-                             Connection = cnn,
-                             CommandType = CommandType.Text
+                            Connection = cnn,
+                            CommandType = CommandType.Text
                         })
                         {
                             // Start a local transaction.
@@ -1246,18 +1308,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                             foreach (FixVoid data in _DataToSave)
                             {
-                                string FchEndosoJuramento = null;
                                 string FechaNac = null;
-                                string FechaEndosos = null;
 
-                                if (data.FechaNac !=null)
+                                string Fecha_Recibo_CEE = null;
+                                string Fecha_Firma_Elector = null;
+                                string Fecha_Firma_Notario = null;
+
+                                if (data.FechaNac != null)
                                     FechaNac = data.FechaNac.Value.ToString("MMddyyyy");
 
-                                if (data.Firma_Fecha != null)
-                                    FchEndosoJuramento = data.Firma_Fecha.Value.ToString("MM/dd/yy");
+                                if (data.Firma_Fecha_Notario != null)
+                                    Fecha_Firma_Notario = data.Firma_Fecha_Notario.Value.ToString("MM/dd/yy");
 
-                                if (data.FchEndosoEntregada != null)
-                                    FechaEndosos = data.FchEndosoEntregada.Value.ToString("MM/dd/yyyy");
+                                if (data.Fecha_Recibo_CEE != null)
+                                    Fecha_Recibo_CEE = data.Fecha_Recibo_CEE.Value.ToString("MM/dd/yyyy");
+
+                                if (data.Firma_Fecha_Elector != null)
+                                    Fecha_Firma_Elector = data.Firma_Fecha_Elector.Value.ToString("MM/dd/yyyy");
 
                                 Exe.MyUpdateTFTable(
                                     data.FirstName,
@@ -1274,8 +1341,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                    data.Firma_Not_Inv == true ? "1" : "0",
                                    data.chkOtraRazonDeRechazo == true ? "1" : "0",
                                    data.txtOtraRazonDeRechazo,
-                                   FchEndosoJuramento,
-                                   FechaEndosos,
+                                   Fecha_Firma_Elector,
+                                   Fecha_Firma_Notario,
+                                   Fecha_Recibo_CEE,
                                    data.Leer_Inv,
                                    data.Lot,
                                    data.Batch,
@@ -1408,7 +1476,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-      
+
         void BtnCrop_Click()
         {
             double factorX, factorY;
@@ -1540,7 +1608,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 contenido = txt.Name;
 
                 txt.SelectAll();
-               
+
                 tmpBrushes = txt.Background;
 
                 txt.Background = Brushes.Red;
@@ -1613,8 +1681,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             double dHo = double.Parse(xy[5]);
                             Ho = (int)dHo;
                         }
-                            break;
-                        
+                        break;
+
                     case "txtPrecinto_Corregir":
                         {
                             string[] xy = jolcode.MyPrecintoXY.DynamicCode().Split('|');
@@ -1629,8 +1697,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             double dHo = double.Parse(xy[5]);
                             Ho = (int)dHo;
                         }
-                            break;
-                        
+                        break;
+
                     case "txtSex_Corregir":
                         {
                             string[] xy = jolcode.MySexoXY.DynamicCode().Split('|');
@@ -1707,8 +1775,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Ho = (int)dHo;
                         }
                         break;
-                    case "txtFirmaElec_Corregir":
-
+                    case "txtFchFirmaElector_Corregir":
                         {
                             string[] xy = jolcode.MyFirmaElecXY.DynamicCode().Split('|');
 
@@ -1722,8 +1789,22 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             double dHo = double.Parse(xy[5]);
                             Ho = (int)dHo;
 
+                        }
+                        break;
+                    case "txtFirmaElec_Corregir":
+                        {
+                            string[] xy = jolcode.MyFirmaElecXY.DynamicCode().Split('|');
 
+                            X = int.Parse(xy[0]);
+                            Y = int.Parse(xy[1]);
+                            H = int.Parse(xy[2]);
+                            W = int.Parse(xy[3]);
 
+                            double dV = double.Parse(xy[4]);
+                            V = (int)dV;
+                            double dHo = double.Parse(xy[5]);
+                            Ho = (int)dHo;
+                                                       
                             if (_isFirmaNotario)
                             {
                                 _isFirmaNotario = false;
@@ -1734,7 +1815,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                                     strmSignature.Write(dataSignature, 0, dataSignature.Length);
                                     strmSignature.Position = 0;
                                     System.Drawing.Image img = System.Drawing.Image.FromStream(strmSignature);
-                                   // System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
+                                    // System.Drawing.Image img = System.Drawing.Image.FromFile(_DataToSave[i].image);
 
                                     BitmapImage bi = new BitmapImage();
                                     bi.BeginInit();
@@ -1839,6 +1920,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Ho = (int)dHo;
                         }
                         break;
+
+
                 }
 
             }
@@ -1872,11 +1955,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         public RelayCommand cmdSetImg
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdZoomInOut
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand initWindow
         {
@@ -1890,19 +1973,19 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public RelayCommand cmdProximo_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdAnterior_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdVerElec_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdGuardar_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand BtnFullImages
         {
@@ -1992,31 +2075,35 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                     txtFchEndosoEntregada_Corregir_dias = _DataToSave[idx].Leer_Inv;
 
-                    if (_DataToSave[idx].FechaNac !=null)
-                    FechaNac_Corregir = _DataToSave[idx].FechaNac.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].FechaNac != null)
+                        FechaNac_Corregir = _DataToSave[idx].FechaNac.Value.ToString("dd/MM/yyyy");
 
-                    if (_DataToSave[idx].FchEndosoEntregada !=null) // Fecha del endosos entregado en la CEE
-                    txtFchEndosoEntregada_Corregir = _DataToSave[idx].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
-                    
-                    if (_DataToSave[idx].Firma_Fecha !=null) // Nota : firma del endosos 
-                        txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].Fecha_Recibo_CEE != null) // Fecha del endosos entregado en la CEE 
+                        txtFchEndosoEntregada_Corregir = _DataToSave[idx].Fecha_Recibo_CEE.Value.ToString("dd/MM/yyyy");
+
+                    if (_DataToSave[idx].Firma_Fecha_Elector != null) // Fecha de la Firma del Elector
+                        txtFchFirmaElector_Corregir = _DataToSave[idx].Firma_Fecha_Elector.Value.ToString("dd/MM/yyyy");
+
+                    if (_DataToSave[idx].Firma_Fecha_Notario != null) // Nota : firma del Notario 
+                        txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha_Notario.Value.ToString("dd/MM/yyyy");
 
                     byte[] EndosoImage = null;
                     Source_image = null;
 
                     string rechazoNum = string.Empty;
-                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[idx].TipoDeRechazo, txtFormulario, Lot,_DataToSave[idx].Batch,ref EndosoImage,ref rechazoNum);
+                    txtRazonRechazo = get.MyTipoDeRechazo(_DataToSave[idx].TipoDeRechazo, txtFormulario, Lot, _DataToSave[idx].Batch, ref EndosoImage, ref rechazoNum);
 
                     if (!string.IsNullOrEmpty(rechazoNum))
                     {
                         SetColor(rechazoNum);
-                    }else
+                    }
+                    else
                     {
                         EndosoImage = _DataToSave[idx].EndosoImage;
                     }
                     srcEndoso = new BitmapImage();
-                   
-                        // 'DESPLIEGA la imagen del Endoso
+
+                    // 'DESPLIEGA la imagen del Endoso
                     if (EndosoImage != null)
                     {
                         MemoryStream strmEndosoImage = new MemoryStream();
@@ -2024,7 +2111,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         strmEndosoImage.Position = 0;
                         srcEndoso.BeginInit();
                         imgEndoso = System.Drawing.Image.FromStream(strmEndosoImage);
-                      //  imgEndoso = System.Drawing.Image.FromFile(_DataToSave[idx].image);
+                        //  imgEndoso = System.Drawing.Image.FromFile(_DataToSave[idx].image);
 
                         MemoryStream ms = new MemoryStream();
                         imgEndoso.Save(ms, System.Drawing.Imaging.ImageFormat.Tiff);
@@ -2032,8 +2119,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         srcEndoso.StreamSource = ms;
                         srcEndoso.EndInit();
 
-                        ViewboxHeight =  imgEndoso.Height;
-                        ViewboxWidth =  imgEndoso.Width;
+                        ViewboxHeight = imgEndoso.Height;
+                        ViewboxWidth = imgEndoso.Width;
 
                         BitmapSource displayImage = new CroppedBitmap(srcEndoso, new Int32Rect(0, 0, imgEndoso.Width, imgEndoso.Width));  // new CroppedBitmap(original, crop);
 
@@ -2044,7 +2131,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         Source_image = null;
 
                     _myTableImgFirmaElector = new DataTable();
-                     _myTableImgNotario = new DataTable();
+                    _myTableImgNotario = new DataTable();
 
 
                     if (txtNumElec_Corregir.Trim().Length > 0)
@@ -2052,7 +2139,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         _tblCitizen = get.MyGetCitizen(txtNumElec_Corregir);
 
                         _myTableImgFirmaElector = get.MyGetCitizenImg(txtNumElec_Corregir);
-                    }else
+                    }
+                    else
                     {
                         _tblCitizen = new DataTable();
                         _myTableImgFirmaElector = new DataTable();
@@ -2197,7 +2285,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
                 txtColor[idx] = Brushes.Green;
 
-                if ((idx == 11) || (idx==20) || idx==21)
+                if ((idx == 11) || (idx == 20) || idx == 21)
                     txtColor[6] = Brushes.Green;
 
                 if (idx == 19)
@@ -2224,6 +2312,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             ckbFirma_Not_Inv = false;
             txtFchJuramento_Corregir = null;
             txtFchEndosoEntregada_Corregir = null;
+            txtFchFirmaElector_Corregir = null;
             FechaNac_Corregir = null;
 
             txtFormulario = string.Empty;
@@ -2241,7 +2330,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             txtOtraRazonDeRechazo = string.Empty;
             chkOtraRazonDeRechazo = false;
 
-            for (int idx =0;idx <=20;idx++)
+            for (int idx = 0; idx <= 21; idx++)
             {
                 txtColor[idx] = Brushes.White;
             }
@@ -2258,7 +2347,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 })
                 {
 
-                    MyLotsTable = get.MyGetLotToFixVoid(Lot,isAll);
+                    MyLotsTable = get.MyGetLotToFixVoid(Lot, isAll);
 
                     if (MyLotsTable.Rows.Count == 0)
                         MessageBox.Show("No hay rechazadas para procesar", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -2278,19 +2367,26 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                         //string FechaFirm_Dia = row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0');
                         //string FechaFirm_Ano = row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0');
 
-                      //  string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
-                        
-                        string Fecha_Endoso = row["Fecha_Endoso"].ToString().Trim();
-                        string Firma_Fecha = row["Firma_Fecha"].ToString().Trim();
+                        //  string Fecha_Endoso = FechaFirm_Mes + FechaFirm_Dia + FechaFirm_Ano;
 
-                        DateTime? juramento = DateTimeUtil.MyValidarFecha(Firma_Fecha);
-                        DateTime? FechaEndoso = DateTimeUtil.MyValidarFecha(Fecha_Endoso);
+                        string Fecha_Endoso_Notario = row["Fecha_Endoso"].ToString().Trim(); //Fecha Firma notario
+                        string Firma_Fecha_Elector = row["Firma_Fecha"].ToString().Trim();   //Fecha Firma elector
+                        string Fecha_Recibo_CEE = row["Fecha_Recibo"].ToString().Trim();     //Fecha Entragado el endosos a la CEE
 
-                        if (juramento == null)
-                            juramento= DateTimeUtil.MyValidarFechaMMddyy(Firma_Fecha);
+                        DateTime? FirmaFechaElector = DateTimeUtil.MyValidarFecha(Firma_Fecha_Elector);
+                        DateTime? FechaEndosoNotario = DateTimeUtil.MyValidarFecha(Fecha_Endoso_Notario);
+                        DateTime? FechaReciboCEE = DateTimeUtil.MyValidarFecha(Fecha_Recibo_CEE);
 
-                        if (FechaEndoso == null)
-                            FechaEndoso = DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso);
+                        if (FechaReciboCEE == null)
+                            FechaReciboCEE = DateTimeUtil.MyValidarFechaMMddyy(Fecha_Recibo_CEE);
+
+                        if (FirmaFechaElector == null)
+                            FirmaFechaElector = DateTimeUtil.MyValidarFechaMMddyy(Firma_Fecha_Elector);
+
+                        if (FechaEndosoNotario == null)
+                            FechaEndosoNotario = DateTimeUtil.MyValidarFechaMMddyy(Fecha_Endoso_Notario);
+
+
 
                         int Leer_Inv = 0;
 
@@ -2308,7 +2404,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Numelec = row["NumElec"].ToString(),
                             NotarioElec = row["Notario"].ToString(),
                             Precinto = row["Precinto"].ToString().Trim().PadLeft(3, '0'),
-                            FechaNac = DateTimeUtil.MyValidarFecha(FechaNac),                            
+                            FechaNac = DateTimeUtil.MyValidarFecha(FechaNac),
                             Sexo = row["Sexo"].ToString().Trim(),
                             Candidato = row["Candidato"].ToString().Trim(),
                             Cargo = row["Cargo"].ToString().Trim(),
@@ -2318,13 +2414,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
                             chkOtraRazonDeRechazo = row["Alteracion"].ToString().Trim() == "1" ? true : false,
                             txtOtraRazonDeRechazo = row["LeerMSG"].ToString(),
-                            Firma_Fecha = juramento,
-                            FchEndosoEntregada = FechaEndoso,
+                            Firma_Fecha_Notario = FechaEndosoNotario,
+                            Firma_Fecha_Elector = FirmaFechaElector,
+                            Fecha_Recibo_CEE = FechaReciboCEE,
                             Batch = row["Batch"].ToString(),
                             image = row["Image"].ToString(),
                             EndosoImage = (byte[])row["EndosoImage"],
                             Leer_Inv = Leer_Inv
-                            
+
                         });
                         k++;
                     }
@@ -2334,29 +2431,41 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         private void SaveTmp()
         {
-
             DateTime dtNac;
             DateTime? dtNacNull = null;
-            DateTime dtEndosoEntregada;
-            DateTime? dtEndosoEntregadanull=null;
-            DateTime dtFechaJuramento_Corregir;
-            DateTime? dtFechaJuramento_Corregirnull = null;
 
-            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFechaJuramento_Corregir))
-            {
-                dtFechaJuramento_Corregirnull = dtFechaJuramento_Corregir;
+            DateTime dtFecha_Recibo_CEE;
+            DateTime? dtFecha_Recibo_CEEnull = null;
+
+            DateTime dtFecha_Firma_Notario_Corregir;
+            DateTime? dtFecha_Firma_Notario_Corregirnull = null;
+
+            DateTime dtFirma_Fecha_Elector;
+            DateTime? dtFirma_Fecha_Electornull = null;
+
+            //txtFchFirmaElector_Corregir
+
+            if (DateTime.TryParseExact(txtFchFirmaElector_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFirma_Fecha_Elector))
+            {//Fecha de la Firma del Elector
+                dtFirma_Fecha_Electornull = dtFirma_Fecha_Elector;
             }
 
-            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtEndosoEntregada))
-            {
-                dtEndosoEntregadanull = dtEndosoEntregada;
+
+            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Firma_Notario_Corregir))
+            {//Fecha de la Firma del Notario
+                dtFecha_Firma_Notario_Corregirnull = dtFecha_Firma_Notario_Corregir;
+            }
+
+            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Recibo_CEE))
+            {//Fecha de Recibo del en endoso a la cee
+                dtFecha_Recibo_CEEnull = dtFecha_Recibo_CEE;
             }
 
             if (DateTime.TryParseExact(FechaNac_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
-            {
+            {//Fecha Nacimiento del Elector
                 dtNacNull = dtNac;
             }
-           
+
             _DataToSave[i].i = i;
             _DataToSave[i].Lot = Lot;
             _DataToSave[i].Formulario = txtFormulario;
@@ -2380,8 +2489,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             _DataToSave[i].Firma_Not_Inv = ckbFirma_Not_Inv;
             _DataToSave[i].chkOtraRazonDeRechazo = chkOtraRazonDeRechazo;
             _DataToSave[i].txtOtraRazonDeRechazo = txtOtraRazonDeRechazo;
-            _DataToSave[i].Firma_Fecha = dtFechaJuramento_Corregirnull;
-            _DataToSave[i].FchEndosoEntregada = dtEndosoEntregadanull;
+            _DataToSave[i].Firma_Fecha_Notario = dtFecha_Firma_Notario_Corregirnull;
+            _DataToSave[i].Firma_Fecha_Elector = dtFirma_Fecha_Electornull;
+            _DataToSave[i].Fecha_Recibo_CEE = dtFecha_Recibo_CEEnull;
 
             // _DataToSave[i].FchEndosoEntregada = null,
 

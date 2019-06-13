@@ -706,7 +706,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetInfoEstatus(String Partido, bool isPartido )
+        public DataTable MyGetInfoEstatus(String Partido, bool isPartido)
         {
             DataTable myTableReturn = new DataTable();
 
@@ -734,7 +734,7 @@ namespace jolcode
                     "     union ",
                     "    (SELECT partido,'Endosos_Entregados' as Titulo, count(*)  as Total FROM [dbo].[TF-Partidos]  group by [Partido])",
                     ") ",
-                    " as TT" 
+                    " as TT"
                 };
 
                 using (SqlConnection cnn = new SqlConnection()
@@ -751,7 +751,8 @@ namespace jolcode
                         if (isPartido)
                         {
                             cmd.CommandText = String.Concat(mySqlstr);
-                        }else
+                        }
+                        else
                         {
                             cmd.CommandText = String.Concat(mySqlstrNoPartido);
                         }
@@ -1830,7 +1831,7 @@ namespace jolcode
 
                         DateTime? m_Firma_Fecha = null;
 
-                        string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
+                        string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano],[FechaEndo_Mes],[FechaEndo_Dia],[FechaEndo_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
                         cmd.CommandText = mySqlstr;
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable table = new DataTable();
@@ -1839,7 +1840,9 @@ namespace jolcode
 
                         foreach (DataRow dr in table.Rows)
                         {
-                            string tmpmFirma_Fecha = string.Concat(dr["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), dr["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), dr["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+                            string tmpmFirma_Fecha = string.Concat(dr["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
 
                             if (tmpmFirma_Fecha.Trim().Length > 0)
                             {
@@ -3069,17 +3072,19 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeNotario(bool isInsert, string NumElec, String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2, string Status, string where)
+        public bool MyChangeNotario(bool isInsert, string NumElec, String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2, string Status, DateTime Fecha, string where)
         {
             bool myBoolReturn = false;
             try
             {
-
+                String Fecha_Dia = ((DateTime)Fecha).Day.ToString();
+                String Fecha_Mes = ((DateTime)Fecha).Month.ToString();
+                String Fecha_Ano = ((DateTime)Fecha).Year.ToString();
 
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status]) ",
-                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status)"
+                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status],[Fecha_Dia],[Fecha_Mes],[Fecha_Ano]) ",
+                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status,@Fecha_Dia,@Fecha_Mes,@Fecha_Ano)"
                         };
 
                 string[] myUpdate =
@@ -3088,10 +3093,13 @@ namespace jolcode
                             "SET [NumElec] = @NumElec,",
                             "[Partido] = @Partido,",
                             "[NumCand] = @NumCand,",
-                            "[Nombre] = @Nombre,",
+                            "[Nombre]  = @Nombre,",
                             "[Apellido1] = @Apellido1,",
                             "[Apellido2] = @Apellido2,",
-                            "[Status] = @Status ",
+                            "[Status]    = @Status,",
+                            "[Fecha_Dia] = @Fecha_Dia,",
+                            "[Fecha_Mes] = @Fecha_Mes,",
+                            "[Fecha_Ano] = @Fecha_Ano ",
                             "WHERE NumElec=@where"
                 };
 
@@ -3119,6 +3127,9 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Apellido1", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Apellido2", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Status", SqlDbType.VarChar));//[Status]
+                        cmd.Parameters.Add(new SqlParameter("@Fecha_Dia", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Fecha_Mes", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Fecha_Ano", SqlDbType.Int));
 
                         if (!isInsert)
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
@@ -3130,6 +3141,9 @@ namespace jolcode
                         cmd.Parameters["@Apellido1"].Value = Apellido1.Trim();
                         cmd.Parameters["@Apellido2"].Value = Apellido2.Trim();
                         cmd.Parameters["@Status"].Value = Status.Trim();
+                        cmd.Parameters["@Fecha_Dia"].Value = Fecha_Dia.ToString();
+                        cmd.Parameters["@Fecha_Mes"].Value = Fecha_Mes.ToString();
+                        cmd.Parameters["@Fecha_Ano"].Value = Fecha_Ano.ToString();
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -3247,18 +3261,15 @@ namespace jolcode
                     FechaEndo_Ano = string.Empty;
                 }
 
-
-
-
                 string[] myUpdate_Imported1 =
                     {
                             "Update [TF-Partidos] ",
                             "SET [Imported] = 1, ",
                             "FirmaNot_Inv = 0,",
                             "FirmaElec_Inv = 0,",
-                            "FechaEndo_Mes= @FechaEndo_Mes,",
-                            "FechaEndo_Dia=@FechaEndo_Dia,",
-                            "FechaEndo_Ano=@FechaEndo_Ano,",
+                            "FechaRecibo_Mes = @FechaEndo_Mes,",
+                            "FechaRecibo_Dia = @FechaEndo_Dia,",
+                            "FechaRecibo_Ano = @FechaEndo_Ano,",
                             "Leer = '',",
                             "Alteracion=0 ",
                             "WHERE BatchTrack=@where ",
@@ -3369,7 +3380,6 @@ namespace jolcode
                         //totalDeDiasParam.ParameterName = "@totalDeDias";
                         //totalDeDiasParam.SqlDbType = SqlDbType.Int;
 
-
                         cmd.Parameters.Add(whereParam);
 
                         foreach (DataRow row in tableLots.Rows)
@@ -3393,8 +3403,6 @@ namespace jolcode
                             FechaEndo_DiaParam.Value = FechaEndo_Dia;
                             FechaEndo_AnoParam.Value = FechaEndo_Ano;
                             //    totalDeDiasParam.Value = totalDeDias;
-
-
 
                             cmd.CommandText = string.Concat(myUpdate_Imported1);
                             myReturn = cmd.ExecuteNonQuery();
@@ -3465,8 +3473,6 @@ namespace jolcode
                             myReturn = cmd.ExecuteNonQuery();
 
                             transaction.Commit();
-
-
 
                         }
 
@@ -3628,7 +3634,7 @@ namespace jolcode
             String m_N_CANDIDAT_Good = string.Empty;
 
             String m_N_NOTARIO = string.Empty;
-            DateTime? m_Fecha_Endo = null;
+            DateTime? m_Fecha_Endo_Notario = null;
             String m_Suspense_File = string.Empty;
             String m_Batch = string.Empty;
             String m_Firma_Peticionario = string.Empty;
@@ -3640,7 +3646,8 @@ namespace jolcode
             int? m_Leer_Inv = 0;
             string m_Leer = string.Empty;
             int m_Alteracion = 0;
-            DateTime? m_Firma_Fecha = null;
+            DateTime? m_Firma_Fecha_Elector = null;
+            DateTime? m_Fecha_Recibo_CEE = null;
             string m_EndosoImage = string.Empty;
             try
             {
@@ -3815,7 +3822,7 @@ namespace jolcode
                     m_Leer = string.Empty;
                     m_Leer_Inv = 0;
                     m_Alteracion = 0;
-                    m_Firma_Fecha = null;
+                    m_Firma_Fecha_Elector = null;
                     m_EndosoImage = string.Empty;
                     strRechazos = string.Empty;
                     //
@@ -3824,8 +3831,20 @@ namespace jolcode
                     int.TryParse(row["Alteracion"].ToString().Trim(), out m_Alteracion);
                     m_Leer = row["leer"].ToString().Trim();
 
-                    string tmpFecha_Endo = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
-                    string tmpmFirma_Fecha = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    string tmpFirmaFecha_Endo_Notario = String.Empty;
+                    //Notario
+                    if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
+                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    else
+                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
+
+
+                    //Elector
+                    string tmpFirma_Fecha_Elector = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    //Fecha_Recibo_CEE
+                    string tmpFecha_Recibo_CEE = string.Concat(row["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
+
+
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
 
@@ -3880,18 +3899,27 @@ namespace jolcode
                         m_FECHA_N = DateTimeUtil.MyValidarFecha(tmpFECHA_N);
                     }
 
-                    if (tmpmFirma_Fecha.Trim().Length > 0)
+                    if (tmpFirma_Fecha_Elector.Trim().Length > 0)
                     {
-                        m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
-
-
+                        m_Firma_Fecha_Elector = DateTimeUtil.MyValidarFechaMMddyy(tmpFirma_Fecha_Elector);
                     }
 
-                    if (tmpFecha_Endo.Length < 8)
-                        m_Fecha_Endo = null;
+                    if (tmpFecha_Recibo_CEE.Trim().Length > 0)
+                    {
+                        m_Fecha_Recibo_CEE = DateTimeUtil.MyValidarFecha(tmpFecha_Recibo_CEE);
+                    }
+
+                    if (tmpFirmaFecha_Endo_Notario.Length <= 0)
+                    {
+                        m_Fecha_Endo_Notario = null;
+                    }
                     else
                     {
-                        m_Fecha_Endo = DateTimeUtil.MyValidarFecha(tmpFecha_Endo);
+                        m_Fecha_Endo_Notario = DateTimeUtil.MyValidarFecha(tmpFirmaFecha_Endo_Notario);
+                        if (m_Fecha_Endo_Notario == null)
+                        {
+                            m_Fecha_Endo_Notario = DateTimeUtil.MyValidarFechaMMddyy(tmpFirmaFecha_Endo_Notario);
+                        }
                     }
 
                     float m_Firma_Peticionario_tmp_f = 0.0f;
@@ -3944,7 +3972,7 @@ namespace jolcode
 
                     if (CollCriterios[2].Editar == true || CollCriterios[2].Warning == true)//'3-FECHA DEL ENDOSO FUERA DE TIEMPO (esta es la de los 7 dias)
                     {
-                        if (m_Fecha_Endo != null)
+                        if (m_Fecha_Endo_Notario != null)
                         {
                             //   if (DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, m_Fecha_Endo) > 7)
                             if (m_Leer_Inv > 7 || m_Leer_Inv <= -1)
@@ -4892,37 +4920,38 @@ namespace jolcode
                     {
                         "Insert Into LotsEndo",
                         "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Nombre],[Paterno],[Materno],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
-                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores],[LeerMSG] ) ",
+                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores],[LeerMSG],[Fecha_Recibo] ) ",
 
-                        "Values('" , m_PARTIDO , "'",           //Partido
-                        ",'" , m_BatchTrack , "'",              //Lot
-                        ",'" , m_Batch , "'",                   //Batch
-                        "," , m_BatchPgNo.ToString(),           //Formulario
-                        ",'" , m_N_CANDIDAT , "'",              //Candidato
-                        "," , m_Cargo.ToString(),                           //Cargo
-                        ",'" , row["NumElec"].ToString().Trim() , "'",      //NumElec
-                        ", @txtNombre",                              //Nombre
-                        ",'" , m_Paterno , "'",                             //Paterno
-                        ",'" , m_Materno , "'",                      //Materno
-                        ",'" ,m_Padre , "'",                         //Padre
-                        ",'" ,m_Madre , "'",                         //Madre
-                        ",'" , MyFechaToSql( m_FECHA_N ),  "'",      //FechaNac
-                        ",'" , m_Leer_Inv.ToString() , "'",          //Leer_Inv
-                        ",'" , m_Alteracion.ToString() , "'",        //Alteracion
-                        ",'" , m_N_NOTARIO , "'",                       //Notario
-                        ",'" , m_Firma_Peticionario , "'",              //Firma_Peticionario
-                        "," , m_Firma_Pet_Inv.ToString(),               //Firma_Pet_Inv
-                        ",'" , m_Firma_Notario , "'",                   //Firma_Notario
-                        "," , m_Firma_Not_Inv.ToString() ,                             //Firma_Not_Inv
-                        ",'" , MyFechaToSql(m_Fecha_Endo) , "'",                       //Fecha_Endoso
-                        ",'" , m_Suspense_File , "'",                                  //Image
-                        "," , (string)iif(isrechazo,  "1", iswarning ?"2":"0") ,      //Status
-                        ",'" , MyFechaToSql( m_Firma_Fecha ), "'",                    //Firma_Fecha
-                        ",'" , m_SEXO , "'",                                          //SEXO
-                        ",'" , m_N_PRECINTO , "'",                                    //PRECINTO
+                        "Values('" , m_PARTIDO , "'",                               //Partido
+                        ",'" , m_BatchTrack , "'",                                  //Lot
+                        ",'" , m_Batch , "'",                                       //Batch
+                        "," , m_BatchPgNo.ToString(),                               //Formulario
+                        ",'" , m_N_CANDIDAT , "'",                                  //Candidato
+                        "," , m_Cargo.ToString(),                                   //Cargo
+                        ",'" , row["NumElec"].ToString().Trim() , "'",              //NumElec
+                        ", @txtNombre",                                             //Nombre
+                        ",'" , m_Paterno , "'",                                     //Paterno
+                        ",'" , m_Materno , "'",                                     //Materno
+                        ",'" ,m_Padre , "'",                                        //Padre
+                        ",'" ,m_Madre , "'",                                        //Madre
+                        ",'" , MyFechaToSql( m_FECHA_N ),  "'",                     //FechaNac
+                        ",'" , m_Leer_Inv.ToString() , "'",                         //Leer_Inv
+                        ",'" , m_Alteracion.ToString() , "'",                       //Alteracion
+                        ",'" , m_N_NOTARIO , "'",                                   //Notario
+                        ",'" , m_Firma_Peticionario , "'",                          //Firma_Peticionario
+                        "," , m_Firma_Pet_Inv.ToString(),                           //Firma_Pet_Inv
+                        ",'" , m_Firma_Notario , "'",                               //Firma_Notario
+                        "," , m_Firma_Not_Inv.ToString() ,                          //Firma_Not_Inv
+                        ",'" , MyFechaToSql(m_Fecha_Endo_Notario) , "'",            //Fecha_Endoso Notario
+                        ",'" , m_Suspense_File , "'",                               //Image
+                        "," , (string)iif(isrechazo,  "1", iswarning ?"2":"0") ,    //Status
+                        ",'" , MyFechaToSql( m_Firma_Fecha_Elector ), "'",          //Firma_Fecha Recibo
+                        ",'" , m_SEXO , "'",                                        //SEXO
+                        ",'" , m_N_PRECINTO , "'",                                  //PRECINTO
                         ", @EndosoImage",
                         ",'",strRechazos , "'",
-                        ",'",m_Leer , "'",                                            // Otro Rechazo
+                        ",'",m_Leer , "'",                                           // Otro Rechazo
+                        ",'",MyFechaToSql(m_Fecha_Recibo_CEE),"'",
                         ")"
 
                     };
@@ -5122,7 +5151,10 @@ namespace jolcode
         }
         public bool MyUpdateTFTable(string txtNombre, string txtNumElec, string txtPrecinto, string txtSexo, string txtFechaNac, string txtCargo, string txtNotario,
                                      string txtCandidato, string txtFirma, string txtNotarioFirma, string chkFirmaInv, string chkFirmaNotInv, string chkAlteracion, string txtOtraRazonDeRechazo,
-                                     string txtFchJuramento, string txtFechaEndosos, int? totalDeDias, string Lot, string Batch, string Formulario, string CurrElect, string SysUser, SqlCommand cmd)
+                                     string txtFechaFirmaElector, 
+                                     string txtFechaFirmaEndososNotario,
+                                     string txtFechaReciboCEE,
+                                     int? totalDeDias, string Lot, string Batch, string Formulario, string CurrElect, string SysUser, SqlCommand cmd)
         {
             bool myBoolReturn = false;
 
@@ -5138,30 +5170,43 @@ namespace jolcode
                     FechaNac_Dia = txtFechaNac.Substring(2, 2);
                     FechaNac_Ano = txtFechaNac.Substring(4, 4);
                 }
-                string FechaFirm_Mes = null;
-                string FechaFirm_Dia = null;
-                string FechaFirm_Ano = null;
+                string FechaFirm_Mes_Elector = null;
+                string FechaFirm_Dia_Elector = null;
+                string FechaFirm_Ano_Elector = null;
 
-                if (txtFchJuramento != null)
+                if (txtFechaFirmaElector != null)
                 {
-                    string[] fecha = txtFchJuramento.Split('/');
-                    FechaFirm_Mes = fecha[0];
-                    FechaFirm_Dia = fecha[1];
-                    FechaFirm_Ano = fecha[2];//
+                    string[] fecha = txtFechaFirmaElector.Split('/');
+                    FechaFirm_Mes_Elector = fecha[0];
+                    FechaFirm_Dia_Elector = fecha[1];
+                    FechaFirm_Ano_Elector = fecha[2];//
                 }
 
-                string FechaEndo_Mes = string.Empty;
-                string FechaEndo_Dia = string.Empty;
-                string FechaEndo_Ano = string.Empty;
+                string FechaFirmaEndo_Mes_Notario = string.Empty;
+                string FechaFirmaEndo_Dia_Notario = string.Empty;
+                string FechaFirmaEndo_Ano_Notario = string.Empty;
 
-                if (!string.IsNullOrEmpty(txtFechaEndosos))
+                if (!string.IsNullOrEmpty(txtFechaFirmaEndososNotario))
                 {
-                    string[] fechaendosos = txtFechaEndosos.Split('/');
-                    FechaEndo_Mes = fechaendosos[0];
-                    FechaEndo_Dia = fechaendosos[1];
-                    FechaEndo_Ano = fechaendosos[2];
+                    string[] fechaendosos = txtFechaFirmaEndososNotario.Split('/');
+                    FechaFirmaEndo_Mes_Notario = fechaendosos[0];
+                    FechaFirmaEndo_Dia_Notario = fechaendosos[1];
+                    FechaFirmaEndo_Ano_Notario = fechaendosos[2];
+                }
+
+                string FechaRecibo_Mes_CEE = string.Empty;
+                string FechaRecibo_Dia_CEE = string.Empty;
+                string FechaRecibo_Ano_CEE = string.Empty;
+
+                if (!string.IsNullOrEmpty(txtFechaReciboCEE))
+                {
+                    string[] fecha = txtFechaFirmaElector.Split('/');
+                    FechaRecibo_Mes_CEE = fecha[0];
+                    FechaRecibo_Dia_CEE = fecha[1];
+                    FechaRecibo_Ano_CEE = fecha[2];
 
                 }
+
 
                 //   txtNombre = txtNombre.Replace("'", "''");
 
@@ -5189,12 +5234,15 @@ namespace jolcode
                      ", Alteracion = " , chkAlteracion,
                      ", Leer = '" , txtOtraRazonDeRechazo,"'",
                      ", Leer_Inv =",totalDeDias.ToString(),
-                     ", FechaFirm_Mes  = '" ,FechaFirm_Mes  , "'",
-                     ", FechaFirm_Dia = '" ,FechaFirm_Dia , "'",
-                     ", FechaFirm_Ano = '" ,FechaFirm_Ano  , "'",
-                     ",FechaEndo_Mes ='",FechaEndo_Mes,"'",
-                     ",FechaEndo_Dia='",FechaEndo_Dia,"'",
-                     ", FechaEndo_Ano='",FechaEndo_Ano,"'",
+                     ", FechaFirm_Mes  = '" ,FechaFirm_Mes_Elector  , "'",
+                     ", FechaFirm_Dia = '" ,FechaFirm_Dia_Elector , "'",
+                     ", FechaFirm_Ano = '" ,FechaFirm_Ano_Elector  , "'",
+                     ",FechaEndo_Mes ='",FechaFirmaEndo_Mes_Notario,"'",
+                     ",FechaEndo_Dia='",FechaFirmaEndo_Dia_Notario,"'",
+                     ", FechaEndo_Ano='",FechaFirmaEndo_Ano_Notario,"'",
+                     ",FechaRecibo_Mes='", FechaRecibo_Mes_CEE,"'",
+                     ",FechaRecibo_Dia='", FechaRecibo_Dia_CEE,"'",
+                     ",FechaRecibo_Ano='", FechaRecibo_Ano_CEE,"'",
                      ", Nombre=@txtNombre",
                      " Where NumElec ='" , CurrElect , "'",
                     " And BATCHTRACK = '" , Lot, "'",

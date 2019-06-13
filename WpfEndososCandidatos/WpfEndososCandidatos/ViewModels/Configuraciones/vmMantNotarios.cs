@@ -79,6 +79,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         // private bool _CanFind;
         private string _txtStatusElec;
         private string _txtNumElecAspirante;
+        private DateTime _dpFchInformadoAlaCEE;
 
         public vmMantNotarios() : base(new wpfMantNotarios())
         {
@@ -99,7 +100,22 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             _LogClass = new Logclass();
         }
 
-        #region MyPrperty
+        #region MyProperty
+
+        public DateTime dpFchInformadoAlaCEE
+        {
+            get
+            {
+                return _dpFchInformadoAlaCEE;
+            }
+            set
+            {
+                _dpFchInformadoAlaCEE = value;
+                this.RaisePropertychanged("dpFchInformadoAlaCEE");
+            }
+        }
+
+
         public string txtStatusElec
         {
             get
@@ -798,6 +814,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.CreateEvent();
                 _LogClass.MYEventLog.WriteEntry("Notario Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
+                dpFchInformadoAlaCEE = DateTime.Now;
                 MyRefresh();
                 MyReset();
             }
@@ -874,7 +891,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 bool myUpDate = false;
                 string myWhere = string.Empty;
 
-
                 if (!_IsInsert)
                 {
                     myWhere = cbNotario_Item.Split('-')[0];
@@ -884,14 +900,12 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     myWhere = "";
                 }
 
-
-
                 using (SqlExcuteCommand mySqlExe = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombreAspirante.Split('-')[0], txtNombreAspirante.Split('-')[1], txtNombre, txtApellido1, txtApellido2, txtStatusElec, myWhere);
+                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombreAspirante.Split('-')[0], txtNombreAspirante.Split('-')[1], txtNombre, txtApellido1, txtApellido2, txtStatusElec, dpFchInformadoAlaCEE, myWhere);
                 }
 
                 if (!myUpDate)

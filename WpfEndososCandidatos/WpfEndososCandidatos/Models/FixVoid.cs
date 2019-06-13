@@ -17,7 +17,7 @@ namespace WpfEndososCandidatos.Models
         public string CurrElect { get; set; }
         public string Lot { get; set; } //LotsLot
         public string Formulario { get; set; }//LotsEndoFormulario
-       public string Nombre { get; set; }
+        public string Nombre { get; set; }
         public string FirstName { get; set; }
 
 
@@ -37,9 +37,12 @@ namespace WpfEndososCandidatos.Models
         public bool Firma_Not_Inv { get; set; }
         public bool chkOtraRazonDeRechazo { get; set; }
         public string txtOtraRazonDeRechazo { get; set; }
-      //  public DateTime? FchEndoso { get; set; }
-        public DateTime? Firma_Fecha { get; set; }
-        public DateTime? FchEndosoEntregada { get;set; }
+        //  public DateTime? FchEndoso { get; set; }
+
+        public DateTime? Firma_Fecha_Notario { get; set; }
+        public DateTime? Fecha_Recibo_CEE { get;set; } //endosos entregado a la cee
+        public DateTime? Firma_Fecha_Elector { get; set; }
+
         public string Batch { get; set; }//LotsEndoBatch
         public string image { get; set; }//LotsEndoimage
         public byte[] EndosoImage { get; set; }
@@ -69,8 +72,9 @@ namespace WpfEndososCandidatos.Models
               Firma_Not_Inv.ToString(),
               chkOtraRazonDeRechazo.ToString(),
               txtOtraRazonDeRechazo,
-              Firma_Fecha.ToString(),
-              FchEndosoEntregada.ToString(),
+              Firma_Fecha_Notario.ToString(),
+              Firma_Fecha_Elector.ToString(),
+              Fecha_Recibo_CEE.ToString(),
               Batch,
               image,
             };

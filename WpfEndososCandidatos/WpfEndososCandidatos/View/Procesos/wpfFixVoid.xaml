@@ -1,9 +1,18 @@
-﻿<Window x:Class="WpfEndososCandidatos.View.wpfFixVoid"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowState="Maximized"
-        Title="wpfFixVoid" Height="941.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"  >
+﻿<Window
+    x:Class="WpfEndososCandidatos.View.wpfFixVoid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    Title="wpfFixVoid"
+    Width="1377.247"
+    Height="941.067"
+    AllowsTransparency="True"
+    Background="Transparent"
+    ResizeMode="CanResize"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner"
+    WindowState="Maximized"
+    WindowStyle="None">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -12,54 +21,79 @@
 
     </i:Interaction.Triggers>
     <Window.InputBindings>
-        <KeyBinding Key="Return" Command="{Binding SendTab}"   />
+        <KeyBinding Key="Return" Command="{Binding SendTab}" />
     </Window.InputBindings>
-    <Border  BorderBrush="{Binding BorderColor}"  Background="Silver" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
+    <Border
+        Margin="10"
+        Padding="4"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Background="Silver"
+        BorderBrush="{Binding BorderColor}"
+        BorderThickness="3"
+        CornerRadius="10">
         <Border.Effect>
-            <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
+            <DropShadowEffect
+                Opacity="80"
+                ShadowDepth="16"
+                Color="Gray" />
         </Border.Effect>
-        <Grid Margin="10" >
+        <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260*"/>
-                <ColumnDefinition Width="441*"/>
-                <ColumnDefinition Width="373*"/>
+                <ColumnDefinition Width="260*" />
+                <ColumnDefinition Width="441*" />
+                <ColumnDefinition Width="373*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="211*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="554*"/>
-                <RowDefinition Height="82*"/>
+                <RowDefinition Height="211*" />
+                <RowDefinition Height="40*" />
+                <RowDefinition Height="554*" />
+                <RowDefinition Height="82*" />
             </Grid.RowDefinitions>
-            <GroupBox  x:Name="groupBox" Header="Imagen" Margin="5,0,0,0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <GroupBox
+                x:Name="groupBox"
+                Grid.Row="1"
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="2"
+                Margin="5,0,0,0"
+                Header="Imagen">
                 <Grid Background="Black">
 
 
-                    <ScrollViewer  Background="Beige"  
-                           HorizontalScrollBarVisibility="Auto" 
-                           VerticalScrollBarVisibility="Auto" 
-                           Margin="10" 
-                           x:Name="scrollViewer" 
-                           KeyboardNavigation.IsTabStop="False"  >
+                    <ScrollViewer
+                        x:Name="scrollViewer"
+                        Margin="10"
+                        Background="Beige"
+                        HorizontalScrollBarVisibility="Auto"
+                        KeyboardNavigation.IsTabStop="False"
+                        VerticalScrollBarVisibility="Auto">
 
-                        <Canvas x:Name="miCanvas" Background="Yellow"  
-                                  Width="{Binding ViewboxWidth}" 
-                                 Height="{Binding ViewboxHeight}" 
-                                 KeyboardNavigation.IsTabStop="False"   >
+                        <Canvas
+                            x:Name="miCanvas"
+                            Width="{Binding ViewboxWidth}"
+                            Height="{Binding ViewboxHeight}"
+                            Background="Yellow"
+                            KeyboardNavigation.IsTabStop="False">
 
-                            <Viewbox x:Name="miViewbox"  Stretch="Fill"                          
-                                    Width="{Binding ViewboxWidth}" Height="{Binding ViewboxHeight}"  >
+                            <Viewbox
+                                x:Name="miViewbox"
+                                Width="{Binding ViewboxWidth}"
+                                Height="{Binding ViewboxHeight}"
+                                Stretch="Fill">
 
-                                <Image  x:Name="myimage" Source="{Binding Source_image}"
-                                    Stretch="None" 
-                                  
-                                    KeyboardNavigation.IsTabStop="False" Margin="0"
-                                    />
+                                <Image
+                                    x:Name="myimage"
+                                    Margin="0"
+                                    KeyboardNavigation.IsTabStop="False"
+                                    Source="{Binding Source_image}"
+                                    Stretch="None" />
                             </Viewbox>
 
-                            <Rectangle x:Name="selectionRectangle"
-                                StrokeThickness="1"
-                                Stroke="LightBlue"
+                            <Rectangle
+                                x:Name="selectionRectangle"
                                 Fill="#220000FF"
+                                Stroke="LightBlue"
+                                StrokeThickness="1"
                                 Visibility="Collapsed" />
 
                         </Canvas>
@@ -71,104 +105,393 @@
                 </Grid>
             </GroupBox>
 
-            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" x:Name="label" Content="Razón del Rechazo" Margin="0,5,10,0" VerticalAlignment="Top" Height="26" Grid.Column="1"/>
-            <Label x:Name="txtRazonRechazo" Margin="0,36,0,0"  Background="Yellow" 
-                       Grid.Column="1" 
-                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="ExtraBold"
-                       Content="{Binding Path=txtRazonRechazo}"
-                       />
-            <StackPanel Margin="10,13,0,12" Grid.Row="3" HorizontalAlignment="Left" Grid.ColumnSpan="2" Width="662" Orientation="Horizontal">
-                <Button Content="&lt; Anterior" Command="{Binding cmdAnterior_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button Content="Próximo &gt;" Command="{Binding cmdProximo_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button Content="Ver Elector" Command="{Binding cmdVerElec_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
-                <Button IsTabStop="False" TabIndex="999999" x:Name="button" Content="Set Img" Width="75" Margin="15,10,0,0" Height="28" Command="{Binding cmdSetImg}" VerticalAlignment="Top"/>
-                <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="28" Margin="15,10,0,0" IsTabStop="False" TabIndex="1000000"/>
+            <Label
+                x:Name="label"
+                Grid.Column="1"
+                Height="26"
+                Margin="0,5,10,0"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Content="Razón del Rechazo"
+                FontWeight="Bold" />
+            <Label
+                x:Name="txtRazonRechazo"
+                Grid.Column="1"
+                Margin="0,36,0,0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="Yellow"
+                Content="{Binding Path=txtRazonRechazo}"
+                FontWeight="ExtraBold" />
+            <StackPanel
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Width="662"
+                Margin="10,13,0,12"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                <Button
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdAnterior_Click}"
+                    Content="&lt; Anterior"
+                    IsTabStop="False"
+                    TabIndex="1000000" />
+                <Button
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdProximo_Click}"
+                    Content="Próximo &gt;"
+                    IsTabStop="False"
+                    TabIndex="1000000" />
+                <Button
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdVerElec_Click}"
+                    Content="Ver Elector"
+                    IsTabStop="False"
+                    TabIndex="1000000" />
+                <Button
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdGuardar_Click}"
+                    Content="Guardar"
+                    IsTabStop="False"
+                    TabIndex="1000000" />
+                <Button
+                    x:Name="button"
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdSetImg}"
+                    Content="Set Img"
+                    IsTabStop="False"
+                    TabIndex="999999" />
+                <Button
+                    Width="75"
+                    Height="28"
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding cmdSalir_Click}"
+                    Content="Salir"
+                    IsTabStop="False"
+                    TabIndex="1000000" />
 
             </StackPanel>
 
-            <GroupBox x:Name="groupBox1" Header="Información del Master" Margin="10" Grid.Column="2" Grid.RowSpan="2">
+            <GroupBox
+                x:Name="groupBox1"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                Margin="10"
+                Header="Información del Master">
                 <Grid Margin="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="257"/>
+                        <RowDefinition Height="257" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="177*"/>
-                        <ColumnDefinition Width="164*"/>
+                        <ColumnDefinition Width="177*" />
+                        <ColumnDefinition Width="164*" />
                     </Grid.ColumnDefinitions>
-                    <Label x:Name="txtNombre" Height="26" Margin="5,10,10,0"  VerticalAlignment="Top"
-                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNombre}" Grid.ColumnSpan="2" IsTabStop="False" TabIndex="1000000"
-                                   />
-                    <Label x:Name="label2" Content="Número Electoral:" HorizontalAlignment="Left" Margin="0,42,0,0" VerticalAlignment="Top" Height="26" Width="105"/>
-                    <Label x:Name="label3" Content="Precinto:" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Height="26" Width="56"/>
-                    <Label x:Name="label4" Content="Sexo:" HorizontalAlignment="Left" Margin="35,79,0,0" VerticalAlignment="Top" Height="26" Width="38" Grid.Column="1"/>
-                    <Label x:Name="label5" Content="Fecha Nac. (dd/mm/yyyy):" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Height="26" Width="148"/>
-                    <Label x:Name="label6" Content="Funcionario:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Height="26" Width="84"/>
-                    <Label x:Name="txtNumElec" Height="26" Margin="110,42,0,0"   VerticalAlignment="Top"
-                                   Background="Yellow"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNumElec}" IsTabStop="False" TabIndex="1000000" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="92"
-                                   />
-                    <Label x:Name="txtPrecinto" Height="26" Margin="110,79,0,0"  VerticalAlignment="Top"
-                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                    Content="{Binding txtPrecinto}" HorizontalAlignment="Left" Width="57" IsTabStop="False" TabIndex="1000000"
-                                   />
-                    <Label x:Name="txtSex" Margin="0,79,46,154" 
-                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtSex}" Grid.Column="1" HorizontalAlignment="Right" Width="37" IsTabStop="False" TabIndex="1000000"
-                                   />
-                    <Label x:Name="txtFechaNac" Height="26" Margin="0,110,10,0"   VerticalAlignment="Top"
-                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsTabStop="False" TabIndex="1000000"
-                                   Content="{Binding txtFechaNac}" Grid.Column="1"
-                                   />
-                    <Label x:Name="txtNotarioNumElec" Height="26" Margin="85,144,0,0"   VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000"
-                                   Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNotarioNumElec}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="101"
-                                   
-                                   />
-                    <Label x:Name="txtNotarioFirstName" Height="26" Margin="1,175,10,0"  VerticalAlignment="Top"
-                                    Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                   Content="{Binding txtNotarioFirstName}" Grid.ColumnSpan="2" IsTabStop="False" TabIndex="1000000"
-                                   />
-                    <Label x:Name="label6_Copy" Content="Status :" HorizontalAlignment="Left" Margin="16,144,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
-                    <Label x:Name="txtStatusNotario" Height="26" Margin="0,144,10,0"  VerticalAlignment="Top"
-                    	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    	Content="{Binding txtStatusNotario}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Right" Width="83"
-                                   />
-                    <Label x:Name="label6_Copy1" Content="Status :" HorizontalAlignment="Left" Margin="31,42,0,0" VerticalAlignment="Top" Height="26" Width="56" Grid.Column="1"/>
-                    <Label x:Name="txtSatatusElec" Height="26" Margin="0,42,10,0"  VerticalAlignment="Top"
-                    	Background="Yellow" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    	Content="{Binding txtStatusElec}" IsTabStop="False" TabIndex="1000000" Grid.Column="1" HorizontalAlignment="Right" Width="76"
-                                   />
+                    <Label
+                        x:Name="txtNombre"
+                        Grid.ColumnSpan="2"
+                        Height="26"
+                        Margin="5,10,10,0"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtNombre}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="label2"
+                        Width="105"
+                        Height="26"
+                        Margin="0,42,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Número Electoral:" />
+                    <Label
+                        x:Name="label3"
+                        Width="56"
+                        Height="26"
+                        Margin="10,79,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Precinto:" />
+                    <Label
+                        x:Name="label4"
+                        Grid.Column="1"
+                        Width="38"
+                        Height="26"
+                        Margin="35,79,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Sexo:" />
+                    <Label
+                        x:Name="label5"
+                        Width="148"
+                        Height="26"
+                        Margin="10,110,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Fecha Nac. (dd/mm/yyyy):" />
+                    <Label
+                        x:Name="label6"
+                        Width="84"
+                        Height="26"
+                        Margin="10,144,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Funcionario:" />
+                    <Label
+                        x:Name="txtNumElec"
+                        Grid.ColumnSpan="2"
+                        Width="92"
+                        Height="26"
+                        Margin="110,42,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtNumElec}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="txtPrecinto"
+                        Width="57"
+                        Height="26"
+                        Margin="110,79,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtPrecinto}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="txtSex"
+                        Grid.Column="1"
+                        Width="37"
+                        Margin="0,79,46,154"
+                        HorizontalAlignment="Right"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtSex}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="txtFechaNac"
+                        Grid.Column="1"
+                        Height="26"
+                        Margin="0,110,10,0"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtFechaNac}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="txtNotarioNumElec"
+                        Grid.ColumnSpan="2"
+                        Width="101"
+                        Height="26"
+                        Margin="85,144,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtNotarioNumElec}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="txtNotarioFirstName"
+                        Grid.ColumnSpan="2"
+                        Height="26"
+                        Margin="1,175,10,0"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtNotarioFirstName}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="label6_Copy"
+                        Grid.Column="1"
+                        Width="56"
+                        Height="26"
+                        Margin="16,144,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Status :" />
+                    <Label
+                        x:Name="txtStatusNotario"
+                        Grid.Column="1"
+                        Width="83"
+                        Height="26"
+                        Margin="0,144,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtStatusNotario}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="label6_Copy1"
+                        Grid.Column="1"
+                        Width="56"
+                        Height="26"
+                        Margin="31,42,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Status :" />
+                    <Label
+                        x:Name="txtSatatusElec"
+                        Grid.Column="1"
+                        Width="76"
+                        Height="26"
+                        Margin="0,42,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Yellow"
+                        Content="{Binding txtStatusElec}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
 
                 </Grid>
             </GroupBox>
 
-            <Label x:Name="lblLote" Content="{Binding Lot}" Margin="87,10,0,0" VerticalAlignment="Top" Height="26"/>
-            <Label x:Name="label14" Content="Lote:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="36"/>
-            <Label x:Name="label14_Copy" Content="Endoso:" HorizontalAlignment="Left" Margin="5,52,0,0" VerticalAlignment="Top" Height="26" Width="72"/>
-            <Label Background="Yellow" x:Name="lblLote_Copy" Content="{Binding TotalRechazada}" Margin="169,53,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="64" />
-            <Label Background="Yellow" x:Name="lblLote_Copy1" Content="{Binding i_Display}" Margin="82,53,0,0" VerticalAlignment="Top" Height="26" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="41"/>
-            <Label x:Name="label15" Content="de" HorizontalAlignment="Left" Margin="132,53,0,0" VerticalAlignment="Top" Height="26" Width="30"/>
-            <Button Content="+"  Margin="46,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28"
-            	Command="{Binding cmdZoomInOut}" CommandParameter="IN" IsTabStop="False" TabIndex="1000000"  />
-            <Button Content="-" Margin="81,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28"
-            	Command="{Binding cmdZoomInOut}"  CommandParameter="OUT" IsTabStop="False" TabIndex="1000000"/>
-            <GroupBox x:Name="groupBox2" Header="Información a Corregir" Margin="10,146,10,10" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2">
+            <Label
+                x:Name="lblLote"
+                Height="26"
+                Margin="87,10,0,0"
+                VerticalAlignment="Top"
+                Content="{Binding Lot}" />
+            <Label
+                x:Name="label14"
+                Width="36"
+                Height="26"
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Lote:" />
+            <Label
+                x:Name="label14_Copy"
+                Width="72"
+                Height="26"
+                Margin="5,52,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Endoso:" />
+            <Label
+                x:Name="lblLote_Copy"
+                Width="64"
+                Height="26"
+                Margin="169,53,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="Yellow"
+                Content="{Binding TotalRechazada}" />
+            <Label
+                x:Name="lblLote_Copy1"
+                Width="41"
+                Height="26"
+                Margin="82,53,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="Yellow"
+                Content="{Binding i_Display}" />
+            <Label
+                x:Name="label15"
+                Width="30"
+                Height="26"
+                Margin="132,53,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="de" />
+            <Button
+                Width="30"
+                Height="28"
+                Margin="46,174,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding cmdZoomInOut}"
+                CommandParameter="IN"
+                Content="+"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <Button
+                Width="30"
+                Height="28"
+                Margin="81,174,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding cmdZoomInOut}"
+                CommandParameter="OUT"
+                Content="-"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <GroupBox
+                x:Name="groupBox2"
+                Grid.Row="2"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                Margin="10,146,10,10"
+                Header="Información a Corregir">
                 <Grid Margin="0,0,0,4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="182*"/>
-                        <ColumnDefinition Width="159*"/>
+                        <ColumnDefinition Width="113*" />
+                        <ColumnDefinition Width="101*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="474"/>
+                        <RowDefinition Height="474" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="label2_Copy" Content="Número Electoral:" Margin="10,54,10,394"/>
-                    <TextBox x:Name="txtNumElec_Corregir" Margin="10,54,10,0" TextWrapping="Wrap"
-            			MaxLength="7"
-            			Text="{Binding txtNumElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                             Background="{Binding txtColor[6], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            			Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="1" >
+                    <Label
+                        x:Name="label2_Copy"
+                        Margin="10,54,10,394"
+                        Content="Número Electoral:" />
+                    <TextBox
+                        x:Name="txtNumElec_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,54,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[6], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="7"
+                        TabIndex="1"
+                        Text="{Binding txtNumElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -180,14 +503,25 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label3_Copy" Content="Precinto:" VerticalAlignment="Top" Margin="10,84,10,0"/>
-                    <TextBox x:Name="txtPrecinto_Corregir" Height="23" Margin="10,84,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="3"
-            			Text="{Binding txtPrecinto_Corregir, Mode=TwoWay}" 
-                             Background="{Binding txtColor[12], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="2"
-                                     >
+                    <Label
+                        x:Name="label3_Copy"
+                        Height="23"
+                        Margin="10,84,10,0"
+                        VerticalAlignment="Top"
+                        Content="Precinto:" />
+                    <TextBox
+                        x:Name="txtPrecinto_Corregir"
+                        Grid.Column="1"
+                        Width="55"
+                        Height="23"
+                        Margin="10,84,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[12], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="3"
+                        TabIndex="2"
+                        Text="{Binding txtPrecinto_Corregir, Mode=TwoWay}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtPrecinto_Corregir}" />
@@ -198,15 +532,30 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="23"  x:Name="label4_Copy" Content="Sexo:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.342,0.538" Margin="81,84,0,0" Width="38" Grid.Column="1"/>
-                    <TextBox x:Name="txtSex_Corregir" Height="23" Margin="123,84,-5,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="1"
-            			CharacterCasing="Upper"
-            			Text="{Binding txtSex_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-                             Background="{Binding txtColor[10], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1" HorizontalAlignment="Left" Width="41" TabIndex="3"
-                                     >
+                    <Label
+                        x:Name="label4_Copy"
+                        Grid.Column="1"
+                        Width="38"
+                        Height="23"
+                        Margin="81,84,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Sexo:"
+                        RenderTransformOrigin="1.342,0.538" />
+                    <TextBox
+                        x:Name="txtSex_Corregir"
+                        Grid.Column="1"
+                        Width="41"
+                        Height="23"
+                        Margin="123,84,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[10], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        CharacterCasing="Upper"
+                        MaxLength="1"
+                        TabIndex="3"
+                        Text="{Binding txtSex_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtSex_Corregir}" />
@@ -216,13 +565,23 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="28"  x:Name="label7" Content="Cargo:" VerticalAlignment="Top" Margin="10,139,10,0"/>
-                    <TextBox MaxLength="1" x:Name="txtCargo_Corregir" Height="23" Margin="10,139,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="5"
-                             Background="{Binding txtColor[15],Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     
-            			Text="{Binding txtCargo_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-            			Grid.Column="1" 
-                                     >
+                    <Label
+                        x:Name="label7"
+                        Height="28"
+                        Margin="10,139,10,0"
+                        VerticalAlignment="Top"
+                        Content="Cargo:" />
+                    <TextBox
+                        x:Name="txtCargo_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,139,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[15], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="1"
+                        TabIndex="5"
+                        Text="{Binding txtCargo_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtCargo_Corregir}" />
@@ -233,14 +592,23 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="27"  x:Name="label8" Content="Aspirante:" VerticalAlignment="Top" Margin="10,167,10,0"/>
-                    <TextBox x:Name="txtCandidato_Corregir" Height="23" Margin="10,167,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="7"
-            			Text="{Binding txtCandidato_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TabIndex="6"
-                             Background="{Binding txtColor[7], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1"
-                                     >
+                    <Label
+                        x:Name="label8"
+                        Height="27"
+                        Margin="10,167,10,0"
+                        VerticalAlignment="Top"
+                        Content="Aspirante:" />
+                    <TextBox
+                        x:Name="txtCandidato_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,167,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[7], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="7"
+                        TabIndex="6"
+                        Text="{Binding txtCandidato_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtCandidato_Corregir}" />
@@ -250,14 +618,23 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="23"  x:Name="label9" Content="Funcionario" VerticalAlignment="Top" Margin="10,194,10,0"/>
-                    <TextBox x:Name="txtNotarioElec_Corregir" Height="23" Margin="10,194,10,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="7"
-            			Text="{Binding txtNotarioElec_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  TabIndex="7"
-                             Background="{Binding txtColor[4], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1"
-                                     >
+                    <Label
+                        x:Name="label9"
+                        Height="23"
+                        Margin="10,194,10,0"
+                        VerticalAlignment="Top"
+                        Content="Funcionario" />
+                    <TextBox
+                        x:Name="txtNotarioElec_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,194,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[4], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="7"
+                        TabIndex="7"
+                        Text="{Binding txtNotarioElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtNotarioElec_Corregir}" />
@@ -267,14 +644,25 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="23"  x:Name="label10" Content="Firma Elector/Funcionario:" VerticalAlignment="Top" Margin="10,225,10,0"/>
-                    <TextBox x:Name="txtFirmaElec_Corregir" Height="23" Margin="35,225,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="10"
-            			Text="{Binding txtFirmaElec_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                             Background="{Binding txtColor[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1" HorizontalAlignment="Left" Width="55" TabIndex="8"
-                                     >
+                    <Label
+                        x:Name="label10"
+                        Height="23"
+                        Margin="10,225,10,0"
+                        VerticalAlignment="Top"
+                        Content="Firma Elector/Funcionario:" />
+                    <TextBox
+                        x:Name="txtFirmaElec_Corregir"
+                        Grid.Column="1"
+                        Width="55"
+                        Height="23"
+                        Margin="35,225,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="8"
+                        Text="{Binding txtFirmaElec_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtFirmaElec_Corregir}" />
@@ -284,13 +672,19 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="txtNotarioFirma_Corregir" Height="23" Margin="120,225,-15,0" TextWrapping="Wrap"  VerticalAlignment="Top"
-            			MaxLength="10"
-            			Text="{Binding txtNotarioFirma_Corregir, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                             Background="{Binding txtColor[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             
-            			Grid.Column="1" HorizontalAlignment="Left" Width="54" TabIndex="9"
-                                     >
+                    <TextBox
+                        x:Name="txtNotarioFirma_Corregir"
+                        Grid.Column="1"
+                        Width="54"
+                        Height="23"
+                        Margin="120,225,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="9"
+                        Text="{Binding txtNotarioFirma_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtNotarioFirma_Corregir}" />
@@ -301,13 +695,22 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <Label Height="29"  x:Name="label12" Content="Fecha Juramento (dd/mm/yyyy):" VerticalAlignment="Top" Margin="10,253,10,0"/>
-                    <TextBox x:Name="txtFchEndoso_Corregir" Height="23" Margin="10,253,10,0" VerticalAlignment="Top"
-                             Background="{Binding txtColor[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        	MaxLength="10"
-            			Text="{Binding txtFchJuramento_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="10"
-            			Grid.Column="1" 
-                                     >
+                    <Label
+                        x:Name="label12"
+                        Height="29"
+                        Margin="10,253,10,0"
+                        VerticalAlignment="Top"
+                        Content="Fecha Juramento (dd/mm/yyyy):" />
+                    <TextBox
+                        x:Name="txtFchEndoso_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,253,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="10"
+                        Text="{Binding txtFchJuramento_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtFchEndoso_Corregir}" />
@@ -317,13 +720,22 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <Label Height="30"  x:Name="label13" Content="Fecha (dd/mm/yyyy) / Total de días:" VerticalAlignment="Top" Margin="10,282,10,0"/>
-                    <TextBox x:Name="txtFchEndosoEntregada_Corregir" Height="23" Margin="10,282,93,0"   VerticalAlignment="Top"
-                             Background="{Binding txtColor[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        	MaxLength="10"
-            			Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="11"
-            			Grid.Column="1"
-                                     >
+                    <Label
+                        x:Name="label13"
+                        Height="30"
+                        Margin="10,282,10,0"
+                        VerticalAlignment="Top"
+                        Content="Fecha (dd/mm/yyyy) / Total de días:" />
+                    <TextBox
+                        x:Name="txtFchEndosoEntregada_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,282,93,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="11"
+                        Text="{Binding txtFchEndosoEntregada_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=txtFchEndosoEntregada_Corregir}" />
@@ -333,26 +745,71 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <CheckBox x:Name="ckbFirma_Pet_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="10,230,0,0" VerticalAlignment="Top" Width="20"
-            			IsChecked="{Binding ckbFirma_Pet_Inv, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="15" IsTabStop="False" TabIndex="1000000"
-                              Background="{Binding txtColor[16], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  />
-                    <CheckBox x:Name="ckbFirma_Not_Inv" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="95,230,0,0" VerticalAlignment="Top" Width="20"
-            			IsChecked="{Binding ckbFirma_Not_Inv, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="15" IsTabStop="False" TabIndex="1000000"
-                              Background="{Binding txtColor[17], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  />
-                    <Label Height="28"  x:Name="label13_Copy" Content="Batch / Formulario:" VerticalAlignment="Top" Margin="10,319,10,0" RenderTransformOrigin="0.504,0.688"/>
-                    <Label x:Name="txtFormulario" Height="23" Margin="0,324,10,0"   VerticalAlignment="Top"
-            			Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            			Content="{Binding txtFormulario}" Grid.Column="1" HorizontalAlignment="Right" Width="68"
-                           
-                                   />
-                    <Label x:Name="LBLFechaNac_Corregir" Content="Fecha Nac. (dd/mm/yyyy):" Margin="10,112,10,0" VerticalAlignment="Top" Height="26" IsTabStop="False" />
+                    <CheckBox
+                        x:Name="ckbFirma_Pet_Inv"
+                        Grid.Column="1"
+                        Width="20"
+                        Height="15"
+                        Margin="10,230,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[16], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Content=""
+                        IsChecked="{Binding ckbFirma_Pet_Inv, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <CheckBox
+                        x:Name="ckbFirma_Not_Inv"
+                        Grid.Column="1"
+                        Width="20"
+                        Height="15"
+                        Margin="95,230,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[17], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Content=""
+                        IsChecked="{Binding ckbFirma_Not_Inv, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        IsTabStop="False"
+                        TabIndex="1000000" />
+                    <Label
+                        x:Name="label13_Copy"
+                        Height="28"
+                        Margin="10,360,10,0"
+                        VerticalAlignment="Top"
+                        Content="Batch / Formulario:"
+                        RenderTransformOrigin="0.504,0.688" />
+                    <Label
+                        x:Name="txtFormulario"
+                        Grid.Column="1"
+                        Width="68"
+                        Height="23"
+                        Margin="0,360,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Background="Beige"
+                        Content="{Binding txtFormulario}" />
+                    <Label
+                        x:Name="LBLFechaNac_Corregir"
+                        Height="26"
+                        Margin="10,112,10,0"
+                        VerticalAlignment="Top"
+                        Content="Fecha Nac. (dd/mm/yyyy):"
+                        IsTabStop="False" />
 
-                    <TextBox x:Name="FechaNac_Corregir" Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,111,-10,0" VerticalAlignment="Top" Width="159" Height="24" TabIndex="4"
-                             Background="{Binding txtColor[9], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                MaxLength="10"
-                             >
+                    <TextBox
+                        x:Name="FechaNac_Corregir"
+                        Grid.Column="1"
+                        Width="159"
+                        Height="24"
+                        Margin="10,111,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[9], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="4"
+                        Text="{Binding FechaNac_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -363,10 +820,16 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="Nombre_Corregir" Grid.ColumnSpan="2" Height="23" Margin="10,1,10,0" TextWrapping="Wrap" 
-                             Text="{Binding Nombre_Corregir}" IsReadOnly="True" VerticalAlignment="Top"
-                             TabIndex="0"
-                             >
+                    <TextBox
+                        x:Name="Nombre_Corregir"
+                        Grid.ColumnSpan="2"
+                        Height="23"
+                        Margin="10,1,10,0"
+                        VerticalAlignment="Top"
+                        IsReadOnly="True"
+                        TabIndex="0"
+                        Text="{Binding Nombre_Corregir}"
+                        TextWrapping="Wrap">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding Path=miGotFocus}" CommandParameter="{Binding ElementName=Nombre_Corregir}" />
@@ -377,20 +840,47 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
-                    <TextBox IsReadOnly="True" x:Name="batch" HorizontalAlignment="Left" Height="23" Margin="6,324,0,0" TextWrapping="Wrap" Text="{Binding batchTF}" VerticalAlignment="Top" Width="60" IsEnabled="False" Grid.Column="1"/>
-                    <CheckBox x:Name="chkOtraRazonDeRechazo" Content="Otra Razon de Rechazo" Margin="15,357,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.479,-1.867" Height="15"
-                              IsChecked="{Binding chkOtraRazonDeRechazo,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              />
-                    <TextBox x:Name="textBox1" Height="83" Margin="11,357,10,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.Column="1"
-                             Text="{Binding txtOtraRazonDeRechazo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding chkOtraRazonDeRechazo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             />
-                    <TextBox x:Name="txtFchEndosoEntregada_Corregir_dias" Height="23" Margin="0,282,10,0"   VerticalAlignment="Top"
-                    	Background="{Binding txtColor[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    	MaxLength="10"
-                    	Text="{Binding txtFchEndosoEntregada_Corregir_dias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="11"
-                    	Grid.Column="1" HorizontalAlignment="Right" Width="68"
-                                     >
+                    <TextBox
+                        x:Name="batch"
+                        Grid.Column="1"
+                        Width="60"
+                        Height="23"
+                        Margin="10,360,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        IsEnabled="False"
+                        IsReadOnly="True"
+                        Text="{Binding batchTF}"
+                        TextWrapping="Wrap" />
+                    <CheckBox
+                        x:Name="chkOtraRazonDeRechazo"
+                        Height="15"
+                        Margin="10,393,15,0"
+                        VerticalAlignment="Top"
+                        Content="Otra Razon de Rechazo"
+                        IsChecked="{Binding chkOtraRazonDeRechazo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        RenderTransformOrigin="0.479,-1.867" />
+                    <TextBox
+                        x:Name="textBox1"
+                        Grid.Column="1"
+                        Height="51"
+                        Margin="10,393,10,0"
+                        VerticalAlignment="Top"
+                        IsEnabled="{Binding chkOtraRazonDeRechazo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding txtOtraRazonDeRechazo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+                    <TextBox
+                        x:Name="txtFchEndosoEntregada_Corregir_dias"
+                        Grid.Column="1"
+                        Width="68"
+                        Height="23"
+                        Margin="0,282,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="11"
+                        Text="{Binding txtFchEndosoEntregada_Corregir_dias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <i:InvokeCommandAction Command="{Binding miGotFocus}" CommandParameter="{Binding ElementName=txtFchEndosoEntregada_Corregir}" />
@@ -400,14 +890,36 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <TextBox x:Name="lblI" IsReadOnly="True" Text="{Binding i}" Margin="69,383,10,0" VerticalAlignment="Top" Height="27" IsTabStop="False" />
-                    <Label Height="27"  x:Name="label8_Copy" Content="Página:" VerticalAlignment="Top" Margin="15,383,0,0" HorizontalAlignment="Left" Width="49"/>
-                    <Label x:Name="label2_Copy2" Content="Nombre:" Margin="10,27,10,421"/>
-                    <TextBox x:Name="txtNombre_Corregir" Margin="6,27,14,0" TextWrapping="Wrap"
-                   
-                    	Text="{Binding txtNombre_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                    	Background="{Binding txtColor[20], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    	Grid.Column="1" Height="23" VerticalAlignment="Top" TabIndex="0" >
+                    <TextBox
+                        x:Name="lblI"
+                        Height="27"
+                        Margin="69,413,10,0"
+                        VerticalAlignment="Top"
+                        IsReadOnly="True"
+                        IsTabStop="False"
+                        Text="{Binding i}" />
+                    <Label
+                        x:Name="label8_Copy"
+                        Width="49"
+                        Height="27"
+                        Margin="15,413,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Content="Página:" />
+                    <Label
+                        x:Name="label2_Copy2"
+                        Margin="10,27,10,421"
+                        Content="Nombre:" />
+                    <TextBox
+                        x:Name="txtNombre_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,27,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[20], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TabIndex="0"
+                        Text="{Binding txtNombre_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap">
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
@@ -419,62 +931,194 @@
                         </i:Interaction.Triggers>
 
                     </TextBox>
+                    <Label
+                        x:Name="label12_Copy"
+                        Height="29"
+                        Margin="10,312,10,0"
+                        VerticalAlignment="Top"
+                        Content="Fecha Firma Elector (dd/mm/yyyy):" />
+                    <TextBox
+                        x:Name="txtFchFirmaElector_Corregir"
+                        Grid.Column="1"
+                        Height="23"
+                        Margin="10,312,10,0"
+                        VerticalAlignment="Top"
+                        Background="{Binding txtColor[5], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        MaxLength="10"
+                        TabIndex="12"
+                        Text="{Binding txtFchFirmaElector_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="GotFocus">
+                                <i:InvokeCommandAction Command="{Binding miGotFocus}" CommandParameter="{Binding ElementName=txtFchFirmaElector_Corregir}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding miLostFocus}" CommandParameter="{Binding ElementName=txtFchFirmaElector_Corregir}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
                 </Grid>
             </GroupBox>
-            <Button x:Name="Full" Command="{Binding BtnFullImages}" Content="Full" Height="28" VerticalAlignment="Top"  Margin="118,174,0,0" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="30" />
-            <Button x:Name="crp" Command="{Binding BtnCrop}" Content="crp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="28"  Margin="10,174,0,0" IsTabStop="False" TabIndex="1000000" />
-            <TextBox x:Name="label11" IsReadOnly="False" Text="{Binding lblCordenadas}" Height="21" Margin="169,179,0,0" VerticalAlignment="Top" IsTabStop="False" TabIndex="1000000" HorizontalAlignment="Left" Width="82"/>
-            <Grid Background="Beige" Grid.Column="2" Height="131" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top">
-                <ScrollViewer  Background="Beige"  
-                           HorizontalScrollBarVisibility="Auto" 
-                           VerticalScrollBarVisibility="Auto" 
-                           Margin="10" 
-                           x:Name="scrollViewerSing" 
-                           KeyboardNavigation.IsTabStop="False"  >
+            <Button
+                x:Name="Full"
+                Width="30"
+                Height="28"
+                Margin="118,174,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding BtnFullImages}"
+                Content="Full"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <Button
+                x:Name="crp"
+                Width="30"
+                Height="28"
+                Margin="10,174,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding BtnCrop}"
+                Content="crp"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <TextBox
+                x:Name="label11"
+                Width="82"
+                Height="21"
+                Margin="169,179,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                IsReadOnly="False"
+                IsTabStop="False"
+                TabIndex="1000000"
+                Text="{Binding lblCordenadas}" />
+            <Grid
+                Grid.Row="2"
+                Grid.Column="2"
+                Height="131"
+                Margin="10,10,10,0"
+                VerticalAlignment="Top"
+                Background="Beige">
+                <ScrollViewer
+                    x:Name="scrollViewerSing"
+                    Margin="10"
+                    Background="Beige"
+                    HorizontalScrollBarVisibility="Auto"
+                    KeyboardNavigation.IsTabStop="False"
+                    VerticalScrollBarVisibility="Auto">
 
-                    <Canvas x:Name="miCanvasSing" Background="Yellow"  
-                                  Width="{Binding ViewboxWidthSing}" 
-                                 Height="{Binding ViewboxHeightSing}" 
-                                 KeyboardNavigation.IsTabStop="False"   >
+                    <Canvas
+                        x:Name="miCanvasSing"
+                        Width="{Binding ViewboxWidthSing}"
+                        Height="{Binding ViewboxHeightSing}"
+                        Background="Yellow"
+                        KeyboardNavigation.IsTabStop="False">
 
-                        <Viewbox x:Name="miViewboxSing"  Stretch="Fill"                          
-                                    Width="{Binding ViewboxWidthSing}" Height="{Binding ViewboxHeightSing}"  >
+                        <Viewbox
+                            x:Name="miViewboxSing"
+                            Width="{Binding ViewboxWidthSing}"
+                            Height="{Binding ViewboxHeightSing}"
+                            Stretch="Fill">
 
-                            <Image  x:Name="myimageSing" Source="{Binding Source_image_Corregir}"
-                                    Stretch="None" 
-                                  
-                                    KeyboardNavigation.IsTabStop="False" Margin="0"
-                                    />
+                            <Image
+                                x:Name="myimageSing"
+                                Margin="0"
+                                KeyboardNavigation.IsTabStop="False"
+                                Source="{Binding Source_image_Corregir}"
+                                Stretch="None" />
                         </Viewbox>
 
-                        <Rectangle x:Name="selectionRectangleSing"
-                                StrokeThickness="1"
-                                Stroke="LightBlue"
-                                Fill="#220000FF"
-                                Visibility="Collapsed" />
+                        <Rectangle
+                            x:Name="selectionRectangleSing"
+                            Fill="#220000FF"
+                            Stroke="LightBlue"
+                            StrokeThickness="1"
+                            Visibility="Collapsed" />
 
                     </Canvas>
 
                 </ScrollViewer>
             </Grid>
-            <Button x:Name="BtnGo" Command="{Binding BtnGo}" Content="GO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="28"  Margin="125,94,0,0" IsTabStop="False" TabIndex="1000000" />
-            <TextBox x:Name="txtFormulario_Copy" Height="28" Margin="82,94,0,0"   VerticalAlignment="Top"
-            	Background="Beige" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-            	Text="{Binding GoIdx}" HorizontalAlignment="Left" Width="41" IsTabStop="False"
-                           
-                                   />
-            <Label x:Name="label14_Copy1" Content="Página:" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Height="26" Width="52"/>
-            <Button Content="&lt;&lt;" Command="{Binding cmdFirst}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28" Margin="160,94,0,0" IsTabStop="False" TabIndex="1000000"/>
-            <Button Content="&gt;&gt;" Command="{Binding cmdLast}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="28" Margin="195,94,0,0" IsTabStop="False" TabIndex="1000000"/>
-            <Label x:Name="label2_Copy1" Content="Número Electoral:" Margin="10,134,0,0" HorizontalAlignment="Left" Width="113" Height="23" VerticalAlignment="Top"/>
-            <TextBox x:Name="txtNumElec_Go" Margin="118,134,0,0" TextWrapping="Wrap"
-            	MaxLength="7"
-            	Text="{Binding txtNumElec_Go, UpdateSourceTrigger=PropertyChanged}" 
-            	Height="23" VerticalAlignment="Top" IsTabStop="False" HorizontalAlignment="Left" Width="82" >
-
-
-            </TextBox>
-            <Button x:Name="BtnGo_Elec" Command="{Binding BtnGo_Elec}" Content="GO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30"  Height="23"  Margin="203,134,0,0" IsTabStop="False" TabIndex="1000000" />
+            <Button
+                x:Name="BtnGo"
+                Width="30"
+                Height="28"
+                Margin="125,94,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding BtnGo}"
+                Content="GO"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <TextBox
+                x:Name="txtFormulario_Copy"
+                Width="41"
+                Height="28"
+                Margin="82,94,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="Beige"
+                IsTabStop="False"
+                Text="{Binding GoIdx}" />
+            <Label
+                x:Name="label14_Copy1"
+                Width="52"
+                Height="26"
+                Margin="10,93,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Página:" />
+            <Button
+                Width="30"
+                Height="28"
+                Margin="160,94,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding cmdFirst}"
+                Content="&lt;&lt;"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <Button
+                Width="30"
+                Height="28"
+                Margin="195,94,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding cmdLast}"
+                Content="&gt;&gt;"
+                IsTabStop="False"
+                TabIndex="1000000" />
+            <Label
+                x:Name="label2_Copy1"
+                Width="113"
+                Height="23"
+                Margin="10,134,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Número Electoral:" />
+            <TextBox
+                x:Name="txtNumElec_Go"
+                Width="82"
+                Height="23"
+                Margin="118,134,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                IsTabStop="False"
+                MaxLength="7"
+                Text="{Binding txtNumElec_Go, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
+            <Button
+                x:Name="BtnGo_Elec"
+                Width="30"
+                Height="23"
+                Margin="203,134,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding BtnGo_Elec}"
+                Content="GO"
+                IsTabStop="False"
+                TabIndex="1000000" />
 
         </Grid>
 

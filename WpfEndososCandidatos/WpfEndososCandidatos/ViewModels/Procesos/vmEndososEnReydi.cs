@@ -1797,11 +1797,11 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     if (_DataToSave[idx].FechaNac != null)
                         FechaNac_Corregir = _DataToSave[idx].FechaNac.Value.ToString("dd/MM/yyyy");
 
-                    if (_DataToSave[idx].FchEndosoEntregada != null) // Fecha del endosos entregado en la CEE
-                        txtFchEndosoEntregada_Corregir = _DataToSave[idx].FchEndosoEntregada.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].Fecha_Recibo_CEE != null) // Fecha del endosos entregado en la CEE
+                        txtFchEndosoEntregada_Corregir = _DataToSave[idx].Fecha_Recibo_CEE.Value.ToString("dd/MM/yyyy");
 
-                    if (_DataToSave[idx].Firma_Fecha != null) // Nota : firma del endosos 
-                        txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha.Value.ToString("dd/MM/yyyy");
+                    if (_DataToSave[idx].Firma_Fecha_Notario != null) // Nota : firma del endosos 
+                        txtFchJuramento_Corregir = _DataToSave[idx].Firma_Fecha_Notario.Value.ToString("dd/MM/yyyy");
 
                     byte[] EndosoImage = null;
                     Source_image = null;
@@ -2115,8 +2115,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             Firma_Not_Inv = row["Firma_Not_Inv"].ToString().Trim() == "1" ? true : false,
                             chkOtraRazonDeRechazo = row["Alteracion"].ToString().Trim() == "1" ? true : false,
                             txtOtraRazonDeRechazo = row["LeerMSG"].ToString(),
-                            Firma_Fecha = juramento,
-                            FchEndosoEntregada = FechaEndoso,
+                            Firma_Fecha_Notario = juramento,
+                            Fecha_Recibo_CEE = FechaEndoso,
+                            Firma_Fecha_Elector = null,
                             Batch = row["Batch"].ToString(),
                             image = row["Image"].ToString(),
                             EndosoImage = (byte[])row["EndosoImage"],

@@ -299,22 +299,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     myLots.ImportDate = row["ImportDate"].ToString();
 
                     cbLots.Add(myLots.Lot);
-
                 }
                 cbLots_Item_Id = -1;
-
             }
-
         }
-
-
-
 
         #endregion
 
         #region Dispose
-
-
 
         public void Dispose()
         {
