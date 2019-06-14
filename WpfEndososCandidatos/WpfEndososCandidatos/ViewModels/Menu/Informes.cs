@@ -15,8 +15,12 @@ namespace WpfEndososCandidatos.ViewModels
         private RelayCommand _mnuRechazo_click;
         private RelayCommand _mnuReydi_click;
         private RelayCommand _mnuRechazoReydi_click;
-
-      
+        private RelayCommand _help_click;
+        
+        public RelayCommand help_click
+        {
+            get;private set;
+        }
         public RelayCommand mnuduplicado_click
         {
             get;private set;
@@ -154,6 +158,11 @@ namespace WpfEndososCandidatos.ViewModels
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void Myhelp_click()
+        {
+         //   MessageBox.Show("Pronto..");
+         //   System.Windows.Forms.Help.ShowHelp( null,"file://C:\\Program Files\\TextPad 8\\system\\TxPadEng.chm");
         }
         private void MymnuEstatus_click()
         {

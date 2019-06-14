@@ -208,6 +208,8 @@
                     Name="mnuConf8"
                     Command="{Binding about_Click}"
                     Header="_About" />
+                <MenuItem Name="mnnHelp" Command="{Binding help_click}" Header="Help" />
+
             </MenuItem>
 
 

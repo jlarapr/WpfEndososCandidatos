@@ -59,6 +59,7 @@ namespace WpfEndososCandidatos.ViewModels
             mnuduplicado_click = new RelayCommand(param => Mymnuduplicado_clickC());
             mnuEndososRechazados_click = new RelayCommand(param => MymnuEndososRechazados_click());
             mnuEstatus_click = new RelayCommand(param => MymnuEstatus_click());
+            help_click = new RelayCommand(param => Myhelp_click());
         }
                      
 
@@ -85,6 +86,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
 
         }
+
         public RelayCommand InitWindow
         {
             get
