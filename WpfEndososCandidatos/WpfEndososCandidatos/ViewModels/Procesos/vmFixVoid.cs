@@ -104,6 +104,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _txtNumElec_Go;
         private string _txtNombre_Corregir;
         private string _txtFchFirmaElector_Corregir;
+        string[] _formatsDate = { "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy", "d/M/yy", "ddMMyyyy", "dMyyyy", "ddMMyy", "d/M/yy" };
 
         public vmFixVoid() :
             base(new wpfFixVoid())
@@ -1080,7 +1081,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
-                for (int idx = 0; idx <= 21; idx++)
+                for (int idx = 0; idx <= 22; idx++)
                 {
                     txtColor.Add(Brushes.White);
                 }
@@ -1516,6 +1517,29 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 var txt = param as TextBox;
 
                 txt.Background = tmpBrushes;
+                switch (txt.Name)
+                {
+                    case "txtFchEndoso_Corregir":
+                    case "txtFchEndosoEntregada_Corregir":
+                    case "txtFchFirmaElector_Corregir":
+                        {
+                            DateTime dt;
+                            DateTime? dtNull = null;
+                            if (DateTime.TryParseExact(txt.Text, _formatsDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+                            {
+                                dtNull = dt;
+                            }
+                            try
+                            {
+                                txt.Text = dtNull.Value.ToString("dd/MM/yyyy");
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Error con el Formato de la Fecha dd/MM/yyyy", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                        break;
+                }
             }
             if (param is Label)
             {
@@ -1804,7 +1828,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                             V = (int)dV;
                             double dHo = double.Parse(xy[5]);
                             Ho = (int)dHo;
-                                                       
+
                             if (_isFirmaNotario)
                             {
                                 _isFirmaNotario = false;
@@ -2279,20 +2303,25 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             param = param.Substring(0, param.Length - 1);
             string[] cargos = param.Split('|');
 
+            for (int idx = 0; idx <= 22; idx++)
+            {
+                txtColor[idx] = Brushes.White;
+            }
+
             foreach (string s in cargos)
             {
                 int idx = int.Parse(s);
 
-                txtColor[idx] = Brushes.Green;
+                txtColor[idx] = Brushes.Yellow;
 
                 if ((idx == 11) || (idx == 20) || idx == 21)
-                    txtColor[6] = Brushes.Green;
+                    txtColor[6] = Brushes.GreenYellow;
 
                 if (idx == 19)
-                    txtColor[15] = Brushes.Green;
+                    txtColor[15] = Brushes.GreenYellow;
 
                 if (idx == 8)
-                    txtColor[4] = Brushes.Green;
+                    txtColor[4] = Brushes.GreenYellow;
             }
 
         }
@@ -2443,25 +2472,23 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             DateTime dtFirma_Fecha_Elector;
             DateTime? dtFirma_Fecha_Electornull = null;
 
-            //txtFchFirmaElector_Corregir
-
-            if (DateTime.TryParseExact(txtFchFirmaElector_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFirma_Fecha_Elector))
+            if (DateTime.TryParseExact(txtFchFirmaElector_Corregir, _formatsDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFirma_Fecha_Elector))
             {//Fecha de la Firma del Elector
                 dtFirma_Fecha_Electornull = dtFirma_Fecha_Elector;
             }
 
 
-            if (DateTime.TryParseExact(txtFchJuramento_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Firma_Notario_Corregir))
+            if (DateTime.TryParseExact(txtFchJuramento_Corregir, _formatsDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Firma_Notario_Corregir))
             {//Fecha de la Firma del Notario
                 dtFecha_Firma_Notario_Corregirnull = dtFecha_Firma_Notario_Corregir;
             }
 
-            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Recibo_CEE))
+            if (DateTime.TryParseExact(txtFchEndosoEntregada_Corregir, _formatsDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtFecha_Recibo_CEE))
             {//Fecha de Recibo del en endoso a la cee
                 dtFecha_Recibo_CEEnull = dtFecha_Recibo_CEE;
             }
 
-            if (DateTime.TryParseExact(FechaNac_Corregir, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
+            if (DateTime.TryParseExact(FechaNac_Corregir, _formatsDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtNac))
             {//Fecha Nacimiento del Elector
                 dtNacNull = dtNac;
             }

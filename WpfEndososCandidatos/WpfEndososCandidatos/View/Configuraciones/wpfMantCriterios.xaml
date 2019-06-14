@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Background="Transparent"
-        Title="wpfMantCriterios" Height="882.54" Width="959.807" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+        Title="wpfMantCriterios" Height="1008.54" Width="959.807" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -16,8 +16,8 @@
         </Border.Effect>
         <Grid>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Mantenimiento - Criterios de Validación" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="20" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="841,804,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
-            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="630">
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="841,890,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+            <GroupBox x:Name="groupBox" Header="Criterio de Validacion" Margin="5,60,5,0" VerticalAlignment="Top" Height="704">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -283,6 +283,21 @@
                                     </i:EventTrigger>
                                     <i:EventTrigger EventName="Unchecked">
                                         <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="20"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                             
+
+                            </CheckBox>
+                            <CheckBox x:Name="ckbW1_Copy23"   Height="26" Margin="5,0,0,0"
+                                    IsChecked="{Binding chk[21].Warning}"
+                                      Width="22"
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CheckedWarning}" CommandParameter="21"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnCheckedWarning}" CommandParameter="21"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
 
@@ -707,18 +722,37 @@
                                             Background="{Binding Background_0[20]}"/>
 
                             </CheckBox>
+                          
+                            <CheckBox x:Name="ckb1_Copy23"  VerticalAlignment="Top" Height="26" Margin="0,0,10,0"
+                                IsChecked="{Binding chk[21].Editar}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding Checked}" CommandParameter="21"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding UnChecked}" CommandParameter="21"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                                <TextBlock x:Name="txtckb22" TextWrapping="Wrap" 
+                                    Height="26"
+                                    Width="783"
+                                    Text="{Binding chk[21].Txt}" 
+                                    Background="{Binding Background_0[21]}"/>
+
+                            </CheckBox>
 
                         </StackPanel>
                     </Border>
                 </Grid>
             </GroupBox>
-            <Label x:Name="label1"  HorizontalAlignment="Left" Margin="13,695,0,0" VerticalAlignment="Top"
+            <Label x:Name="label1"  HorizontalAlignment="Left" Margin="13,764,0,0" VerticalAlignment="Top"
                    Content="{Binding Explicacion}" Height="35" Width="170"
                    />
-            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="841,767,0,0" VerticalAlignment="Top" Width="75" Height="32"
+            <Button x:Name="cmdActualize" Content="Actualize" HorizontalAlignment="Left" Margin="841,853,0,0" VerticalAlignment="Top" Width="75" Height="32"
                     Command="{Binding cmdActualize_Click}"
                     />
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="101" Margin="13,735,0,0" VerticalAlignment="Top" Width="786"
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="102" Margin="13,820,0,0" VerticalAlignment="Top" Width="786"
                     CornerRadius="10"
                     >
                 <TextBox x:Name="txtExplicacion" TextWrapping="Wrap"  Margin="9"
@@ -726,10 +760,10 @@
                          IsEnabled="{Binding IsEnabled_txtExplicacion}"
                          />
             </Border>
-            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="841,696,0,0" VerticalAlignment="Top" Width="75"
+            <Button x:Name="cmdEditar" Content="Editar" HorizontalAlignment="Left" Height="32" Margin="841,782,0,0" VerticalAlignment="Top" Width="75"
                     Command="{Binding cmdEditar_Click}"
                     />
-            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="841,733,0,0" VerticalAlignment="Top" Width="75"  Height="29"
+            <Button x:Name="cmdCancel" Content="Cancel" HorizontalAlignment="Left" Margin="841,819,0,0" VerticalAlignment="Top" Width="75"  Height="29"
             	Command="{Binding cmdCancel_Click}"
                     />
 

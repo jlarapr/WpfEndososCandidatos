@@ -3220,7 +3220,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaEndosos)
+        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaRecibo)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -3244,21 +3244,21 @@ namespace jolcode
                             ");"
                         };
 
-                string FechaEndo_Mes = string.Empty;
-                string FechaEndo_Dia = string.Empty;
-                string FechaEndo_Ano = string.Empty;
+                string FechaRecibo_Mes = string.Empty;
+                string FechaRecibo_Dia = string.Empty;
+                string FechaRecibo_Ano = string.Empty;
 
                 try
                 {
-                    FechaEndo_Mes = ((DateTime)fechaEndosos).Month.ToString();
-                    FechaEndo_Dia = ((DateTime)fechaEndosos).Day.ToString();
-                    FechaEndo_Ano = ((DateTime)fechaEndosos).Year.ToString();
+                    FechaRecibo_Mes = ((DateTime)fechaRecibo).Month.ToString();
+                    FechaRecibo_Dia = ((DateTime)fechaRecibo).Day.ToString();
+                    FechaRecibo_Ano = ((DateTime)fechaRecibo).Year.ToString();
                 }
                 catch
                 {
-                    FechaEndo_Mes = string.Empty;
-                    FechaEndo_Dia = string.Empty;
-                    FechaEndo_Ano = string.Empty;
+                    FechaRecibo_Mes = string.Empty;
+                    FechaRecibo_Dia = string.Empty;
+                    FechaRecibo_Ano = string.Empty;
                 }
 
                 string[] myUpdate_Imported1 =
@@ -3267,9 +3267,9 @@ namespace jolcode
                             "SET [Imported] = 1, ",
                             "FirmaNot_Inv = 0,",
                             "FirmaElec_Inv = 0,",
-                            "FechaRecibo_Mes = @FechaEndo_Mes,",
-                            "FechaRecibo_Dia = @FechaEndo_Dia,",
-                            "FechaRecibo_Ano = @FechaEndo_Ano,",
+                            "FechaRecibo_Mes = @FechaRecibo_Mes,",
+                            "FechaRecibo_Dia = @FechaRecibo_Dia,",
+                            "FechaRecibo_Ano = @FechaRecibo_Ano,",
                             "Leer = '',",
                             "Alteracion=0 ",
                             "WHERE BatchTrack=@where ",
@@ -3364,17 +3364,17 @@ namespace jolcode
                         importDateParam.ParameterName = "@ImportDate";
                         importDateParam.SqlDbType = SqlDbType.VarChar;
 
-                        SqlParameter FechaEndo_MesParam = new SqlParameter();
-                        FechaEndo_MesParam.ParameterName = "@FechaEndo_Mes";
-                        FechaEndo_MesParam.SqlDbType = SqlDbType.VarChar;
+                        SqlParameter FechaRecibo_MesParam = new SqlParameter();
+                        FechaRecibo_MesParam.ParameterName = "@FechaRecibo_Mes";
+                        FechaRecibo_MesParam.SqlDbType = SqlDbType.VarChar;
 
-                        SqlParameter FechaEndo_DiaParam = new SqlParameter();
-                        FechaEndo_DiaParam.ParameterName = "@FechaEndo_Dia";
-                        FechaEndo_DiaParam.SqlDbType = SqlDbType.VarChar;
+                        SqlParameter FechaRecibo_DiaParam = new SqlParameter();
+                        FechaRecibo_DiaParam.ParameterName = "@FechaRecibo_Dia";
+                        FechaRecibo_DiaParam.SqlDbType = SqlDbType.VarChar;
 
-                        SqlParameter FechaEndo_AnoParam = new SqlParameter();
-                        FechaEndo_AnoParam.ParameterName = "@FechaEndo_Ano";
-                        FechaEndo_AnoParam.SqlDbType = SqlDbType.VarChar;
+                        SqlParameter FechaRecibo_AnoParam = new SqlParameter();
+                        FechaRecibo_AnoParam.ParameterName = "@FechaRecibo_Ano";
+                        FechaRecibo_AnoParam.SqlDbType = SqlDbType.VarChar;
 
                         //SqlParameter totalDeDiasParam = new SqlParameter();
                         //totalDeDiasParam.ParameterName = "@totalDeDias";
@@ -3394,14 +3394,14 @@ namespace jolcode
 
                             int myReturn = 0;
 
-                            cmd.Parameters.Add(FechaEndo_MesParam);
-                            cmd.Parameters.Add(FechaEndo_DiaParam);
-                            cmd.Parameters.Add(FechaEndo_AnoParam);
+                            cmd.Parameters.Add(FechaRecibo_MesParam);
+                            cmd.Parameters.Add(FechaRecibo_DiaParam);
+                            cmd.Parameters.Add(FechaRecibo_AnoParam);
                             //   cmd.Parameters.Add(totalDeDiasParam);
 
-                            FechaEndo_MesParam.Value = FechaEndo_Mes;
-                            FechaEndo_DiaParam.Value = FechaEndo_Dia;
-                            FechaEndo_AnoParam.Value = FechaEndo_Ano;
+                            FechaRecibo_MesParam.Value = FechaRecibo_Mes;
+                            FechaRecibo_DiaParam.Value = FechaRecibo_Dia;
+                            FechaRecibo_AnoParam.Value = FechaRecibo_Ano;
                             //    totalDeDiasParam.Value = totalDeDias;
 
                             cmd.CommandText = string.Concat(myUpdate_Imported1);
@@ -3410,9 +3410,9 @@ namespace jolcode
                             if (cmd.Parameters.Contains(whereParam))
                                 cmd.Parameters.Remove(whereParam);
 
-                            cmd.Parameters.Remove(FechaEndo_MesParam);
-                            cmd.Parameters.Remove(FechaEndo_DiaParam);
-                            cmd.Parameters.Remove(FechaEndo_AnoParam);
+                            cmd.Parameters.Remove(FechaRecibo_MesParam);
+                            cmd.Parameters.Remove(FechaRecibo_DiaParam);
+                            cmd.Parameters.Remove(FechaRecibo_AnoParam);
                             //   cmd.Parameters.Remove(totalDeDiasParam);
 
                             cmd.Parameters.Add(partidoParam);
@@ -3772,10 +3772,10 @@ namespace jolcode
 
                 //    transaction.Commit();
 
-                int[] Rechazo = new int[21];
-                int[] Warning = new int[21];
-                bool[] isRechazo = new bool[21];
-                bool[] isWarning = new bool[21];
+                int[] Rechazo = new int[22];
+                int[] Warning = new int[22];
+                bool[] isRechazo = new bool[22];
+                bool[] isWarning = new bool[22];
                 Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
                 string strRechazos = string.Empty;
                 int ValidatedEndorsements = 0;
@@ -3790,8 +3790,8 @@ namespace jolcode
                     //transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                     //myCmdDBEndosos.Transaction = transaction;
 
-                    isRechazo = new bool[21];
-                    isWarning = new bool[21];
+                    isRechazo = new bool[22];
+                    isWarning = new bool[22];
 
                     //default
                     m_Firma_Peticionario = "0";
@@ -3843,8 +3843,7 @@ namespace jolcode
                     string tmpFirma_Fecha_Elector = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
                     //Fecha_Recibo_CEE
                     string tmpFecha_Recibo_CEE = string.Concat(row["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
-
-
+                    
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
 
@@ -4841,13 +4840,13 @@ namespace jolcode
                         {
                             if ((int)total > 0)
                             {
-                                if (CollCriterios[19].Editar == true)
+                                if (CollCriterios[20].Editar == true)
                                 {
                                     Rechazo[20]++;
                                     strRechazos += "21|";
                                     isRechazo[20] = true;
                                 }
-                                if (CollCriterios[19].Warning == true)
+                                if (CollCriterios[20].Warning == true)
                                 {
                                     Rechazo[20]++;
                                     isWarning[20] = true;
@@ -4855,9 +4854,26 @@ namespace jolcode
                             }
                         }
                     }
+                    if (CollCriterios[21].Editar == true || CollCriterios[21].Warning == true)//'22- hay discrepancia entre la fecha de la petición y la fecha de juramento
+                    {
+                        if (!m_Firma_Fecha_Elector.Equals(m_Fecha_Endo_Notario))
+                        {
+                            if (CollCriterios[21].Editar == true)
+                            {
+                                Rechazo[21]++;
+                                strRechazos += "22|";
+                                isRechazo[21] = true;
+                            }
+                            if (CollCriterios[21].Warning == true)
+                            {
+                                Rechazo[21]++;
+                                isWarning[21] = true;
+                            }
+                        }
 
+                    }
 
-                    bool isrechazo = false;
+                        bool isrechazo = false;
                     bool iswarning = false;
 
                     byte[] img = null;
@@ -5164,7 +5180,7 @@ namespace jolcode
                 string FechaNac_Dia = null;
                 string FechaNac_Ano = null;
 
-                if (txtFechaNac != null)
+                if (!string.IsNullOrEmpty(txtFechaNac))
                 {
                     FechaNac_Mes = txtFechaNac.Substring(0, 2);
                     FechaNac_Dia = txtFechaNac.Substring(2, 2);
@@ -5174,7 +5190,7 @@ namespace jolcode
                 string FechaFirm_Dia_Elector = null;
                 string FechaFirm_Ano_Elector = null;
 
-                if (txtFechaFirmaElector != null)
+                if (!string.IsNullOrEmpty(txtFechaFirmaElector))
                 {
                     string[] fecha = txtFechaFirmaElector.Split('/');
                     FechaFirm_Mes_Elector = fecha[0];
@@ -5200,14 +5216,13 @@ namespace jolcode
 
                 if (!string.IsNullOrEmpty(txtFechaReciboCEE))
                 {
-                    string[] fecha = txtFechaFirmaElector.Split('/');
+                    string[] fecha = txtFechaReciboCEE.Split('/');
                     FechaRecibo_Mes_CEE = fecha[0];
                     FechaRecibo_Dia_CEE = fecha[1];
                     FechaRecibo_Ano_CEE = fecha[2];
 
                 }
-
-
+                
                 //   txtNombre = txtNombre.Replace("'", "''");
 
                 SqlParameter txtNombreParam = new SqlParameter();

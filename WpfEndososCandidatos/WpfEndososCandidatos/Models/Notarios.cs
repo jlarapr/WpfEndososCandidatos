@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfEndososCandidatos.Models
 {
-    class Notarios: IEquatable<Notarios>, IComparable
+    class Notarios : IEquatable<Notarios>, IComparable
     {
         public string NumElec { get; set; }
         public string NumCand { get; set; }
@@ -14,6 +14,10 @@ namespace WpfEndososCandidatos.Models
         public string Apellido1 { get; set; }
         public string Apellido2 { get; set; }
         public string Status { get; set; }
+
+        public int Fecha_Dia { get; set; }
+        public int Fecha_Mes { get; set; }
+        public int Fecha_Ano { get; set; }
 
         public bool AllColumn { get; set; }
         public override string ToString()
@@ -30,7 +34,10 @@ namespace WpfEndososCandidatos.Models
                     Nombre.Trim().ToUpper(),
                     Apellido1.Trim().ToUpper(),
                     Apellido2.Trim().ToUpper(),
-                    Status.Trim().ToUpper()
+                    Status.Trim().ToUpper(),
+                    Fecha_Mes.ToString(),
+                    Fecha_Dia.ToString(),
+                    Fecha_Ano.ToString()
                 };
                 myJoined = string.Join("-", myOut);
             }
@@ -43,7 +50,10 @@ namespace WpfEndososCandidatos.Models
                     Apellido1.Trim().ToUpper(),
                     Apellido2.Trim().ToUpper(),
                     NumCand.Trim(),
-                    Status
+                    Status,
+                    Fecha_Mes.ToString(),
+                    Fecha_Dia.ToString(),
+                    Fecha_Ano.ToString()
                 };
                 myJoined = string.Join(" - ", myOut);
             }

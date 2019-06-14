@@ -297,6 +297,11 @@
                             Height="15"
                             Margin="5"
                             Text="{Binding lblNReasons[20]}" />
+                        <TextBlock
+                            x:Name="lblNReasons22"
+                            Height="15"
+                            Margin="5"
+                            Text="{Binding lblNReasons[21]}" />
 
                     </StackPanel>
                     <StackPanel
@@ -450,7 +455,13 @@
                             Foreground="{Binding Foreground_Desc[20]}"
                             Text="{Binding CollCriterios[20].Desc}"
                             TextWrapping="Wrap" />
-
+                        <TextBlock
+                            x:Name="txt21"
+                            Height="15"
+                            Margin="5"
+                            Foreground="{Binding Foreground_Desc[21]}"
+                            Text="{Binding CollCriterios[21].Desc}"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
             </GroupBox>

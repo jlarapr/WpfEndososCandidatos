@@ -761,6 +761,20 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     txtNombreAspirante = cbAspirante_Item;
                     txtStatusElec = myData[5].Trim();
 
+                    string tmpFecha = string.Concat(myData[6].Trim().PadLeft(2, '0'),
+                                                    myData[7].Trim().PadLeft(2, '0'),
+                                                    myData[8].Trim().PadLeft(4, '0'));
+
+                    try
+                    {
+                        DateTime? dt = null;
+                        dt = DateTimeUtil.MyValidarFecha(tmpFecha);
+                        dpFchInformadoAlaCEE = dt.Value;
+                    }catch
+                    {
+                        dpFchInformadoAlaCEE = DateTime.Now;
+                    }
+
                     IsEnabled_cmdDelete = true;
                     IsEnabled_cmdEdit = true;
                     IsEnabled_cmdAdd = false;
@@ -814,9 +828,10 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.CreateEvent();
                 _LogClass.MYEventLog.WriteEntry("Notario Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
-                dpFchInformadoAlaCEE = DateTime.Now;
+                
                 MyRefresh();
                 MyReset();
+                dpFchInformadoAlaCEE = DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -1133,6 +1148,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             _isEdit = false;
             cbAspirante_Item_Id = -1;
             cbNotario_Item_Id = -1;
+            dpFchInformadoAlaCEE = DateTime.Now;
+
 
 
         }
@@ -1174,10 +1191,24 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         myNotario.Apellido1 = row["Apellido1"].ToString();
                         myNotario.Apellido2 = row["Apellido2"].ToString();
                         myNotario.Status = row["Status"].ToString();
+                        try
+                        {
+                            myNotario.Fecha_Dia = (int)row["Fecha_Dia"];
+                            myNotario.Fecha_Mes = (int)row["Fecha_Mes"];
+                            myNotario.Fecha_Ano = (int)row["Fecha_Ano"];
+                        }catch
+                        {
+                            myNotario.Fecha_Dia = 0;
+                            myNotario.Fecha_Mes = 0;
+                            myNotario.Fecha_Ano = 0;
+                        }
+
                         myNotario.AllColumn = false;
                         cbNotario.Add(myNotario);
                     }
                     cbNotario_Item_Id = -1;
+                    dpFchInformadoAlaCEE = DateTime.Now;
+
                 }
             }
             catch (Exception ex)

@@ -943,7 +943,7 @@
                         Height="23"
                         Margin="10,312,10,0"
                         VerticalAlignment="Top"
-                        Background="{Binding txtColor[5], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding txtColor[22], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         MaxLength="10"
                         TabIndex="12"
                         Text="{Binding txtFchFirmaElector_Corregir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
