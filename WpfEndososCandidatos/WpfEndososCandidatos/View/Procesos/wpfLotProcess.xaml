@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     Title="wpfLotProcess"
-    Width="901.558"
-    Height="781.456"
+    Width="907.558"
+    Height="761.956"
     AllowsTransparency="True"
     Background="Transparent"
     Cursor="{Binding MiCursor}"
@@ -303,6 +303,13 @@
                             Margin="5"
                             Text="{Binding lblNReasons[21]}" />
 
+                        <TextBlock
+                            x:Name="lblNReasons23"
+                            Height="15"
+                            Margin="5"
+                            Text="{Binding lblNReasons[22]}" />
+
+
                     </StackPanel>
                     <StackPanel
                         Grid.Column="1"
@@ -462,6 +469,15 @@
                             Foreground="{Binding Foreground_Desc[21]}"
                             Text="{Binding CollCriterios[21].Desc}"
                             TextWrapping="Wrap" />
+
+                        <TextBlock
+                            x:Name="txt22"
+                            Height="75"
+                            Margin="5"
+                            Foreground="{Binding Foreground_Desc[22]}"
+                            Text="{Binding CollCriterios[22].Desc}"
+                            TextWrapping="Wrap" />
+
                     </StackPanel>
                 </Grid>
             </GroupBox>
@@ -484,10 +500,8 @@
                 Content="Ver Rechazadas" />
             <StackPanel
                 Width="293"
-                Height="223"
-                Margin="10,490,0,0"
+                Margin="10,490,0,34"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
                 Background="Gray">
                 <Label
                     x:Name="label2"

@@ -3772,10 +3772,10 @@ namespace jolcode
 
                 //    transaction.Commit();
 
-                int[] Rechazo = new int[22];
-                int[] Warning = new int[22];
-                bool[] isRechazo = new bool[22];
-                bool[] isWarning = new bool[22];
+                int[] Rechazo = new int[23];
+                int[] Warning = new int[23];
+                bool[] isRechazo = new bool[23];
+                bool[] isWarning = new bool[23];
                 Resultados[1] = ProgressBar_Maximum[0].ToString();         //lblTota                  1
                 string strRechazos = string.Empty;
                 int ValidatedEndorsements = 0;
@@ -3790,8 +3790,8 @@ namespace jolcode
                     //transaction = myCnnDBEndosos.BeginTransaction(IsolationLevel.ReadCommitted);
                     //myCmdDBEndosos.Transaction = transaction;
 
-                    isRechazo = new bool[22];
-                    isWarning = new bool[22];
+                    isRechazo = new bool[23];
+                    isWarning = new bool[23];
 
                     //default
                     m_Firma_Peticionario = "0";
@@ -3831,19 +3831,18 @@ namespace jolcode
                     int.TryParse(row["Alteracion"].ToString().Trim(), out m_Alteracion);
                     m_Leer = row["leer"].ToString().Trim();
 
-                    string tmpFirmaFecha_Endo_Notario = String.Empty;
                     //Notario
+                    string tmpFirmaFecha_Endo_Notario = String.Empty;
                     if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
-                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
+                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                     else
-                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
-
+                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
 
                     //Elector
                     string tmpFirma_Fecha_Elector = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
                     //Fecha_Recibo_CEE
                     string tmpFecha_Recibo_CEE = string.Concat(row["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
-                    
+
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
 
@@ -4854,6 +4853,7 @@ namespace jolcode
                             }
                         }
                     }
+
                     if (CollCriterios[21].Editar == true || CollCriterios[21].Warning == true)//'22- hay discrepancia entre la fecha de la petición y la fecha de juramento
                     {
                         if (!m_Firma_Fecha_Elector.Equals(m_Fecha_Endo_Notario))
@@ -4873,7 +4873,48 @@ namespace jolcode
 
                     }
 
-                        bool isrechazo = false;
+
+                    if (isRechazo[3] == false) // Nota: si NOTARIO NO EXISTE EN NUESTROS ARCHIVOS no verifico la fecha de informado a la CEE
+                    {
+                        //'23- La petición ha sido juramentada ante un notario ad hoc cuyo nombre no le ha sido informado a la Comisión.
+                        if (CollCriterios[22].Editar == true || CollCriterios[22].Warning == true)
+                        {
+                            string[] sqlstr = {
+                                "SELECT [Fecha_Dia],[Fecha_Mes],[Fecha_Ano] ",
+                                "From [Notarios] ",
+                                " Where ([NumElec] = ", FixNum(m_N_NOTARIO) , ") and ",
+                                " ([Partido]='", m_PARTIDO , "')"
+                            };
+
+                            DateTime? dt = MyValidarNotarioInformadoCEE(string.Concat(sqlstr), myCnnDBEndososValidarDatos);
+
+                            int result = DateTime.Compare(dt.Value, m_Fecha_Endo_Notario.Value);
+
+                            // result < 0  is earlier than (es mas tarde)
+                            // result == 0 is the same time as
+                            // result >0  is later than
+
+                            if (result > 0)
+                            {
+
+                                
+                                if (CollCriterios[22].Editar == true)
+                                {
+                                    Rechazo[22]++;
+                                    strRechazos += "23|";
+                                    isRechazo[22] = true;
+                                }
+                                if (CollCriterios[22].Warning == true)
+                                {
+                                    Rechazo[22]++;
+                                    isWarning[22] = true;
+                                }
+                            }
+                        }
+                    }
+
+
+                    bool isrechazo = false;
                     bool iswarning = false;
 
                     byte[] img = null;
@@ -5038,6 +5079,34 @@ namespace jolcode
             }
             return myBoolReturn;
         }
+
+        private DateTime? MyValidarNotarioInformadoCEE(string sql, SqlConnection cnn)
+        {
+            DateTime? myReturn = null;
+
+            using (SqlCommand cmd = new SqlCommand(sql, cnn)
+            {
+                CommandType = CommandType.Text
+            })
+            {
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable table = new DataTable();
+                da.Fill(table);
+                foreach (DataRow dr in table.Rows)
+                {
+                    string tmp_Fecha = string.Concat(dr["Fecha_Mes"].ToString().Trim().PadLeft(2, '0'),
+                                                                  dr["Fecha_Dia"].ToString().Trim().PadLeft(2, '0'),
+                                                                  dr["Fecha_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    if (tmp_Fecha.Trim().Length > 0)
+                    {
+                        myReturn = DateTimeUtil.MyValidarFechaMMddyy(tmp_Fecha);
+                    }
+
+                }
+            }
+            return myReturn;
+        }
+
         private object MyValidarDatos(string sql, SqlConnection cnn)
         {
             object myIntReturn = 0;
@@ -5061,6 +5130,7 @@ namespace jolcode
 
             return myIntReturn;
         }
+
         private object MyValidarDatos(string sql, out object returnValue, SqlConnection cnn)
         {
 
@@ -5084,11 +5154,13 @@ namespace jolcode
 
             return returnValue;
         }
+
         private string Left(string param, int length)
         {
             string result = param.Substring(0, length);
             return result;
         }
+
         private bool MyStatus(string param)
         {
             switch (param.Trim())
@@ -5104,6 +5176,7 @@ namespace jolcode
 
             }
         }
+
         private string MyFechaToSql(DateTime? param)
         {
             if (param == null)
@@ -5117,6 +5190,7 @@ namespace jolcode
 
 
         }
+
         private string FixNum(string param)
         {
             int FixNum = 0;
@@ -5126,11 +5200,13 @@ namespace jolcode
             else
                 return "0";
         }
+
         public void DoEvents()
         {
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
             new Action(delegate { }));
         }
+
         private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status, byte[] EndosoImage, SqlCommand dbCmd)
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
@@ -5165,9 +5241,10 @@ namespace jolcode
             dbCmd.Parameters.Remove(param);
 
         }
+
         public bool MyUpdateTFTable(string txtNombre, string txtNumElec, string txtPrecinto, string txtSexo, string txtFechaNac, string txtCargo, string txtNotario,
                                      string txtCandidato, string txtFirma, string txtNotarioFirma, string chkFirmaInv, string chkFirmaNotInv, string chkAlteracion, string txtOtraRazonDeRechazo,
-                                     string txtFechaFirmaElector, 
+                                     string txtFechaFirmaElector,
                                      string txtFechaFirmaEndososNotario,
                                      string txtFechaReciboCEE,
                                      int? totalDeDias, string Lot, string Batch, string Formulario, string CurrElect, string SysUser, SqlCommand cmd)
@@ -5222,7 +5299,7 @@ namespace jolcode
                     FechaRecibo_Ano_CEE = fecha[2];
 
                 }
-                
+
                 //   txtNombre = txtNombre.Replace("'", "''");
 
                 SqlParameter txtNombreParam = new SqlParameter();

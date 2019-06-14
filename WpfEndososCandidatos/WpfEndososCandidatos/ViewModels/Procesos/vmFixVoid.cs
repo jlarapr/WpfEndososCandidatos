@@ -1081,7 +1081,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 else
                     BorderColor = Brushes.Black;
 
-                for (int idx = 0; idx <= 22; idx++)
+                for (int idx = 0; idx <= 23; idx++)
                 {
                     txtColor.Add(Brushes.White);
                 }
@@ -2303,7 +2303,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             param = param.Substring(0, param.Length - 1);
             string[] cargos = param.Split('|');
 
-            for (int idx = 0; idx <= 22; idx++)
+            for (int idx = 0; idx <= 23; idx++)
             {
                 txtColor[idx] = Brushes.White;
             }
@@ -2313,6 +2313,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 int idx = int.Parse(s);
 
                 txtColor[idx] = Brushes.Yellow;
+
+                if (idx== 23)
+                    txtColor[0] = Brushes.GreenYellow;
 
                 if ((idx == 11) || (idx == 20) || idx == 21)
                     txtColor[6] = Brushes.GreenYellow;

@@ -1149,9 +1149,6 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             cbAspirante_Item_Id = -1;
             cbNotario_Item_Id = -1;
             dpFchInformadoAlaCEE = DateTime.Now;
-
-
-
         }
 
         private void MyRefresh()
