@@ -74,7 +74,7 @@
     <ManifestKeyFile>WpfEndososCandidatos_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -550,7 +550,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="dbBk\dbEndososPartidos.bak" />
     <None Include="dbBk\Digitalizacion.bak" />
     <None Include="Models\EndososPartidos.Context.tt">

@@ -10,7 +10,8 @@ using WpfEndososCandidatos.ViewModels;
 using WpfEndososCandidatos.View;
 using WpfEndososCandidatos.Helper;
 using WpfEndososCandidatos.Models;
-
+using System.Security.Principal;
+using System.Reflection;
 
 namespace WpfEndososCandidatos
 {
@@ -19,12 +20,10 @@ namespace WpfEndososCandidatos
     /// </summary>
     public partial class App : Application
     {
-
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            
             string miProcessName = Process.GetCurrentProcess().ProcessName;
 
             Process[] miProcess = Process.GetProcessesByName(miProcessName);
@@ -32,7 +31,7 @@ namespace WpfEndososCandidatos
             if (miProcess.Length > 1)
             {
                 MessageBox.Show(miProcessName + " already running");
-
+                
                 Process.GetCurrentProcess().Kill();
             }
             else
@@ -42,7 +41,7 @@ namespace WpfEndososCandidatos
                 //w.Show();
 
                 ViewModels.MainVM w = new ViewModels.MainVM();
-                
+                //AdminRelauncher(); //This is the only important line here, add it to a place it gets run early on.
                 w.View.Closing += OnClosing;
                 w.OnShow();
             }
@@ -61,6 +60,7 @@ namespace WpfEndososCandidatos
 
         private bool OnSessionEnding()
         {
+            
             var response = MessageBox.Show("!!!Do you really want to exit?", "Exiting...", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 
             if (response == MessageBoxResult.Yes)
@@ -72,6 +72,43 @@ namespace WpfEndososCandidatos
                 return true;
             }
         }
+        private void AdminRelauncher()
+        {
+            if (!IsRunAsAdmin())
+            {
+                ProcessStartInfo proc = new ProcessStartInfo();
+                proc.UseShellExecute = true;
+                proc.WorkingDirectory = Environment.CurrentDirectory;
+                proc.FileName = Assembly.GetEntryAssembly().CodeBase;
+
+                proc.Verb = "runas";
+
+                try
+                {
+                    Process.Start(proc);
+                    Application.Current.Shutdown();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("This program must be run as an administrator! \n\n" + ex.ToString());
+                }
+            }
+        }
+
+        private bool IsRunAsAdmin()
+        {
+            try
+            {
+                WindowsIdentity id = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(id);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
     }//end
 }//end

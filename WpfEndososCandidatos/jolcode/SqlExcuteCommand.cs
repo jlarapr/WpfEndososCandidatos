@@ -734,7 +734,7 @@ namespace jolcode
                     "     union ",
                     "    (SELECT partido,'Endosos_Entregados' as Titulo, count(*)  as Total FROM [dbo].[TF-Partidos]  group by [Partido])",
                     ") ",
-                    " as TT"
+                    " as TT order by partido"
                 };
 
                 using (SqlConnection cnn = new SqlConnection()
