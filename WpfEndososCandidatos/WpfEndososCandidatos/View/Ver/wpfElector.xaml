@@ -1,148 +1,66 @@
-﻿<Window x:Class="WpfEndososCandidatos.View.wpfElector"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-         xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" 
-        Background="Transparent"
-        Title="wpfElector" Height="622.456" Width="492.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
+﻿<Window x:Class="WpfEndososCandidatos.View.wpfElector" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" Background="Transparent" Title="wpfElector" Height="622.456" Width="492.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.InputBindings>
-        <KeyBinding Key="Return" Command="{Binding cmdFind_Click}"  CommandParameter="{Binding ElementName=txtPassword}" />
+        <KeyBinding Key="Return" Command="{Binding cmdFind_Click}" CommandParameter="{Binding ElementName=txtPassword}" />
     </Window.InputBindings>
-    <Border  BorderBrush="{Binding BorderBrush}"  Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
-
+    <Border BorderBrush="{Binding BorderBrush}" Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
         <Border.Effect>
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
         </Border.Effect>
         <Grid>
-            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0"/>
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="373,555,0,0" VerticalAlignment="Top" Width="75"/>
-            <GroupBox x:Name="groupBox" Header="Información del Elector" Margin="5,65,5,0" VerticalAlignment="Top" Height="485">
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Elector" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0" />
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="373,555,0,0" VerticalAlignment="Top" Width="75" help:Help.Keyword="wpfElector.htm#" />
+            <GroupBox x:Name="groupBox" Header="Información del Elector" Margin="5,65,5,0" VerticalAlignment="Top" Height="485" help:Help.Keyword="wpfElector.htm#">
                 <Grid>
-                    <Label x:Name="label" Content="Número Electoral" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TxtElecNum" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtElecNum,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
-                             MaxLength="7"
-                             CharacterCasing="Upper">
-
-                     
-
-                    </TextBox>
-                             
-                             
-                             
-                    <Button x:Name="cmdFind" Content="Buscar..." HorizontalAlignment="Left" Margin="135,41,0,0" VerticalAlignment="Top" Width="75"
-                            Command="{Binding cmdFind_Click}" Height="23"
-                            />
-                    <Label x:Name="label_Copy" Content="Nombre" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy1" Content="Paterno" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy2" Content="Materno" HorizontalAlignment="Left" Margin="260,69,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="dfNombre" HorizontalAlignment="Left" Height="23" Margin="7,100,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtNombre}"
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             />
-                    <TextBox x:Name="TxtPaterno" HorizontalAlignment="Left" Height="23" Margin="135,100,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtPaterno}"
-                             Background="Yellow"
-                             IsReadOnly="True"
-                             />
-                    <TextBox x:Name="TxtMaterno" HorizontalAlignment="Left" Height="23" Margin="260,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtMaterno}" 
-                             Background="Yellow"
-                             IsReadOnly="True"
-                             />
-                    <Label x:Name="label_Copy3" Content="Padre" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy4" Content="Madre" HorizontalAlignment="Left" Margin="135,132,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy5" Content="Fecha de Nacimiento" HorizontalAlignment="Left" Margin="260,132,0,0" VerticalAlignment="Top"/>
-                    <TextBox x:Name="TxtPadre" HorizontalAlignment="Left" Height="23" Margin="7,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtPadre}" 
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             />
-                    <TextBox x:Name="TxtMadre" HorizontalAlignment="Left" Height="23" Margin="135,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
-                             Text="{Binding TxtMadre}" 
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             />
-                    <TextBox x:Name="TxtDia" HorizontalAlignment="Left" Height="23" Margin="260,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28"
-                             Text="{Binding TxtDia}" 
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             
-                             />
-                    <TextBox x:Name="TxtMes" HorizontalAlignment="Left" Height="23" Margin="293,163,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="28"
-                             Text="{Binding TxtMes}"
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             />
-                    <TextBox x:Name="TxtAno" HorizontalAlignment="Left" Height="23" Margin="326,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54"
-                             Text="{Binding TxtAno}" 
-                             IsReadOnly="True"
-                             Background="Yellow"
-                             />
-                    <Label x:Name="label_Copy6" Content="Día" HorizontalAlignment="Left" Margin="260,191,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy7" Content="Mes" HorizontalAlignment="Left" Margin="294,191,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label_Copy8" Content="Año" HorizontalAlignment="Left" Margin="326,191,0,0" VerticalAlignment="Top"/>
-                    <GroupBox x:Name="gbInfoElecotral" Header="Información Electoral" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,225,0,0" Height="97" Width="245">
-                        <Grid >
-                            <TextBox x:Name="TxtPrecinto" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="55"
-                                     Text="{Binding TxtPrecinto}"
-                                     Background="Yellow"
-                                     IsReadOnly="True"
-                                     />
-                            <TextBox x:Name="TxtUnidad" HorizontalAlignment="Left" Height="23" Margin="70,26,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="55"
-                                     Text="{Binding TxtUnidad}"
-                                     Background="Yellow"
-                                     IsReadOnly="True"                                     
-                                     />
-                            <Label x:Name="label1" Content="Precinto" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label1_Copy" Content="Unidad" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top"/>
-                            <RadioButton x:Name="obActivo" Content="Activo" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding IsChecked_Activo}"
-                                         IsEnabled="False"
-                                         />
-                            <RadioButton x:Name="obInactivo" Content="Inactivo" HorizontalAlignment="Left" Margin="147,37,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding IsChecked_Inactivo}" 
-                                         IsEnabled="False"
-                                         />
-                            <RadioButton x:Name="obExcluido" Content="Excluido" HorizontalAlignment="Left" Margin="147,57,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding IsChecked_Excluido}"
-                                         IsEnabled="False"
-                                         />
-
+                    <Label x:Name="label" Content="Número Electoral" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                    <TextBox x:Name="TxtElecNum" HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtElecNum,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MaxLength="7" CharacterCasing="Upper" help:Help.Keyword="wpfElector.htm#"></TextBox>
+                    <Button x:Name="cmdFind" Content="Buscar..." HorizontalAlignment="Left" Margin="135,41,0,0" VerticalAlignment="Top" Width="75" Command="{Binding cmdFind_Click}" Height="23" help:Help.Keyword="wpfElector.htm#" />
+                    <Label x:Name="label_Copy" Content="Nombre" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy1" Content="Paterno" HorizontalAlignment="Left" Margin="135,69,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy2" Content="Materno" HorizontalAlignment="Left" Margin="260,69,0,0" VerticalAlignment="Top" />
+                    <TextBox x:Name="dfNombre" HorizontalAlignment="Left" Height="23" Margin="7,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtNombre}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtPaterno" HorizontalAlignment="Left" Height="23" Margin="135,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtPaterno}" Background="Yellow" IsReadOnly="True" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtMaterno" HorizontalAlignment="Left" Height="23" Margin="260,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtMaterno}" Background="Yellow" IsReadOnly="True" help:Help.Keyword="wpfElector.htm#" />
+                    <Label x:Name="label_Copy3" Content="Padre" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy4" Content="Madre" HorizontalAlignment="Left" Margin="135,132,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy5" Content="Fecha de Nacimiento" HorizontalAlignment="Left" Margin="260,132,0,0" VerticalAlignment="Top" />
+                    <TextBox x:Name="TxtPadre" HorizontalAlignment="Left" Height="23" Margin="7,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtPadre}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtMadre" HorizontalAlignment="Left" Height="23" Margin="135,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding TxtMadre}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtDia" HorizontalAlignment="Left" Height="23" Margin="260,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28" Text="{Binding TxtDia}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtMes" HorizontalAlignment="Left" Height="23" Margin="293,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="28" Text="{Binding TxtMes}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <TextBox x:Name="TxtAno" HorizontalAlignment="Left" Height="23" Margin="326,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54" Text="{Binding TxtAno}" IsReadOnly="True" Background="Yellow" help:Help.Keyword="wpfElector.htm#" />
+                    <Label x:Name="label_Copy6" Content="Día" HorizontalAlignment="Left" Margin="260,191,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy7" Content="Mes" HorizontalAlignment="Left" Margin="294,191,0,0" VerticalAlignment="Top" />
+                    <Label x:Name="label_Copy8" Content="Año" HorizontalAlignment="Left" Margin="326,191,0,0" VerticalAlignment="Top" />
+                    <GroupBox x:Name="gbInfoElecotral" Header="Información Electoral" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,225,0,0" Height="97" Width="245" help:Help.Keyword="wpfElector.htm#">
+                        <Grid>
+                            <TextBox x:Name="TxtPrecinto" HorizontalAlignment="Left" Height="23" Margin="10,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Text="{Binding TxtPrecinto}" Background="Yellow" IsReadOnly="True" help:Help.Keyword="wpfElector.htm#" />
+                            <TextBox x:Name="TxtUnidad" HorizontalAlignment="Left" Height="23" Margin="70,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="55" Text="{Binding TxtUnidad}" Background="Yellow" IsReadOnly="True" help:Help.Keyword="wpfElector.htm#" />
+                            <Label x:Name="label1" Content="Precinto" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" />
+                            <Label x:Name="label1_Copy" Content="Unidad" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top" />
+                            <RadioButton x:Name="obActivo" Content="Activo" HorizontalAlignment="Left" Margin="147,14,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked_Activo}" IsEnabled="False" help:Help.Keyword="wpfElector.htm#" />
+                            <RadioButton x:Name="obInactivo" Content="Inactivo" HorizontalAlignment="Left" Margin="147,37,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked_Inactivo}" IsEnabled="False" help:Help.Keyword="wpfElector.htm#" />
+                            <RadioButton x:Name="obExcluido" Content="Excluido" HorizontalAlignment="Left" Margin="147,57,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked_Excluido}" IsEnabled="False" help:Help.Keyword="wpfElector.htm#" />
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="gbInfoElecotral_Copy" Header="Sexo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,225,0,0" Height="97" Width="111">
-                        <Grid >
-                            <RadioButton x:Name="obSexM" Content="Masculino" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding IsChecked_SexM}"
-                                         IsEnabled="False"
-                                         />
-                            <RadioButton x:Name="obSexF" Content="Femenina" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"
-                                         IsChecked="{Binding IsChecked_SexF}"                                         
-                                         IsEnabled="False"
-                                         />
+                    <GroupBox x:Name="gbInfoElecotral_Copy" Header="Sexo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,225,0,0" Height="97" Width="111" help:Help.Keyword="wpfElector.htm#">
+                        <Grid>
+                            <RadioButton x:Name="obSexM" Content="Masculino" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked_SexM}" IsEnabled="False" help:Help.Keyword="wpfElector.htm#" />
+                            <RadioButton x:Name="obSexF" Content="Femenina" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked_SexF}" IsEnabled="False" help:Help.Keyword="wpfElector.htm#" />
                         </Grid>
                     </GroupBox>
-                    <Label x:Name="label2" Content="Firma" HorizontalAlignment="Left" Margin="12,327,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2" Content="Firma" HorizontalAlignment="Left" Margin="12,327,0,0" VerticalAlignment="Top" />
                     <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Margin="7,358,10,10">
                         <Grid>
-                            <Image x:Name="imageFirma" Margin="5"
-                                   Source="{Binding Source_image}"
-                                   />
-
-
+                            <Image x:Name="imageFirma" Margin="5" Source="{Binding Source_image}" />
                         </Grid>
                     </Border>
-
                 </Grid>
             </GroupBox>
-
         </Grid>
     </Border>
 </Window>

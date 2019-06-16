@@ -16,14 +16,14 @@ namespace WpfEndososCandidatos.ViewModels
         private RelayCommand _mnuReydi_click;
         private RelayCommand _mnuRechazoReydi_click;
         private RelayCommand _help_click;
-        
+
         public RelayCommand help_click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand mnuduplicado_click
         {
-            get;private set;
+            get; private set;
         }
 
         public RelayCommand mnuEndososRechazados_click
@@ -40,18 +40,18 @@ namespace WpfEndososCandidatos.ViewModels
         {
             get
             {
-                if (_mnuRechazo_click ==null)
+                if (_mnuRechazo_click == null)
                 {
                     _mnuRechazo_click = new RelayCommand(param => MymnuRechazo_click());
                 }
                 return _mnuRechazo_click;
             }
         }
-     public RelayCommand mnuReydi_click
+        public RelayCommand mnuReydi_click
         {
             get
             {
-                if (_mnuReydi_click ==null)
+                if (_mnuReydi_click == null)
                 {
                     _mnuReydi_click = new RelayCommand(param => MymnuReydi_click());
                 }
@@ -59,7 +59,7 @@ namespace WpfEndososCandidatos.ViewModels
             }
         }
 
-        private void MymnuReydi_click ()
+        private void MymnuReydi_click()
         {
             try
             {
@@ -120,7 +120,7 @@ namespace WpfEndososCandidatos.ViewModels
             {
                 using (vmInforme frm = new vmInforme())
                 {
-                    frm.View.Owner =this.View  as Window;
+                    frm.View.Owner = this.View as Window;
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
@@ -132,17 +132,17 @@ namespace WpfEndososCandidatos.ViewModels
             catch (Exception ex)
             {
                 MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error); 
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-   
+
 
         private void Mymnuduplicado_clickC()
         {
             try
             {
-               using (vmDuplicados frm = new vmDuplicados())
+                using (vmDuplicados frm = new vmDuplicados())
                 {
                     frm.View.Owner = this.View as Window;
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
@@ -161,8 +161,12 @@ namespace WpfEndososCandidatos.ViewModels
         }
         private void Myhelp_click()
         {
-         //   MessageBox.Show("Pronto..");
-         //   System.Windows.Forms.Help.ShowHelp( null,"file://C:\\Program Files\\TextPad 8\\system\\TxPadEng.chm");
+            try{
+                System.Windows.Forms.Help.ShowHelp(null, @"Help\Sistema_de_Endosos.chm");
+            }catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(),"Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
         }
         private void MymnuEstatus_click()
         {
@@ -174,7 +178,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
-                    
+
                     frm.MyOnShow();
                 }
             }
@@ -188,7 +192,7 @@ namespace WpfEndososCandidatos.ViewModels
         {
             try
             {
-                using (vmEndososRechazados frm =new vmEndososRechazados())
+                using (vmEndososRechazados frm = new vmEndososRechazados())
                 {
                     frm.View.Owner = this.View as Window;
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;

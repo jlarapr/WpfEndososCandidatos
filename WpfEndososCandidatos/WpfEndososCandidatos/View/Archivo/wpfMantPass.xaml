@@ -1,76 +1,48 @@
-﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
-        xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" x:Class="WpfEndososCandidatos.View.wpfMantPass"  
-        Background="Transparent"
-        Title="wpfMantPass" Height="382.456" Width="451.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" AllowsTransparency="True" WindowStyle="None">
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Helper="clr-namespace:WpfEndososCandidatos.Helper" x:Class="WpfEndososCandidatos.View.wpfMantPass" Background="Transparent" Title="wpfMantPass" Height="382.456" Width="451.558" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" AllowsTransparency="True" WindowStyle="None" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid Margin="0">
         <Border BorderBrush="{Binding BorderBrush}" Background="Beige" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="4" BorderThickness="3" Margin="10" CornerRadius="10">
             <Border.Effect>
                 <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
             </Border.Effect>
-
             <Grid>
-                <Label Content="Cambiar Password" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="36" Margin="5,5,5,0"/>
-                <Label Content="Password" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="117"/>
-                <Label Content="Verificación de Password" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="154"/>
-                <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="256,216,0,0" VerticalAlignment="Top" Width="75"/>
-                <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" Margin="176,216,0,0" VerticalAlignment="Top" Width="75"/>
-                <Image HorizontalAlignment="Left" Height="112" Margin="231,82,0,0" VerticalAlignment="Top" Width="100" Source="/WpfEndososCandidatos;component/Images/Security.png"/>
-
-                <Button x:Name="cmdVerPass" Background="Beige" Command="{Binding cmdVerPass_Click}" Margin="186,76,0,0" BorderBrush="Beige" HorizontalAlignment="Left" Width="29" RenderTransformOrigin="0.5,0.5" Height="27" VerticalAlignment="Top" >
+                <Label Content="Cambiar Password" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="36" Margin="5,5,5,0" />
+                <Label Content="Password" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="117" />
+                <Label Content="Verificación de Password" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="154" />
+                <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="256,216,0,0" VerticalAlignment="Top" Width="75" help:Help.Keyword="wpfMantPass.htm#" />
+                <Button Content="Guardar" Command="{Binding cmdGuardar_Click}" HorizontalAlignment="Left" Margin="176,216,0,0" VerticalAlignment="Top" Width="75" help:Help.Keyword="wpfMantPass.htm#" />
+                <Image HorizontalAlignment="Left" Height="112" Margin="231,82,0,0" VerticalAlignment="Top" Width="100" Source="/WpfEndososCandidatos;component/Images/Security.png" />
+                <Button x:Name="cmdVerPass" Background="Beige" Command="{Binding cmdVerPass_Click}" Margin="186,76,0,0" BorderBrush="Beige" HorizontalAlignment="Left" Width="29" RenderTransformOrigin="0.5,0.5" Height="27" VerticalAlignment="Top" help:Help.Keyword="wpfMantPass.htm#">
                     <Button.RenderTransform>
                         <TransformGroup>
-                            <ScaleTransform ScaleY="-1"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
+                            <ScaleTransform ScaleY="-1" />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
                         </TransformGroup>
                     </Button.RenderTransform>
-
-                    <Grid Width="20" Margin="0" Height="20" >
-                        <Image Source="/WpfEndososCandidatos;component/Images/ojo1.png" Width="20" Height="20"  Margin="0,-1,0,1" />
+                    <Grid Width="20" Margin="0" Height="20">
+                        <Image Source="/WpfEndososCandidatos;component/Images/ojo1.png" Width="20" Height="20" Margin="0,-1,0,1" />
                     </Grid>
-
                 </Button>
-                <TextBlock x:Name="Password_Cls"  Visibility="{Binding Password_Cls_Visibility}"
-					Text="{Binding password_Cls, Mode=TwoWay}"
-					HorizontalAlignment="Left" 
-					Height="20" Margin="10,128,0,0" 
-					TextWrapping="Wrap"  VerticalAlignment="Top" Width="211"/>
-                <TextBlock x:Name="VerificacionPassword_Cls" Visibility="{Binding Password_Cls_Visibility}"
-					Text="{Binding verificacionPassword_Cls, Mode=TwoWay}"
-					HorizontalAlignment="Left" 
-					Height="20" Margin="10,194,0,0" TextWrapping="Wrap"  
-					VerticalAlignment="Top" Width="211" RenderTransformOrigin="1.109,0.5"/>
-
-                <PasswordBox 
-					Helper:PasswordHelper.Attach="True"
-					Helper:PasswordHelper.Password="{Binding Text, ElementName=Password_Cls, Mode=TwoWay}"
-					HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top" Width="211" IsEnabled="{Binding Password_IsEnabled}" Height="20">
+                <TextBlock x:Name="Password_Cls" Visibility="{Binding Password_Cls_Visibility}" Text="{Binding password_Cls, Mode=TwoWay}" HorizontalAlignment="Left" Height="20" Margin="10,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" />
+                <TextBlock x:Name="VerificacionPassword_Cls" Visibility="{Binding Password_Cls_Visibility}" Text="{Binding verificacionPassword_Cls, Mode=TwoWay}" HorizontalAlignment="Left" Height="20" Margin="10,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" RenderTransformOrigin="1.109,0.5" />
+                <PasswordBox Helper:PasswordHelper.Attach="True" Helper:PasswordHelper.Password="{Binding Text, ElementName=Password_Cls, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top" Width="211" IsEnabled="{Binding Password_IsEnabled}" Height="20">
                     <i:Interaction.Behaviors>
                         <Helper:PasswordBoxBindingBehavior Password="{Binding Password}" />
                     </i:Interaction.Behaviors>
                 </PasswordBox>
-                <PasswordBox x:Name="dfPasswordVerification" 
-                	Helper:PasswordHelper.Attach="True"
-                	Helper:PasswordHelper.Password="{Binding Text, ElementName=VerificacionPassword_Cls, Mode=TwoWay}"
-                	HorizontalAlignment="Left" Margin="10,174,0,0" VerticalAlignment="Top" Width="211" Height="20" IsEnabled="{Binding Password_IsEnabled}">
+                <PasswordBox x:Name="dfPasswordVerification" Helper:PasswordHelper.Attach="True" Helper:PasswordHelper.Password="{Binding Text, ElementName=VerificacionPassword_Cls, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,174,0,0" VerticalAlignment="Top" Width="211" Height="20" IsEnabled="{Binding Password_IsEnabled}">
                     <i:Interaction.Behaviors>
-                        <Helper:PasswordBoxBindingBehavior Password="{Binding PasswordVerification}"/>
+                        <Helper:PasswordBoxBindingBehavior Password="{Binding PasswordVerification}" />
                     </i:Interaction.Behaviors>
                 </PasswordBox>
-                <TextBlock Margin="5,243,5,0" TextWrapping="Wrap" Text="{Binding Id, Mode=TwoWay}" VerticalAlignment="Top" Height="22"/>
-
+                <TextBlock Margin="5,243,5,0" TextWrapping="Wrap" Text="{Binding Id, Mode=TwoWay}" VerticalAlignment="Top" Height="22" />
             </Grid>
-
         </Border>
     </Grid>
 </Window>

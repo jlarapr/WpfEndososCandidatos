@@ -95,6 +95,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HelpProvider">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Help Generator\HelpProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -555,6 +558,9 @@
     </None>
     <None Include="dbBk\dbEndososPartidos.bak" />
     <None Include="dbBk\Digitalizacion.bak" />
+    <None Include="Help\Sistema_de_Endosos.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Models\EndososPartidos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EndososPartidos.edmx</DependentUpon>
