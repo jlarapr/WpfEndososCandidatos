@@ -162,7 +162,7 @@ namespace WpfEndososCandidatos.ViewModels
         private void Myhelp_click()
         {
             try{
-                System.Windows.Forms.Help.ShowHelp(null, @"Help\Sistema_de_Endosos.chm");
+                System.Windows.Forms.Help.ShowHelp(null, @"Sistema_de_Endosos.chm");
             }catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(),"Error",MessageBoxButton.OK,MessageBoxImage.Error);
