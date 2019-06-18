@@ -9,7 +9,7 @@
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>
         </Border.Effect>
         <Grid>
-            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Correjir Lote" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0" />
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Corregir Lote" VerticalAlignment="Top" Height="55" FontWeight="Bold" FontSize="26.667" Margin="5,5,5,0" />
             <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="238,156,0,0" VerticalAlignment="Top" Width="75" help:Help.Keyword="wpfLotFix.htm#" />
             <Label x:Name="label" Content="Lote" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" />
             <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="223" ItemsSource="{Binding cbLots}" SelectedItem="{Binding cbLots_Item, Mode=TwoWay}" SelectedIndex="{Binding cbLots_Item_Id, Mode=TwoWay}" help:Help.Keyword="wpfLotFix.htm#" />

@@ -548,9 +548,11 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        CommandText = string.Concat(mySqlstr)
+                        
                     })
                     {
+                        cmd.CommandText = string.Concat(mySqlstr);
+
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
@@ -1851,11 +1853,13 @@ namespace jolcode
                                 m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
 
                                 long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
-
+                                
                                 if (totalDeDias > 7)
-                                    totalDeDias = totalDeDias - 2;
-
-
+                                {
+                                    totalDeDias = DateTimeUtil.DiasDisfrute(m_Firma_Fecha, EndososDate);
+                                    //                                    totalDeDias = totalDeDias - 2;
+                                }
+                                
                                 string update = "update [dbo].[TF-Partidos] set [Leer_Inv]=" + totalDeDias + " where BatchTrack='" + lot + "' and BatchNo='" + BatchNo + "' and BatchPgNo='" + BatchPgNo + "';";
                                 cmd.CommandText = update;
                                 cmd.ExecuteNonQuery();
@@ -3833,15 +3837,36 @@ namespace jolcode
 
                     //Notario
                     string tmpFirmaFecha_Endo_Notario = String.Empty;
-                    if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
-                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
-                    else
-                        tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
-
+                    try
+                    {
+                        if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
+                            tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
+                        else
+                            tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    }catch
+                    {
+                        tmpFirmaFecha_Endo_Notario = "01012019";
+                    }
                     //Elector
-                    string tmpFirma_Fecha_Elector = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    string tmpFirma_Fecha_Elector = string.Empty;
+                    try
+                    {
+                        tmpFirma_Fecha_Elector = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    }
+                    catch
+                    {
+                        tmpFirma_Fecha_Elector = "01012019";//dummy date
+                    }
                     //Fecha_Recibo_CEE
-                    string tmpFecha_Recibo_CEE = string.Concat(row["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    string tmpFecha_Recibo_CEE = string.Empty;
+                    try
+                    {
+                        tmpFecha_Recibo_CEE = string.Concat(row["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                    }
+                    catch
+                    {
+                        tmpFecha_Recibo_CEE = "01012019"; //dummy date
+                    }
 
 
                     try { int.TryParse(row["BatchPgNo"].ToString().Trim(), out m_BatchPgNo); } catch { throw; };
@@ -3882,7 +3907,15 @@ namespace jolcode
                     m_Firma_Peticionario = row["FirmaElector"].ToString().Trim();
                     m_Firma_Notario = row["FirmaNotario"].ToString().Trim();
                     m_BatchTrack = row["BatchTrack"].ToString().Trim();
-                    m_N_ELEC = row["NumElec"].ToString().Trim();
+
+                    try
+                    {
+                        m_N_ELEC = row["NumElec"].ToString().Trim();
+                    }
+                    catch
+                    {
+                        m_N_ELEC = "0";
+                    }
 
                     m_N_NOTARIO = row["Notario_Funcionario"].ToString().Trim().PadLeft(7, '0');
                     m_N_CANDIDAT = row["Num_Candidato"].ToString().PadLeft(3, '0');
@@ -3890,7 +3923,16 @@ namespace jolcode
 
                     m_SEXO = row["SEXO"].ToString().Trim();
 
-                    string tmpFECHA_N = string.Concat(row["FechaNac_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    string tmpFECHA_N = string.Empty;
+
+                    try
+                    {
+                        tmpFECHA_N = string.Concat(row["FechaNac_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaNac_Ano"].ToString().Trim().PadLeft(4, '0'));
+                    }
+                    catch
+                    {
+                        tmpFECHA_N = "01012019"; // dummy date
+                    }
 
                     if (tmpFECHA_N.Trim().Length > 0)
                     {
@@ -4897,7 +4939,7 @@ namespace jolcode
                             if (result > 0)
                             {
 
-                                
+
                                 if (CollCriterios[22].Editar == true)
                                 {
                                     Rechazo[22]++;
@@ -5211,7 +5253,7 @@ namespace jolcode
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
             // 'STATUS DEL RECHAZO
-            //'0 - SIN CORREJIR
+            //'0 - SIN CORREGIR
             //'1 - CORREJIDO
             //'2 - WARNING
 
@@ -5343,10 +5385,10 @@ namespace jolcode
                     };
 
                 //    'STATUS DEL RECHAZO
-                //    '0 - SIN CORREJIR
+                //    '0 - SIN CORREGIR
                 //    '1 - CORREJIDO
 
-                //'ACTUALIZA EL STATUS DEL ERROR ACABADO DE CORREJIR
+                //'ACTUALIZA EL STATUS DEL ERROR ACABADO DE CORREGIR
                 string[] sqlstr = { "Update LotsVoid ",
                          " Set STATUS = 1",
                          " Where Lot = '" , Lot, "'",

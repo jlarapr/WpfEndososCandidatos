@@ -17,8 +17,34 @@ namespace jolcode
         Minute,
         Second
     }
-  public  class DateTimeUtil
+    public class DateTimeUtil
     {
+
+
+        public static long DiasDisfrute(DateTime? fechaInicio, DateTime fechaFin)
+        {
+            var diasHabiles = new[]
+            {
+                DayOfWeek.Monday,
+                DayOfWeek.Tuesday,
+                DayOfWeek.Wednesday,
+                DayOfWeek.Thursday,
+                DayOfWeek.Friday,
+            };
+
+            IEnumerable<DateTime> RangoDeFechas()
+            {
+                var currentDate = fechaInicio;
+                while (currentDate < fechaFin)
+                {
+                    yield return currentDate.Value;
+                    currentDate = currentDate.Value.AddDays(1);
+                }
+            }
+            return RangoDeFechas().Count(x => diasHabiles.Contains(x.DayOfWeek));
+
+            
+        }
 
         public static long DateDiff(DateInterval interval, DateTime? date1, DateTime? date2)
         {
@@ -27,9 +53,9 @@ namespace jolcode
             if (date1 != null && date2 != null)
                 ts = date2 - date1;
             else
-                return 999999; 
+                return 999999;
 
-            
+
             switch (interval)
             {
                 case DateInterval.Year:
@@ -65,9 +91,9 @@ namespace jolcode
             //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
             //myMaskedTextBoxValue.Text = param;
 
-            param = param.Replace("/","");
+            param = param.Replace("/", "");
 
-            if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
+            if (DateTime.TryParseExact(param, "MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
                 return tempdate;//.ToString("MM/dd/yyyy");
             else
                 return null;
@@ -101,11 +127,11 @@ namespace jolcode
             //myMaskedTextBoxValue.ValueDataType = typeof(DateTime);
             //myMaskedTextBoxValue.Text = param;
 
-          param = param.Replace("/","");
+            param = param.Replace("/", "");
 
-            if (DateTime.TryParseExact(param,"MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
+            if (DateTime.TryParseExact(param, "MMddyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
                 return tempdate.ToString("MM/dd/yyyy");
-            else if(DateTime.TryParseExact(param,"MMdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None,out tempdate))
+            else if (DateTime.TryParseExact(param, "MMdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
                 return tempdate.ToString("MM/dd/yyyy");
             else if (DateTime.TryParseExact(param, "Mdyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out tempdate))
                 return tempdate.ToString("MM/dd/yyyy");

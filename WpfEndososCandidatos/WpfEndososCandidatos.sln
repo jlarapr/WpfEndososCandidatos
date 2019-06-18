@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfEndososCandidatos", "WpfEndososCandidatos\WpfEndososCandidatos.csproj", "{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}"
 EndProject
@@ -25,10 +25,13 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38532B5C-83CF-44AE-8695-7DDEC769743B}
+	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://jlaraprgmail.visualstudio.com/defaultcollection
+		SccTeamFoundationServer = https://jlaraprgmail.visualstudio.com/
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = WpfEndososCandidatos\\WpfEndososCandidatos.csproj
 		SccProjectName1 = WpfEndososCandidatos

@@ -770,7 +770,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         DateTime? dt = null;
                         dt = DateTimeUtil.MyValidarFecha(tmpFecha);
                         dpFchInformadoAlaCEE = dt.Value;
-                    }catch
+                    }
+                    catch
                     {
                         dpFchInformadoAlaCEE = DateTime.Now;
                     }
@@ -828,7 +829,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 _LogClass.CreateEvent();
                 _LogClass.MYEventLog.WriteEntry("Notario Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
-                
+
                 MyRefresh();
                 MyReset();
                 dpFchInformadoAlaCEE = DateTime.Now;
@@ -1193,7 +1194,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                             myNotario.Fecha_Dia = (int)row["Fecha_Dia"];
                             myNotario.Fecha_Mes = (int)row["Fecha_Mes"];
                             myNotario.Fecha_Ano = (int)row["Fecha_Ano"];
-                        }catch
+                        }
+                        catch
                         {
                             myNotario.Fecha_Dia = 0;
                             myNotario.Fecha_Mes = 0;
@@ -1220,6 +1222,13 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
             try
             {
                 cbNotario_Item_Id = FindByNotario(txtNumElec);
+
+                if (cbNotario_Item_Id < 0)
+                {
+                    int FixNum = 0;
+                    int.TryParse(txtNumElec, out FixNum);
+                    cbNotario_Item_Id = FindByNotario(FixNum.ToString());
+                }
 
                 if (cbNotario_Item_Id < 0)
                 {
