@@ -548,7 +548,7 @@ namespace jolcode
                     {
                         Connection = cnn,
                         CommandType = CommandType.Text,
-                        
+
                     })
                     {
                         cmd.CommandText = string.Concat(mySqlstr);
@@ -1853,13 +1853,13 @@ namespace jolcode
                                 m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
 
                                 long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
-                                
+
                                 if (totalDeDias > 7)
                                 {
                                     totalDeDias = DateTimeUtil.DiasDisfrute(m_Firma_Fecha, EndososDate);
                                     //                                    totalDeDias = totalDeDias - 2;
                                 }
-                                
+
                                 string update = "update [dbo].[TF-Partidos] set [Leer_Inv]=" + totalDeDias + " where BatchTrack='" + lot + "' and BatchNo='" + BatchNo + "' and BatchPgNo='" + BatchPgNo + "';";
                                 cmd.CommandText = update;
                                 cmd.ExecuteNonQuery();
@@ -3843,7 +3843,8 @@ namespace jolcode
                             tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                         else
                             tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
-                    }catch
+                    }
+                    catch
                     {
                         tmpFirmaFecha_Endo_Notario = "01012019";
                     }
@@ -4928,9 +4929,16 @@ namespace jolcode
                                 " ([Partido]='", m_PARTIDO , "')"
                             };
 
-                            DateTime? dt = MyValidarNotarioInformadoCEE(string.Concat(sqlstr), myCnnDBEndososValidarDatos);
-
-                            int result = DateTime.Compare(dt.Value, m_Fecha_Endo_Notario.Value);
+                            int result = 0;
+                            if (m_Fecha_Endo_Notario == null)
+                            {
+                                result = 1; // para rechazar por fecha null
+                            }
+                            else
+                            {
+                                DateTime? dt = MyValidarNotarioInformadoCEE(string.Concat(sqlstr), myCnnDBEndososValidarDatos);
+                                result = DateTime.Compare(dt.Value, m_Fecha_Endo_Notario.Value);
+                            }
 
                             // result < 0  is earlier than (es mas tarde)
                             // result == 0 is the same time as
@@ -4938,8 +4946,6 @@ namespace jolcode
 
                             if (result > 0)
                             {
-
-
                                 if (CollCriterios[22].Editar == true)
                                 {
                                     Rechazo[22]++;
