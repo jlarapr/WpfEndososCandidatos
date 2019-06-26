@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="Models\FixVoid.cs" />
     <Compile Include="Models\Lots.cs" />
+    <Compile Include="Models\LotsEndo.cs" />
     <Compile Include="Models\Notarios.cs" />
     <Compile Include="Models\Partidos.cs" />
     <Compile Include="Models\Precintos.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
     <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
     <Compile Include="ViewModels\Informes\vmCertificacion.cs" />
+    <Compile Include="ViewModels\Informes\vmDuplicadoPorNumElec.cs" />
     <Compile Include="ViewModels\Informes\vmDuplicados.cs" />
     <Compile Include="ViewModels\Informes\vmEndososRechazados.cs" />
     <Compile Include="ViewModels\Informes\vmEstatus.cs" />
@@ -369,6 +371,9 @@
     </Compile>
     <Compile Include="View\Configuraciones\wpfMantUsers.xaml.cs">
       <DependentUpon>wpfMantUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfDuplicadoPorNumElec.xaml.cs">
+      <DependentUpon>wpfDuplicadoPorNumElec.xaml</DependentUpon>
     </Compile>
     <Page Include="Helper\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
@@ -515,6 +520,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Configuraciones\wpfMantUsers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfDuplicadoPorNumElec.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

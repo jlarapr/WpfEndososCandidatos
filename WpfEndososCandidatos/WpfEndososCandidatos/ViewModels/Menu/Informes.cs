@@ -34,7 +34,10 @@ namespace WpfEndososCandidatos.ViewModels
         {
             get; private set;
         }
-
+        public RelayCommand mnuduplicadopornumelectoral_click
+        {
+            get;private set;
+        }
 
         public RelayCommand mnuRechazo_click
         {
@@ -172,6 +175,26 @@ namespace WpfEndososCandidatos.ViewModels
                 MessageBox.Show(ex.ToString(),"Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
+        private void Mymnuduplicadopornumelectoral_click()
+        {
+            try
+            {
+                using (vmDuplicadoPorNumElec frm = new vmDuplicadoPorNumElec())
+                {
+                    frm.View.Owner = this.View as Window;
+                    frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
+                    frm.DBEndososCnnStr = DBEndososCnnStr;
+                    frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.MyOnShow();
+                }
+            }
+            catch (Exception ex)
+            {
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void MymnuEstatus_click()
         {
             try

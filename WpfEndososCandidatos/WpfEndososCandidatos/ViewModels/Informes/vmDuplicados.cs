@@ -470,6 +470,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 using (jolcode.ToExcel excel = new ToExcel())
                 {
                     SaveFileDialog sfd = new SaveFileDialog();
+
                     sfd.Filter = "Excel Files|*.xlsx|All Files|*.*";
 
                     if (sfd.ShowDialog() == true)

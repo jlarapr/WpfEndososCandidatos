@@ -26,6 +26,7 @@
         private RelayCommand _reydi_Click;
         private RelayCommand _VerEndososReydi_Click;
         private bool _mnuInformeDuplicados_IsEnable;
+        private bool _mnuduplicadopornumelectoral_IsEnable;
 
         public bool mnuRecibirLotes_IsEnabled
         {
@@ -207,6 +208,34 @@
                 }
             }
         }
+        public bool mnuduplicadopornumelectoral_IsEnable
+        {
+            get
+            {
+                return _mnuduplicadopornumelectoral_IsEnable;
+            }set
+            {
+                if (mnuduplicadopornumelectoral_IsEnable != value)
+                {
+                    _mnuduplicadopornumelectoral_IsEnable = value;
+                    this.RaisePropertychanged("mnuduplicadopornumelectoral_IsEnable");
+                }
+            }
+        }
+        public bool mnuInformeDuplicados_IsEnable
+        {
+            get
+            {
+                return _mnuInformeDuplicados_IsEnable;
+            }set
+            {
+                if (_mnuInformeDuplicados_IsEnable != value)
+                {
+                    _mnuInformeDuplicados_IsEnable = value;
+                    this.RaisePropertychanged("mnuInformeDuplicados_IsEnable");
+                }
+            }
+        }
         public bool mnuInformeEndosos_IsEnabled
         {
             get
@@ -222,17 +251,8 @@
                 }
             }
         }
-        public bool mnuInformeDuplicados_IsEnable
-        {
-            get
-            {
-                return _mnuInformeDuplicados_IsEnable;
-            }set
-            {
-                _mnuInformeDuplicados_IsEnable = value;
-                this.RaisePropertychanged("mnuInformeDuplicados_IsEnable");
-            }
-        }
+       
+        
         public bool mnuReydi_IsEnabled
         {
             get

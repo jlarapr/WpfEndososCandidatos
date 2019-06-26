@@ -71,7 +71,141 @@ namespace jolcode
                 _DBRadicacionesCEECnnStr = value;
             }
         }
+        public byte[] MyGetImgInByte( String NumElec, String Partido, String Lot, String Batch, String Formulario, String Image, String Errores, String Status )
+        {
+            byte[] myout = null;
+            try
+            {
+                string query = String.Format(@"
+                SELECT EndosoImage FROM [dbo].[LotsEndo] 
+                where [NumElec]   = '{0}'  and
+                      [Partido]   = '{1}'  and
+                      [Lot]       = '{2}'  and
+                      [Batch]     = '{3}'  and
+                      [Formulario]= '{4}'  and
+                      [Image]     = '{5}'  and
+                      [Errores]   = '{6}'  and
+                      [Status]    = '{7}'
+                 ", NumElec,
+                    Partido,
+                    Lot,
+                    Batch,
+                    Formulario,
+                    Image,
+                    Errores,
+                    Status);
 
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                    })
+                    {
+                        
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.CommandText = query;
+
+                        object o = cmd.ExecuteScalar();
+
+                        if (o != null)
+                            myout = (byte[])o;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetImgInByte Error");
+            }
+            return myout;
+        }
+        public DataTable MyGetDuplicadoPorNumeroElectoral(String numElectoral)
+        {
+            DataTable myTableReturn = new DataTable();
+            try
+            {
+                numElectoral = FixNum(numElectoral);
+                // String mySqlstr = String.Format(
+                //     @"select * from
+                //     (
+                //     select 
+                //      (SELECT NumElec        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodNumElec,
+                //      (SELECT NumElec        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadNumElec,
+                //      (SELECT Partido        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodPartido,
+                //      (SELECT Partido        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadPartido,
+                //      (SELECT Lot            FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodLot,
+                //      (SELECT Lot            FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadLot,
+                //      (SELECT Batch          FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodBatch,
+                //      (SELECT Batch          FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadBatch,
+                //      (SELECT Formulario     FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodFormulario,
+                //      (SELECT Formulario     FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadFormulario,
+                //      (SELECT EndosoImage    FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodEndosoImage,
+                //      (SELECT EndosoImage    FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadEndosoImage,
+                //      (SELECT [Image]        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0)                                                       as GoodPathImage,
+                //      (SELECT [Image]        FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadPathImage,
+                //      (SELECT [Errores]      FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0 )                                                      as GoodErrores,
+                //      (SELECT [Errores]      FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')) as BadErrores
+                //     ) as T
+                //      order by T.GoodNumElec
+                //      ", numElectoral);
+
+                String mySqlstr = String.Format(
+                    @"
+                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')
+                        union
+                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0 
+                        order by [Status]
+                    ", numElectoral);
+
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        cmd.CommandText = String.Format(@"SELECT count(*) FROM [dbo].[LotsEndo] 
+                                                          where [NumElec] = {0} and ([Errores] like '%14%' or [Errores]  like '%15%');", numElectoral);
+
+                        object total = cmd.ExecuteScalar();
+
+                        if (((int)total) <= 0)
+                            return myTableReturn;
+
+                        cmd.CommandText = mySqlstr;
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.ToString() + "\r\nMyGetDuplicadoPorNumeroElectoral Error");
+            }
+
+            return myTableReturn;
+        }
 
         public DataTable MyGeRechazadasToInforme(string lot)
         {

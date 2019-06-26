@@ -131,15 +131,22 @@
                     Command="{Binding mnuEndososRechazados_click}"
                     Header="Endosos Rechazados" />
                 <MenuItem
+                    Name="mnuduplicadopornumelectoral"
+                    Command="{Binding mnuduplicadopornumelectoral_click}"
+                    Header="Duplicados por Electoral"
+                    IsEnabled="{Binding mnuduplicadopornumelectoral_IsEnable}" />
+
+                <MenuItem
                     Name="mnuEstatus"
                     Command="{Binding mnuEstatus_click}"
                     Header="_Estatus" />
+
+                <Separator />
                 <MenuItem
                     Name="mnuduplicado"
                     Command="{Binding mnuduplicado_click}"
                     Header="_Duplicados"
                     IsEnabled="{Binding mnuInformeDuplicados_IsEnable}" />
-                <Separator />
                 <MenuItem
                     Name="mnuREYDI"
                     Command="{Binding mnuReydi_click}"

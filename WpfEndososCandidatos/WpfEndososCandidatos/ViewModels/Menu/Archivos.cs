@@ -100,12 +100,11 @@
                             case 'E'://Reportes
                                 mnuInformeEndosos_IsEnabled = true;
                                 mnuInformeDuplicados_IsEnable = false;
+                                mnuduplicadopornumelectoral_IsEnable = true;
 
                                 bool InformeDuplicadosIsEnable;
                                 bool.TryParse(ConfigurationManager.AppSettings["InformeDuplicadosIsEnable"], out InformeDuplicadosIsEnable);
                                 mnuInformeDuplicados_IsEnable = InformeDuplicadosIsEnable;
-
-
                                 break;
                             case 'F'://ReversarLote
                                 mnuRevLote_IsEnabled = true;

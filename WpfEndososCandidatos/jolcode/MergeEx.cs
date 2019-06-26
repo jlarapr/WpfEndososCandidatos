@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+//using System.Drawing;
 
 namespace jolcode
 {
-   public class MergeEx
+    public class MergeEx
     {
         #region Fields
         private String sourcefolder;
@@ -70,6 +71,69 @@ namespace jolcode
         #endregion
 
         #region Private Methods
+
+        public void ConvertImageToPdf(string srcFilename, string dstFilename)
+        {
+            iTextSharp.text.Rectangle pageSize = null;
+
+            using (var srcImage = new System.Drawing.Bitmap(srcFilename))
+            {
+                pageSize = new iTextSharp.text.Rectangle(0, 0, srcImage.Width, srcImage.Height);
+            }
+            using (var ms = new MemoryStream())
+            {
+                var document = new iTextSharp.text.Document(pageSize, 0, 0, 0, 0);
+                iTextSharp.text.pdf.PdfWriter.GetInstance(document, ms).SetFullCompression();
+                document.Open();
+                var image = iTextSharp.text.Image.GetInstance(srcFilename);
+                document.Add(image);
+                document.Close();
+                File.WriteAllBytes(dstFilename, ms.ToArray());
+            }
+        }
+        public void AddTextToPdf(string inputPdfPath, string outputPdfPath, string textToAdd, System.Drawing.Point point)
+        {
+            
+            //variables
+            string pathin = inputPdfPath;
+            string pathout = outputPdfPath;
+
+            //create PdfReader object to read from the existing document
+            PdfReader reader = new PdfReader(pathin);
+            {
+                //create PdfStamper object to write to get the pages from reader 
+                PdfStamper stamper = new PdfStamper(reader, new FileStream(pathout, FileMode.Create));
+                {
+                    //select two pages from the original document
+                    reader.SelectPages("1-2");
+
+                    //gettins the page size in order to substract from the iTextSharp coordinates
+                    var pageSize = reader.GetPageSize(1);
+
+                    // PdfContentByte from stamper to add content to the pages over the original content
+                    PdfContentByte pbover = stamper.GetOverContent(1);
+
+                    //add content to the page using ColumnText
+                    //iTextSharp.text.Font font = new iTextSharp.text.Font();
+                    iTextSharp.text.Font font = FontFactory.GetFont("Arial", 30, Font.BOLD, new BaseColor(125, 88, 15));
+                   // font.Size = 25;
+                   
+                    
+
+                    //setting up the X and Y coordinates of the document
+                    int x = point.X;
+                    int y = point.Y;
+
+                    x = (int)(pageSize.Width - x); 
+                    y = (int)(pageSize.Height - y);
+
+                    ColumnText.ShowTextAligned(pbover, Element.ALIGN_CENTER, new Phrase(textToAdd, font), x, y, 0);
+                }stamper.Close();
+            }
+            reader.Close();
+        }
+       
+
         ///
         /// Merges the Docs and renders the destinationFile
         ///
@@ -154,7 +218,7 @@ namespace jolcode
                     //labelFilesCount.Text = "Files merged: " + String.Format("{0:0,0}", countProcessedFiles);
                     countFiles++;
                     countProcessedFiles++;
-              
+
 
                     if (countFiles > i_Split || fileList.IndexOf(filename) == fileList.Count - 1)
                     {
