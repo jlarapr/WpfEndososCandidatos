@@ -225,6 +225,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     {
                         System.IO.File.Delete(fileName);
                     }
+                    System.IO.Directory.Delete("C:\\ApplicaTmp\\", true);
+
                 }catch { }
 
                 this.View.Close();
@@ -328,6 +330,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     if (!path.EndsWith("\\"))
                         path += "\\";
 
+                    path += Guid.NewGuid().ToString() + "\\";
+
                     if (System.IO.Directory.Exists(path))
                     {
                         String[] fileList1 = System.IO.Directory.GetFiles(path, "*.pdf");
@@ -347,7 +351,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     {
                         count++;
                         mergeEx.DestinationFile = path;
-                        mergeEx.setFileName = item.NumElec;  //System.IO.Path.GetFileName(sfd.FileName);
+                        mergeEx.setFileName = item.NumElec ;  //System.IO.Path.GetFileName(sfd.FileName);
                         mergeEx.setSplit = 1000;
 
                         byte[] Tif = item.EndosoImage;
@@ -364,7 +368,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         if (item.Status != "0")
                             valido = "(Inválido Lote:";
 
-                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + " " + item.Status +")",point );
+//                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + " " + item.Status +")",point );
+                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + ")",point );
                                               
                         System.IO.File.Delete(path + fileImg);
                         System.IO.File.Delete(path + fileImg + ".pdf");
@@ -393,7 +398,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     System.Diagnostics.Process process = new System.Diagnostics.Process();
                     process.StartInfo.FileName = fileNamepdf;
                     process.Start();
-                    process.WaitForExit();
+                    //if (process != null)
+                    //    process.WaitForExit();
 
 
 

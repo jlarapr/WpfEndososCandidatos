@@ -449,7 +449,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                             System.Diagnostics.Process process = new System.Diagnostics.Process();
                             process.StartInfo.FileName = fileNamepdf;
                             process.Start();
-                            process.WaitForExit();
+                            //process.WaitForExit();
                             cbLots_Item_Id = -1;
 
                         }
