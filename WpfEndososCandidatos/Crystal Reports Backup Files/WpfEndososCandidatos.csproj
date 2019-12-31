@@ -1,0 +1,700 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{05A68C74-401F-4A8C-B3DD-D55D67FBFD9B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WpfEndososCandidatos</RootNamespace>
+    <AssemblyName>WpfEndososCandidatos</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>C:\Users\jlarapr\Desktop\CEE\CodigoNuevo\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>http://www.applicapr.com/</SupportUrl>
+    <ProductName>Sistema de Validación de Endosos</ProductName>
+    <PublisherName>Applica,Inc</PublisherName>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>WindowsJournal.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F1E6F27BC0680875A330F323752EF4AE4EC0CF56</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>WpfEndososCandidatos_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HelpProvider">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Help Generator\HelpProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="txtCandidato_XY">
+      <HintPath>Dll\txtCandidato_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtCargo_XY">
+      <HintPath>Dll\txtCargo_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFchEndosoEntregada_XY">
+      <HintPath>Dll\txtFchEndosoEntregada_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFchEndoso_XY">
+      <HintPath>Dll\txtFchEndoso_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFechaNac_XY">
+      <HintPath>Dll\txtFechaNac_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtFirmaElec_XY">
+      <HintPath>Dll\txtFirmaElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNombre_XY, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dll\txtNombre_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNotarioElec_XY">
+      <HintPath>Dll\txtNotarioElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNotarioFirma_XY">
+      <HintPath>Dll\txtNotarioFirma_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtNumElec_XY">
+      <HintPath>Dll\txtNumElec_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtPrecinto_XY">
+      <HintPath>Dll\txtPrecinto_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="txtSex_XY">
+      <HintPath>Dll\txtSex_XY.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Models\Area.cs" />
+    <Compile Include="Models\Candidatos.cs" />
+    <Compile Include="Models\Citizen.cs" />
+    <Compile Include="Models\EndosaronOtroPartido2019.cs" />
+    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Helper\Infrastructure\Behaviors\SynchronizeSelectedItems.cs" />
+    <Compile Include="Helper\BindablePasswordBox.xaml.cs">
+      <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\FunctionalFun.cs" />
+    <Compile Include="Helper\PasswordBoxBindingBehavior.cs" />
+    <Compile Include="Helper\PasswordHash.cs" />
+    <Compile Include="Helper\PasswordHelper.cs" />
+    <Compile Include="Helper\PWDTK\PWDTK.cs" />
+    <Compile Include="Helper\PWDTK\Rfc2898.cs" />
+    <Compile Include="Helper\Infrastructure\WeakEventHandler.cs" />
+    <Compile Include="Models\EndososPartidos.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EndososPartidos.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EndososPartidos.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FixVoid.cs" />
+    <Compile Include="Models\Lots.cs" />
+    <Compile Include="Models\LotsEndo.cs" />
+    <Compile Include="Models\Notarios.cs" />
+    <Compile Include="Models\Partidos.cs" />
+    <Compile Include="Models\Precintos.cs" />
+    <Compile Include="Models\tblUser.cs">
+      <DependentUpon>EndososPartidos.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.cs" />
+    <Compile Include="MyDataSet.cs">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MyDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="rpt\CertificacionDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CertificacionDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="rpt\mycertificacion-ppd.cs">
+      <DependentUpon>mycertificacion-ppd.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="rpt\mycertificacion.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>mycertificacion.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpt\ReporteRechazadas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReporteRechazadas.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Archivo\vmfLogin.cs" />
+    <Compile Include="ViewModels\Archivo\vmMantPass.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmLotInit.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantAreas.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantCandidatos.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantCriterios.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantNotarios.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantPartidos.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMatUsers.cs" />
+    <Compile Include="ViewModels\Informes\vmCertificacion.cs" />
+    <Compile Include="ViewModels\Informes\vmDuplicadoPorNumElec.cs" />
+    <Compile Include="ViewModels\Informes\vmDuplicados.cs" />
+    <Compile Include="ViewModels\Informes\vmEndososRechazados.cs" />
+    <Compile Include="ViewModels\Informes\vmEstatus.cs" />
+    <Compile Include="ViewModels\Informes\vmInformeReydi.cs" />
+    <Compile Include="ViewModels\Main\MainVM.cs" />
+    <Compile Include="ViewModels\Menu\Archivos.cs" />
+    <Compile Include="ViewModels\Menu\Configuraciones.cs" />
+    <Compile Include="ViewModels\Menu\Informes.cs" />
+    <Compile Include="ViewModels\Menu\Procesos.cs" />
+    <Compile Include="ViewModels\Menu\Ver.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmAbout.cs" />
+    <Compile Include="ViewModels\Configuraciones\vmMantDB.cs" />
+    <Compile Include="ViewModels\Procesos\vmEndososEnReydi.cs" />
+    <Compile Include="ViewModels\Procesos\vmFixLot.cs" />
+    <Compile Include="ViewModels\Procesos\vmFixVoid.cs" />
+    <Compile Include="ViewModels\Informes\vmInforme.cs" />
+    <Compile Include="ViewModels\Procesos\vmLotAuth.cs" />
+    <Compile Include="ViewModels\Procesos\vmLotFix.cs" />
+    <Compile Include="ViewModels\Procesos\vmLotProcess.cs" />
+    <Compile Include="ViewModels\Procesos\vmLotReceive.cs" />
+    <Compile Include="ViewModels\Procesos\vmLotReverse.cs" />
+    <Compile Include="ViewModels\Procesos\vmSetImages.cs" />
+    <Compile Include="ViewModels\Procesos\vmSubsanar.cs" />
+    <Compile Include="ViewModels\Procesos\vmToReydi.cs" />
+    <Compile Include="ViewModels\Procesos\vmVerendosos.cs" />
+    <Compile Include="ViewModels\Procesos\vmVerendososReydi.cs" />
+    <Compile Include="ViewModels\Ver\vmElector.cs" />
+    <Compile Include="View\Configuraciones\wpfAbout.xaml.cs">
+      <DependentUpon>wpfAbout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantCadidatos.xaml.cs">
+      <DependentUpon>wpfMantCadidatos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantCriterios.xaml.cs">
+      <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfCertificacion.xaml.cs">
+      <DependentUpon>wpfCertificacion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfDuplicados.xaml.cs">
+      <DependentUpon>wpfDuplicados.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfEndososRechazados.xaml.cs">
+      <DependentUpon>wpfEndososRechazados.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfEstatus.xaml.cs">
+      <DependentUpon>wpfEstatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfInformeReydi.xaml.cs">
+      <DependentUpon>wpfInformeReydi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfInformes.xaml.cs">
+      <DependentUpon>wpfInformes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfEndososEnReydi.xaml.cs">
+      <DependentUpon>wpfEndososEnReydi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfFixLot.xaml.cs">
+      <DependentUpon>wpfFixLot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotProcess.xaml.cs">
+      <DependentUpon>wpfLotProcess.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotReceive.xaml.cs">
+      <DependentUpon>wpfLotReceive.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfSetImages.xaml.cs">
+      <DependentUpon>wpfSetImages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfSubsanar.xaml.cs">
+      <DependentUpon>wpfSubsanar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfToReydi.xaml.cs">
+      <DependentUpon>wpfToReydi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfVerEndosos.xaml.cs">
+      <DependentUpon>wpfVerEndosos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfVerEndososReydi.xaml.cs">
+      <DependentUpon>wpfVerEndososReydi.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Ver\wpfElector.xaml.cs">
+      <DependentUpon>wpfElector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfFixVoid.xaml.cs">
+      <DependentUpon>wpfFixVoid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Archivo\wpfLogin.xaml.cs">
+      <DependentUpon>wpfLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotAuth.xaml.cs">
+      <DependentUpon>wpfLotAuth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotFix.xaml.cs">
+      <DependentUpon>wpfLotFix.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfLotInit.xaml.cs">
+      <DependentUpon>wpfLotInit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotRechazadas.xaml.cs">
+      <DependentUpon>wpfLotRechazadas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfLotReverse.xaml.cs">
+      <DependentUpon>wpfLotReverse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantAreas.xaml.cs">
+      <DependentUpon>wpfMantAreas.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Procesos\wpfMantCriterios.xaml.cs">
+      <DependentUpon>wpfMantCriterios.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantDB.xaml.cs">
+      <DependentUpon>wpfMantDB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantNotarios.xaml.cs">
+      <DependentUpon>wpfMantNotarios.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantPartidos.xaml.cs">
+      <DependentUpon>wpfMantPartidos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Archivo\wpfMantPass.xaml.cs">
+      <DependentUpon>wpfMantPass.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Configuraciones\wpfMantUsers.xaml.cs">
+      <DependentUpon>wpfMantUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Informes\wpfDuplicadoPorNumElec.xaml.cs">
+      <DependentUpon>wpfDuplicadoPorNumElec.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Helper\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="View\Configuraciones\wpfAbout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantCadidatos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantCriterios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfCertificacion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfDuplicados.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfEndososRechazados.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfEstatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfInformeReydi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfInformes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfEndososEnReydi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfFixLot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotProcess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotReceive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfSetImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfSubsanar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfToReydi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfVerEndosos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfVerEndososReydi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Ver\wpfElector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfFixVoid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Archivo\wpfLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotAuth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotFix.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfLotInit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotRechazadas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfLotReverse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantAreas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Procesos\wpfMantCriterios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantDB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantNotarios.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantPartidos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Archivo\wpfMantPass.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Configuraciones\wpfMantUsers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Informes\wpfDuplicadoPorNumElec.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpt\mycertificacion-ppd.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>mycertificacion-ppd.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpt\mycertificacion.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>mycertificacion.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpt\ReporteRechazadas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>ReporteRechazadas.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EntityDeploy Include="Models\EndososPartidos.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EndososPartidos.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="dbBk\dbEndososPartidos.bak" />
+    <None Include="dbBk\Digitalizacion.bak" />
+    <None Include="Sistema_de_Endosos.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Models\EndososPartidos.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+      <LastGenOutput>EndososPartidos.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Models\EndososPartidos.edmx.diagram">
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+    </None>
+    <None Include="Models\EndososPartidos.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EndososPartidos.edmx</DependentUpon>
+      <LastGenOutput>EndososPartidos.cs</LastGenOutput>
+    </None>
+    <None Include="MyDataSet.xsc">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="MyDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MyDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="MyDataSet.xss">
+      <DependentUpon>MyDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="rpt\CertificacionDS.xsc">
+      <DependentUpon>CertificacionDS.xsd</DependentUpon>
+    </None>
+    <None Include="rpt\CertificacionDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CertificacionDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="rpt\CertificacionDS.xss">
+      <DependentUpon>CertificacionDS.xsd</DependentUpon>
+    </None>
+    <None Include="WpfEndososCandidatos_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\APPLICA-20Aniv-logoV2.png" />
+    <Resource Include="Images\APPLICA-logo-300x76.png" />
+    <Resource Include="Images\ImageData-logoPropV2-300x139.png" />
+    <Resource Include="Images\CEElogo.jpg" />
+    <Resource Include="Images\CEEbrand.gif" />
+    <Resource Include="Images\Logo CEE.JPG" />
+    <Resource Include="Images\Logo CEE1.JPG" />
+    <Content Include="Dll\EPPlus.dll" />
+    <Content Include="Dll\System.Windows.Interactivity.dll" />
+    <Content Include="Dll\txtCandidato_XY.dll" />
+    <Content Include="Dll\txtCargo_XY.dll" />
+    <Content Include="Dll\txtFchEndosoEntregada_XY.dll" />
+    <Content Include="Dll\txtFchEndoso_XY.dll" />
+    <Content Include="Dll\txtFechaNac_XY.dll" />
+    <Content Include="Dll\txtFirmaElec_XY.dll" />
+    <Content Include="Dll\txtNombre_XY.dll" />
+    <Content Include="Dll\txtNotarioElec_XY.dll" />
+    <Content Include="Dll\txtNotarioFirma_XY.dll" />
+    <Content Include="Dll\txtNumElec_XY.dll" />
+    <Content Include="Dll\txtPrecinto_XY.dll" />
+    <Content Include="Dll\txtSex_XY.dll" />
+    <Content Include="Dll\Xceed.Wpf.Toolkit.dll" />
+    <Content Include="Models\CREATEDATABASE.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Models\CREATETABLE.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bersirc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ojo1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Security.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WindowsJournal.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\jolcode\jolcode.csproj">
+      <Project>{8c5f7d48-15c7-4afd-9a40-cb4c4ad7e485}</Project>
+      <Name>jolcode</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewDll\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
