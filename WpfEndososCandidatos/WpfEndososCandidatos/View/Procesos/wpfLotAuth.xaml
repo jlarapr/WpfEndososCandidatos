@@ -20,10 +20,10 @@
                     <Button Width="82" Height="28" Margin="307,64,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdAddTodoLot_Click}" Content="Añadir Todos" Visibility="Hidden" help:Help.Keyword="wpfLotAuth.htm#" />
                     <Button Width="82" Height="28" Margin="470,141,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdSalir_Click}" Content="Salir" help:Help.Keyword="wpfLotAuth.htm#" />
                     <Label x:Name="lblCount" Width="256" Height="70" Margin="296,66,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gray" Content="{Binding lblCount}" />
-                    <TextBox Width="128" Height="23" Margin="149,147,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="False" Text="{Binding cantidadEntregada}" TextWrapping="Wrap" help:Help.Keyword="wpfLotAuth.htm#" />
+                    <TextBox Width="128" Height="23" Margin="149,147,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsReadOnly="{Binding isCantidadEntregadaIsReadOnly}" Text="{Binding cantidadEntregada}" TextWrapping="Wrap" help:Help.Keyword="wpfLotAuth.htm#" />
                     <Label Width="128" Margin="149,121,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Cantidad Entregadas" RenderTransformOrigin="0.908,0.5" />
                     <Button Width="82" Height="28" Margin="296,141,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdRefresh_Click}" Content="Refrescar" help:Help.Keyword="wpfLotAuth.htm#" />
-                    <DatePicker x:Name="dpFchRecibo" Width="261" Margin="16,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedDate="{Binding dpFchRecibo}" />
+                    <DatePicker x:Name="dpFchRecibo" Width="261" Margin="16,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="{Binding IsEnabledFchRecibo}" SelectedDate="{Binding dpFchRecibo}" />
                     <Label Width="148" Margin="16,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Fecha de Recibo:" />
                     <Label Width="169" Margin="296,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Select Lote:" />
                     <Label x:Name="lblPartido" Width="82" Height="26" Margin="470,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{Binding lblPartido}" />

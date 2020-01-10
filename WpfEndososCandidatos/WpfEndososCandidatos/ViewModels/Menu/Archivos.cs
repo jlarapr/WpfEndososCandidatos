@@ -68,8 +68,9 @@
                         return;
 
                     WhatIsUserName = frmfLogin.WhatIsUserName;
+                    WhatIsModo = frmfLogin.WhatIsModo;
 
-                    Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString());
+                    Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString()," Modo:",WhatIsModo);
                     _Id = frmfLogin._Id;
                     mnuLogin_IsEnabled = false;
                     mnuLogout_IsEnabled = true;
@@ -89,9 +90,22 @@
                                 mnuProcesarLotes_IsEnabled = true;
                                 mnuVerEndosos_IsEnabled = true;
 
-                                bool ReydiMenuIsEnable;
-                                bool.TryParse(ConfigurationManager.AppSettings["ReydiMenuIsEnable"], out ReydiMenuIsEnable);
-                                mnuReydi_IsEnabled = ReydiMenuIsEnable;
+                                if (WhatIsModo == "Partido")
+                                {
+                                    mnuReydi_IsEnabled = false;
+                                }
+                                else if (WhatIsModo == "Aspirante")
+                                {
+                                    mnuReydi_IsEnabled = true;
+                                }
+                                else
+                                {
+
+                                    bool ReydiMenuIsEnable;
+                                    bool.TryParse(ConfigurationManager.AppSettings["ReydiMenuIsEnable"], out ReydiMenuIsEnable);
+                                    mnuReydi_IsEnabled = ReydiMenuIsEnable;
+                                }
+
                                 
                                 break;
                             case 'D':// VerElector

@@ -114,6 +114,7 @@
                     frmLotAuth.DBEndososCnnStr = DBEndososCnnStr;
                     frmLotAuth.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frmLotAuth.SysUser = WhatIsUserName;
+                    frmLotAuth.WhatIsModo = WhatIsModo;
                     frmLotAuth.MyOnShow();
                 }
                
@@ -303,7 +304,7 @@
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frm.SysUser = WhatIsUserName;
-
+                    frm.WhastIsModo = WhatIsModo;
                     frm.MyOnShow();
 
                 }
@@ -394,6 +395,7 @@
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frm.SysUser = WhatIsUserName;
+                    frm.WhatIsModo = WhatIsModo;
                     frm.OnShow();
 
 
@@ -427,7 +429,7 @@
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
-                    
+                    frm.WhatIsModo = WhatIsModo;
                     frm.SysUser = WhatIsUserName;
                     frm.MyOnShow();
                 }

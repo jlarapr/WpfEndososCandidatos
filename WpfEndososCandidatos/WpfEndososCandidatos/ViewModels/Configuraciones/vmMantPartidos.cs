@@ -78,6 +78,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
+        public string WhastIsModo { get; set; }
+
         public Brush BorderBrush
         {
             get
@@ -466,8 +468,22 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         mypartido.Desc  = row["Desc"].ToString();
                         mypartido.EndoReq =(int) row["EndoReq"];
                         mypartido.Area = row["Area"].ToString();
+                        mypartido.Modo = row["Modo"].ToString();
 
-                        cbPartidos.Add(mypartido);
+                        if (WhastIsModo == "Aspirante")
+                        {
+                            if (mypartido.Modo == "Aspirante")
+                            {
+                                cbPartidos.Add(mypartido);                               
+                            }
+                        }else
+                        {
+                            if (mypartido.Modo == "Partido")
+                            {
+                                cbPartidos.Add(mypartido);
+                            }
+
+                        }
                     }
                 }
                 cbPartidos.Sort();
@@ -772,8 +788,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         mypartido.Desc = row["Desc"].ToString();
                         mypartido.EndoReq = (int)row["EndoReq"];
                         mypartido.Area = row["Area"].ToString();
+                        mypartido.Modo = row["Modo"].ToString();
 
-                        cbPartidos.Add(mypartido);
+                        if (WhastIsModo == "Aspirante")
+                        {
+                            if (mypartido.Modo == "Aspirante")
+                                cbPartidos.Add(mypartido);
+                        }
+                        else
+                        {
+                            if (mypartido.Modo == "Partido")
+                                cbPartidos.Add(mypartido);
+                        }
                     }
                 }
                 cbPartidos.Sort();

@@ -38,6 +38,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _IsEnabled_CmdRemoveAllLot;
         private DataTable _MyLotsTable;
         private string _Partido;
+        
 
         public vmToReydi() : base (new wpfToReydi())
         {
@@ -54,6 +55,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
 
         #region MyProperty
+
+        public string WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -462,8 +465,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     item.EndorsementValidationDate = row["VerDate"].ToString();
                     item.Num_Candidato = row["Num_Candidato"].ToString();
 
-
-                   lsAllLots.Add(item);
+                    if (WhatIsModo == "Aspirante")
+                    {
+                        if (item.Lot.Contains("R-"))
+                        {
+                            lsAllLots.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        lsAllLots.Add(item);
+                    }
                 }
                 lsAllLots.Sort();
                 myBoolOut = true;

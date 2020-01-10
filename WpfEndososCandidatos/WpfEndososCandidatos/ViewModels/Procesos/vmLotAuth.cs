@@ -35,6 +35,8 @@
         private string _DBRadicacionesCEECnnStr;
         private DateTime _dpFchRecibo;
         private string _lblPartido;
+        private bool _isCantidadEntregadaIsReadOnly;
+        private bool _IsEnabledFchRecibo;
 
         public vmLotAuth()
             : base(new wpfLotAuth())
@@ -49,6 +51,30 @@
         }
 
         #region MyProperty
+        public string WhatIsModo { get; set; }
+
+        public bool IsEnabledFchRecibo
+        {
+            get
+            {
+                return _IsEnabledFchRecibo;
+            }set
+            {
+                _IsEnabledFchRecibo = value;
+                this.RaisePropertychanged("IsEnabledFchRecibo");
+            }
+        }
+        public bool isCantidadEntregadaIsReadOnly
+        {
+            get
+            {
+                return _isCantidadEntregadaIsReadOnly;
+            }set
+            {
+                _isCantidadEntregadaIsReadOnly = value;
+                this.RaisePropertychanged("isCantidadEntregadaIsReadOnly");
+            }
+        }
         public string lblPartido
         {
             get
@@ -220,6 +246,12 @@
                             cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
                             cantidad = get.MyGetCatntidadDigitalizada(numLote);
                             lblPartido = get.MyGetPartidoTF(numLote).ToString();
+                            object EndososDate = get.MyReydiEndososDate(numLote);
+
+                            if (EndososDate.ToString() != "???")
+                                dpFchRecibo=(DateTime)EndososDate;
+
+
                         }
                     }
                     catch (Exception ex)
@@ -271,25 +303,36 @@
                     if (cantidad != cantidadEntregada)
                         throw new Exception("Error en la Cantidad");
 
-                    //Redy 
-                    //object EndososDate = get.MyReydiEndososDate(numLote);
+                    if (WhatIsModo == "Aspirante")
+                    {//Redy 
+                        object EndososDate = get.MyReydiEndososDate(numLote);
 
-                    //if (EndososDate.ToString() == "???")
-                    //    throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
+                        if (EndososDate.ToString() == "???")
+                            throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
 
-                    //get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
+                        get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
 
-
-                    DateTime mDate;
-                    mDate = dpFchRecibo;
-
-                    get.MyTFJuramentoDate(numLote, mDate);
-
-
-                    if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate))   // EndososDate))
-                        throw new Exception("Error en la base de datos. *MyChangeTF*");
+                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, EndososDate))   // EndososDate))
+                            throw new Exception("Error en la base de datos. *MyChangeTF*");
+                        else
+                            MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                     else
-                        MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+                    {//no redy
+
+                        DateTime mDate;
+                        mDate = dpFchRecibo;
+
+                        get.MyTFJuramentoDate(numLote, mDate);
+
+                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate))   // EndososDate))
+                            throw new Exception("Error en la base de datos. *MyChangeTF*");
+                        else
+                            MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+
+                  
 
                 }
                 MyReset();
@@ -370,6 +413,17 @@
 
                 dpFchRecibo = DateTime.Now;
 
+                if (WhatIsModo == "Aspirante")
+                { 
+                    isCantidadEntregadaIsReadOnly = true;
+                    IsEnabledFchRecibo = false;
+                }
+                else if (WhatIsModo == "Partido")
+                {
+                    isCantidadEntregadaIsReadOnly = false;
+                    IsEnabledFchRecibo = true;
+                }
+
                 MyReset();
 
             }
@@ -435,7 +489,16 @@
 
                 foreach (DataRow row in myLotsTable.Rows)
                 {
-                    cbLots.Add(row["BatchTrack"].ToString());
+
+                    if (WhatIsModo == "Aspirante")
+                    {
+                        if (row["BatchTrack"].ToString().Contains("R-"))
+                            cbLots.Add(row["BatchTrack"].ToString());
+                    }else
+                    {
+                        cbLots.Add(row["BatchTrack"].ToString());
+
+                    }
                     //cbLots.Add(row["BatchTrack"].ToString() + "-" + row["Amount"].ToString() + "-" + row["Partido"].ToString());
                 }
 

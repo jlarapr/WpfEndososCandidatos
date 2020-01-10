@@ -74,6 +74,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frm.PDFPath = _PDFPath;
+                    
                     frm.MyOnShow();
                 }
             }
@@ -107,6 +108,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.PDFPath = _PDFPath;
                     frm.StatusReydi = "1";
+                    
                     frm.MyOnShow();
                 }
             }
@@ -129,6 +131,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.PDFPath = _PDFPath;
                     frm.StatusReydi = "0";
+                    
                     frm.MyOnShow();
                 }
             }

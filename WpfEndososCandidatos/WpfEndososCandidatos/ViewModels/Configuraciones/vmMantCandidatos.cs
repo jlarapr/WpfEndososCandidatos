@@ -86,7 +86,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
-
+        public string WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -681,15 +681,20 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         mypartido.Desc = row["Desc"].ToString();
                         mypartido.EndoReq = (int)row["EndoReq"];
                         mypartido.Area = row["Area"].ToString();
+                        mypartido.Modo = row["Modo"].ToString();
 
-                        cbPartidos.Add(mypartido);
+                        if (WhatIsModo == "Aspirante")
+                        {
+                            cbPartidos.Add(mypartido);
+                            break;
+                        }
+                        else
+                        {
+                            cbPartidos.Add(mypartido);
+                        }
                     }
                 }
                 cbPartidos.Sort();
-
-
-
-
                 MyReset();
             }
             catch (Exception ex)
@@ -1142,8 +1147,18 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     myCand.Area = row["Area"].ToString();
                     myCand.Cargo = row["Cargo"].ToString();
                     myCand.EndoReq = row["EndoReq"].ToString();
+                    myCand.Modo = row["Modo"].ToString();
+                    if (WhatIsModo == "Aspirante")
+                    {
+                        if (myCand.Modo == "Aspirante")
+                            cbNombre.Add(myCand.ToString());
 
-                    cbNombre.Add(myCand.ToString());
+                    }
+                    else
+                    {
+                        if (myCand.Modo == "Partido")
+                            cbNombre.Add(myCand.ToString());
+                    }
                 }
 
             }

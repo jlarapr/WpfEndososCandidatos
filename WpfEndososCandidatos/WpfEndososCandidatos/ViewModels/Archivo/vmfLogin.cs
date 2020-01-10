@@ -58,12 +58,41 @@ namespace WpfEndososCandidatos.ViewModels
         private string _DBCeeMasterCnnStr;
         private string _DBImagenesCnnStr;
         DataTable _MyUsersTable;
+        bool _isRdbCandidato;
+        bool _isRdbPartido;
 
         public vmfLogin() :
             base(new wpfLogin())
         {
             cmdVerPass_Click = new RelayCommand(param => CmdVerPass_Click(), null);
             //ConfigurationManager.AppSettings["BorderBrush"];
+        }
+
+       
+        public bool isRdbCandidato
+        {
+            get
+            {
+                return _isRdbCandidato;
+            }
+            set
+            {
+                _isRdbCandidato = value;
+                this.RaisePropertychanged("isRdbCandidato");
+            }
+        }
+
+        public bool isRdbPartido
+        {
+            get
+            {
+                return _isRdbPartido;
+            }
+            set
+            {
+                _isRdbPartido = value;
+                this.RaisePropertychanged("isRdbPartido");
+            }
         }
 
         public string DBEndososCnnStr
@@ -117,6 +146,9 @@ namespace WpfEndososCandidatos.ViewModels
 
         public string WhatIsUserName { get; set; }
 
+        public string WhatIsModo { get; set; }
+             
+
         public Brush BorderBrush
         {
             get
@@ -133,6 +165,7 @@ namespace WpfEndososCandidatos.ViewModels
 
             }
         }
+
 
 
         public string _AreasDeAcceso { get; private set; }
@@ -173,6 +206,20 @@ namespace WpfEndososCandidatos.ViewModels
                 }
                 else
                     BorderBrush = Brushes.Black;
+
+
+                try
+                {
+                    isRdbCandidato = bool.Parse(ConfigurationManager.AppSettings["modoCandidato"]);
+                    isRdbPartido = bool.Parse(ConfigurationManager.AppSettings["modoPartido"]);
+
+                }
+                catch (Exception)
+                {
+                    isRdbCandidato = false;
+                    isRdbPartido = false;
+
+                }
 
 
             }
@@ -401,6 +448,15 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso = "ABCDEFGH";
                     _Id = Guid.NewGuid();
                 }
+
+                if (isRdbCandidato)
+                    WhatIsModo = "Aspirante";
+                else if (isRdbPartido)
+                    WhatIsModo = "Partido";
+                else
+                    WhatIsModo = "Error en el modo";
+                
+
                 this.View.DialogResult = true;
 
                 this.View.Close();

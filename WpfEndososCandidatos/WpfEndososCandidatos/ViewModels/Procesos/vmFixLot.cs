@@ -51,6 +51,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
         #region MyProperty
+        public string WhastIsModo { get; set; }
         public string txtFindCandidato
         {
             get
@@ -336,6 +337,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 cbInfoCandidato = new ObservableCollection<modelCandidato>();
 
                 string query = "select top 1 [Partido] from [Partidos] ";
+
+               
 
                 if (_cnn.State == System.Data.ConnectionState.Closed)
                 {

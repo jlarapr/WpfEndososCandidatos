@@ -14,6 +14,7 @@ namespace WpfEndososCandidatos.Models
         public string Area { get; set; }
         public string Cargo { get; set; }
         public string EndoReq { get; set; }
+        public string Modo { get; set; }
        
 
         public override string ToString()
@@ -25,7 +26,8 @@ namespace WpfEndososCandidatos.Models
                 Nombre,
                 Area,
                 Cargo,
-                EndoReq
+                EndoReq,
+                Modo
             };
             string myJoined = string.Join(" - ", myOut);
             return myJoined;

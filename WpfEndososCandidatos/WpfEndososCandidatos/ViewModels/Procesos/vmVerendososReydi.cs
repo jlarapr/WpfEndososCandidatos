@@ -40,6 +40,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         //Property
         #region MyProperty
+            public string WhatIsModo { get; set; }
         public string SysUser
         {
             get
@@ -299,8 +300,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
 
-                    cbLots.Add(myLots.Lot);
-
+                    if (WhatIsModo == "Aspirante")
+                    {
+                        if (myLots.Lot.Contains("R-"))
+                        {
+                            cbLots.Add(myLots.Lot);
+                        }
+                    }
+                    else
+                    {
+                        cbLots.Add(myLots.Lot);
+                    }
                 }
                 cbLots_Item_Id = -1;
 

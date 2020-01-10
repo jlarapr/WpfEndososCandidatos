@@ -279,6 +279,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     frmMantPartidos.View.Owner = this.View as Window;
                     frmMantPartidos.DBEndososCnnStr = _DBEndososCnnStr;
+                    frmMantPartidos.WhastIsModo = WhatIsModo;
                     frmMantPartidos.MyOnShow();
                 }
 
@@ -394,6 +395,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frmMantCandidatos.DBEndososCnnStr = DBEndososCnnStr;
                     frmMantCandidatos.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
                     frmMantCandidatos.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
+                    frmMantCandidatos.WhatIsModo = WhatIsModo;
                     frmMantCandidatos.MyOnShow();
                 }
             }
