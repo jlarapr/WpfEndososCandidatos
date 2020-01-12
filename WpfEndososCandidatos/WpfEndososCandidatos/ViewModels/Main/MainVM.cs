@@ -52,7 +52,7 @@ namespace WpfEndososCandidatos.ViewModels
         private string _DBImagenesCnnStr;
         private string _DBRadicacionesCnnStr;
         private string _WhatIsUserName;
-        private string _WhatIsModo;
+        private int _WhatIsModo;
 
         public MainVM()
             : base(new MainWindow())
@@ -65,7 +65,7 @@ namespace WpfEndososCandidatos.ViewModels
 
             help_click = new RelayCommand(param => Myhelp_click());
         }
-        public string WhatIsModo
+        public int WhatIsModo
         {
             get
             {

@@ -130,6 +130,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.PDFPath = _PDFPath;
+                    frm.WhatIsModo = WhatIsModo;
                     frm.StatusReydi = "0";
                     
                     frm.MyOnShow();
@@ -156,6 +157,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     //frm.PDFPath = _PDFPath;
                     frm.StatusReydi = "0,1";
+                    frm.WhatIsMode = WhatIsModo;
                     frm.MyOnShow();
                 }
             }
@@ -188,6 +190,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.WhatIsModo = WhatIsModo;
                     frm.MyOnShow();
                 }
             }
@@ -208,7 +211,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
-
+                    frm.WhatIsMode = WhatIsModo;
                     frm.MyOnShow();
                 }
             }
@@ -228,6 +231,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBEndososCnnStr = DBEndososCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
+                    frm.WhatIsModo = WhatIsModo;
                     frm.MyOnShow();
                 }
             }

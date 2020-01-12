@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.IO;
 using System.Reflection;
+using System.Configuration;
 
 namespace jolcode
 {
@@ -71,7 +72,7 @@ namespace jolcode
                 _DBRadicacionesCEECnnStr = value;
             }
         }
-        public byte[] MyGetImgInByte( String NumElec, String Partido, String Lot, String Batch, String Formulario, String Image, String Errores, String Status )
+        public byte[] MyGetImgInByte(String NumElec, String Partido, String Lot, String Batch, String Formulario, String Image, String Errores, String Status)
         {
             byte[] myout = null;
             try
@@ -106,7 +107,7 @@ namespace jolcode
                         CommandType = CommandType.Text,
                     })
                     {
-                        
+
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
@@ -125,7 +126,7 @@ namespace jolcode
             }
             return myout;
         }
-        public DataTable MyGetDuplicadoPorNumeroElectoral(String numElectoral)
+        public DataTable MyGetDuplicadoPorNumeroElectoral(String numElectoral, int whatIsModo)
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -157,11 +158,11 @@ namespace jolcode
 
                 String mySqlstr = String.Format(
                     @"
-                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%')
+                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status],[Modo] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 1 and ([Errores] like '%14%' or [Errores]  like '%15%') and Modo = {1}
                         union
-                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0 
+                        SELECT [NumElec],[Partido],[Lot],[Batch],[Formulario],[Image],[Errores],[Status],[Modo] FROM [dbo].[LotsEndo] where [NumElec] = {0} and [Status] = 0 and Modo = {1}
                         order by [Status]
-                    ", numElectoral);
+                    ", numElectoral, whatIsModo);
 
 
                 using (SqlConnection cnn = new SqlConnection()
@@ -206,7 +207,49 @@ namespace jolcode
 
             return myTableReturn;
         }
+        public DataTable MyGetModo(int modoId)
+        {
+            DataTable myTableReturn = new DataTable();
 
+            try
+            {
+                string[] mySqlstr = { "SELECT * ",
+                                      "FROM [dbo].[tblModo] ",
+                                      "where Modo =",modoId.ToString(),"" };
+
+                using (SqlConnection cnn = new SqlConnection()
+                {
+                    ConnectionString = DBCnnStr
+                })
+                {
+                    using (SqlCommand cmd = new SqlCommand()
+                    {
+                        Connection = cnn,
+                        CommandType = CommandType.Text,
+                        CommandText = string.Concat(mySqlstr)
+                    })
+                    {
+                        if (cnn.State == ConnectionState.Closed)
+                            cnn.Open();
+
+                        using (SqlDataAdapter da = new SqlDataAdapter()
+                        {
+                            SelectCommand = cmd
+                        })
+                        {
+                            da.Fill(myTableReturn);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString() + "\r\nMyGetModo Error");
+            }
+            return myTableReturn;
+
+        }
         public DataTable MyGeRechazadasToInforme(string lot)
         {
 
@@ -710,7 +753,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLot(string StatusReydi, string Status) //Status= "0,1,2,3,4"
+        public DataTable MyGetLot(string StatusReydi, string Status, int whatIsModo) //Status= "0,1,2,3,4"
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -722,7 +765,9 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi in (" + StatusReydi + ") order by Lot";
+                //string mySqlstr = "Select * from lots Where Status In (" + Status + ") and StatusReydi in (" + StatusReydi + ") order by Lot";
+
+                string mySqlstr = string.Format("Select * from lots Where Status In ({0}) and StatusReydi in ({1}) and Modo = {2} order by Lot", Status, StatusReydi, whatIsModo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1249,7 +1294,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetLotToProcess()
+        public DataTable MyGetLotToProcess(int modo)
         {
             DataTable myTableReturn = new DataTable();
             try
@@ -1261,7 +1306,7 @@ namespace jolcode
                 //'3 - CON ERRORES
                 //'4 - SIENDO REVISADA
 
-                string mySqlstr = "Select * from lots Where Status =0 order by Lot";
+                string mySqlstr = string.Format("Select * from lots Where Status ={0} and Modo={1} order by Lot", 0, modo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1337,6 +1382,7 @@ namespace jolcode
             }
             return myTableReturn;
         }
+
 
         public DataTable MyGetUsers()
         {
@@ -1459,13 +1505,16 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetCriterios()
+        public DataTable MyGetCriterios(int modo)
         {
             DataTable myTableReturn = new DataTable();
             try
             {
                 //string mySqlstr = "Select Precinto + ' - ' + [Desc] from Precintos order by Precinto";
                 string mySqlstr = "Select * from Criterios order by Campo";
+
+                if (modo == 2)
+                    mySqlstr = "Select * from CriteriosPartido order by Campo";
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1499,13 +1548,13 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetPartidos()
+        public DataTable MyGetPartidos(int whatIsModo)
         {
             DataTable myTableReturn = new DataTable();
             try
             {
                 //string mySqlstr = "Select Area + ' - ' + [Desc] from areas order by area";
-                string mySqlstr = "Select * from Partidos order by partido";
+                string mySqlstr = string.Format("Select * from Partidos where Modo={0} order by partido", whatIsModo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1616,12 +1665,12 @@ namespace jolcode
         }
 
 
-        public DataTable MyGetNotarios()
+        public DataTable MyGetNotarios(int modo)
         {
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select * from notarios order by Nombre";
+                string mySqlstr = string.Format("Select * from notarios where Modo={0} order by Nombre", modo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -1655,12 +1704,12 @@ namespace jolcode
             }
             return myTableReturn;
         }
-        public DataTable MyGetCandidatos()
+        public DataTable MyGetCandidatos(int modo)
         {
             DataTable myTableReturn = new DataTable();
             try
             {
-                string mySqlstr = "Select * from Candidatos order by Nombre";
+                string mySqlstr = string.Format("Select * from Candidatos where modo={0} order by Nombre", modo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -3142,15 +3191,15 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area, string where)
+        public bool MyChangePartidos(bool isInsert, string partido, string desc, string endoReq, string area, int Modo, string where)
         {
             bool myBoolReturn = false;
             try
             {
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Partidos] ([Partido],[Desc],[EndoReq],[Area]) ",
-                            "VALUES (@Partido,@Desc,@EndoReq,@Area)"
+                            "INSERT INTO [dbo].[Partidos] ([Partido],[Desc],[EndoReq],[Area],[Modo]) ",
+                            "VALUES (@Partido,@Desc,@EndoReq,@Area,@Modo)"
                         };
 
                 string[] myUpdate =
@@ -3159,7 +3208,8 @@ namespace jolcode
                             "SET [Partido] = @Partido, ",
                             "[Desc] = @Desc,",
                             "[EndoReq] = @EndoReq,",
-                            "[Area] = @Area ",
+                            "[Area] = @Area,",
+                            "[Modo] = @Modo ",
                             "WHERE Partido=@Where"
                 };
 
@@ -3182,6 +3232,7 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Desc", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@EndoReq", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
+                        cmd.Parameters.Add(new SqlParameter("@Modo", SqlDbType.Int));
 
                         if (!isInsert)
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
@@ -3190,6 +3241,7 @@ namespace jolcode
                         cmd.Parameters["@Desc"].Value = desc;
                         cmd.Parameters["@EndoReq"].Value = endoReq;
                         cmd.Parameters["@Area"].Value = area.Substring(0, 4);
+                        cmd.Parameters["@Modo"].Value = Modo;
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -3210,7 +3262,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeNotario(bool isInsert, string NumElec, String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2, string Status, DateTime Fecha, string where)
+        public bool MyChangeNotario(bool isInsert, string NumElec, String Partido, string NumCand, string Nombre, string Apellido1, string Apellido2, string Status, DateTime Fecha, int modo, string where)
         {
             bool myBoolReturn = false;
             try
@@ -3221,8 +3273,8 @@ namespace jolcode
 
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status],[Fecha_Dia],[Fecha_Mes],[Fecha_Ano]) ",
-                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status,@Fecha_Dia,@Fecha_Mes,@Fecha_Ano)"
+                            "INSERT INTO [dbo].[Notarios] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status],[Fecha_Dia],[Fecha_Mes],[Fecha_Ano],[Modo]) ",
+                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status,@Fecha_Dia,@Fecha_Mes,@Fecha_Ano,@Modo)"
                         };
 
                 string[] myUpdate =
@@ -3237,7 +3289,8 @@ namespace jolcode
                             "[Status]    = @Status,",
                             "[Fecha_Dia] = @Fecha_Dia,",
                             "[Fecha_Mes] = @Fecha_Mes,",
-                            "[Fecha_Ano] = @Fecha_Ano ",
+                            "[Fecha_Ano] = @Fecha_Ano,",
+                            "[Modo] = @Modo ",
                             "WHERE NumElec=@where"
                 };
 
@@ -3268,6 +3321,7 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Fecha_Dia", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@Fecha_Mes", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@Fecha_Ano", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Modo", SqlDbType.Int));
 
                         if (!isInsert)
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
@@ -3282,6 +3336,7 @@ namespace jolcode
                         cmd.Parameters["@Fecha_Dia"].Value = Fecha_Dia.ToString();
                         cmd.Parameters["@Fecha_Mes"].Value = Fecha_Mes.ToString();
                         cmd.Parameters["@Fecha_Ano"].Value = Fecha_Ano.ToString();
+                        cmd.Parameters["@Modo"].Value = modo;
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -3302,7 +3357,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeCriterios(string Campo, bool? Editar, string Desc, bool? Warning)
+        public bool MyChangeCriterios(string Campo, bool? Editar, string Desc, bool? Warning, int modo)
         {
             bool myBoolReturn = false;
             try
@@ -3311,6 +3366,16 @@ namespace jolcode
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Criterios] ",
+                            "SET [Editar] = @Editar,",
+                            "[Desc] = @Desc,",
+                            "[Warning] = @Warning ",
+                            "WHERE Campo=@Campo"
+                    };
+
+
+                string[] myUpdatePartido =
+                    {
+                    "UPDATE [dbo].[CriteriosPartido] ",
                             "SET [Editar] = @Editar,",
                             "[Desc] = @Desc,",
                             "[Warning] = @Warning ",
@@ -3331,6 +3396,9 @@ namespace jolcode
                     {
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
+
+                        if (modo == 2)
+                            cmd.CommandText = string.Concat(myUpdatePartido);
 
                         cmd.Parameters.Add(new SqlParameter("@Campo", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@Editar", SqlDbType.VarChar));
@@ -3642,15 +3710,15 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area, string cargo, string endoReq, string where)
+        public bool MyChangeCandidatos(bool isInsert, string partido, string numCand, string nombre, string area, string cargo, string endoReq, int modo, string where)
         {
             bool myBoolReturn = false;
             try
             {
                 string[] myInsert =
                         {
-                            "INSERT INTO [dbo].[Candidatos] ([Partido],[NumCand],[Nombre],[Area],[Cargo],[EndoReq]) ",
-                            "VALUES (@Partido,@NumCand,@Nombre,@Area,@Cargo,@EndoReq)"
+                            "INSERT INTO [dbo].[Candidatos] ([Partido],[NumCand],[Nombre],[Area],[Cargo],[EndoReq],[Modo]) ",
+                            "VALUES (@Partido,@NumCand,@Nombre,@Area,@Cargo,@EndoReq,@Modo)"
                         };
 
                 string[] myUpdate =
@@ -3661,7 +3729,8 @@ namespace jolcode
                             "[Nombre] = @Nombre,",
                             "[Area] = @Area,",
                             "[Cargo] =@Cargo,",
-                            "[EndoReq]=@EndoReq ",
+                            "[EndoReq]=@EndoReq,",
+                            "[Modo]=@Modo ",
                             "WHERE NumCand=@Where"
                 };
 
@@ -3686,6 +3755,7 @@ namespace jolcode
                         cmd.Parameters.Add(new SqlParameter("@Area", SqlDbType.VarChar));
                         cmd.Parameters.Add(new SqlParameter("@Cargo", SqlDbType.Int));
                         cmd.Parameters.Add(new SqlParameter("@EndoReq", SqlDbType.Int));
+                        cmd.Parameters.Add(new SqlParameter("@Modo", SqlDbType.Int));
 
                         if (!isInsert)
                             cmd.Parameters.Add(new SqlParameter("@Where", SqlDbType.VarChar));
@@ -3696,6 +3766,7 @@ namespace jolcode
                         cmd.Parameters["@Area"].Value = area;
                         cmd.Parameters["@Cargo"].Value = cargo;
                         cmd.Parameters["@EndoReq"].Value = endoReq;
+                        cmd.Parameters["@Modo"].Value = modo;
 
                         if (!isInsert)
                             cmd.Parameters["@Where"].Value = where;
@@ -4674,7 +4745,10 @@ namespace jolcode
                             {
                                 case 0: //Partido
                                     {
-                                        if ((int)total >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Partido"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4692,7 +4766,9 @@ namespace jolcode
                                     }
                                 case 1:// 'Gobernador
                                     {
-                                        if ((int)total >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Gobernador"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4711,7 +4787,9 @@ namespace jolcode
 
                                 case 2://'Comisionado Residente
                                     {
-                                        if ((int)total >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["ComisionadoResidente"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4730,7 +4808,9 @@ namespace jolcode
 
                                 case 3: //'Senador Distrito
                                     {
-                                        if ((int)total >= 2)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["SenadorDistrito"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 2)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4749,14 +4829,25 @@ namespace jolcode
 
                                 case 4://'Senador Acumulación
                                     {
-                                        int permitidos = 11;
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionCEE"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+
                                         if (m_PARTIDO == "PNP")
-                                            permitidos = 6;
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionPNP"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
 
                                         if (m_PARTIDO == "PPD")
-                                            permitidos = 6;
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionPPD"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
 
-                                        if ((int)total >= permitidos)
+                                        if ((int)total >= totalPermitido)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4775,7 +4866,10 @@ namespace jolcode
 
                                 case 5: //'Representante Distrito
                                     {
-                                        if ((int)total >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteDistrito"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4794,15 +4888,24 @@ namespace jolcode
 
                                 case 6: //'Representante Acumulación
                                     {
-                                        int permitidos = 11;
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionCEE"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
                                         if (m_PARTIDO == "PNP")
-                                            permitidos = 6;
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionPNP"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
 
                                         if (m_PARTIDO == "PPD")
-                                            permitidos = 6;
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionPPD"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
 
-
-                                        if ((int)total >= permitidos)
+                                        if ((int)total >= totalPermitido)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {
@@ -4821,7 +4924,10 @@ namespace jolcode
 
                                 case 7: //'Alcalde
                                     {
-                                        if ((int)total >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Alcalde"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((int)total >= totalPermitido) //if ((int)total >= 1)
                                         {
                                             if (CollCriterios[14].Editar == true)
                                             {

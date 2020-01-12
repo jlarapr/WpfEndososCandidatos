@@ -40,7 +40,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private int _MaximumProgressBar;
         private int _ValueProgressBar;
         private ObservableCollection<string> _LogBox;
-     //   private int _TotalDePuntos;
+        //   private int _TotalDePuntos;
         private string _LblTotal;
         private bool _run;
         private string _StatusReydi;
@@ -60,6 +60,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             LblTotal = "0";
         }
         #region MyProperty
+        public int WhatIsModo { get; set; }
         public string LblTotal
         {
             get
@@ -206,7 +207,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
             set
             {
-                
+
                 _cbLots_Item_Id = value;
                 this.RaisePropertychanged("cbLots_Item_Id");
             }
@@ -253,12 +254,13 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 }
             }
         }
-     public string StatusReydi
+        public string StatusReydi
         {
             get
             {
                 return _StatusReydi;
-            }set
+            }
+            set
             {
                 _StatusReydi = value;
             }
@@ -325,7 +327,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
         }
 
-        private  Task<bool> run ()
+        private Task<bool> run()
         {
             bool returnBoll = false;
             return Task.Run(() =>
@@ -372,25 +374,25 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                             RR["Lot"] = lot;
                             RR["NumeroElec"] = "Número Electoral               : " + NumElec;
-                            RR["Nombre"] =     "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim(), " ", R["Paterno"].ToString().Trim(), " ", R["Materno"].ToString().Trim()).Trim();
-                            RR["NombreCee"] =  "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
-                            RR["Precinto"] =   "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
-                            RR["StatusCEE"] =       "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
+                            RR["Nombre"] = "Nombre del Endosante (TF)      : " + string.Concat(R["Nombre"].ToString().Trim(), " ", R["Paterno"].ToString().Trim(), " ", R["Materno"].ToString().Trim()).Trim();
+                            RR["NombreCee"] = "Nombre del Endosante (CEE)     : " + get.MyCEENameToInforme(NumElec);
+                            RR["Precinto"] = "Precinto (TF) / Precinto (CEE) : " + R["Precinto"];
+                            RR["StatusCEE"] = "Status (CEE)                   : " + get.MyCEEStatusToInforme(NumElec);
                             RR["FuncionarioElec"] = "Notario                        : " + R["notario"];
-                            RR["CandidatoElec"] =   "Partido                        : " + R["Partido"];//R["Candidato"];
+                            RR["CandidatoElec"] = "Partido                        : " + R["Partido"];//R["Candidato"];
                             //RR["CandidatoName"] = "Nombre Candidato               : " + get.MyCandidatoNameToInforme(R["Candidato"].ToString().Trim());
                             RR["Batch"] = "Batch                          : " + R["Batch"];
                             RR["Formulario"] = "Formulario                     : " + R["Formulario"];
                             //RR["Cargo"] = "Cargo                          : " + R["Cargo"].ToString() + "-" + get.MyDecCargoToInforme(R["Cargo"].ToString().Trim()).Trim();
-                            
+
                             string Candidato = string.Empty;
                             if (R["Candidato"] != null)
                                 Candidato = R["Candidato"].ToString().Trim();
 
-                            RR["Razon"] = get.MyDecRechazoToInforme(R["Errores"].ToString(),Candidato, NumElec).Trim();
+                            RR["Razon"] = get.MyDecRechazoToInforme(R["Errores"].ToString(), Candidato, NumElec).Trim();
 
-                            if (R["LeerMSG"].ToString().Trim().Length >0)
-                                RR["Razon"] +="\r\n " +  R["LeerMSG"].ToString().Trim();
+                            if (R["LeerMSG"].ToString().Trim().Length > 0)
+                                RR["Razon"] += "\r\n " + R["LeerMSG"].ToString().Trim();
 
 
                             RR["totalDePaginas"] = string.Format("{0:#,#}", totalDePaginas);
@@ -527,7 +529,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot(StatusReydi,"3");
+                _MyLotsTable = get.MyGetLot(StatusReydi, "3",WhatIsModo);
                 cbLots.Clear();
                 LogBox.Clear();
                 LblTotal = string.Empty;
@@ -554,8 +556,18 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     myLots.RevUser = row["RevUser"].ToString();
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
+                    myLots.Modo = int.Parse(row["Modo"].ToString());
 
-                    cbLots.Add(myLots.Lot);
+                    if (WhatIsModo == 1)
+                    {
+                        if (myLots.Modo == 1)
+                            cbLots.Add(myLots.Lot);
+                    }
+                    else
+                    {
+                        if (myLots.Modo == 2)
+                            cbLots.Add(myLots.Lot);
+                    }
 
                 }
                 cbLots_Item_Id = -1;
@@ -565,7 +577,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         }
         private void MyDispatcherProgressBar(object sender, EventArgs e)
         {
-           
+
             _Progress++;
             if (_Progress <= MaximumProgressBar)
                 ValueProgressBar = _Progress;

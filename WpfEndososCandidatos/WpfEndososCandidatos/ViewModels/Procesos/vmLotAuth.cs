@@ -51,7 +51,7 @@
         }
 
         #region MyProperty
-        public string WhatIsModo { get; set; }
+        public int WhatIsModo { get; set; }
 
         public bool IsEnabledFchRecibo
         {
@@ -302,8 +302,9 @@
                 {
                     if (cantidad != cantidadEntregada)
                         throw new Exception("Error en la Cantidad");
-
-                    if (WhatIsModo == "Aspirante")
+                    //"Aspirante = 1"
+                    //"Partido = 2"
+                    if (WhatIsModo == 1)
                     {//Redy 
                         object EndososDate = get.MyReydiEndososDate(numLote);
 
@@ -412,13 +413,14 @@
                 _LogClass.MYEventLog.WriteEntry("Autorizar_Lotes Start:" + Dia + " " + Hora, EventLogEntryType.Information);
 
                 dpFchRecibo = DateTime.Now;
-
-                if (WhatIsModo == "Aspirante")
+                //"Aspirante = 1"
+                //"Partido = 2"
+                if (WhatIsModo == 1)
                 { 
                     isCantidadEntregadaIsReadOnly = true;
                     IsEnabledFchRecibo = false;
                 }
-                else if (WhatIsModo == "Partido")
+                else if (WhatIsModo == 2)
                 {
                     isCantidadEntregadaIsReadOnly = false;
                     IsEnabledFchRecibo = true;
@@ -490,7 +492,9 @@
                 foreach (DataRow row in myLotsTable.Rows)
                 {
 
-                    if (WhatIsModo == "Aspirante")
+                    //"Aspirante = 1"
+                    //"Partido = 2"
+                    if (WhatIsModo == 1)
                     {
                         if (row["BatchTrack"].ToString().Contains("R-"))
                             cbLots.Add(row["BatchTrack"].ToString());

@@ -86,7 +86,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
-        public string WhatIsModo { get; set; }
+        public int WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -671,7 +671,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         cbArea.Add(myArea);
                     }
 
-                    _MyPartidosTable = get.MyGetPartidos();
+                    _MyPartidosTable = get.MyGetPartidos(WhatIsModo);
 
                     foreach (DataRow row in _MyPartidosTable.Rows)
                     {
@@ -681,15 +681,21 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         mypartido.Desc = row["Desc"].ToString();
                         mypartido.EndoReq = (int)row["EndoReq"];
                         mypartido.Area = row["Area"].ToString();
-                        mypartido.Modo = row["Modo"].ToString();
+                        mypartido.Modo =  int.Parse (row["Modo"].ToString());
 
-                        if (WhatIsModo == "Aspirante")
+
+                        //"Aspirante = 1"
+                        //"Partido = 2"
+
+                        if (WhatIsModo == 1)
                         {
+                            if (mypartido.Modo == 1)
                             cbPartidos.Add(mypartido);
-                            break;
+                            
                         }
                         else
                         {
+                            if (mypartido.Modo == 2)
                             cbPartidos.Add(mypartido);
                         }
                     }
@@ -806,7 +812,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         }
 
 
-                    myUpDate = mySqlExe.MyChangeCandidatos(_IsInsert, myPartido, myNumCand, myNombre, myArea, myCargo.ToString(), myEndoReq, myWhere);
+                    myUpDate = mySqlExe.MyChangeCandidatos(_IsInsert, myPartido, myNumCand, myNombre, myArea, myCargo.ToString(), myEndoReq,WhatIsModo, myWhere);
                 }
 
                 if (!myUpDate)
@@ -1135,7 +1141,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyCandidatosTable = get.MyGetCandidatos();
+                _MyCandidatosTable = get.MyGetCandidatos(WhatIsModo);
 
                 foreach (DataRow row in _MyCandidatosTable.Rows)
                 {
@@ -1147,16 +1153,19 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     myCand.Area = row["Area"].ToString();
                     myCand.Cargo = row["Cargo"].ToString();
                     myCand.EndoReq = row["EndoReq"].ToString();
-                    myCand.Modo = row["Modo"].ToString();
-                    if (WhatIsModo == "Aspirante")
+                    myCand.Modo = int.Parse( row["Modo"].ToString());
+
+                    //"Aspirante = 1"
+                    //"Partido = 2"
+                    if (WhatIsModo == 1)
                     {
-                        if (myCand.Modo == "Aspirante")
+                        if (myCand.Modo == 1)
                             cbNombre.Add(myCand.ToString());
 
                     }
                     else
                     {
-                        if (myCand.Modo == "Partido")
+                        if (myCand.Modo == 2)
                             cbNombre.Add(myCand.ToString());
                     }
                 }

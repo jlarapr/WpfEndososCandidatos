@@ -101,7 +101,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
-
+        public int WhatIsModo { get; set; }
         public DateTime dpFchInformadoAlaCEE
         {
             get
@@ -921,7 +921,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombreAspirante.Split('-')[0], txtNombreAspirante.Split('-')[1], txtNombre, txtApellido1, txtApellido2, txtStatusElec, dpFchInformadoAlaCEE, myWhere);
+                    myUpDate = mySqlExe.MyChangeNotario(_IsInsert, txtNumElec, txtNombreAspirante.Split('-')[0], txtNombreAspirante.Split('-')[1], txtNombre, txtApellido1, txtApellido2, txtStatusElec, dpFchInformadoAlaCEE,WhatIsModo, myWhere);
                 }
 
                 if (!myUpDate)
@@ -1161,8 +1161,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    _MyNotarioTable = get.MyGetNotarios();
-                    _MyAspiranteTable = get.MyGetCandidatos();
+                    _MyNotarioTable = get.MyGetNotarios(WhatIsModo);
+                    _MyAspiranteTable = get.MyGetCandidatos(WhatIsModo);
 
                     cbAspirante.Clear();
                     foreach (DataRow row in _MyAspiranteTable.Rows)
@@ -1174,7 +1174,9 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                         myCand.Area = row["Area"].ToString();
                         myCand.Cargo = row["Cargo"].ToString();
                         myCand.EndoReq = row["EndoReq"].ToString();
+                        myCand.Modo = int.Parse(row["Modo"].ToString());
                         cbAspirante.Add(myCand);
+
                     }
                     cbAspirante_Item_Id = -1;
 

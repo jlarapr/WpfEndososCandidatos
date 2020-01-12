@@ -44,6 +44,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
+        public int WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -236,7 +237,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0", "0,1,2,3,4");
+                _MyLotsTable = get.MyGetLot("0", "0,1,2,3,4",WhatIsModo);
                 cbLots.Clear();
 
                 foreach (DataRow row in _MyLotsTable.Rows)
@@ -257,8 +258,8 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     myLots.RevUser = row["RevUser"].ToString();
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
+                    myLots.Modo = int.Parse( row["Modo"].ToString() );
 
-                    
                     cbLots.Add(myLots.Lot);
                     
                 }

@@ -21,7 +21,7 @@ using WpfEndososCandidatos.View.Informes;
 
 namespace WpfEndososCandidatos.ViewModels.Informes
 {
-    public class vmDuplicados: ViewModelBase<IDialogView>, IDisposable
+    public class vmDuplicados : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
@@ -49,6 +49,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
         }
         #region MyProperty
+        public int WhatIsMode { get; set; }
         public Brush BorderBrush
         {
             get
@@ -241,7 +242,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
 
         }
-       private void MycmdExecute_Click()
+        private void MycmdExecute_Click()
         {
             try
             {
@@ -285,7 +286,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         {
                             FirstGeoCode = "000";
                         }
-                        
+
                         string[] sqlstr = { "SELECT count(*) as total,[NumElec],lot,[Status] ",
                                                 "From [LotsEndo]  ",
                                                 "Where [NumElec] = '",  FixNum(m_NumElec.Trim()) , "' ",
@@ -294,14 +295,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                                 "group by NumElec,lot,[Status]"};
 
                         List<string> total = null;
-                        
+
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
                         {
                             switch (m_Cargo)
                             {
-                                case 0:
+                                case 0: //Partido
                                     {
-                                        if ((total.Count + 1) >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Partido"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count) >= totalPermitido)
                                         {
                                             isError = true;
                                         }
@@ -309,78 +313,112 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                     break;
                                 case 1:// 'Gobernador
                                     {
-                                        if ((total.Count + 1) >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Gobernador"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count ) >= totalPermitido)
                                         {
-                                            isError = true ;
+                                            isError = true;
                                         }
                                     }
                                     break;
 
                                 case 2://'Comisionado Residente
                                     {
-                                        if ((total.Count + 1) >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["ComisionadoResidente"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count ) >= totalPermitido)
                                         {
-                                            isError = true ;
+                                            isError = true;
                                         }
+
                                     }
                                     break;
 
                                 case 3: //'Senador Distrito
                                     {
-                                        if ((total.Count + 1) >= 2)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["SenadorDistrito"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count ) >= totalPermitido)
                                         {
-                                            isError = true ;
+                                            isError = true;
                                         }
                                     }
                                     break;
 
                                 case 4://'Senador Acumulación
                                     {
-                                        int permitidos = 11;
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionCEE"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
                                         if (m_PARTIDO == "PNP")
-                                            permitidos = 6;
-
-                                        if (m_PARTIDO == "PPD")
-                                            permitidos = 6;
-
-                                        if ((total.Count + 1) >= permitidos)
                                         {
-                                            isError = true ;
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionPNP"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
+                                        if (m_PARTIDO == "PPD")
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["SenadorAcumulacionPPD"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
+
+                                        if ((total.Count ) >= totalPermitido)
+                                        {
+                                            isError = true;
                                         }
                                     }
                                     break;
 
                                 case 5: //'Representante Distrito
                                     {
-                                        if ((total.Count + 1) >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteDistrito"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count ) >= totalPermitido)
                                         {
-                                            isError = true ;
+                                            isError = true;
                                         }
                                     }
                                     break;
 
                                 case 6: //'Representante Acumulación
                                     {
-                                        int permitidos = 11;
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionCEE"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
                                         if (m_PARTIDO == "PNP")
-                                            permitidos = 6;
+                                        {
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionPNP"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
 
                                         if (m_PARTIDO == "PPD")
-                                            permitidos = 6;
-
-
-                                        if ((total.Count + 1) >= permitidos)
                                         {
-                                            isError = true ;
+                                            totalPermitido = 6;
+                                            strTotalPermitido = ConfigurationManager.AppSettings["RepresentanteAcumulacionPPD"].ToString();
+                                            int.TryParse(strTotalPermitido, out totalPermitido);
+                                        }
+
+                                        if ((total.Count ) > totalPermitido)
+                                        {
+                                            isError = true;
                                         }
                                     }
                                     break;
 
                                 case 7: //'Alcalde
                                     {
-                                        if ((total.Count + 1) >= 1)
+                                        string strTotalPermitido = ConfigurationManager.AppSettings["Alcalde"].ToString();
+                                        int.TryParse(strTotalPermitido, out int totalPermitido);
+
+                                        if ((total.Count ) >=  totalPermitido)
                                         {
-                                            isError = true ;
+                                            isError = true;
                                         }
                                     }
                                     break;
@@ -390,14 +428,14 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                         object totalPermitidos = null;
                                         string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
 
-                                        string[] sql = {
-                                            "Select [Postulados] from [dbo].[tblLegisladoresMunicipalesPostulados] ",
-                                            "where [Precinto] like '%",precintoMasterCee,"%'"
-                                        };
+                                        //  string[] sql = {
+                                        //      "Select [Postulados] from [dbo].[tblLegisladoresMunicipalesPostulados] ",
+                                        //      "where [Precinto] like '%",precintoMasterCee,"%'"
+                                        //  };
 
-                                       if ( MyValidarDatosScalar(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos)!=null)
+                                        if (MyValidarDatosScalar(string.Concat(sqlstr), out totalPermitidos, myCnnDBEndososValidarDatos) != null)
                                         {
-                                            if ((total.Count + 1) >= (int)totalPermitidos)
+                                            if ((total.Count ) >= (int)totalPermitidos)
                                             {
                                                 isError = true;
                                             }
@@ -497,17 +535,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         #region MyModules
         private void MyRefresh()
         {
-          
+
             using (SqlExcuteCommand get = new SqlExcuteCommand()
             {
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot(StatusReydi, "1,2,3,4");
+                _MyLotsTable = get.MyGetLot(StatusReydi, "1,2,3,4", WhatIsMode);
                 cbLots.Clear();
 
                 ItemsSource.Clear();
-               
+
                 if (_MyLotsTable.Rows.Count == 0)
                     MessageBox.Show("No hay lotes ", "No Hay", MessageBoxButton.OK, MessageBoxImage.Information);
                 _infoLot = new ObservableCollection<Lots>();
@@ -537,9 +575,22 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     Lots myLots = new Lots();
 
                     myLots.Lot = row["Lot"].ToString();
-                    cbLots.Add(myLots.Lot);
+                    myLots.Modo = int.Parse(row["Modo"].ToString());
 
-                  
+                    if (WhatIsMode == 1)
+                    {
+                        if (myLots.Modo == 1)
+                            cbLots.Add(myLots.Lot);
+                    }
+                    else
+                    {
+                        if (myLots.Modo == 2)
+                            cbLots.Add(myLots.Lot);
+
+                    }
+
+
+
                 }
 
 
@@ -549,17 +600,17 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             }
 
         }
-       
-        private IEnumerable<Lots> GetDate (string lot)
+
+        private IEnumerable<Lots> GetDate(string lot)
         {
             IEnumerable<Lots> query = from radicacion in _infoLot
-                        where radicacion.Lot == lot
-                        select new Lots()
-                        {
-                            VerDate = radicacion.VerDate,
-                            FinDate = radicacion.FinDate,
-                            StatusReydi = radicacion.StatusReydi
-                        };
+                                      where radicacion.Lot == lot
+                                      select new Lots()
+                                      {
+                                          VerDate = radicacion.VerDate,
+                                          FinDate = radicacion.FinDate,
+                                          StatusReydi = radicacion.StatusReydi
+                                      };
 
             return query.ToList();
         }
@@ -590,8 +641,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     DataSet ds = new DataSet();
                     List<string> mylist = new List<string>();
                     dr.Fill(ds);
-                    
-                    foreach(DataRow row in ds.Tables[0].Rows)
+
+                    foreach (DataRow row in ds.Tables[0].Rows)
                     {
                         mylist.Add(row["lot"].ToString() + " Status: " + row["Status"].ToString());
                     }

@@ -146,7 +146,7 @@ namespace WpfEndososCandidatos.ViewModels
 
         public string WhatIsUserName { get; set; }
 
-        public string WhatIsModo { get; set; }
+        public int WhatIsModo { get; set; }
              
 
         public Brush BorderBrush
@@ -448,13 +448,15 @@ namespace WpfEndososCandidatos.ViewModels
                     _AreasDeAcceso = "ABCDEFGH";
                     _Id = Guid.NewGuid();
                 }
+                //"Aspirante = 1"
+                //"Partido = 2"
 
                 if (isRdbCandidato)
-                    WhatIsModo = "Aspirante";
+                    WhatIsModo = 1;
                 else if (isRdbPartido)
-                    WhatIsModo = "Partido";
+                    WhatIsModo = 2;
                 else
-                    WhatIsModo = "Error en el modo";
+                    WhatIsModo = 0;
                 
 
                 this.View.DialogResult = true;

@@ -254,7 +254,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyPartidoTable = get.MyGetPartidos();
+                _MyPartidoTable = get.MyGetPartidos(WhatIsModo);
 
                 cbPartido.Clear();
                 ItemsSource.Clear();
@@ -272,7 +272,18 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     mypartido.Desc = row["Desc"].ToString();
                     mypartido.EndoReq = (int)row["EndoReq"];
                     mypartido.Area = row["Area"].ToString();
-                    cbPartido.Add(mypartido);
+                    mypartido.Modo = int.Parse(row["Modo"].ToString());
+
+                    if (WhatIsModo == 1)
+                    {
+                        if (mypartido.Modo == 1)
+                            cbPartido.Add(mypartido);
+                    }else
+                    {
+                        if (mypartido.Modo == 2)
+                            cbPartido.Add(mypartido);
+
+                    }
                 }
                 cbPartido.Sort();
                 cbPartido_Item_Id = -1;
@@ -281,6 +292,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         #endregion
 
         #region property 
+        public int WhatIsModo { get; set; }
         public bool isFechaRecibo
         {
             get

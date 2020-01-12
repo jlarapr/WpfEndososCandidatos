@@ -25,7 +25,7 @@ namespace WpfEndososCandidatos.Models
         public string conditions { get; set; }
         public string ImportDate { get; set; }
         public string StatusReydi { get; set; }
-
+        public int Modo { get; set; }
 
 
 
@@ -48,6 +48,7 @@ namespace WpfEndososCandidatos.Models
                 conditions,
                 ImportDate,
                 StatusReydi,
+                Modo.ToString()
             };
             string myJoined = string.Join(" - ", myOut);
             return myJoined;

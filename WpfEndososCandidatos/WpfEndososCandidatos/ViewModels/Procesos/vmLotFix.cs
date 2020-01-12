@@ -20,7 +20,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
     using System.Data;
     using Models;
 
-    public class vmLotFix : ViewModelBase<IDialogView>,IDisposable 
+    public class vmLotFix : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
@@ -43,20 +43,22 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             cmdOpen_Click = new RelayCommand(param => MyCmdOpen_Click(), param => CanOpen);
             cbLots = new ObservableCollection<string>();
         }
-       
+
 
         #region MyProperty
+        public int WhatIsModo { get; set; }
         public string SysUser
         {
             get
             {
                 return _SysUser;
-            }set
+            }
+            set
             {
                 _SysUser = value;
             }
         }
-         public Brush BorderBrush
+        public Brush BorderBrush
         {
             get
             {
@@ -89,7 +91,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -100,7 +103,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBMasterCeeCnnStr;
-            }set
+            }
+            set
             {
                 _DBMasterCeeCnnStr = value;
             }
@@ -111,7 +115,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBCeeMasterImgCnnStr;
-            }set
+            }
+            set
             {
                 _DBCeeMasterImgCnnStr = value;
             }
@@ -148,8 +153,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-      
-             
+
+
 
         private bool CanOpen
         {
@@ -163,9 +168,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         #region MyCmd
         private void MyInitWindow()
-       {
-           try
-           {
+        {
+            try
+            {
                 string myBorderBrush = ConfigurationManager.AppSettings["BorderBrush"];
 
                 if (myBorderBrush != null && myBorderBrush.Trim().Length > 0)
@@ -180,18 +185,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MyRefresh();
 
             }
-           catch (Exception ex)
-           {
+            catch (Exception ex)
+            {
 
-               MethodBase site = ex.TargetSite;
-               MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-           }
-       }
+                MethodBase site = ex.TargetSite;
+                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public bool? MyOnShow()
-       {
-           return this.View.ShowDialog();
-       }
+        {
+            return this.View.ShowDialog();
+        }
 
         private void MyCmdSalir_Click()
         {
@@ -218,7 +223,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        
+
         }
 
         private void MyCmdOpen_Click()
@@ -244,24 +249,24 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             }
         }
 
-       public RelayCommand initWindow
-       {
-           get;
-           private set;
-       }
+        public RelayCommand initWindow
+        {
+            get;
+            private set;
+        }
         public RelayCommand cmdSalir_Click
-       {
-           get;
-           private set;
-       }
+        {
+            get;
+            private set;
+        }
 
         public RelayCommand cmdRefresh_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdOpen_Click
         {
-            get;private set;
+            get; private set;
         }
         #endregion
 
@@ -273,7 +278,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0","2,3,4");
+                _MyLotsTable = get.MyGetLot("0", "2,3,4",WhatIsModo);
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
@@ -297,8 +302,18 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     myLots.RevUser = row["RevUser"].ToString();
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
+                    myLots.Modo = int.Parse(row["Modo"].ToString());
 
-                    cbLots.Add(myLots.Lot);
+                    if (WhatIsModo == 1)
+                    {
+                        if (myLots.Modo == 1)
+                            cbLots.Add(myLots.Lot);
+                    }
+                    else
+                    {
+                        if (myLots.Modo == 2)
+                            cbLots.Add(myLots.Lot);
+                    }
                 }
                 cbLots_Item_Id = -1;
             }
@@ -338,7 +353,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
     }//end
 }//end

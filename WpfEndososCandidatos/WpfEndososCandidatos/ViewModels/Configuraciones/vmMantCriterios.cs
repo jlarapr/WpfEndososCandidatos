@@ -61,7 +61,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
         }
 
         #region MyProperty
-
+        public int WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -241,7 +241,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 {
                     for (int i = 0; i < 23; i++)
                     {
-                        myUpDate = mySqlExe.MyChangeCriterios(chk[i].Campo, chk[i].Editar, chk[i].Desc, chk[i].Warning);
+                        myUpDate = mySqlExe.MyChangeCriterios(chk[i].Campo, chk[i].Editar, chk[i].Desc, chk[i].Warning,WhatIsModo);
                     }
 
                     if (!myUpDate)
@@ -404,7 +404,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                 })
                 {
 
-                    _MyCriteriosTable = get.MyGetCriterios();
+                    _MyCriteriosTable = get.MyGetCriterios(WhatIsModo);
 
                     Explicacion = string.Empty;
 

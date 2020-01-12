@@ -13,7 +13,7 @@ namespace WpfEndososCandidatos.Models
         public string Desc { get; set; }
         public int EndoReq { get; set; }
         public string Area { get; set; }
-        public string Modo { get; set; }
+        public int Modo { get; set; }
 
         public override string ToString()
         {
@@ -24,7 +24,7 @@ namespace WpfEndososCandidatos.Models
                 EndoReq.ToString(),
                 Area.ToString(),
                 Id.ToString(),
-                Modo.Trim()
+                Modo.ToString()
             };
             string myJoined = string.Join(" - ", myOut);
             return myJoined;

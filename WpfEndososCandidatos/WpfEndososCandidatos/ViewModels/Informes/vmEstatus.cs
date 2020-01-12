@@ -38,6 +38,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         //private ObservableCollection<Partidos> _infoLot;
         private string _txtTotal;
         private bool _isPartidos;
+        private bool _isPartidosEnabled;
 
         public vmEstatus() : base(new wpfEstatus())
         {
@@ -131,9 +132,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                         foreach (DataRow d in _MyEstatusTable.Rows)
                         {
-                            
+
                             mTitulo = d["Titulo"].ToString();
-                           if (mpartido != d["partido"].ToString().Trim())
+                            if (mpartido != d["partido"].ToString().Trim())
                             {
                                 if (!misStart)
                                 {
@@ -146,7 +147,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                                 misStart = false;
                             }
 
-                           switch (mTitulo)
+                            switch (mTitulo)
                             {
                                 case "Endosos_Requeridos":
                                     {
@@ -267,10 +268,14 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyPartidoTable = get.MyGetPartidos();
+                _MyPartidoTable = get.MyGetPartidos(WhatIsMode);
                 cbPartido.Clear();
                 ItemsSource.Clear();
                 isPartidos = true;
+
+                isPartidosEnabled = WhatIsMode == 1 ? false : true;
+                
+
                 cbPartido_Item = string.Empty;
 
                 foreach (DataRow row in _MyPartidoTable.Rows)
@@ -281,8 +286,20 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     mypartido.Desc = row["Desc"].ToString();
                     mypartido.EndoReq = (int)row["EndoReq"];
                     mypartido.Area = row["Area"].ToString();
+                    mypartido.Modo = int.Parse(row["Modo"].ToString());
 
-                    cbPartido.Add(mypartido);
+                    if (WhatIsMode == 1)
+                    {
+                        if (mypartido.Modo == 1)
+                            cbPartido.Add(mypartido);
+                    }
+                    else
+                    {
+                        if (mypartido.Modo == 2)
+                        {
+                            cbPartido.Add(mypartido);
+                        }
+                    }
                 }
                 cbPartido.Sort();
                 cbPartido_Item_Id = -1;
@@ -292,6 +309,19 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         #endregion
 
         #region property 
+        public int WhatIsMode { get; set; }
+
+        public bool isPartidosEnabled
+        {
+            get
+            {
+                return _isPartidosEnabled;
+            }set
+            {
+                _isPartidosEnabled = value;
+                this.RaisePropertychanged("isPartidosEnabled");
+            }
+        }
 
         public bool isPartidos
         {

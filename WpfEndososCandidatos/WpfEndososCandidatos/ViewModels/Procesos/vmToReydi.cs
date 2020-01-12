@@ -38,9 +38,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private bool _IsEnabled_CmdRemoveAllLot;
         private DataTable _MyLotsTable;
         private string _Partido;
-        
 
-        public vmToReydi() : base (new wpfToReydi())
+
+        public vmToReydi() : base(new wpfToReydi())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
@@ -56,7 +56,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
         #region MyProperty
 
-        public string WhatIsModo { get; set; }
+        public int WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -111,7 +111,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             get
             {
                 return _DBRadicacionesCEECnnStr;
-            }set
+            }
+            set
             {
                 _DBRadicacionesCEECnnStr = value;
             }
@@ -390,7 +391,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }finally
+            }
+            finally
             {
                 MyReset();
             }
@@ -420,7 +422,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         public RelayCommand cmdSalir_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdSendToReydi_Click { get; private set; }
         #endregion
@@ -437,7 +439,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBImagenesCnnStr = DBCeeMasterImgCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0","2,3,4");
+                _MyLotsTable = get.MyGetLot("0", "2,3,4",WhatIsModo);
 
                 this.View.lsAll.ItemsSource = lsAllLots;
                 this.View.lsValid.ItemsSource = lsValidLots;
@@ -456,6 +458,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 foreach (DataRow row in Table.Rows)
                 {
                     string myLot = row["Lot"].ToString();
+                    int modo = int.Parse(row["Modo"].ToString().Trim());
+
                     LotsToReydi item = new LotsToReydi();
                     _Partido = row["Partido"].ToString();
                     item.Lot = myLot;
@@ -465,16 +469,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     item.EndorsementValidationDate = row["VerDate"].ToString();
                     item.Num_Candidato = row["Num_Candidato"].ToString();
 
-                    if (WhatIsModo == "Aspirante")
+                    //"Aspirante = 1"
+                    //"Partido = 2"
+                    if (WhatIsModo == 1)
                     {
-                        if (item.Lot.Contains("R-"))
-                        {
+                        if (modo == 1)
                             lsAllLots.Add(item);
-                        }
                     }
                     else
                     {
-                        lsAllLots.Add(item);
+                        if (modo == 2)
+                            lsAllLots.Add(item);
                     }
                 }
                 lsAllLots.Sort();

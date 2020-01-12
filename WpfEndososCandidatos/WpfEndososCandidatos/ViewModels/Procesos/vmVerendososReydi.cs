@@ -30,7 +30,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         private string _SysUser;
         private string _DBCeeMasterImgCnnStr;
 
-        public vmVerendososReydi() : base (new WpfEndososCandidatos.View.Procesos.wpfVerEndososReydi())
+        public vmVerendososReydi() : base(new WpfEndososCandidatos.View.Procesos.wpfVerEndososReydi())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
             cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click());
@@ -40,7 +40,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         //Property
         #region MyProperty
-            public string WhatIsModo { get; set; }
+        public int WhatIsModo { get; set; }
         public string SysUser
         {
             get
@@ -275,7 +275,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("1", "1,2,3,4");
+                _MyLotsTable = get.MyGetLot("1", "1,2,3,4",WhatIsModo);
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
@@ -299,17 +299,20 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     myLots.RevUser = row["RevUser"].ToString();
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
-
-                    if (WhatIsModo == "Aspirante")
+                    myLots.Modo = int.Parse(row["Modo"].ToString());
+                    //"Aspirante = 1"
+                    //"Partido = 2"
+                    if (WhatIsModo == 1)
                     {
-                        if (myLots.Lot.Contains("R-"))
+                        if (myLots.Modo == 1)
                         {
                             cbLots.Add(myLots.Lot);
                         }
                     }
                     else
                     {
-                        cbLots.Add(myLots.Lot);
+                        if (myLots.Modo == 2)
+                            cbLots.Add(myLots.Lot);
                     }
                 }
                 cbLots_Item_Id = -1;

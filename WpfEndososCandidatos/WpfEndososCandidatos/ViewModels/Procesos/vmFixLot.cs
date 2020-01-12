@@ -51,7 +51,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
 
 
         #region MyProperty
-        public string WhastIsModo { get; set; }
+        public int WhastIsModo { get; set; }
         public string txtFindCandidato
         {
             get
@@ -372,13 +372,14 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     }
 
                     //query = "select   CONCAT( [NumCand],' | ',[Nombre]) as Candidato from [Candidatos] order by nombre ";
-                    query = "select   [NumCand],[Nombre],[Partido] from [Candidatos] order by nombre ";
+                    query = "select   [NumCand],[Nombre],[Partido],[Modo] from [Candidatos] order by nombre ";
                     cmd.CommandText = query;
 
                     System.Data.SqlClient.SqlDataReader dr = cmd.ExecuteReader();
                     
                     while(dr.Read())
                     {
+                        if (dr[3].ToString() == "1")
                         cbInfoCandidato.Add(new modelCandidato
                         {
                             numCandidato = dr[0] as string,
@@ -408,6 +409,9 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         {
             try
             {
+                if (cbInfoCandidato_Item is null)
+                    return;
+
                 string[] candidato = cbInfoCandidato_Item.Split('|');
                                              
                 txtFindCandidato = candidato[0].Trim();

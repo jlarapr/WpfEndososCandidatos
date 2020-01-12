@@ -19,7 +19,7 @@
     using WpfEndososCandidatos.View.Procesos;
     using System.Windows.Input;
 
-    class vmLotProcess : ViewModelBase<IDialogView>,IDisposable 
+    class vmLotProcess : ViewModelBase<IDialogView>, IDisposable
     {
         private IntPtr nativeResource = Marshal.AllocHGlobal(100);
         private Brush _BorderBrush;
@@ -50,9 +50,9 @@
             : base(new wpfLotProcess())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
-            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(),param => CanCmdSalir);
-            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click(),param => CanCmdRefresh);
-            cmdProcess_Click = new RelayCommand(param=>MyCmdProcess_Click(), param => CanCmdProcess);
+            cmdSalir_Click = new RelayCommand(param => MyCmdSalir_Click(), param => CanCmdSalir);
+            cmdRefresh_Click = new RelayCommand(param => MyCmdRefresh_Click(), param => CanCmdRefresh);
+            cmdProcess_Click = new RelayCommand(param => MyCmdProcess_Click(), param => CanCmdProcess);
             cmdView_Click = new RelayCommand(param => MyCmdView_Click(), param => CanView);
             SendTab = new RelayCommand(param => MySendTab());
 
@@ -68,12 +68,15 @@
 
         #region MyProperty
 
+        public int WhatIsModo { get; set; }
+
         public ObservableCollection<string> Resultados
         {
             get
             {
                 return _Resultados;
-            }set
+            }
+            set
             {
                 _Resultados = value;
                 this.RaisePropertychanged("Resultados");
@@ -83,8 +86,9 @@
         {
             get
             {
-                return _ProgressBar_Value; 
-            }set
+                return _ProgressBar_Value;
+            }
+            set
             {
                 _ProgressBar_Value = value;
                 this.RaisePropertychanged("ProgressBar_Value");
@@ -95,7 +99,8 @@
             get
             {
                 return _ProgressBar_Maximum;
-            }set
+            }
+            set
             {
                 _ProgressBar_Maximum = value;
                 this.RaisePropertychanged("ProgressBar_Maximum");
@@ -135,7 +140,8 @@
             get
             {
                 return _DBEndososCnnStr;
-            }set
+            }
+            set
             {
                 _DBEndososCnnStr = value;
             }
@@ -167,7 +173,8 @@
             get
             {
                 return _DBRadicacionesCEECnnStr;
-            }set
+            }
+            set
             {
                 _DBRadicacionesCEECnnStr = value;
             }
@@ -178,7 +185,8 @@
             get
             {
                 return _SysUser;
-            }set
+            }
+            set
             {
                 _SysUser = value;
             }
@@ -189,7 +197,8 @@
             get
             {
                 return _Foreground_Desc;
-            }set
+            }
+            set
             {
                 _Foreground_Desc = value;
                 this.RaisePropertychanged("Foreground_Desc");
@@ -216,7 +225,8 @@
             get
             {
                 return _lblNReasons;
-            }set
+            }
+            set
             {
                 _lblNReasons = value;
                 this.RaisePropertychanged("lblNReasons");
@@ -245,7 +255,7 @@
                 if (!string.IsNullOrEmpty(value))
                 {
                     _cbLots_Item = value;
-                    this.RaisePropertychanged("cbLots_Item");                  
+                    this.RaisePropertychanged("cbLots_Item");
                 }
             }
         }
@@ -257,8 +267,8 @@
             }
             set
             {
-               
-                _cbLots_Item_Id = value;       
+
+                _cbLots_Item_Id = value;
                 this.RaisePropertychanged("cbLots_Item_Id");
 
                 if ((value > -1) && (!_RunProcess))
@@ -272,7 +282,8 @@
             get
             {
                 return _CanCmdProcess;
-            }set
+            }
+            set
             {
                 _CanCmdProcess = value;
             }
@@ -282,7 +293,8 @@
             get
             {
                 return _CanView;
-            }set
+            }
+            set
             {
                 _CanView = value;
             }
@@ -293,7 +305,8 @@
             get
             {
                 return _CanCmdSalir;
-            }set
+            }
+            set
             {
                 _CanCmdSalir = value;
             }
@@ -303,7 +316,8 @@
             get
             {
                 return _CanCmdRefresh;
-            }set
+            }
+            set
             {
                 _CanCmdRefresh = value;
 
@@ -337,7 +351,7 @@
                 MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-          
+
 
         }
         private void MyCmdSalir_Click()
@@ -392,10 +406,10 @@
                 })
                 {
                     exe.DoEvents();
-                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios,lblNReasons, ProgressBar_Value, ProgressBar_Maximum,Resultados);
+                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios, lblNReasons, ProgressBar_Value, ProgressBar_Maximum, Resultados);
                 }
 
-              
+
 
                 if (int.Parse(Resultados[4]) > 0) //lblRechazadas            4)
                     CanView = true;
@@ -429,7 +443,7 @@
                 {
                     frmFixVoid.View.Owner = this.View as Window;
                     frmFixVoid.DBEndososCnnStr = DBEndososCnnStr;
-                    frmFixVoid.DBMasterCeeCnnStr = DBCeeMasterCnnStr ;
+                    frmFixVoid.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frmFixVoid.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frmFixVoid.Lot = Resultados[0];
                     frmFixVoid.SysUser = SysUser;
@@ -456,19 +470,19 @@
         }
         public RelayCommand cmdRefresh_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdProcess_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand cmdView_Click
         {
-            get;private set;
+            get; private set;
         }
         public RelayCommand SendTab
         {
-            get;private set;
+            get; private set;
         }
         #endregion
 
@@ -508,13 +522,13 @@
                 using (SqlExcuteCommand get = new SqlExcuteCommand()
                 {
                     DBCnnStr = DBEndososCnnStr,
-                    DBCeeMasterCnnStr=DBCeeMasterCnnStr,
-                    DBImagenesCnnStr=DBImagenesCnnStr
+                    DBCeeMasterCnnStr = DBCeeMasterCnnStr,
+                    DBImagenesCnnStr = DBImagenesCnnStr
                 })
                 {
 
-                    _MyCriteriosTable = get.MyGetCriterios();
-                    
+                    _MyCriteriosTable = get.MyGetCriterios(WhatIsModo);
+
                     CollCriterios.Clear();
 
                     Foreground_Desc.Clear();
@@ -522,7 +536,7 @@
 
                     foreach (DataRow row in _MyCriteriosTable.Rows)
                     {
-                        
+
                         CollCriterios.Add(new Criterios
                         {
                             Campo = row["Campo"].ToString(),
@@ -533,7 +547,7 @@
 
                         if (row["Editar"].ToString().Trim() != "1")
                         {
-                            if (row["Warning"].ToString().Trim() != "1" )
+                            if (row["Warning"].ToString().Trim() != "1")
                                 Foreground_Desc.Add(Brushes.Yellow);
                             else
                                 Foreground_Desc.Add(Brushes.Red);
@@ -549,9 +563,9 @@
                     for (int i = 0; i <= CollCriterios.Count; i++)//17
                         lblNReasons.Add("0");
 
-                  
 
-                    _MyLotsTable = get.MyGetLotToProcess();
+
+                    _MyLotsTable = get.MyGetLotToProcess(WhatIsModo);
 
                     cbLots.Clear();
 
@@ -573,9 +587,19 @@
                         myLots.RevUser = row["RevUser"].ToString();
                         myLots.conditions = row["conditions"].ToString();
                         myLots.ImportDate = row["ImportDate"].ToString();
-                      
+                        myLots.Modo = int.Parse(row["Modo"].ToString());
                         cbLots.Add(myLots.Lot);
 
+                        //if (WhatIsModo == 1)
+                        //{
+                        //    if (myLots.Modo == 1)
+                        //    cbLots.Add(myLots.Lot);
+                        //}
+                        //else
+                        //{
+                        //    if (myLots.Modo == 2)
+                        //        cbLots.Add(myLots.Lot);
+                        //}
                     }
                     cbLots_Item_Id = -1;
                     MySendTab();
@@ -641,7 +665,7 @@
                 nativeResource = IntPtr.Zero;
             }
         }
-        
+
         #endregion
 
     }//end

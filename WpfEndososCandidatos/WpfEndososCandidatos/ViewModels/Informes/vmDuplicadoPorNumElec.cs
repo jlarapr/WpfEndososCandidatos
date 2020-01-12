@@ -34,7 +34,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
         private int _dgSelectedIndex;
         private infoEndososRechazados _dgSelectedItem;
         private ObservableCollection<String> fileTmp;
-        
+
         public vmDuplicadoPorNumElec() : base(new wpfDuplicadoPorNumElec())
         {
             initWindow = new RelayCommand(param => MyInitWindow());
@@ -49,6 +49,7 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
 
         #region MyProperty
+        public int WhatIsModo { get; set; }
         public Brush BorderBrush
         {
             get
@@ -227,7 +228,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     }
                     System.IO.Directory.Delete("C:\\ApplicaTmp\\", true);
 
-                }catch { }
+                }
+                catch { }
 
                 this.View.Close();
             }
@@ -258,15 +260,15 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                 {
                     txtTotal = "0";
                     DataTable T = new DataTable();
-                    T = get.MyGetDuplicadoPorNumeroElectoral(TxtElecNum);
+                    T = get.MyGetDuplicadoPorNumeroElectoral(TxtElecNum,WhatIsModo);
                     txtTotal = string.Format("{0:N0}", T.Rows.Count);
 
-                    if (T.Rows.Count <=0)
+                    if (T.Rows.Count <= 0)
                     {
                         MessageBox.Show("No Hay Datos", TxtElecNum, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         return;
                     }
-                    
+
                     foreach (DataRow row in T.Rows)
                     {
                         LotsEndo datos = new LotsEndo();
@@ -288,17 +290,30 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         //datos.GoodErrores       = row["GoodErrores"].ToString();
                         //datos.BadErrores        = row["BadErrores"].ToString();
 
-                        datos.NumElec     = row["NumElec"].ToString();
-                        datos.Partido     = row["Partido"].ToString();
-                        datos.Lot         = row["Lot"].ToString();
-                        datos.Batch       = row["Batch"].ToString();
-                        datos.Formulario  = row["Formulario"].ToString();
-                        datos.Image       = row["Image"].ToString();
-                        datos.Errores     = row["Errores"].ToString();
-                        datos.Status      = row["Status"].ToString();
-                        datos.EndosoImage = get.MyGetImgInByte(datos.NumElec, datos.Partido,datos.Lot,datos.Batch, datos.Formulario, datos.Image, datos.Errores, datos.Status);
+                        datos.NumElec = row["NumElec"].ToString();
+                        datos.Partido = row["Partido"].ToString();
+                        datos.Lot = row["Lot"].ToString();
+                        datos.Batch = row["Batch"].ToString();
+                        datos.Formulario = row["Formulario"].ToString();
+                        datos.Image = row["Image"].ToString();
+                        datos.Errores = row["Errores"].ToString();
+                        datos.Status = row["Status"].ToString();
+                        datos.EndosoImage = get.MyGetImgInByte(datos.NumElec, datos.Partido, datos.Lot, datos.Batch, datos.Formulario, datos.Image, datos.Errores, datos.Status);
+                        datos.Modo = int.Parse(row["Modo"].ToString());
 
-                        ItemsSource.Add(datos);
+                        if (WhatIsModo == 1)
+                        {
+                            if (datos.Modo == 1)
+                                ItemsSource.Add(datos);
+                        }
+                        else
+                        {
+                            if (datos.Modo == 2)
+                                ItemsSource.Add(datos);
+                        }
+
+
+
                     }
                 }
             }
@@ -318,11 +333,11 @@ namespace WpfEndososCandidatos.ViewModels.Informes
 
                 jolcode.Code.AplicarEfecto(View as Window);
                 jolcode.Code.DoEvents();
-                
-               // SaveFileDialog sfd = new SaveFileDialog();
-               // sfd.Filter = "Pdfs Files|*.Pdf|All Files|*.*";
-               
-               // if (sfd.ShowDialog() == true)
+
+                // SaveFileDialog sfd = new SaveFileDialog();
+                // sfd.Filter = "Pdfs Files|*.Pdf|All Files|*.*";
+
+                // if (sfd.ShowDialog() == true)
                 {
                     MergeEx mergeEx = new MergeEx();
                     String path = @"C:\\ApplicaTmp\\";// System.IO.Path.GetDirectoryName(sfd.FileName);
@@ -346,34 +361,34 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                     }
 
                     int count = 0;
-                                       
+
                     foreach (LotsEndo item in ItemsSource)
                     {
                         count++;
                         mergeEx.DestinationFile = path;
-                        mergeEx.setFileName = item.NumElec ;  //System.IO.Path.GetFileName(sfd.FileName);
+                        mergeEx.setFileName = item.NumElec;  //System.IO.Path.GetFileName(sfd.FileName);
                         mergeEx.setSplit = 1000;
 
                         byte[] Tif = item.EndosoImage;
-                       
-                        String fileImg =    "Formulario-" + item.Formulario + "-" +  Guid.NewGuid().ToString() + ".tif";
-                       
+
+                        String fileImg = "Formulario-" + item.Formulario + "-" + Guid.NewGuid().ToString() + ".tif";
+
                         System.IO.File.WriteAllBytes(path + fileImg, Tif);
-                        
+
                         mergeEx.ConvertImageToPdf(path + fileImg, path + fileImg + ".pdf");
-                       
+
                         System.Drawing.Point point = new System.Drawing.Point(500, 310);
 
                         String valido = "(Válido Lote:";
                         if (item.Status != "0")
                             valido = "(Inválido Lote:";
 
-//                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + " " + item.Status +")",point );
-                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + ")",point );
-                                              
+                        //                        mergeEx.AddTextToPdf(path + fileImg + ".pdf" , path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + " " + item.Status +")",point );
+                        mergeEx.AddTextToPdf(path + fileImg + ".pdf", path + count.ToString("00#") + ".pdf", valido + item.Lot + " Formulario:" + item.Formulario + ")", point);
+
                         System.IO.File.Delete(path + fileImg);
                         System.IO.File.Delete(path + fileImg + ".pdf");
-                       
+
                     }
 
                     String[] fileList = System.IO.Directory.GetFiles(path, "*.pdf");
@@ -412,7 +427,8 @@ namespace WpfEndososCandidatos.ViewModels.Informes
             {
                 MethodBase site = ex.TargetSite;
                 MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
-            }finally
+            }
+            finally
             {
                 jolcode.Code.QuitarEfecto(View as Window);
             }

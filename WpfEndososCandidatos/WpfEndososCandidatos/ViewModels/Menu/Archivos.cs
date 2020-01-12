@@ -69,8 +69,26 @@
 
                     WhatIsUserName = frmfLogin.WhatIsUserName;
                     WhatIsModo = frmfLogin.WhatIsModo;
+                    
+                    using (SqlExcuteCommand get = new SqlExcuteCommand()
+                    {
+                        DBCnnStr = DBEndososCnnStr
+                    })
+                    {
+                        System.Data.DataTable tblModo = get.MyGetModo(WhatIsModo);
 
-                    Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString()," Modo:",WhatIsModo);
+                        string strModo = "Nose";
+                        foreach (System.Data.DataRow r in tblModo.Rows)
+                        {
+                            Models.Modo uModo = new Modo();
+                            uModo.ModoId = int.Parse(r["Modo"].ToString());
+                            uModo.Desc = r["Desc"].ToString();
+                            strModo = uModo.Desc;
+
+                        }
+                        Title += string.Concat(" UserName:", frmfLogin.WhatIsUserName, " ", frmfLogin._Id.ToString()," Modo:",strModo);    
+                    }
+                      
                     _Id = frmfLogin._Id;
                     mnuLogin_IsEnabled = false;
                     mnuLogout_IsEnabled = true;
@@ -90,11 +108,14 @@
                                 mnuProcesarLotes_IsEnabled = true;
                                 mnuVerEndosos_IsEnabled = true;
 
-                                if (WhatIsModo == "Partido")
+                                //"Aspirante = 1"
+                                //"Partido = 2"
+
+                                if (WhatIsModo == 2)
                                 {
                                     mnuReydi_IsEnabled = false;
                                 }
-                                else if (WhatIsModo == "Aspirante")
+                                else if (WhatIsModo == 1)
                                 {
                                     mnuReydi_IsEnabled = true;
                                 }

@@ -19,7 +19,7 @@
             <Button Width="75" Height="23" Margin="406,104,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdRefresh_Click}" Content="Refresh" help:Help.Keyword="wpfEstatus.htm#" />
             <Button Width="75" Height="23" Margin="498,104,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdToExcel_Click}" CommandParameter="0" Content="To Excel" help:Help.Keyword="wpfEstatus.htm#" />
             <Button Width="75" Height="23" Margin="578,104,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding cmdSalir_Click}" Content="Exit" help:Help.Keyword="wpfEstatus.htm#" />
-            <CheckBox x:Name="isPartidos" Width="88" Margin="326,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Partidos" IsChecked="{Binding isPartidos}" help:Help.Keyword="wpfEstatus.htm#" />
+            <CheckBox x:Name="isPartidos" Width="88" Margin="326,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Partidos" IsChecked="{Binding isPartidos}" IsEnabled="{Binding isPartidosEnabled}" help:Help.Keyword="wpfEstatus.htm#" />
         </Grid>
     </Border>
 </Window>

@@ -167,6 +167,7 @@
                     frmLotProcess.DBImagenesCnnStr = DBImagenesCnnStr;
                     frmLotProcess.DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr;
                     frmLotProcess.SysUser = WhatIsUserName;
+                    frmLotProcess.WhatIsModo = WhatIsModo;
                     frmLotProcess.MyOnShow();
                 }
             }
@@ -293,7 +294,7 @@
             }
         }
         private void MyFixLot_Click()
-        {
+        {//Fix en menu de Redy
             try
             {
                 using (vmFixLot frm = new vmFixLot())
@@ -327,6 +328,7 @@
                     frm.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frm.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frm.SysUser = WhatIsUserName;
+                    frm.WhatIsModo = WhatIsModo;
                     frm.MyOnShow();
                 }
 
@@ -361,6 +363,7 @@
                     frmLotFix.DBMasterCeeCnnStr = DBCeeMasterCnnStr;
                     frmLotFix.DBCeeMasterImgCnnStr = DBImagenesCnnStr;
                     frmLotFix.SysUser = WhatIsUserName;
+                    frmLotFix.WhatIsModo = WhatIsModo;
                     frmLotFix.MyOnShow();
                 }
             }
@@ -478,6 +481,7 @@
                     frmLotReverse.View.Owner = this.View as Window;
                     frmLotReverse.DBEndososCnnStr = DBEndososCnnStr;
                     frmLotReverse.SysUser = WhatIsUserName;
+                    frmLotReverse.WhatIsModo = WhatIsModo;
                     frmLotReverse.MyOnShow();
                 }
                

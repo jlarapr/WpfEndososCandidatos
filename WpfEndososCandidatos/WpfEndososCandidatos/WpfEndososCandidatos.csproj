@@ -201,6 +201,7 @@
     <Compile Include="Models\FixVoid.cs" />
     <Compile Include="Models\Lots.cs" />
     <Compile Include="Models\LotsEndo.cs" />
+    <Compile Include="Models\Modo.cs" />
     <Compile Include="Models\Notarios.cs" />
     <Compile Include="Models\Partidos.cs" />
     <Compile Include="Models\Precintos.cs" />

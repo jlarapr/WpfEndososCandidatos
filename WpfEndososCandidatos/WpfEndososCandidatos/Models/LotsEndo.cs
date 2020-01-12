@@ -33,6 +33,7 @@ namespace WpfEndososCandidatos.Models
         public byte[] EndosoImage { get; set; }
         public String Errores   { get; set; }
         public String Status { get; set; }
+        public int Modo { get; set; }
 
         public override string ToString()
         {
@@ -63,6 +64,7 @@ namespace WpfEndososCandidatos.Models
             myout.Add(EndosoImage.ToString());
             myout.Add(Errores);
             myout.Add(Status);
+            myout.Add(Modo.ToString());
                              
 
             string myJoined = string.Join("|", myout);

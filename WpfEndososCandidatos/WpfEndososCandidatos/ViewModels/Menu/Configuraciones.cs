@@ -179,6 +179,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     frmLotInit.View.Owner = this.View as Window;
                     frmLotInit.DBEndososCnnStr = DBEndososCnnStr;
+                    frmLotInit.WhatIsModo = WhatIsModo;
                     frmLotInit.MyOnShow();
                 }
             }
@@ -240,6 +241,7 @@ namespace WpfEndososCandidatos.ViewModels
                     frmMantNotarios.View.Owner = this.View as Window;
                     frmMantNotarios.DBEndososCnnStr = _DBEndososCnnStr;
                     frmMantNotarios.DBCeeMasterCnnStr = DBCeeMasterCnnStr;
+                    frmMantNotarios.WhatIsModo = WhatIsModo;
                     frmMantNotarios.MyOnShow();
                 }
 
@@ -260,6 +262,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     frmMantCriterios.View.Owner = this.View as Window;
                     frmMantCriterios.DBEndososCnnStr = DBEndososCnnStr;
+                    frmMantCriterios.WhatIsModo = WhatIsModo;
                     frmMantCriterios.MyOnShow();
                 }
 
@@ -279,7 +282,7 @@ namespace WpfEndososCandidatos.ViewModels
                 {
                     frmMantPartidos.View.Owner = this.View as Window;
                     frmMantPartidos.DBEndososCnnStr = _DBEndososCnnStr;
-                    frmMantPartidos.WhastIsModo = WhatIsModo;
+                    frmMantPartidos.WhatIsModo = WhatIsModo;
                     frmMantPartidos.MyOnShow();
                 }
 

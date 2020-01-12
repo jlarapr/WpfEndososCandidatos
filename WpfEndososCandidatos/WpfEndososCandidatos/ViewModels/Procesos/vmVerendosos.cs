@@ -41,6 +41,8 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
         }
         //Property
         #region MyProperty
+        public int WhatIsModo { get; set; }
+
         public string SysUser
         {
             get
@@ -271,7 +273,7 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                 DBCnnStr = DBEndososCnnStr
             })
             {
-                _MyLotsTable = get.MyGetLot("0","1,2,3,4");
+                _MyLotsTable = get.MyGetLot("0", "1,2,3,4",WhatIsModo);
                 cbLots.Clear();
 
                 if (_MyLotsTable.Rows.Count == 0)
@@ -295,8 +297,17 @@ namespace WpfEndososCandidatos.ViewModels.Procesos
                     myLots.RevUser = row["RevUser"].ToString();
                     myLots.conditions = row["conditions"].ToString();
                     myLots.ImportDate = row["ImportDate"].ToString();
-
-                    cbLots.Add(myLots.Lot);
+                    myLots.Modo = int.Parse(row["Modo"].ToString());
+                    if (WhatIsModo == 1)
+                    {
+                        if (myLots.Modo == 1)
+                            cbLots.Add(myLots.Lot);
+                    }
+                    else
+                    {
+                        if (myLots.Modo == 2)
+                            cbLots.Add(myLots.Lot);
+                    }
 
                 }
                 cbLots_Item_Id = -1;
