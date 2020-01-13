@@ -3787,7 +3787,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios, ObservableCollection<string> lblNReasons, ObservableCollection<int> ProgressBar_Value, ObservableCollection<int> ProgressBar_Maximum, ObservableCollection<string> Resultados)
+        public bool MyProcessLot(string numlot, string usercode, ObservableCollection<Criterios> CollCriterios, ObservableCollection<string> lblNReasons, ObservableCollection<int> ProgressBar_Value, ObservableCollection<int> ProgressBar_Maximum, ObservableCollection<string> Resultados,int modo)
         {
             /*
                 'STATUS LOTE para la tabla lots
@@ -5220,14 +5220,14 @@ namespace jolcode
                         {
                             lblNReasons[X] = Rechazo[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 0, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 0, img, myCmdDBEndosos,modo);
                             isrechazo = true;
                         }
                         else if (isWarning[X])
                         {
                             lblNReasons[X] = Warning[X].ToString();
                             //'ESCRIBE LOS ERRORES A LA TABLA LOTSVOID (Warning)
-                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 2, img, myCmdDBEndosos);
+                            WriteVoid(m_BatchTrack, m_Batch, m_BatchPgNo, row["NumElec"].ToString().Trim(), X + 1, m_PARTIDO, 2, img, myCmdDBEndosos,modo);
                             iswarning = true;
                         }
                     }
@@ -5265,7 +5265,7 @@ namespace jolcode
                     {
                         "Insert Into LotsEndo",
                         "([Partido],[Lot],[Batch],[Formulario],[Candidato],[Cargo],[NumElec],[Nombre],[Paterno],[Materno],[Padre],[Madre],[FechaNac],[Leer_Inv],[Alteracion],[Notario]",
-                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores],[LeerMSG],[Fecha_Recibo] ) ",
+                           ",[Firma_Peticionario],[Firma_Pet_Inv],[Firma_Notario],[Firma_Not_Inv],[Fecha_Endoso],[Image],[Status],[Firma_Fecha],[SEXO],[PRECINTO],[EndosoImage],[Errores],[LeerMSG],[Fecha_Recibo],[Modo] ) ",
 
                         "Values('" , m_PARTIDO , "'",                               //Partido
                         ",'" , m_BatchTrack , "'",                                  //Lot
@@ -5296,7 +5296,7 @@ namespace jolcode
                         ", @EndosoImage",
                         ",'",strRechazos , "'",
                         ",'",m_Leer , "'",                                           // Otro Rechazo
-                        ",'",MyFechaToSql(m_Fecha_Recibo_CEE),"'",
+                        ",'",MyFechaToSql(m_Fecha_Recibo_CEE),"',",modo.ToString(),
                         ")"
 
                     };
@@ -5495,7 +5495,7 @@ namespace jolcode
             new Action(delegate { }));
         }
 
-        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status, byte[] EndosoImage, SqlCommand dbCmd)
+        private void WriteVoid(string Lot, string BatchNo, int Formulario, string NumElec, int Rechazo, string m_PARTIDO, int Status, byte[] EndosoImage, SqlCommand dbCmd,int modo)
         {
             // 'ESCRIBE EL ENDOSO RECHAZADO
             // 'STATUS DEL RECHAZO
@@ -5512,7 +5512,8 @@ namespace jolcode
             sqlstr = sqlstr + "," + Formulario;
             sqlstr = sqlstr + ",'" + Rechazo + "'";
             sqlstr = sqlstr + ",'" + NumElec + "'";
-            sqlstr = sqlstr + ", " + Status;
+            sqlstr = sqlstr + ", " + Status ;
+            sqlstr = sqlstr + ", " + modo.ToString();
             sqlstr = sqlstr + ", @EndosoImage )";
 
             SqlParameter param = new SqlParameter();

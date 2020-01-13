@@ -406,7 +406,7 @@
                 })
                 {
                     exe.DoEvents();
-                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios, lblNReasons, ProgressBar_Value, ProgressBar_Maximum, Resultados);
+                    exe.MyProcessLot(cbLots_Item, SysUser, CollCriterios, lblNReasons, ProgressBar_Value, ProgressBar_Maximum, Resultados,WhatIsModo);
                 }
 
 
