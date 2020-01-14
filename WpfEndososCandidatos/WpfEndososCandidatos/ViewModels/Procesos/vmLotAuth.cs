@@ -58,7 +58,8 @@
             get
             {
                 return _IsEnabledFchRecibo;
-            }set
+            }
+            set
             {
                 _IsEnabledFchRecibo = value;
                 this.RaisePropertychanged("IsEnabledFchRecibo");
@@ -69,7 +70,8 @@
             get
             {
                 return _isCantidadEntregadaIsReadOnly;
-            }set
+            }
+            set
             {
                 _isCantidadEntregadaIsReadOnly = value;
                 this.RaisePropertychanged("isCantidadEntregadaIsReadOnly");
@@ -92,7 +94,8 @@
             get
             {
                 return _dpFchRecibo;
-            }set
+            }
+            set
             {
                 _dpFchRecibo = value;
                 this.RaisePropertychanged("dpFchRecibo");
@@ -124,6 +127,11 @@
                 {
                     _numLote = value;
                     this.RaisePropertychanged("numLote");
+                }else
+                {
+                    _numLote = string.Empty;
+                    this.RaisePropertychanged("numLote");
+
                 }
 
             }
@@ -230,8 +238,9 @@
             set
             {
                 _cbLots_Item = value;
+                
 
-                if (value != null)
+                if (!string.IsNullOrEmpty(value))  //if (value != null)
                 {
                     numLote = value.Trim();
 
@@ -243,27 +252,46 @@
                             DBRadicacionesCEECnnStr = DBRadicacionesCEECnnStr
                         })
                         {
-                            cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
-                            cantidad = get.MyGetCatntidadDigitalizada(numLote);
-                            lblPartido = get.MyGetPartidoTF(numLote).ToString();
-                            object EndososDate = get.MyReydiEndososDate(numLote);
+                            if (!string.IsNullOrEmpty(numLote))
+                            {
+                                if (WhatIsModo == 1)
+                                    cantidadEntregada = get.MyGetCatntidadEntregada(numLote);
+                                else
+                                    cantidadEntregada = 0;
 
-                            if (EndososDate.ToString() != "???")
-                                dpFchRecibo=(DateTime)EndososDate;
+                                cantidad = get.MyGetCatntidadDigitalizada(numLote);
 
+                                //lblPartido = get.MyGetPartidoTF(numLote).ToString();
+                                Object tmp = get.MyGetPartidoTF(numLote);
 
+                                if (tmp != null)
+                                    lblPartido = tmp.ToString();
+
+                                if (WhatIsModo == 1)
+                                {
+                                    object EndososDate = get.MyReydiEndososDate(numLote);
+
+                                    if (EndososDate.ToString() != "???")
+                                        dpFchRecibo = (DateTime)EndososDate;
+                                }
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.ToString());
+                        MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         MyReset();
 
                     }
 
-                }else
+                }
+                else
                 {
-                    lblPartido = string.Empty;
+                    numLote = "0";
+                    cantidadEntregada = 0;
+                    cantidad = 0;
+                    lblPartido = String.Empty;
+                    dpFchRecibo = DateTime.Now;
                 }
                 this.RaisePropertychanged("cbLots_Item");
             }
@@ -333,7 +361,7 @@
 
                     }
 
-                  
+
 
                 }
                 MyReset();
@@ -416,7 +444,7 @@
                 //"Aspirante = 1"
                 //"Partido = 2"
                 if (WhatIsModo == 1)
-                { 
+                {
                     isCantidadEntregadaIsReadOnly = true;
                     IsEnabledFchRecibo = false;
                 }
@@ -433,7 +461,7 @@
             {
 
                 MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
                 _LogClass.MYEventLog.WriteEntry(ex.ToString() + "\r\n" + site.Name, EventLogEntryType.Error, 9999);
 
             }
@@ -496,11 +524,31 @@
                     //"Partido = 2"
                     if (WhatIsModo == 1)
                     {
-                        if (row["BatchTrack"].ToString().Contains("R-"))
-                            cbLots.Add(row["BatchTrack"].ToString());
-                    }else
+                        try
+                        {
+                            if (row["BatchTrack"].ToString().Contains("R-"))
+                            {
+                                cbLots.Add(row["BatchTrack"].ToString());
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error BatchTrack is Empty\r\n" + ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
                     {
-                        cbLots.Add(row["BatchTrack"].ToString());
+                        try
+                        {
+                            if (!row["BatchTrack"].ToString().Contains("R-"))
+                            {
+                                cbLots.Add(row["BatchTrack"].ToString());
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error BatchTrack is Empty\r\n" + ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
 
                     }
                     //cbLots.Add(row["BatchTrack"].ToString() + "-" + row["Amount"].ToString() + "-" + row["Partido"].ToString());

@@ -123,7 +123,7 @@
             {
                 
                 MethodBase site = ex.TargetSite;
-                MessageBox.Show(ex.Message, site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.ToString(), site.Name, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
