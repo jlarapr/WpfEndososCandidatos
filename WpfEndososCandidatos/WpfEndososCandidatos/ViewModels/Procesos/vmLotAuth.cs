@@ -341,7 +341,7 @@
 
                         get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
 
-                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, EndososDate))   // EndososDate))
+                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, EndososDate,WhatIsModo))   // EndososDate))
                             throw new Exception("Error en la base de datos. *MyChangeTF*");
                         else
                             MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -354,7 +354,7 @@
 
                         get.MyTFJuramentoDate(numLote, mDate);
 
-                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate))   // EndososDate))
+                        if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate,WhatIsModo))   // EndososDate))
                             throw new Exception("Error en la base de datos. *MyChangeTF*");
                         else
                             MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -387,7 +387,7 @@
                 })
                 {
 
-                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser, ""))
+                    if (!get.MyChangeTF(get.MyGetTodosLotes(), SysUser, "",WhatIsModo))
                         throw new Exception("Error en la base de datos.");
                     else
                         MessageBox.Show("Done...", "Done.", MessageBoxButton.OK, MessageBoxImage.Information);

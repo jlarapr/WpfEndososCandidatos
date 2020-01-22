@@ -3467,7 +3467,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaRecibo)
+        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaRecibo,int modo)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -3485,9 +3485,9 @@ namespace jolcode
 
                 string[] myInsertLot =
                         {
-                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate],[Num_Candidato])  ",
+                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate],[Num_Candidato],modo)  ",
                             "VALUES (",
-                             "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate,@Num_Candidato",
+                             "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate,@Num_Candidato,@modo",
                             ");"
                         };
 
@@ -3578,6 +3578,11 @@ namespace jolcode
                         SqlParameter statusParam = new SqlParameter();
                         statusParam.ParameterName = "@Status";
                         statusParam.SqlDbType = SqlDbType.VarChar;
+
+                        SqlParameter modoParam = new SqlParameter();
+                        modoParam.ParameterName = "@modo";
+                        modoParam.SqlDbType = SqlDbType.Int;
+
                         /*
                         SqlParameter verDateParam = new SqlParameter();
                         verDateParam.ParameterName = "@VerDate";
@@ -3669,6 +3674,7 @@ namespace jolcode
                             cmd.Parameters.Add(usercodeParam);
                             cmd.Parameters.Add(authDateParam);
                             cmd.Parameters.Add(statusParam);
+                            cmd.Parameters.Add(modoParam);
                             /* cmd.Parameters.Add(verDateParam);
                              cmd.Parameters.Add(verUserParam);
                              cmd.Parameters.Add(finUserParam);
@@ -3704,6 +3710,7 @@ namespace jolcode
                             cmd.Parameters.Remove(usercodeParam);
                             cmd.Parameters.Remove(authDateParam);
                             cmd.Parameters.Remove(statusParam);
+                            cmd.Parameters.Remove(modoParam);
                             //cmd.Parameters.Remove(verDateParam);
                             //cmd.Parameters.Remove(verUserParam);
                             //cmd.Parameters.Remove(finUserParam);
