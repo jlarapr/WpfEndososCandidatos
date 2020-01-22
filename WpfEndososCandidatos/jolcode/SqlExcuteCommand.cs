@@ -1670,7 +1670,10 @@ namespace jolcode
             DataTable myTableReturn = new DataTable();
             try
             {
+
                 string mySqlstr = string.Format("Select * from notarios where Modo={0} order by Nombre", modo);
+                if (modo == 2)
+                    mySqlstr = string.Format("Select * from notariosPartidos where Modo={0} order by Nombre", modo);
 
                 using (SqlConnection cnn = new SqlConnection()
                 {
@@ -2656,7 +2659,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyDeleteNotario(string where, string where2, string NumCand)
+        public bool MyDeleteNotario(string where, string where2, string NumCand,int modo)
         {
             bool myBoolReturn = false;
             string[] myDelete =
@@ -2664,6 +2667,13 @@ namespace jolcode
                             "Delete from [dbo].[Notarios] ",
                             " WHERE NumElec=@Where and partido=@where2 and NumCand=@NumCand"
                         };
+
+            string[] myDeletePartidos =
+           {
+                            "Delete from [dbo].[NotariosPartidos] ",
+                            " WHERE NumElec=@Where and partido=@where2 and NumCand=@NumCand"
+                        };
+
             try
             {
                 using (SqlConnection cnn = new SqlConnection()
@@ -2678,6 +2688,9 @@ namespace jolcode
                         CommandText = string.Concat(myDelete)
                     })
                     {
+                        if (modo == 2)
+                        cmd.CommandText = string.Concat(myDeletePartidos);
+
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
 
@@ -3277,9 +3290,33 @@ namespace jolcode
                             "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status,@Fecha_Dia,@Fecha_Mes,@Fecha_Ano,@Modo)"
                         };
 
+                string[] myInsertPartidos =
+                        {
+                            "INSERT INTO [dbo].[NotariosPartidos] ([NumElec],[Partido],[NumCand],[Nombre],[Apellido1],[Apellido2],[Status],[Fecha_Dia],[Fecha_Mes],[Fecha_Ano],[Modo]) ",
+                            "VALUES (@NumElec,@Partido,@NumCand,@Nombre,@Apellido1,@Apellido2,@Status,@Fecha_Dia,@Fecha_Mes,@Fecha_Ano,@Modo)"
+                        };
+
+
                 string[] myUpdate =
                     {
                             "UPDATE [dbo].[Notarios] ",
+                            "SET [NumElec] = @NumElec,",
+                            "[Partido] = @Partido,",
+                            "[NumCand] = @NumCand,",
+                            "[Nombre]  = @Nombre,",
+                            "[Apellido1] = @Apellido1,",
+                            "[Apellido2] = @Apellido2,",
+                            "[Status]    = @Status,",
+                            "[Fecha_Dia] = @Fecha_Dia,",
+                            "[Fecha_Mes] = @Fecha_Mes,",
+                            "[Fecha_Ano] = @Fecha_Ano,",
+                            "[Modo] = @Modo ",
+                            "WHERE NumElec=@where"
+                };
+
+                string[] myUpdatePartidos =
+                    {
+                            "UPDATE [dbo].[NotariosPartidos] ",
                             "SET [NumElec] = @NumElec,",
                             "[Partido] = @Partido,",
                             "[NumCand] = @NumCand,",
@@ -3306,7 +3343,11 @@ namespace jolcode
 
                     })
                     {
+
                         cmd.CommandText = isInsert == true ? string.Concat(myInsert) : string.Concat(myUpdate);
+
+                        if (modo == 2)
+                            cmd.CommandText = isInsert == true ? string.Concat(myInsertPartidos) : string.Concat(myUpdatePartidos);
 
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
@@ -4255,11 +4296,17 @@ namespace jolcode
 
                     if (CollCriterios[3].Editar == true || CollCriterios[3].Warning == true)//'4-NOTARIO NO EXISTE EN NUESTROS ARCHIVOS
                     {
+
+                        string tblNotarioi = "[Notarios]";
+
+                        if (modo == 2)
+                            tblNotarioi = "[NotariosPartidos]";
+
                         string[] sqlstr = { "SELECT count(*) ",
-                                                "From [Notarios] ",
+                                                "From ",tblNotarioi,
                                                 " Where ([NumElec] = ", FixNum( m_N_NOTARIO) , ") and ",
                                                 " ([Partido]='", m_PARTIDO , "')"};
-
+                                               
                         object total = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
@@ -5162,9 +5209,14 @@ namespace jolcode
                         //'23- La petición ha sido juramentada ante un notario ad hoc cuyo nombre no le ha sido informado a la Comisión.
                         if (CollCriterios[22].Editar == true || CollCriterios[22].Warning == true)
                         {
+                            string tblNotario = "[Notarios]";
+
+                            if (modo == 2)
+                                tblNotario = "[NotariosPartidos]";
+
                             string[] sqlstr = {
                                 "SELECT [Fecha_Dia],[Fecha_Mes],[Fecha_Ano] ",
-                                "From [Notarios] ",
+                                "From ",tblNotario,
                                 " Where ([NumElec] = ", FixNum(m_N_NOTARIO) , ") and ",
                                 " ([Partido]='", m_PARTIDO , "')"
                             };

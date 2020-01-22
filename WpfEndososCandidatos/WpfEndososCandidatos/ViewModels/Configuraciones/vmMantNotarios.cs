@@ -970,7 +970,7 @@ namespace WpfEndososCandidatos.ViewModels.Configuraciones
                     DBCnnStr = DBEndososCnnStr
                 })
                 {
-                    myDelete = mySqlExe.MyDeleteNotario(myWhere, myWhere2, NumCand);
+                    myDelete = mySqlExe.MyDeleteNotario(myWhere, myWhere2, NumCand, WhatIsModo);
 
 
                 }
