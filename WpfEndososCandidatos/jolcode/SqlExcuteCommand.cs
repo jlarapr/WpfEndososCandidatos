@@ -4093,10 +4093,21 @@ namespace jolcode
                     string tmpFirmaFecha_Endo_Notario = String.Empty;
                     try
                     {
-                        if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
-                            tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
-                        else
-                            tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                        if (modo == 2)
+                        {
+                            if (row["FechaEndo_Ano"].ToString().Trim().Length == 4)
+                                tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
+                            else
+                                tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                        }else
+                        {
+                            if (row["FechaFirm_Mes"].ToString().Trim().Length == 4)
+                                tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
+                            else
+                                tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
+
+                        }
+
                     }
                     catch
                     {
@@ -5573,8 +5584,9 @@ namespace jolcode
             sqlstr = sqlstr + ",'" + Rechazo + "'";
             sqlstr = sqlstr + ",'" + NumElec + "'";
             sqlstr = sqlstr + ", " + Status;
-            sqlstr = sqlstr + ", " + modo.ToString();
-            sqlstr = sqlstr + ", @EndosoImage )";
+            sqlstr = sqlstr + ", @EndosoImage";
+            sqlstr = sqlstr + ", " + modo.ToString() + ")";
+
 
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@EndosoImage";
