@@ -3485,7 +3485,7 @@ namespace jolcode
 
                 string[] myInsertLot =
                         {
-                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate],[Num_Candidato],modo)  ",
+                            "Insert Into lots  ([Partido],[Lot],[Amount],[Usercode],[AuthDate],[Status],[VerDate],[VerUser],[FinUser] ,[FinDate],[RevDate],[RevUser],[conditions],[ImportDate],[Num_Candidato],[modo])  ",
                             "VALUES (",
                              "@Partido,@Lot,@Amount,@Usercode,@AuthDate,@Status,null,null,null,null,null,null,null,@ImportDate,@Num_Candidato,@modo",
                             ");"
@@ -3691,6 +3691,7 @@ namespace jolcode
                             usercodeParam.Value = usercode;
                             authDateParam.Value = DateTime.Now.ToString(); ;
                             statusParam.Value = "0";
+                            modoParam.Value = modo.ToString();
                             //verDateParam.Value = VerDate;
                             //verUserParam.Value = VerUser;
                             //finUserParam.Value = FinUser;
