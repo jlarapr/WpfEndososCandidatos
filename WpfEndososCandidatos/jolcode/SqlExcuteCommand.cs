@@ -5011,7 +5011,8 @@ namespace jolcode
                                     break;
 
                                 case 8: //'Legislador Municipales
-                                    {//Falta tabala 
+                                    {//Falta tabala . off 2020.01.23 despues de hablar con Anibal 
+                                        /*
                                         object totalPermitidos = null;
                                         string precintoMasterCee = FirstGeoCode.ToString().Trim().PadLeft(3, '0');
 
@@ -5053,6 +5054,7 @@ namespace jolcode
                                                 isWarning[14] = true;
                                             }
                                         }
+                                        */
                                     }
                                     break;
                             }
