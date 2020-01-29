@@ -339,7 +339,7 @@
                         if (EndososDate.ToString() == "???")
                             throw new Exception("Este numero de Lote No esta en el Sistema de Reydi!!!");
 
-                        get.MyTFJuramentoDate(numLote, (DateTime)EndososDate);
+                        get.MyTFJuramentoDate(numLote, (DateTime)EndososDate, WhatIsModo);
 
                         if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, EndososDate,WhatIsModo))   // EndososDate))
                             throw new Exception("Error en la base de datos. *MyChangeTF*");
@@ -352,7 +352,7 @@
                         DateTime mDate;
                         mDate = dpFchRecibo;
 
-                        get.MyTFJuramentoDate(numLote, mDate);
+                        get.MyTFJuramentoDate(numLote, mDate,WhatIsModo);
 
                         if (!get.MyChangeTF(get.MyGetSelectLotes(numLote, cantidad.ToString()), SysUser, mDate,WhatIsModo))   // EndososDate))
                             throw new Exception("Error en la base de datos. *MyChangeTF*");

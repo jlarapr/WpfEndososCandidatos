@@ -437,7 +437,7 @@ namespace jolcode
                 //string mySqlstr = "Select distinct BatchTrack  from [dbo].[TF-Partidos] Where Imported = 0 order by BatchTrack";
                 string[] mySqlstr = { "Select [Partido],BatchTrack, count(*) as Amount  ",
                                       "from [dbo].[TF-Partidos] ",
-                                      "Where Imported = 0 ",
+                                      "Where Imported = 0",
                                       "Group By Partido,BatchTrack ",
                                       "Order By Partido,BatchTrack;" };
 
@@ -1996,7 +1996,7 @@ namespace jolcode
             return myReturn;
         }
 
-        public bool MyTFJuramentoDate(string lot, DateTime EndososDate)
+        public bool MyTFJuramentoDate(string lot, DateTime EndososDate, int modo)
         {
             bool myReturn = false;
 
@@ -2019,7 +2019,7 @@ namespace jolcode
 
                         DateTime? m_Firma_Fecha = null;
 
-                        string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano],[FechaEndo_Mes],[FechaEndo_Dia],[FechaEndo_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
+                        string mySqlstr = "SELECT [BatchTrack],[BatchNo],[BatchPgNo],[FechaFirm_Dia],[FechaFirm_Mes],[FechaFirm_Ano],[FechaEndo_Mes],[FechaEndo_Dia],[FechaEndo_Ano],[FechaRecibo_Mes],[FechaRecibo_Dia],[FechaRecibo_Ano] FROM [dbo].[TF-Partidos] where [BatchTrack] = '" + lot + "'";
                         cmd.CommandText = mySqlstr;
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable table = new DataTable();
@@ -2032,6 +2032,25 @@ namespace jolcode
                                                                    dr["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'),
                                                                    dr["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
 
+                            if (modo == 1)
+                            {
+
+                                tmpmFirma_Fecha = string.Concat(dr["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
+
+                            }
+
+                            if (string.IsNullOrEmpty(tmpmFirma_Fecha))
+                            {
+                                tmpmFirma_Fecha = "01012010";
+                            }
+
+                            if (tmpmFirma_Fecha.Equals("000000"))
+                            {
+                                tmpmFirma_Fecha = "01012010";
+                            }
+
                             if (tmpmFirma_Fecha.Trim().Length > 0)
                             {
                                 string BatchNo = dr["BatchNo"].ToString();
@@ -2039,6 +2058,9 @@ namespace jolcode
                                 m_Firma_Fecha = DateTimeUtil.MyValidarFechaMMddyy(tmpmFirma_Fecha);
 
                                 long totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, m_Firma_Fecha, EndososDate);
+
+                                if (totalDeDias < 0)
+                                    totalDeDias = DateTimeUtil.DateDiff(DateInterval.Day, EndososDate, m_Firma_Fecha);
 
                                 if (totalDeDias > 7)
                                 {
@@ -2659,7 +2681,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyDeleteNotario(string where, string where2, string NumCand,int modo)
+        public bool MyDeleteNotario(string where, string where2, string NumCand, int modo)
         {
             bool myBoolReturn = false;
             string[] myDelete =
@@ -2689,7 +2711,7 @@ namespace jolcode
                     })
                     {
                         if (modo == 2)
-                        cmd.CommandText = string.Concat(myDeletePartidos);
+                            cmd.CommandText = string.Concat(myDeletePartidos);
 
                         if (cnn.State == ConnectionState.Closed)
                             cnn.Open();
@@ -3467,7 +3489,7 @@ namespace jolcode
             }
             return myBoolReturn;
         }
-        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaRecibo,int modo)
+        public bool MyChangeTF(DataTable tableLots, string usercode, object fechaRecibo, int modo)
         {
             bool myBoolReturn = false;
             SqlTransaction transaction = null;
@@ -4099,7 +4121,8 @@ namespace jolcode
                                 tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(4, '0'));
                             else
                                 tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaEndo_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaEndo_Ano"].ToString().Trim().PadLeft(2, '0'));
-                        }else
+                        }
+                        else
                         {
                             if (row["FechaFirm_Mes"].ToString().Trim().Length == 4)
                                 tmpFirmaFecha_Endo_Notario = string.Concat(row["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'), row["FechaFirm_Ano"].ToString().Trim().PadLeft(4, '0'));
@@ -4325,7 +4348,7 @@ namespace jolcode
                                                 "From ",tblNotarioi,
                                                 " Where ([NumElec] = ", FixNum( m_N_NOTARIO) , ") and ",
                                                 " ([Partido]='", m_PARTIDO , "')"};
-                                               
+
                         object total = null;
 
                         if (MyValidarDatos(string.Concat(sqlstr), out total, myCnnDBEndososValidarDatos) != null)
