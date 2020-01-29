@@ -437,7 +437,7 @@ namespace jolcode
                 //string mySqlstr = "Select distinct BatchTrack  from [dbo].[TF-Partidos] Where Imported = 0 order by BatchTrack";
                 string[] mySqlstr = { "Select [Partido],BatchTrack, count(*) as Amount  ",
                                       "from [dbo].[TF-Partidos] ",
-                                      "Where Imported = 0",
+                                      "Where Imported = 0 ",
                                       "Group By Partido,BatchTrack ",
                                       "Order By Partido,BatchTrack;" };
 
@@ -2034,10 +2034,11 @@ namespace jolcode
 
                             if (modo == 1)
                             {
+      
 
-                                tmpmFirma_Fecha = string.Concat(dr["FechaRecibo_Mes"].ToString().Trim().PadLeft(2, '0'),
-                                                                   dr["FechaRecibo_Dia"].ToString().Trim().PadLeft(2, '0'),
-                                                                   dr["FechaRecibo_Ano"].ToString().Trim().PadLeft(2, '0'));
+                                tmpmFirma_Fecha = string.Concat(dr["FechaFirm_Mes"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaFirm_Dia"].ToString().Trim().PadLeft(2, '0'),
+                                                                   dr["FechaFirm_Ano"].ToString().Trim().PadLeft(2, '0'));
 
                             }
 
