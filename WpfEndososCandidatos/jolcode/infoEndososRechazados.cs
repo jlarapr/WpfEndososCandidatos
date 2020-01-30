@@ -22,7 +22,9 @@ namespace jolcode
         public string Paterno       { get; set; }
         public string Materno       { get; set; }
         public String Status        { get; set; }
-        public string Fecha_Endoso  { get; set; }
+        public string Firma_Fecha { get; set; }
+        public string Fecha_Endoso { get; set; }
+        public string Fecha_Recibo { get; set; }
 
         public Byte[] EndosoImage { get; set; }
 
@@ -40,6 +42,7 @@ namespace jolcode
             myout.Add(Paterno);
             myout.Add(Materno);
             myout.Add(Fecha_Endoso);
+            myout.Add(Fecha_Recibo);
             //myout.Add(EndosoImage.ToString());
             
             string myJoined = string.Join("|", myout);

@@ -179,7 +179,9 @@ namespace WpfEndososCandidatos.ViewModels.Informes
                         myLotsVoid.Paterno = r["Paterno"].ToString().Trim();
                         myLotsVoid.Materno = r["Materno"].ToString().Trim();
                         myLotsVoid.EndosoImage = (Byte[])r["EndosoImage"];
+                        myLotsVoid.Firma_Fecha = r["Firma_Fecha"].ToString().Trim();
                         myLotsVoid.Fecha_Endoso = r["Fecha_Endoso"].ToString().Trim();
+                        myLotsVoid.Fecha_Recibo = r["Fecha_Recibo"].ToString().Trim();
                         ItemsSource.Add(myLotsVoid);
                         
                     }

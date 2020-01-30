@@ -985,10 +985,10 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
-                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso and a.Partido = @Partido",
+                    "  where B.Status in (1,2) and B.Fecha_Recibo = @Fecha_Recibo and a.Partido = @Partido",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
                 //fecha de recibo
@@ -1001,10 +1001,10 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
-                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso ",
+                    "  where B.Status in (1,2) and B.Fecha_Recibo = @Fecha_Recibo ",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
                 //Duplicados and partido
@@ -1017,7 +1017,7 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2) and a.Partido = @Partido",
@@ -1035,10 +1035,10 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
-                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso",
+                    "  where B.Status in (1,2) and B.Fecha_Recibo = @Fecha_Recibo",
                     "  and [Rechazo] in (14,15,21)",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
@@ -1052,10 +1052,10 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
-                    "  where B.Status in (1,2) and B.Fecha_Endoso = @Fecha_Endoso and a.Partido = @Partido",
+                    "  where B.Status in (1,2) and B.Fecha_Recibo = @Fecha_Recibo and a.Partido = @Partido",
                     "  and [Rechazo] in (14,15,21)",
                     "  order by  A.Rechazo,A.Lot,A.NumElec"
                 };
@@ -1069,7 +1069,7 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2)",
@@ -1086,7 +1086,7 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2) and a.Partido = @Partido",
@@ -1102,7 +1102,7 @@ namespace jolcode
                     "       B.[Paterno],",
                     "       B.[Materno],",
                     "       (SELECT [Desc] FROM [dbo].[tblStatusLotsVoid] where [STATUS] = A.[Status]) as [Status],",
-                    "       A.[EndosoImage],b.Fecha_Endoso",
+                    "       A.[EndosoImage],b.Firma_Fecha,","b.Fecha_Recibo," ,"b.Fecha_Endoso",
                     "  FROM [dbo].[LotsVoid] A join [dbo].[LotsEndo] B",
                     "  on A.NumElec = B.NumElec",
                     "  where B.Status in (1,2) ",
@@ -1121,7 +1121,7 @@ namespace jolcode
                     })
                     {
                         SqlParameter sqlParameterPartido = new SqlParameter("@Partido", SqlDbType.VarChar);
-                        SqlParameter sqlParameterFecha = new SqlParameter("@Fecha_Endoso", SqlDbType.VarChar);
+                        SqlParameter sqlParameterFecha = new SqlParameter("@Fecha_Recibo", SqlDbType.VarChar);
 
                         cmd.Parameters.Add(sqlParameterPartido).Value = Partido;
                         cmd.Parameters.Add(sqlParameterFecha).Value = FechaDeRecibo;
