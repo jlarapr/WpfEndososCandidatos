@@ -10,7 +10,6 @@
     Title="wpfDuplicadoPorNumElec"
     Width="702.236"
     Height="511.821"
-    help:Help.Filename="Sistema_de_Endosos.chm"
     AllowsTransparency="True"
     Background="Transparent"
     ResizeMode="NoResize"
@@ -76,7 +75,7 @@
                 Margin="56,0,0,6"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
-                help:Help.Keyword="wpfDuplicadoPorNumElec.htm#"
+               
                 IsReadOnly="True"
                 Text="{Binding txtTotal}"
                 TextWrapping="Wrap" />
@@ -86,7 +85,7 @@
                 Margin="135,100,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfDuplicadoPorNumElec.htm#"
+               
                 Command="{Binding cmdExecute_Click}"
                 Content="Execute" />
             <Button
@@ -95,7 +94,7 @@
                 Margin="215,100,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfDuplicadoPorNumElec.htm#"
+               
                 Command="{Binding cmdToPdf_Click}"
                 CommandParameter="0"
                 Content="To Pdf" />
@@ -105,7 +104,7 @@
                 Margin="578,104,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfDuplicadoPorNumElec.htm#"
+               
                 Command="{Binding cmdSalir_Click}"
                 Content="Exit" />
             <TextBox
@@ -115,7 +114,7 @@
                 Margin="10,100,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfDuplicadoPorNumElec.htm#"
+               
                 CharacterCasing="Upper"
                 MaxLength="7"
                 Text="{Binding TxtElecNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

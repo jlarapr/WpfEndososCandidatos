@@ -1,4 +1,6 @@
-﻿<Window x:Class="WpfEndososCandidatos.View.wpfLotRechazadas" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="Transparent" Title="wpfLotRechazadas" Height="308.499" Width="329.745" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
+﻿<Window x:Class="WpfEndososCandidatos.View.wpfLotRechazadas" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="Transparent" Title="wpfLotRechazadas" Height="308.499" Width="329.745" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <Border BorderBrush="{Binding BorderBrush}" Background="Beige" BorderThickness="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CornerRadius="10" Margin="10" Padding="4">
         <Border.Effect>
             <DropShadowEffect Color="Gray" Opacity="80" ShadowDepth="16"></DropShadowEffect>

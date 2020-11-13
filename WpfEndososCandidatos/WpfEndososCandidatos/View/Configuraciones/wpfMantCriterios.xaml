@@ -7,7 +7,6 @@
     Title="wpfMantCriterios"
     Width="959.807"
     Height="975.54"
-    help:Help.Filename="Sistema_de_Endosos.chm"
     AllowsTransparency="True"
     Background="Transparent"
     ResizeMode="NoResize"
@@ -50,7 +49,7 @@
                 Margin="841,890,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfMantCriterios.htm#"
+                
                 Command="{Binding cmdSalir_Click}"
                 Content="Salir" />
             <GroupBox
@@ -58,7 +57,7 @@
                 Height="704"
                 Margin="5,60,5,0"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfMantCriterios.htm#"
+                
                 Header="Criterio de Validacion">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
@@ -87,7 +86,7 @@
                                 Height="26"
                                 Margin="5,0,0,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[0].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -102,7 +101,7 @@
                                 x:Name="ckbW1_Copy"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[1].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -117,7 +116,7 @@
                                 x:Name="ckbW1_Copy1"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[2].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -132,7 +131,7 @@
                                 x:Name="ckbW1_Copy2"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[3].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -147,7 +146,7 @@
                                 x:Name="ckbW1_Copy3"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[4].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -162,7 +161,6 @@
                                 x:Name="ckbW1_Copy4"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[5].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -177,7 +175,6 @@
                                 x:Name="ckbW1_Copy5"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[6].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -192,7 +189,6 @@
                                 x:Name="ckbW1_Copy6"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[7].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -207,7 +203,6 @@
                                 x:Name="ckbW1_Copy7"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[8].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -222,7 +217,6 @@
                                 x:Name="ckbW1_Copy8"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[9].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -237,7 +231,6 @@
                                 x:Name="ckbW1_Copy9"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[10].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -252,7 +245,6 @@
                                 x:Name="ckbW1_Copy10"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[11].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -267,7 +259,6 @@
                                 x:Name="ckbW1_Copy11"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[12].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -282,7 +273,6 @@
                                 x:Name="ckbW1_Copy12"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[13].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -297,7 +287,6 @@
                                 x:Name="ckbW1_Copy13"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[14].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -312,7 +301,6 @@
                                 x:Name="ckbW1_Copy14"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[15].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -327,7 +315,6 @@
                                 x:Name="ckbW1_Copy15"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
                                 IsChecked="{Binding chk[16].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -342,7 +329,7 @@
                                 x:Name="ckbW1_Copy19"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[17].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -357,7 +344,7 @@
                                 x:Name="ckbW1_Copy20"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[18].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -372,7 +359,7 @@
                                 x:Name="ckbW1_Copy21"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[19].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -387,7 +374,7 @@
                                 x:Name="ckbW1_Copy22"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[20].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -403,7 +390,7 @@
                                 Width="22"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[21].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -419,7 +406,7 @@
                                 Width="22"
                                 Height="26"
                                 Margin="5,0,0,0"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[22].Warning}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -444,7 +431,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[0].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -467,7 +454,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[1].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -490,7 +477,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[2].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -513,7 +500,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[3].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -536,7 +523,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[4].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -559,7 +546,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[5].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -582,7 +569,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[6].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -605,7 +592,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[7].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -628,7 +615,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[8].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -651,7 +638,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[9].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -674,7 +661,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[10].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -697,7 +684,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[11].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -720,7 +707,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[12].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -743,7 +730,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Bottom"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[13].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -766,7 +753,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Bottom"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[14].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -789,7 +776,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Bottom"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[15].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -812,7 +799,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[16].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -835,7 +822,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[17].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -858,7 +845,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[18].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -881,7 +868,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[19].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -904,7 +891,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[20].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -927,7 +914,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[21].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -950,7 +937,7 @@
                                 Height="26"
                                 Margin="0,0,10,0"
                                 VerticalAlignment="Top"
-                                help:Help.Keyword="wpfMantCriterios.htm#"
+                                
                                 IsChecked="{Binding chk[22].Editar}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Checked">
@@ -987,7 +974,7 @@
                 Margin="841,853,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfMantCriterios.htm#"
+                
                 Command="{Binding cmdActualize_Click}"
                 Content="Actualizar" />
             <Border
@@ -1002,7 +989,7 @@
                 <TextBox
                     x:Name="txtExplicacion"
                     Margin="9"
-                    help:Help.Keyword="wpfMantCriterios.htm#"
+                    
                     IsEnabled="{Binding IsEnabled_txtExplicacion}"
                     Text="{Binding txtExplicacion}"
                     TextWrapping="Wrap" />
@@ -1014,7 +1001,7 @@
                 Margin="841,782,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfMantCriterios.htm#"
+                
                 Command="{Binding cmdEditar_Click}"
                 Content="Editar" />
             <Button
@@ -1024,7 +1011,7 @@
                 Margin="841,819,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                help:Help.Keyword="wpfMantCriterios.htm#"
+                
                 Command="{Binding cmdCancel_Click}"
                 Content="Cancel" />
         </Grid>

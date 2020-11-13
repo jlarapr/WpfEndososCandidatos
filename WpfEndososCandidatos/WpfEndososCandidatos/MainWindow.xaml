@@ -2,13 +2,13 @@
     x:Class="WpfEndososCandidatos.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider"
+   
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:vm="clr-namespace:WpfEndososCandidatos.ViewModels"
     Title="{Binding Title}"
     Width="1491.037"
     Height="869.26"
-    help:Help.Filename="Sistema_de_Endosos.chm"
+    
     Background="LightGray"
     Cursor="{Binding MiCursor}"
     Icon="WindowsJournal.ico"

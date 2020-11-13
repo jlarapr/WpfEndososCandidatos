@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfEndososCandidatos.View.Procesos.wpfFixLot" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:WpfEndososCandidatos.View.Procesos" mc:Ignorable="d" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" Background="Transparent" Title="wpfFitLot" Height="412.249" Width="710.87" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
+﻿<Window x:Class="WpfEndososCandidatos.View.Procesos.wpfFixLot" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:WpfEndososCandidatos.View.Procesos" mc:Ignorable="d" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" Background="Transparent" Title="wpfFitLot" Height="412.249" Width="710.87" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
@@ -14,10 +14,10 @@
                 <RowDefinition Height="293*" />
             </Grid.RowDefinitions>
             <Label Content="Subsanar" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="26.667" Margin="5,5,10,10" VerticalContentAlignment="Center" />
-            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="592,266,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30" Grid.Row="1" help:Help.Keyword="wpfFixLot.htm#" />
+            <Button Content="Salir" Command="{Binding cmdSalir_Click}" HorizontalAlignment="Left" Margin="592,266,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.65,2.82" Height="30" Grid.Row="1"  />
             <Label x:Name="lblLote" Content="Candidato" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Grid.Row="1" Height="26" Width="244" />
-            <Button Content="REYDI" HorizontalAlignment="Left" Margin="512,266,0,0" VerticalAlignment="Top" Width="75" Height="30" Command="{Binding OnSave}" Grid.Row="1" help:Help.Keyword="wpfFixLot.htm#" />
-            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="244" ItemsSource="{Binding cbInfoCandidato}" SelectedItem="{Binding cbInfoCandidato_Item, Mode=TwoWay}" SelectedIndex="{Binding cbInfoCandidato_Item_Id, Mode=TwoWay}" Grid.Row="1" Height="22" help:Help.Keyword="wpfFixLot.htm#" />
+            <Button Content="REYDI" HorizontalAlignment="Left" Margin="512,266,0,0" VerticalAlignment="Top" Width="75" Height="30" Command="{Binding OnSave}" Grid.Row="1"  />
+            <ComboBox x:Name="cbLot" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="244" ItemsSource="{Binding cbInfoCandidato}" SelectedItem="{Binding cbInfoCandidato_Item, Mode=TwoWay}" SelectedIndex="{Binding cbInfoCandidato_Item_Id, Mode=TwoWay}" Grid.Row="1" Height="22"  />
             <DataGrid x:Name="dataGrid" ItemsSource="{Binding Onlots, IsAsync=True, Mode=TwoWay}" CanUserAddRows="True" AutoGenerateColumns="False" Height="203" Margin="10,58,10,0" VerticalAlignment="Top" Grid.Row="1">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Partido" Binding="{Binding Partido}" />
@@ -30,8 +30,8 @@
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock Background="White" x:Name="txtPartido" HorizontalAlignment="Left" Margin="578,30,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding txtPartido,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="89" />
-            <TextBox x:Name="txtFindCandidato" HorizontalAlignment="Left" Height="22" Margin="259,30,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding txtFindCandidato,Mode=TwoWay}" VerticalAlignment="Top" Width="120" help:Help.Keyword="wpfFixLot.htm#" />
-            <Button x:Name="OnbtnGo" Content="GO" Command="{Binding OnBtnGo}" HorizontalAlignment="Left" Margin="384,31,0,0" Grid.Row="1" VerticalAlignment="Top" Width="37" help:Help.Keyword="wpfFixLot.htm#" />
+            <TextBox x:Name="txtFindCandidato" HorizontalAlignment="Left" Height="22" Margin="259,30,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding txtFindCandidato,Mode=TwoWay}" VerticalAlignment="Top" Width="120"  />
+            <Button x:Name="OnbtnGo" Content="GO" Command="{Binding OnBtnGo}" HorizontalAlignment="Left" Margin="384,31,0,0" Grid.Row="1" VerticalAlignment="Top" Width="37"  />
         </Grid>
     </Border>
 </Window>

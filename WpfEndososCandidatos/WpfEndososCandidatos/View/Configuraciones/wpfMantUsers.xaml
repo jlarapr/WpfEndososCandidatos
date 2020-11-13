@@ -1,4 +1,8 @@
-﻿<Window x:Class="WpfEndososCandidatos.View.wpfMantUsers" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:local="clr-namespace:WpfEndososCandidatos.ViewModels" xmlns:PassHelper="clr-namespace:WpfEndososCandidatos.Helper" Background="Transparent" Title="wpfMantUsers" Height="556.782" Width="479.73" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
+﻿<Window x:Class="WpfEndososCandidatos.View.wpfMantUsers" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:local="clr-namespace:WpfEndososCandidatos.ViewModels" 
+        xmlns:PassHelper="clr-namespace:WpfEndososCandidatos.Helper" Background="Transparent" Title="wpfMantUsers" Height="556.782" Width="479.73" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" ShowInTaskbar="False" >
     <!--<Window.DataContext>
         <local:vmMatUsers/>
     </Window.DataContext>-->
@@ -16,18 +20,18 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="59*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="cmdExit" Content="Salir" Command="{Binding close_Click}" HorizontalAlignment="Left" Margin="216,386,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
-            <Button x:Name="cmdCancel" IsEnabled="{Binding cmdCancel_IsEnabled}" Content="Cancelar" Command="{Binding cancelar_Click}" HorizontalAlignment="Left" Margin="216,359,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#">
+            <Button x:Name="cmdExit" Content="Salir" Command="{Binding close_Click}" HorizontalAlignment="Left" Margin="216,386,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
+            <Button x:Name="cmdCancel" IsEnabled="{Binding cmdCancel_IsEnabled}" Content="Cancelar" Command="{Binding cancelar_Click}" HorizontalAlignment="Left" Margin="216,359,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" >
                 <Button.ContextMenu>
                     <ContextMenu />
                 </Button.ContextMenu>
             </Button>
-            <Button x:Name="cmdSave" IsEnabled="{Binding cmdSave_IsEnabled}" Content="Guardar" Command="{Binding guardar_Click}" HorizontalAlignment="Left" Margin="216,332,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
-            <Button x:Name="cmdDelete" IsEnabled="{Binding cmdDelete_IsEnabled}" Content="Borrar" Command="{Binding borrar_Click}" HorizontalAlignment="Left" Margin="216,305,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
-            <Button x:Name="cmdEdit" IsEnabled="{Binding cmdEdit_IsEnabled}" Content="Editar Accesos" Command="{Binding editar_Click}" HorizontalAlignment="Left" Margin="216,253,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
-            <Button x:Name="cmdAdd" IsEnabled="{Binding cmdAdd_IsEnabled}" Content="Añadir" Command="{Binding anadir_Click}" HorizontalAlignment="Left" Margin="216,226,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
+            <Button x:Name="cmdSave" IsEnabled="{Binding cmdSave_IsEnabled}" Content="Guardar" Command="{Binding guardar_Click}" HorizontalAlignment="Left" Margin="216,332,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
+            <Button x:Name="cmdDelete" IsEnabled="{Binding cmdDelete_IsEnabled}" Content="Borrar" Command="{Binding borrar_Click}" HorizontalAlignment="Left" Margin="216,305,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
+            <Button x:Name="cmdEdit" IsEnabled="{Binding cmdEdit_IsEnabled}" Content="Editar Accesos" Command="{Binding editar_Click}" HorizontalAlignment="Left" Margin="216,253,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
+            <Button x:Name="cmdAdd" IsEnabled="{Binding cmdAdd_IsEnabled}" Content="Añadir" Command="{Binding anadir_Click}" HorizontalAlignment="Left" Margin="216,226,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
             <Label Content="Usuario" HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top" Width="135" Grid.Column="1" Height="26" />
-            <ComboBox x:Name="cbUser" ItemsSource="{Binding CbUser}" SelectedItem="{Binding CbUser_SelectedItem}" SelectedIndex="{Binding CbUser_SelectedIndex}" Text="{Binding CbUser_Text}" IsEnabled="{Binding cbUser_IsEnabled}" IsEditable="{Binding CbUser_IsEditable}" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#">
+            <ComboBox x:Name="cbUser" ItemsSource="{Binding CbUser}" SelectedItem="{Binding CbUser_SelectedItem}" SelectedIndex="{Binding CbUser_SelectedIndex}" Text="{Binding CbUser_Text}" IsEnabled="{Binding cbUser_IsEnabled}" IsEditable="{Binding CbUser_IsEditable}" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top" Width="211" Grid.Column="1" Height="22" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding cbUser_ChangeItem}" />
@@ -46,24 +50,24 @@
                     <PassHelper:PasswordBoxBindingBehavior Password="{Binding PasswordVerification}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
-            <GroupBox IsEnabled="{Binding AreasdeAcceso_IsEnabled}" Grid.Column="1" Header="Áreas de acceso" HorizontalAlignment="Left" Height="207" Margin="0,201,0,0" VerticalAlignment="Top" Width="211" help:Help.Keyword="wpfMantUsers.htm#">
+            <GroupBox IsEnabled="{Binding AreasdeAcceso_IsEnabled}" Grid.Column="1" Header="Áreas de acceso" HorizontalAlignment="Left" Height="207" Margin="0,201,0,0" VerticalAlignment="Top" Width="211" >
                 <Grid Margin="0">
-                    <CheckBox Command="{Binding cambiarPassword_Click}" IsChecked="{Binding cambiarPassword_IsChecked}" Content="Cambiar Password" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding autorizarLotes_Click}" IsChecked="{Binding autorizarLotes_IsChecked}" Content="Autorizar Lotes" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding procesarLotes_Click}" IsChecked="{Binding procesarLotes_IsChecked}" Content="Procesar Lotes" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding verElector_Click}" IsChecked="{Binding verElector_IsChecked}" Content="Ver Elector" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding reportes_Click}" IsChecked="{Binding reportes_IsChecked}" Content="Reportes" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding reversarLote_Click}" IsChecked="{Binding reversarLote_IsChecked}" Content="Reversar Lote" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding configuraciones_Click}" IsChecked="{Binding configuraciones_IsChecked}" Content="Configuraciones" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
-                    <CheckBox Command="{Binding corregirEndosos_Click}" IsChecked="{Binding corregirEndosos_IsChecked}" Content="Corregir Endosos" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" help:Help.Keyword="wpfMantUsers.htm#" />
+                    <CheckBox Command="{Binding cambiarPassword_Click}" IsChecked="{Binding cambiarPassword_IsChecked}" Content="Cambiar Password" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding autorizarLotes_Click}" IsChecked="{Binding autorizarLotes_IsChecked}" Content="Autorizar Lotes" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding procesarLotes_Click}" IsChecked="{Binding procesarLotes_IsChecked}" Content="Procesar Lotes" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding verElector_Click}" IsChecked="{Binding verElector_IsChecked}" Content="Ver Elector" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding reportes_Click}" IsChecked="{Binding reportes_IsChecked}" Content="Reportes" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding reversarLote_Click}" IsChecked="{Binding reversarLote_IsChecked}" Content="Reversar Lote" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding configuraciones_Click}" IsChecked="{Binding configuraciones_IsChecked}" Content="Configuraciones" HorizontalAlignment="Left" Margin="10,136,0,0" VerticalAlignment="Top"  />
+                    <CheckBox Command="{Binding corregirEndosos_Click}" IsChecked="{Binding corregirEndosos_IsChecked}" Content="Corregir Endosos" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top"  />
                 </Grid>
             </GroupBox>
             <TextBlock x:Name="Password_Cls" Visibility="{Binding Password_Cls_Visibility}" Text="{Binding password_Cls,Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="0,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" />
             <TextBlock x:Name="VerificacionPassword_Cls" Visibility="{Binding Password_Cls_Visibility}" Text="{Binding verificacionPassword_Cls,Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="0,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="333" RenderTransformOrigin="1.109,0.5" />
             <TextBlock Grid.Column="1" Margin="10,415,10,0" TextWrapping="Wrap" Text="{Binding Id,Mode=TwoWay}" VerticalAlignment="Top" Height="22" />
             <Image Grid.Column="1" HorizontalAlignment="Left" Height="141" Margin="216,11,0,0" VerticalAlignment="Top" Width="132" Source="/WpfEndososCandidatos;component/Images/bersirc.png" Stretch="UniformToFill" />
-            <Button x:Name="cmdEditPass" IsEnabled="{Binding cmdEditPass_IsEnabled}" Content="Cambiar Password" Command="{Binding editPass_Click}" HorizontalAlignment="Left" Margin="216,278,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22" help:Help.Keyword="wpfMantUsers.htm#" />
-            <Button x:Name="cmdVerPass" Background="Beige" Command="{Binding cmdVerPass_Click}" Grid.Column="1" Margin="182,83,0,341" BorderBrush="Beige" HorizontalAlignment="Left" Width="29" help:Help.Keyword="wpfMantUsers.htm#">
+            <Button x:Name="cmdEditPass" IsEnabled="{Binding cmdEditPass_IsEnabled}" Content="Cambiar Password" Command="{Binding editPass_Click}" HorizontalAlignment="Left" Margin="216,278,0,0" VerticalAlignment="Top" Width="117" Grid.Column="1" Height="22"  />
+            <Button x:Name="cmdVerPass" Background="Beige" Command="{Binding cmdVerPass_Click}" Grid.Column="1" Margin="182,83,0,341" BorderBrush="Beige" HorizontalAlignment="Left" Width="29" >
                 <Grid Width="20" Margin="0" Height="20">
                     <Image Source="/WpfEndososCandidatos;component/Images/ojo1.png" Height="20" Margin="0,-1,0,1" />
                 </Grid>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local="clr-namespace:WpfEndososCandidatos.View.Procesos" mc:Ignorable="d" 
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowState="Maximized" Title="wpfEndososEnReydi" Height="941.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider" help:Help.Filename="Sistema_de_Endosos.chm">
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" WindowStyle="None" AllowsTransparency="True" Background="Transparent" WindowState="Maximized" Title="wpfEndososEnReydi" Height="941.067" Width="1128.247" ResizeMode="CanResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding initWindow}" />
