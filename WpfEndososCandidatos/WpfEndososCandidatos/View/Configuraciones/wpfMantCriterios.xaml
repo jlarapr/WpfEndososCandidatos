@@ -2,7 +2,7 @@
     x:Class="WpfEndososCandidatos.View.Configuraciones.wpfMantCriterios"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:help="clr-namespace:HelpProvider;assembly=HelpProvider"
+  
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     Title="wpfMantCriterios"
     Width="959.807"
